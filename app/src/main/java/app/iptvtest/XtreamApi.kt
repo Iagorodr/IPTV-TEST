@@ -1,21 +1,22 @@
 package app.iptvtest
 
 import android.net.Uri
+import android.util.JsonReader
+import android.util.JsonToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
+import java.io.InputStreamReader
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-const val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Android TV) IPTV-TEST/0.1"
+const val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Android TV) IPTV-TEST/0.2"
 
-/** Mesma regra do organizador: categoria adulta é detectada só pelo NOME DA CATEGORIA do provedor. */
+/** Categoria adulta é detectada só pelo NOME DA CATEGORIA do provedor. */
 private val ADULT_CATEGORY = Regex("""\+\s?18|18\s?\+|adult|xxx|er[oó]tic""")
 
 fun isAdultCategory(name: String): Boolean = ADULT_CATEGORY.containsMatchIn(name.lowercase())
@@ -24,6 +25,134 @@ private fun JSONObject.str(key: String): String? {
     if (!has(key) || isNull(key)) return null
     val s = optString(key, "").trim()
     return if (s.isEmpty() || s == "null") null else s
+}
+
+/** Um item cru, como o provedor entrega (filme, série ou canal). */
+class RawItem(
+    val id: String,
+    val name: String,
+    val image: String?,
+    val year: String,
+    val rating: Float,
+    val added: Long,
+    val ext: String,
+    val cats: List<String>,
+    val plot: String,
+    val genre: String,
+)
+
+/** Leitura em fluxo (sem montar a árvore inteira na memória): o catálogo de filmes passa de 13 MB. */
+private object RawParser {
+
+    private fun JsonReader.loose(): String? {
+        return when (peek()) {
+            JsonToken.NULL -> {
+                nextNull()
+                null
+            }
+            JsonToken.STRING, JsonToken.NUMBER -> {
+                val s = nextString().trim()
+                if (s.isEmpty() || s == "null") null else s
+            }
+            JsonToken.BOOLEAN -> nextBoolean().toString()
+            else -> {
+                skipValue()
+                null
+            }
+        }
+    }
+
+    private fun JsonReader.looseList(): List<String> {
+        return when (peek()) {
+            JsonToken.BEGIN_ARRAY -> {
+                val l = ArrayList<String>()
+                beginArray()
+                while (hasNext()) {
+                    val v = loose()
+                    if (v != null) l.add(v)
+                }
+                endArray()
+                l
+            }
+            JsonToken.STRING -> {
+                val s = nextString()
+                Regex("\\d+").findAll(s).map { it.value }.toList()
+            }
+            JsonToken.NUMBER -> listOf(nextString())
+            else -> {
+                skipValue()
+                emptyList()
+            }
+        }
+    }
+
+    fun readItems(r: JsonReader): List<RawItem> {
+        val out = ArrayList<RawItem>()
+        val seen = HashSet<String>()
+        if (r.peek() != JsonToken.BEGIN_ARRAY) {
+            r.skipValue()
+            return out
+        }
+        r.beginArray()
+        while (r.hasNext()) {
+            if (r.peek() != JsonToken.BEGIN_OBJECT) {
+                r.skipValue()
+                continue
+            }
+            val item = readItem(r)
+            if (item != null && seen.add(item.id)) out.add(item)
+        }
+        r.endArray()
+        return out
+    }
+
+    private fun readItem(r: JsonReader): RawItem? {
+        var id: String? = null
+        var name: String? = null
+        var title: String? = null
+        var image: String? = null
+        var year = ""
+        var rating = 0f
+        var added = 0L
+        var ext = ""
+        var catId: String? = null
+        var cats: List<String> = emptyList()
+        var plot = ""
+        var genre = ""
+        r.beginObject()
+        while (r.hasNext()) {
+            when (r.nextName()) {
+                "stream_id", "series_id" -> id = r.loose()
+                "name" -> name = r.loose()
+                "title" -> title = r.loose()
+                "stream_icon", "cover" -> image = r.loose()
+                "year" -> year = r.loose() ?: ""
+                "rating" -> rating = (r.loose() ?: "").toFloatOrNull() ?: 0f
+                "added", "last_modified" -> added = (r.loose() ?: "").toLongOrNull() ?: 0L
+                "container_extension" -> ext = r.loose() ?: ""
+                "category_id" -> catId = r.loose()
+                "category_ids" -> cats = r.looseList()
+                "plot" -> plot = r.loose() ?: ""
+                "genre" -> genre = r.loose() ?: ""
+                else -> r.skipValue()
+            }
+        }
+        r.endObject()
+        val realId = id ?: return null
+        val allCats = if (cats.isNotEmpty()) cats else if (catId != null) listOf(catId) else emptyList()
+        return RawItem(
+            id = realId,
+            name = name ?: title ?: "",
+            image = image,
+            year = year,
+            rating = rating,
+            added = added,
+            ext = ext,
+            cats = allCats,
+            plot = plot,
+            genre = genre,
+        )
+    }
 }
 
 /** Cliente mínimo da API Xtream Codes (player_api.php). Nada daqui sai do aparelho além das chamadas ao próprio provedor. */
@@ -49,37 +178,13 @@ class XtreamApi(private val account: Account) {
         return "$base/$folder/${Uri.encode(account.user)}/${Uri.encode(account.pass)}/$id.$ext"
     }
 
-    private suspend fun get(startUrl: String): String = withContext(Dispatchers.IO) {
-        var url = startUrl
-        for (attempt in 0 until 6) {
-            val conn = URL(url).openConnection() as HttpURLConnection
-            try {
-                conn.connectTimeout = 15_000
-                conn.readTimeout = 60_000
-                conn.instanceFollowRedirects = false
-                conn.setRequestProperty("User-Agent", USER_AGENT)
-                conn.setRequestProperty("Accept", "application/json")
-                val code = conn.responseCode
-                if (code in 300..399) {
-                    val loc = conn.getHeaderField("Location") ?: throw IOException("Redirecionamento inválido do servidor.")
-                    url = URL(URL(url), loc).toString()
-                    continue
-                }
-                if (code !in 200..299) {
-                    throw IOException(
-                        when (code) {
-                            401, 403 -> "O servidor recusou o acesso (HTTP $code). Confira usuário e senha."
-                            404 -> "Endereço não encontrado (HTTP 404). Confira o servidor."
-                            else -> "O servidor respondeu HTTP $code."
-                        },
-                    )
-                }
-                return@withContext conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
-            } finally {
-                conn.disconnect()
-            }
+    private suspend fun getText(url: String): String = withContext(Dispatchers.IO) {
+        val conn = Net.open(url, readTimeoutMs = 60_000, accept = "application/json")
+        try {
+            conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+        } finally {
+            conn.disconnect()
         }
-        throw IOException("Redirecionamentos demais.")
     }
 
     private fun parseArray(text: String): JSONArray {
@@ -91,7 +196,7 @@ class XtreamApi(private val account: Account) {
 
     /** Valida usuário/senha e devolve um resumo da conta (sem dados sensíveis). */
     suspend fun login(): String {
-        val root = JSONObject(get(apiUrl()))
+        val root = JSONObject(getText(apiUrl()))
         val ui = root.optJSONObject("user_info") ?: throw IOException("Resposta inesperada do servidor.")
         if (ui.optInt("auth", 0) != 1) throw IOException("Usuário ou senha inválidos.")
         val status = ui.str("status") ?: "?"
@@ -108,7 +213,7 @@ class XtreamApi(private val account: Account) {
             Kind.SERIES -> "get_series_categories"
             Kind.LIVE -> "get_live_categories"
         }
-        val arr = parseArray(get(apiUrl(action)))
+        val arr = parseArray(getText(apiUrl(action)))
         val out = ArrayList<Category>()
         for (i in 0 until arr.length()) {
             val o = arr.optJSONObject(i) ?: continue
@@ -118,59 +223,37 @@ class XtreamApi(private val account: Account) {
         return out.distinctBy { it.id }
     }
 
-    suspend fun items(kind: Kind, categoryId: String): List<MediaEntry> {
+    /** Baixa o catálogo inteiro de um tipo, lendo em fluxo. Repetidos (mesmo id) são descartados. */
+    suspend fun fetchItems(kind: Kind): List<RawItem> = withContext(Dispatchers.IO) {
         val action = when (kind) {
             Kind.MOVIES -> "get_vod_streams"
             Kind.SERIES -> "get_series"
             Kind.LIVE -> "get_live_streams"
         }
-        val text = get(apiUrl(action, "&category_id=${enc(categoryId)}"))
-        return withContext(Dispatchers.Default) { parseItems(kind, categoryId, text) }
+        val conn = Net.open(apiUrl(action), readTimeoutMs = 120_000, accept = "application/json")
+        try {
+            val reader = JsonReader(InputStreamReader(conn.inputStream, Charsets.UTF_8).buffered(64 * 1024))
+            reader.use { RawParser.readItems(it) }
+        } finally {
+            conn.disconnect()
+        }
     }
 
-    private fun belongs(o: JSONObject, categoryId: String): Boolean {
-        val cid = o.str("category_id")
-        val cids = o.optJSONArray("category_ids")
-        if (cid == null && cids == null) return true
-        if (cid == categoryId) return true
-        if (cids != null) {
-            for (i in 0 until cids.length()) {
-                if (cids.optString(i) == categoryId) return true
-            }
-        }
-        return false
-    }
-
-    private fun parseItems(kind: Kind, categoryId: String, text: String): List<MediaEntry> {
-        val arr = parseArray(text)
-        val all = ArrayList<MediaEntry>(arr.length())
-        val mine = ArrayList<MediaEntry>()
-        for (i in 0 until arr.length()) {
-            val o = arr.optJSONObject(i) ?: continue
-            val entry = when (kind) {
-                Kind.MOVIES -> {
-                    val id = o.str("stream_id") ?: continue
-                    MediaEntry(id, o.str("name") ?: "(sem título)", o.str("stream_icon"), o.str("container_extension") ?: "mp4")
-                }
-                Kind.SERIES -> {
-                    val id = o.str("series_id") ?: continue
-                    MediaEntry(id, o.str("name") ?: "(sem título)", o.str("cover"), "")
-                }
-                Kind.LIVE -> {
-                    val id = o.str("stream_id") ?: continue
-                    MediaEntry(id, o.str("name") ?: "(sem nome)", o.str("stream_icon"), "m3u8")
-                }
-            }
-            all.add(entry)
-            if (belongs(o, categoryId)) mine.add(entry)
-        }
-        // Se o filtro local não casar com nada, o provedor já filtrou do lado dele: usa tudo.
-        val chosen = if (mine.isEmpty()) all else mine
-        return chosen.distinctBy { it.id }
+    suspend fun vodInfo(vodId: String): VodInfo {
+        val root = JSONObject(getText(apiUrl("get_vod_info", "&vod_id=${enc(vodId)}")))
+        val i = root.optJSONObject("info") ?: JSONObject()
+        return VodInfo(
+            plot = i.str("plot") ?: i.str("description") ?: "",
+            genre = i.str("genre") ?: "",
+            durationSecs = i.optInt("duration_secs", 0),
+            cast = i.str("cast") ?: i.str("actors") ?: "",
+            director = i.str("director") ?: "",
+            rating = i.str("rating")?.toFloatOrNull() ?: 0f,
+        )
     }
 
     suspend fun seriesEpisodes(seriesId: String): List<Episode> {
-        val root = JSONObject(get(apiUrl("get_series_info", "&series_id=${enc(seriesId)}")))
+        val root = JSONObject(getText(apiUrl("get_series_info", "&series_id=${enc(seriesId)}")))
         val eps = root.opt("episodes")
         val out = ArrayList<Episode>()
 

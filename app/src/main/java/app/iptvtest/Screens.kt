@@ -1,6 +1,5 @@
 package app.iptvtest
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,16 +7,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -26,7 +27,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,6 +35,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -45,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import androidx.compose.foundation.lazy.grid.items as gridItems
 
 // =========================================================================
@@ -64,7 +68,7 @@ fun LoginScreen(vm: MainViewModel) {
             modifier = Modifier.width(560.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("IPTV TEST", color = TextMain, fontSize = 34.sp, fontWeight = FontWeight.Bold)
+            Text("IPTV TEST", color = Accent, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(4.dp))
             Text(
                 "Entre com os dados da sua lista (Xtream Codes).\nEles ficam guardados só nesta TV.",
@@ -111,7 +115,7 @@ fun LoginScreen(vm: MainViewModel) {
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
                 TvButton(text = if (showPass) "Ocultar senha" else "Mostrar senha") { showPass = !showPass }
-                TvButton(text = if (vm.loginBusy) "Entrando..." else "Entrar", selected = true) {
+                TvButton(text = if (vm.loginBusy) "Entrando..." else "Entrar", primary = true) {
                     vm.login(server, user, pass)
                 }
             }
@@ -130,244 +134,480 @@ fun LoginScreen(vm: MainViewModel) {
 }
 
 // =========================================================================
-// Home: abas + categorias + grade
+// Carregando o catálogo (primeira vez)
 // =========================================================================
 
 @Composable
-fun HomeScreen(vm: MainViewModel) {
-    var confirmLogout by remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 28.dp, vertical = 16.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            for (kind in Kind.values()) {
-                TvButton(text = kind.label, selected = vm.tab == kind) { vm.selectTab(kind) }
-                Spacer(Modifier.width(8.dp))
-            }
-            Spacer(Modifier.weight(1f))
-            Text(
-                text = vm.accountInfo,
-                color = Muted,
-                fontSize = 12.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(2f),
-                textAlign = TextAlign.End,
-            )
-            Spacer(Modifier.width(12.dp))
-            TvButton(text = if (confirmLogout) "Confirmar saída?" else "Sair") {
-                if (confirmLogout) vm.logout() else confirmLogout = true
-            }
-        }
-        Spacer(Modifier.height(12.dp))
-        Row(modifier = Modifier.weight(1f).fillMaxWidth()) {
-            CategoryColumn(vm, Modifier.width(250.dp).fillMaxHeight())
-            Spacer(Modifier.width(16.dp))
-            ItemsPane(vm, Modifier.weight(1f).fillMaxHeight())
-        }
-    }
-}
-
-@Composable
-private fun CategoryColumn(vm: MainViewModel, modifier: Modifier) {
-    Box(modifier = modifier.clip(RoundedCornerShape(12.dp)).background(Panel)) {
-        val cats = vm.categories
-        when {
-            vm.loadingCats -> CircularProgressIndicator(
-                color = Accent,
-                modifier = Modifier.align(Alignment.Center),
-            )
-            cats.isEmpty() -> Text(
-                text = vm.catError ?: "Sem categorias.",
-                color = if (vm.catError != null) ErrorColor else Muted,
-                fontSize = 14.sp,
-                modifier = Modifier.align(Alignment.Center).padding(16.dp),
-                textAlign = TextAlign.Center,
-            )
-            else -> LazyColumn(
-                contentPadding = PaddingValues(8.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                items(cats) { cat ->
-                    val selected = vm.selectedCategory?.id == cat.id
-                    FocusBox(modifier = Modifier.fillMaxWidth(), onClick = { vm.selectCategory(cat) }) { focused ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(if (focused) PanelAlt else if (selected) Color0f else Panel)
-                                .padding(horizontal = 12.dp, vertical = 10.dp),
-                        ) {
-                            Text(
-                                text = cat.name,
-                                color = if (selected || focused) TextMain else Muted,
-                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                                fontSize = 14.sp,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    }
+fun LoadingScreen(vm: MainViewModel) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier.width(560.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text("IPTV TEST", color = Accent, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(18.dp))
+            val err = vm.loadError
+            if (err != null) {
+                Text("Não foi possível carregar o catálogo", color = ErrorColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(8.dp))
+                Text(err, color = TextMain, fontSize = 14.sp, textAlign = TextAlign.Center)
+                Spacer(Modifier.height(18.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    TvButton(text = "Tentar de novo", primary = true) { vm.loadCatalog(force = true) }
+                    TvButton(text = "Sair da conta") { vm.logout() }
                 }
-            }
-        }
-    }
-}
-
-private val Color0f = androidx.compose.ui.graphics.Color(0xFF22222F)
-
-@Composable
-private fun ItemsPane(vm: MainViewModel, modifier: Modifier) {
-    Box(modifier = modifier) {
-        val list = vm.items
-        val err = vm.error
-        when {
-            vm.loadingItems -> CircularProgressIndicator(
-                color = Accent,
-                modifier = Modifier.align(Alignment.Center),
-            )
-            err != null -> Text(
-                text = err,
-                color = ErrorColor,
-                modifier = Modifier.align(Alignment.Center).padding(24.dp),
-                textAlign = TextAlign.Center,
-            )
-            vm.selectedCategory == null -> Text(
-                text = "Escolha uma categoria",
-                color = Muted,
-                modifier = Modifier.align(Alignment.Center),
-            )
-            list.isEmpty() -> Text(
-                text = "Nada nesta categoria.",
-                color = Muted,
-                modifier = Modifier.align(Alignment.Center),
-            )
-            else -> {
-                val live = vm.tab == Kind.LIVE
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(if (live) 190.dp else 140.dp),
-                    contentPadding = PaddingValues(12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(14.dp),
-                    verticalArrangement = Arrangement.spacedBy(14.dp),
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    gridItems(list, key = { it.id }) { entry ->
-                        PosterCard(
-                            entry = entry,
-                            aspect = if (live) 16f / 9f else 2f / 3f,
-                            fit = live,
-                            onClick = { vm.open(entry) },
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-// =========================================================================
-// Série: temporadas + episódios
-// =========================================================================
-
-@Composable
-fun SeriesScreen(vm: MainViewModel) {
-    val detail = vm.seriesDetail ?: return
-    BackHandler { vm.closeSeries() }
-
-    val seasons = remember(detail.episodes) { detail.episodes.map { it.season }.distinct().sorted() }
-    var season by remember(detail.episodes) { mutableIntStateOf(seasons.firstOrNull() ?: 1) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 28.dp, vertical = 16.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            TvButton(text = "Voltar") { vm.closeSeries() }
-            Spacer(Modifier.width(16.dp))
-            Text(
-                text = detail.entry.title,
-                color = TextMain,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-        Spacer(Modifier.height(14.dp))
-
-        Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
-            when {
-                detail.loading -> CircularProgressIndicator(color = Accent, modifier = Modifier.align(Alignment.Center))
-                detail.error != null -> Text(
-                    text = detail.error,
-                    color = ErrorColor,
-                    modifier = Modifier.align(Alignment.Center),
+            } else {
+                CircularProgressIndicator(color = Accent)
+                Spacer(Modifier.height(16.dp))
+                Text(vm.loadMsg ?: "Preparando...", color = TextMain, fontSize = 16.sp, textAlign = TextAlign.Center)
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    "Isso só acontece na primeira vez: depois o catálogo fica guardado na TV e abre na hora.",
+                    color = Muted,
+                    fontSize = 12.sp,
                     textAlign = TextAlign.Center,
                 )
-                else -> Row(modifier = Modifier.fillMaxSize()) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .width(200.dp)
-                            .fillMaxHeight()
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Panel),
-                        contentPadding = PaddingValues(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
-                    ) {
-                        items(seasons) { s ->
-                            FocusBox(modifier = Modifier.fillMaxWidth(), onClick = { season = s }) { focused ->
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(if (focused) PanelAlt else if (s == season) Color0f else Panel)
-                                        .padding(horizontal = 12.dp, vertical = 10.dp),
-                                ) {
-                                    Text(
-                                        text = if (s == 0) "Especiais" else "Temporada $s",
-                                        color = if (s == season || focused) TextMain else Muted,
-                                        fontWeight = if (s == season) FontWeight.Bold else FontWeight.Normal,
-                                        fontSize = 14.sp,
+            }
+        }
+    }
+}
+
+// =========================================================================
+// Menu do topo
+// =========================================================================
+
+@Composable
+private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
+    FocusBox(
+        modifier = Modifier.padding(end = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        focusScale = 1f,
+        onClick = onClick,
+    ) { focused ->
+        Box(
+            modifier = Modifier
+                .background(if (focused) PanelAlt else Color.Transparent)
+                .padding(horizontal = 14.dp, vertical = 8.dp),
+        ) {
+            Text(
+                text = text,
+                color = if (selected) Accent else if (focused) TextMain else Muted,
+                fontSize = 17.sp,
+                fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.SemiBold,
+                maxLines = 1,
+            )
+        }
+    }
+}
+
+@Composable
+fun TopNav(vm: MainViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text("IPTV TEST", color = Accent, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+        Spacer(Modifier.width(24.dp))
+        NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
+        NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
+        NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
+        NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
+        NavItem("Minha lista", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
+        Spacer(Modifier.weight(1f))
+        if (vm.refreshing) {
+            Text("Atualizando catálogo...", color = Muted, fontSize = 12.sp)
+            Spacer(Modifier.width(12.dp))
+        }
+        NavItem("Buscar", vm.tab == Tab.SEARCH) { vm.selectTab(Tab.SEARCH) }
+        NavItem("Ajustes", vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
+    }
+}
+
+@Composable
+fun TabScreen(vm: MainViewModel) {
+    when (vm.tab) {
+        Tab.HOME -> HomeTab(vm)
+        Tab.MOVIES -> ShelfTab(vm, vm.movieShelves)
+        Tab.SERIES -> ShelfTab(vm, vm.seriesShelves)
+        Tab.CHANNELS -> ChannelsTab(vm)
+        Tab.LIST -> MyListTab(vm)
+        Tab.SEARCH -> SearchTab(vm)
+        Tab.SETTINGS -> SettingsTab(vm)
+    }
+}
+
+// =========================================================================
+// Início, Filmes, Séries
+// =========================================================================
+
+@Composable
+private fun HeroBanner(vm: MainViewModel, t: Title) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(250.dp)
+            .background(Brush.horizontalGradient(listOf(AccentDark, Bg))),
+    ) {
+        val img = t.image
+        if (img != null) {
+            AsyncImage(
+                model = img,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 72.dp)
+                    .height(210.dp)
+                    .aspectRatio(2f / 3f)
+                    .clip(RoundedCornerShape(12.dp)),
+            )
+        }
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 48.dp)
+                .width(560.dp),
+        ) {
+            Text("EM DESTAQUE", color = Accent, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(6.dp))
+            Text(t.name, color = TextMain, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Spacer(Modifier.height(6.dp))
+            val meta = listOf(
+                if (t.series) "Série" else "Filme",
+                t.year,
+                t.genres.take(2).joinToString(", "),
+            ).filter { it.isNotEmpty() }.joinToString(" · ")
+            Text(meta, color = Muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            if (t.plot.isNotEmpty()) {
+                Spacer(Modifier.height(6.dp))
+                Text(t.plot, color = TextMain, fontSize = 14.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            }
+            Spacer(Modifier.height(14.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                TvButton(text = "Ver detalhes", primary = true) { vm.open(t) }
+                TvButton(text = if (vm.inMyList(t.key)) "✓ Minha lista" else "+ Minha lista") { vm.toggleMyList(t.key) }
+            }
+        }
+    }
+}
+
+@Composable
+fun HomeTab(vm: MainViewModel) {
+    val cont = vm.continueEntries()
+    val mine = vm.myListTitles()
+    val mineShelf = remember(mine) { Shelf("Minha lista", mine) }
+    val hero = vm.featured
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopNav(vm)
+        LazyColumn(
+            state = rememberLazyListState(),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 40.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            if (hero != null) {
+                item(key = "hero") { HeroBanner(vm, hero) }
+            }
+            if (cont.isNotEmpty()) {
+                item(key = "cont") { ContinueRow(cont, onResume = { vm.resumeEntry(it) }) }
+            }
+            if (mine.isNotEmpty()) {
+                item(key = "mine") {
+                    ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
+                }
+            }
+            items(vm.homeShelves, key = { it.name }) { s ->
+                ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
+            }
+        }
+    }
+}
+
+@Composable
+fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopNav(vm)
+        if (shelves.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Nada por aqui ainda.", color = Muted)
+            }
+        } else {
+            LazyColumn(
+                state = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(top = 4.dp, bottom = 40.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(shelves, key = { it.name }) { s ->
+                    ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
+                }
+            }
+        }
+    }
+}
+
+// =========================================================================
+// "Ver todos": grade com tudo da prateleira
+// =========================================================================
+
+@Composable
+fun GridScreen(vm: MainViewModel, shelf: Shelf) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 40.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            TvButton(text = "Voltar") { vm.back() }
+            Spacer(Modifier.width(16.dp))
+            Text(shelf.name, color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.width(12.dp))
+            Text("${shelf.all.size} títulos", color = Muted, fontSize = 14.sp)
+        }
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(130.dp),
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            gridItems(shelf.all, key = { it.key }) { t ->
+                TitlePoster(
+                    title = t,
+                    focusId = "grid|" + shelf.name + "|" + t.key,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { vm.open(t) },
+                )
+            }
+        }
+    }
+}
+
+// =========================================================================
+// Busca
+// =========================================================================
+
+@Composable
+fun SearchTab(vm: MainViewModel) {
+    var q by rememberSaveable { mutableStateOf("") }
+    val cat = vm.catalog
+    val titles = remember(q, cat) {
+        val f = Organizer.fold(q)
+        if (f.length < 2) {
+            emptyList()
+        } else {
+            vm.allTitles.filter { it.fold.contains(f) }.sortedByDescending { it.score() }.take(150)
+        }
+    }
+    val chans = remember(q, cat) {
+        val f = Organizer.fold(q)
+        if (f.length < 2 || cat == null) {
+            emptyList()
+        } else {
+            cat.channels.filter { it.fold.contains(f) }.take(30)
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopNav(vm)
+        OutlinedTextField(
+            value = q,
+            onValueChange = { q = it },
+            label = { Text("Buscar filmes, séries e canais") },
+            singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 48.dp, vertical = 8.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Search),
+        )
+        if (chans.isNotEmpty()) {
+            Text(
+                "Canais",
+                color = TextMain,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(horizontal = 48.dp, vertical = 4.dp),
+            )
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                items(chans, key = { it.key }) { c ->
+                    ChannelTile(
+                        ch = c,
+                        stability = vm.channelStability(c),
+                        focusId = "search|" + c.key,
+                        modifier = Modifier.width(170.dp),
+                        onClick = { vm.playChannel(c) },
+                    )
+                }
+            }
+        }
+        if (titles.isEmpty()) {
+            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Text(
+                    text = if (Organizer.fold(q).length < 2) "Digite pelo menos 2 letras." else if (chans.isEmpty()) "Nada encontrado." else "",
+                    color = Muted,
+                )
+            }
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(130.dp),
+                contentPadding = PaddingValues(horizontal = 48.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp),
+                modifier = Modifier.weight(1f).fillMaxWidth(),
+            ) {
+                gridItems(titles, key = { it.key }) { t ->
+                    TitlePoster(
+                        title = t,
+                        focusId = "search|" + t.key,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { vm.open(t) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+// =========================================================================
+// Minha lista
+// =========================================================================
+
+@Composable
+fun MyListTab(vm: MainViewModel) {
+    val mine = vm.myListTitles()
+    val favs = vm.favoriteChannels()
+    val mineShelf = remember(mine) { Shelf("Minha lista", mine) }
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopNav(vm)
+        if (mine.isEmpty() && favs.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    "Sua lista está vazia.\nAbra um filme ou série e escolha \"+ Minha lista\".\nNos canais, use a estrela ★ dentro do player.",
+                    color = Muted,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.Center,
+                )
+            }
+        } else {
+            LazyColumn(
+                state = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(top = 4.dp, bottom = 40.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                if (mine.isNotEmpty()) {
+                    item(key = "mine") {
+                        ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
+                    }
+                }
+                if (favs.isNotEmpty()) {
+                    item(key = "favch") {
+                        Column {
+                            Text(
+                                "Canais favoritos",
+                                color = TextMain,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                modifier = Modifier.padding(horizontal = 48.dp),
+                            )
+                            Spacer(Modifier.height(6.dp))
+                            LazyRow(
+                                contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                            ) {
+                                items(favs, key = { it.key }) { c ->
+                                    ChannelTile(
+                                        ch = c,
+                                        stability = vm.channelStability(c),
+                                        focusId = "fav|" + c.key,
+                                        modifier = Modifier.width(190.dp),
+                                        onClick = { vm.playChannel(c) },
                                     )
                                 }
                             }
                         }
                     }
-                    Spacer(Modifier.width(16.dp))
-                    val eps = detail.episodes.filter { it.season == season }
-                    LazyColumn(
-                        modifier = Modifier.weight(1f).fillMaxHeight(),
-                        contentPadding = PaddingValues(vertical = 4.dp, horizontal = 6.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        items(eps) { ep ->
-                            FocusBox(modifier = Modifier.fillMaxWidth(), onClick = { vm.playEpisode(detail.entry, ep) }) { focused ->
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(if (focused) PanelAlt else Panel)
-                                        .padding(horizontal = 14.dp, vertical = 12.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Text(
-                                        text = String.format("E%02d", ep.number),
-                                        color = Accent,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 14.sp,
-                                        modifier = Modifier.width(52.dp),
-                                    )
-                                    Text(
-                                        text = ep.title,
-                                        color = TextMain,
-                                        fontSize = 15.sp,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                    )
-                                }
-                            }
-                        }
+                }
+            }
+        }
+    }
+}
+
+// =========================================================================
+// Ajustes
+// =========================================================================
+
+@Composable
+fun SettingsTab(vm: MainViewModel) {
+    var confirmLogout by remember { mutableStateOf(false) }
+    val cat = vm.catalog
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopNav(vm)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+        ) {
+            item {
+                Column {
+                    Text("Conta", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    Spacer(Modifier.height(4.dp))
+                    Text(vm.accountInfo.ifEmpty { "..." }, color = Muted, fontSize = 14.sp)
+                }
+            }
+            item {
+                Column {
+                    Text("Catálogo", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    Spacer(Modifier.height(4.dp))
+                    val resumo = if (cat == null) {
+                        "Ainda não carregado."
+                    } else {
+                        "${cat.movies.size} filmes · ${cat.series.size} séries · ${cat.channels.size} canais · atualizado ${vm.catalogAgeText()}"
+                    }
+                    Text(resumo, color = Muted, fontSize = 14.sp)
+                    Spacer(Modifier.height(8.dp))
+                    TvButton(text = if (vm.refreshing) "Atualizando..." else "Atualizar catálogo agora") {
+                        if (!vm.refreshing) vm.loadCatalog(force = true)
+                    }
+                }
+            }
+            item {
+                Column {
+                    Text("Canais ao vivo", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "Quando um canal tem várias fontes, o app escolhe a melhor para você.",
+                        color = Muted,
+                        fontSize = 14.sp,
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text("Priorizar", color = Muted, fontSize = 15.sp)
+                        ChipItem(text = "Estabilidade", selected = vm.user.stabilityFirst) { vm.setStabilityFirst(true) }
+                        ChipItem(text = "Qualidade máxima", selected = !vm.user.stabilityFirst) { vm.setStabilityFirst(false) }
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text("Trocar de fonte sozinho se travar", color = Muted, fontSize = 15.sp)
+                        ChipItem(text = "Sim", selected = vm.user.autoSwitch) { vm.setAutoSwitch(true) }
+                        ChipItem(text = "Não", selected = !vm.user.autoSwitch) { vm.setAutoSwitch(false) }
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    TvButton(text = "Apagar notas de estabilidade") { vm.clearStats() }
+                }
+            }
+            item {
+                Column {
+                    Text("Sair", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    Spacer(Modifier.height(8.dp))
+                    TvButton(text = if (confirmLogout) "Confirmar saída?" else "Sair da conta") {
+                        if (confirmLogout) vm.logout() else confirmLogout = true
                     }
                 }
             }

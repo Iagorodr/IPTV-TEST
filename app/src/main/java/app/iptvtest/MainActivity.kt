@@ -3,10 +3,12 @@ package app.iptvtest
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -24,15 +26,32 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(vm: MainViewModel = viewModel()) {
+    // guarda a posição das listas de cada tela, para voltar exatamente onde estava depois de abrir um título
+    val holder = rememberSaveableStateHolder()
     val account = vm.account
     val playing = vm.playing
-    val series = vm.seriesDetail
+    val catalog = vm.catalog
+    val title = vm.openTitle
+    val grid = vm.grid
+
+    BackHandler(enabled = account != null && playing == null && vm.canGoBack) {
+        vm.back()
+    }
+
     Surface(modifier = Modifier.fillMaxSize(), color = Bg) {
         when {
             account == null -> LoginScreen(vm)
-            playing != null -> PlayerScreen(playing, onExit = { vm.stopPlaying() })
-            series != null -> SeriesScreen(vm)
-            else -> HomeScreen(vm)
+            playing != null -> PlayerScreen(playing, vm.user, onExit = { vm.stopPlaying() })
+            catalog == null -> LoadingScreen(vm)
+            title != null -> holder.SaveableStateProvider("title|" + title.key) {
+                TitleScreen(vm, title)
+            }
+            grid != null -> holder.SaveableStateProvider("grid|" + grid.name) {
+                GridScreen(vm, grid)
+            }
+            else -> holder.SaveableStateProvider("tab|" + vm.tab.name) {
+                TabScreen(vm)
+            }
         }
     }
 }
