@@ -7,11 +7,13 @@ Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e
 ## Instalar na TV (Downloader)
 
 1. Instale o app **Downloader** (da AFTVnews) pela loja da TV e permita "instalar apps desconhecidos" para ele.
-2. No Downloader, digite o endereço:
+2. No Downloader, digite o código curto:
 
-   `github.com/Iagorodr/IPTV-TEST/releases/download/latest/iptv-test.apk`
+   **`2779349`**
 
-3. Baixe e instale. Para atualizar, repita o passo 2 (o link sempre aponta para a versão mais nova).
+   Se preferir o endereço completo: `github.com/Iagorodr/IPTV-TEST/releases/download/latest/iptv-test.apk`
+
+3. Baixe e instale. Para atualizar, repita o passo 2 (o código e o link sempre apontam para a versão mais nova).
 
 ## Privacidade
 
