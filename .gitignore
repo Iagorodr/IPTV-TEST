@@ -1,0 +1,17 @@
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Nunca versionar listas, senhas ou dados do provedor
+*.m3u
+*.m3u8
+vod_*.json
+series*.json
+live_*.json
+catalogo_*.json
