@@ -498,9 +498,15 @@ object Shelves {
         all.addAll(c.series)
         val index = HashMap<String, Title>(all.size * 2)
         for (t in all) index[t.key] = t
-        val featured = all.filter { it.launch && !it.onlyCam && it.image != null }
+        // destaque: lançamentos de plataformas conhecidas, com capa e nota decente (evita títulos obscuros)
+        val picks = all.filter { it.launch && !it.onlyCam && it.image != null && it.platforms.isNotEmpty() && it.rating >= 6f }
             .sortedByDescending { it.score() }
-            .take(10)
+            .take(12)
+        val featured = if (picks.size >= 4) {
+            picks
+        } else {
+            all.filter { it.launch && !it.onlyCam && it.image != null }.sortedByDescending { it.score() }.take(10)
+        }
         return Built(
             home = forTitles(all, 8),
             movies = forTitles(c.movies, 40),
