@@ -1,6 +1,6 @@
 # IAGO IPTV
 
-Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e mostra filmes, séries e canais por categoria.
+Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e **links M3U** e mostra filmes, séries e canais por categoria.
 
 > Versão **0.4** — o Início virou uma visão geral: jogos dos seus times favoritos no topo (buscados na internet, sem depender da aba "jogos do dia" da lista), Fórmula 1 / UFC / Tênis, destaque com filmes **e** séries. Mantém tudo da 0.2: organização por gênero/plataforma, dublado+legendado juntos e a fonte mais estável de cada canal.
 
@@ -23,6 +23,12 @@ Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e
 ## Como é compilado
 
 O GitHub Actions compila o app a cada alteração na branch `main` e publica o APK no link acima (ver `.github/workflows/build.yml`).
+
+## Novidades da v0.5.0
+
+- **Login novo com 3 jeitos**: **Xtream** (servidor, usuário e senha), **Link M3U** (cole o link da lista) e **Pelo celular (QR)**.
+- **Link M3U**: o app baixa a lista, separa canais, filmes e séries (por extensão do link, `/movie/`, `/series/` e padrões como S01E02) e usa as categorias (`group-title`) para montar as prateleiras. Links do tipo `get.php?username=...&password=...` entram como Xtream completo. Listas M3U comuns não trazem sinopse, nota nem lista de episódios com nome, então essas telas ficam mais simples.
+- **Pelo celular (QR)**: a TV mostra um QR code; o celular (no **mesmo Wi-Fi**) abre a página, você digita servidor/usuário/senha ou cola o link e toca em Enviar. Tudo fica dentro da rede de casa: a TV abre um servidorzinho só enquanto essa aba está aberta, com um código aleatório no endereço, e nada passa por servidor da internet. Se o roteador isola os aparelhos (modo "isolamento de clientes"/rede de visitantes), o celular não alcança a TV: use as outras abas.
 
 ## Novidades da v0.4.3
 

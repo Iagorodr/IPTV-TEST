@@ -14,7 +14,7 @@ android {
         targetSdk = 34
         // versionCode sobe a cada build do GitHub Actions, assim o Android aceita atualizar por cima.
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
-        versionName = "0.4.3"
+        versionName = "0.5.0"
     }
 
     // a tabela "onde costuma passar" fica em data/ (o app também baixa a versão nova do GitHub todo dia)
@@ -72,6 +72,9 @@ android {
 }
 
 dependencies {
+    // QR code do login pelo celular
+    implementation("com.google.zxing:core:3.5.3")
+
     implementation(platform("androidx.compose:compose-bom:2024.09.03"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")

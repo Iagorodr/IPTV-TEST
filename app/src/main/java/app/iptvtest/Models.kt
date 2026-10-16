@@ -8,7 +8,10 @@ enum class Kind(val label: String) {
 
 enum class Tab { HOME, GAMES, MOVIES, SERIES, CHANNELS, LIST, SEARCH, SETTINGS }
 
-data class Account(val server: String, val user: String, val pass: String)
+/**
+ * A lista da pessoa. Xtream: [server], [user] e [pass]. Lista M3U (link que não é de servidor Xtream): só [m3u].
+ */
+data class Account(val server: String, val user: String, val pass: String, val m3u: String = "")
 
 data class Category(val id: String, val name: String)
 

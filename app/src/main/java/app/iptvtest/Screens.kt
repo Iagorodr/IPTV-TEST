@@ -31,6 +31,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -68,66 +69,144 @@ import androidx.compose.foundation.lazy.grid.items as gridItems
 
 @Composable
 fun LoginScreen(vm: MainViewModel) {
+    var mode by rememberSaveable { mutableStateOf(0) }
     var server by rememberSaveable { mutableStateOf("") }
     var user by rememberSaveable { mutableStateOf("") }
     var pass by rememberSaveable { mutableStateOf("") }
+    var link by rememberSaveable { mutableStateOf("") }
     var showPass by remember { mutableStateOf(false) }
     val focus = LocalFocusManager.current
 
+    // o servidorzinho do celular só fica ligado enquanto a aba do QR code está aberta
+    LaunchedEffect(mode) {
+        if (mode == 2) vm.startPhoneLogin() else vm.stopPhoneLogin()
+    }
+    DisposableEffect(Unit) {
+        onDispose { vm.stopPhoneLogin() }
+    }
+
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
-            modifier = Modifier.width(560.dp),
+            modifier = Modifier.width(620.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text("IAGO IPTV", color = Accent, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(4.dp))
             Text(
-                "Entre com os dados da sua lista (Xtream Codes).\nEles ficam guardados só nesta TV.",
+                "Entre com a sua lista. Os dados ficam guardados só nesta TV.",
                 color = Muted,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
             )
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(16.dp))
 
-            OutlinedTextField(
-                value = server,
-                onValueChange = { server = it },
-                label = { Text("Servidor (ex.: http://exemplo.com:8080)") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
-            )
-            Spacer(Modifier.height(10.dp))
-            OutlinedTextField(
-                value = user,
-                onValueChange = { user = it },
-                label = { Text("Usuário") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
-            )
-            Spacer(Modifier.height(10.dp))
-            OutlinedTextField(
-                value = pass,
-                onValueChange = { pass = it },
-                label = { Text("Senha") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = if (showPass) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    focus.clearFocus()
-                    vm.login(server, user, pass)
-                }),
-            )
-            Spacer(Modifier.height(18.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                ChipItem(text = "Xtream", selected = mode == 0) { mode = 0; vm.clearLoginError() }
+                ChipItem(text = "Link M3U", selected = mode == 1) { mode = 1; vm.clearLoginError() }
+                ChipItem(text = "Pelo celular (QR)", selected = mode == 2) { mode = 2; vm.clearLoginError() }
+            }
+            Spacer(Modifier.height(16.dp))
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                TvButton(text = if (showPass) "Ocultar senha" else "Mostrar senha") { showPass = !showPass }
-                TvButton(text = if (vm.loginBusy) "Entrando..." else "Entrar", primary = true) {
-                    vm.login(server, user, pass)
+            when (mode) {
+                0 -> {
+                    OutlinedTextField(
+                        value = server,
+                        onValueChange = { server = it },
+                        label = { Text("Servidor (ex.: http://exemplo.com:8080)") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    OutlinedTextField(
+                        value = user,
+                        onValueChange = { user = it },
+                        label = { Text("Usuário") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    OutlinedTextField(
+                        value = pass,
+                        onValueChange = { pass = it },
+                        label = { Text("Senha") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        visualTransformation = if (showPass) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = {
+                            focus.clearFocus()
+                            vm.login(server, user, pass)
+                        }),
+                    )
+                    Spacer(Modifier.height(18.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        TvButton(text = if (showPass) "Ocultar senha" else "Mostrar senha") { showPass = !showPass }
+                        TvButton(text = if (vm.loginBusy) "Entrando..." else "Entrar", primary = true) {
+                            vm.login(server, user, pass)
+                        }
+                    }
+                }
+
+                1 -> {
+                    OutlinedTextField(
+                        value = link,
+                        onValueChange = { link = it },
+                        label = { Text("Link da lista (ex.: http://exemplo.com/lista.m3u)") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = {
+                            focus.clearFocus()
+                            vm.loginM3u(link)
+                        }),
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "Links do tipo get.php?username=...&password=... entram como Xtream (mais completo, com sinopse e episódios). " +
+                            "Listas M3U comuns trazem só nome, imagem e categoria.",
+                        color = Muted,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                    Spacer(Modifier.height(14.dp))
+                    TvButton(text = if (vm.loginBusy) "Entrando..." else "Entrar", primary = true) {
+                        vm.loginM3u(link)
+                    }
+                }
+
+                else -> {
+                    val url = vm.phoneUrl
+                    if (url != null) {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(22.dp)) {
+                            QrCode(text = url, modifier = Modifier.size(210.dp))
+                            Column(modifier = Modifier.width(360.dp)) {
+                                Text("1. Conecte o celular no mesmo Wi-Fi da TV.", color = Color.White, fontSize = 14.sp)
+                                Spacer(Modifier.height(6.dp))
+                                Text("2. Aponte a câmera para o QR code.", color = Color.White, fontSize = 14.sp)
+                                Spacer(Modifier.height(6.dp))
+                                Text("3. Digite os dados no celular e toque em Enviar.", color = Color.White, fontSize = 14.sp)
+                                Spacer(Modifier.height(10.dp))
+                                Text("Ou abra no navegador do celular:", color = Muted, fontSize = 12.sp)
+                                Text(url, color = Accent, fontSize = 12.sp)
+                            }
+                        }
+                    } else {
+                        Text(
+                            vm.phoneMsg ?: "Preparando o QR code...",
+                            color = Muted,
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                    val pm = vm.phoneMsg
+                    if (url != null && pm != null) {
+                        Spacer(Modifier.height(10.dp))
+                        Text(pm, color = Accent, fontSize = 14.sp, textAlign = TextAlign.Center)
+                    }
                 }
             }
 

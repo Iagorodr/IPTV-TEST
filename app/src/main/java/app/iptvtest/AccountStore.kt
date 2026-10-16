@@ -11,6 +11,8 @@ class AccountStore(context: Context) {
     private val prefs = context.getSharedPreferences("iptv_account", Context.MODE_PRIVATE)
 
     fun load(): Account? {
+        val m3u = prefs.getString("m3u", null)
+        if (!m3u.isNullOrEmpty()) return Account("", "", "", m3u)
         val server = prefs.getString("server", null) ?: return null
         val user = prefs.getString("user", null) ?: return null
         val pass = prefs.getString("pass", null) ?: return null
@@ -22,6 +24,7 @@ class AccountStore(context: Context) {
             .putString("server", account.server)
             .putString("user", account.user)
             .putString("pass", account.pass)
+            .putString("m3u", account.m3u)
             .apply()
     }
 

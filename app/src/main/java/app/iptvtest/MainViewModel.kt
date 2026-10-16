@@ -31,7 +31,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
      * (para o catálogo atualizado em segundo plano não embaralhar tudo na frente da pessoa).
      */
     private var mixSeed: Long = System.nanoTime()
-    private var api: XtreamApi? = null
+    private var api: ListApi? = null
+
+    // ---- login pelo celular (QR code); fica no topo porque o init abaixo já usa
+    var phoneUrl by mutableStateOf<String?>(null)
+        private set
+    var phoneMsg by mutableStateOf<String?>(null)
+        private set
+    private var phoneServer: PhoneLoginServer? = null
 
     // ---- conta / login
     var account by mutableStateOf<Account?>(null)
@@ -180,10 +187,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             try {
                 val acc = Account(server, u, p)
-                val info = XtreamApi(acc).login()
+                val x = XtreamApi(acc)
+                val info = x.login()
                 store.save(acc)
                 accountInfo = info
-                startSession(acc)
+                startSession(acc, x)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -194,11 +202,118 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /**
+     * Entra com um link de lista. Se o link é do tipo get.php?username=...&password=... entra como Xtream
+     * (fica bem mais completo, com sinopse e episódios); senão trata como uma lista M3U comum.
+     */
+    fun loginM3u(linkRaw: String) {
+        val link = linkRaw.trim()
+        if (link.isEmpty()) {
+            loginError = "Cole o link da lista."
+            return
+        }
+        if (!link.startsWith("http://", ignoreCase = true) && !link.startsWith("https://", ignoreCase = true)) {
+            loginError = "O link precisa começar com http:// ou https://"
+            return
+        }
+        if (loginBusy) return
+        loginBusy = true
+        loginError = null
+        viewModelScope.launch {
+            try {
+                var started = false
+                val xt = ListLink.xtreamFrom(link)
+                if (xt != null) {
+                    try {
+                        val x = XtreamApi(xt)
+                        val info = x.login()
+                        store.save(xt)
+                        accountInfo = info
+                        startSession(xt, x)
+                        started = true
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        // não era um servidor Xtream de verdade: segue como lista M3U
+                    }
+                }
+                if (!started) {
+                    val acc = Account("", "", "", link)
+                    val m = M3uApi(appCtx, link)
+                    val info = m.login()
+                    store.save(acc)
+                    accountInfo = info
+                    startSession(acc, m)
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                loginError = friendly(e)
+            } catch (e: OutOfMemoryError) {
+                loginError = friendly(e)
+            } finally {
+                loginBusy = false
+            }
+        }
+    }
+
+    fun clearLoginError() {
+        loginError = null
+    }
+
+    // ---- login pelo celular (QR code)
+
+    /** Abre o servidorzinho da rede local e mostra o QR code. Chamado quando a pessoa abre a aba "Pelo celular". */
+    fun startPhoneLogin() {
+        if (phoneServer != null) return
+        phoneMsg = null
+        val ip = PhoneLoginServer.localIp()
+        if (ip == null) {
+            phoneUrl = null
+            phoneMsg = "A TV não está numa rede Wi-Fi/cabo. Conecte e abra esta aba de novo."
+            return
+        }
+        val token = PhoneLoginServer.newToken()
+        val srv = PhoneLoginServer(token) { mode, f ->
+            viewModelScope.launch { onPhoneSubmit(mode, f) }
+        }
+        if (!srv.start()) {
+            phoneUrl = null
+            phoneMsg = "Não consegui abrir a conexão com o celular nesta TV. Use as outras abas."
+            return
+        }
+        phoneServer = srv
+        phoneUrl = "http://$ip:${srv.port}/?k=$token"
+    }
+
+    fun stopPhoneLogin() {
+        phoneServer?.stop()
+        phoneServer = null
+        phoneUrl = null
+        phoneMsg = null
+    }
+
+    private fun onPhoneSubmit(mode: String, f: Map<String, String>) {
+        phoneMsg = "Recebido do celular. Entrando..."
+        if (mode == "m3u") {
+            loginM3u(f["link"] ?: "")
+        } else {
+            login(f["server"] ?: "", f["user"] ?: "", f["pass"] ?: "")
+        }
+    }
+
+    override fun onCleared() {
+        phoneServer?.stop()
+        phoneServer = null
+        super.onCleared()
+    }
+
     private fun refreshAccountInfo() {
         val a = api ?: return
         viewModelScope.launch {
             try {
-                accountInfo = a.login()
+                a.prepare()
+                accountInfo = a.info()
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -207,8 +322,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun startSession(acc: Account) {
-        api = XtreamApi(acc)
+    private fun startSession(acc: Account, ready: ListApi? = null) {
+        stopPhoneLogin()
+        api = ready ?: (if (acc.m3u.isNotEmpty()) M3uApi(appCtx, acc.m3u) else XtreamApi(acc))
         account = acc
         tab = Tab.HOME
         openTitle = null
@@ -286,6 +402,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 refreshing = true
             }
             try {
+                a.prepare()
                 val fresh = downloadAndBuild(a)
                 withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
                 applyCatalog(fresh)
@@ -302,8 +419,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private suspend fun downloadAndBuild(a: XtreamApi): Catalog {
+    private suspend fun downloadAndBuild(a: ListApi): Catalog {
         val show = catalog == null
+        if (show) loadMsg = "Baixando a lista..."
+        a.refresh()
         if (show) loadMsg = "Baixando categorias..."
         val vc = a.categories(Kind.MOVIES)
         val sc = a.categories(Kind.SERIES)

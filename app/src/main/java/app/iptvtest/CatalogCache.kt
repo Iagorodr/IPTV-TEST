@@ -16,7 +16,12 @@ object CatalogCache {
 
     private const val FORMAT = 1
 
-    fun accKey(acc: Account): String = Integer.toHexString((acc.server + "|" + acc.user).hashCode())
+    fun accKey(acc: Account): String =
+        if (acc.m3u.isEmpty()) {
+            Integer.toHexString((acc.server + "|" + acc.user).hashCode())
+        } else {
+            Integer.toHexString(("m3u|" + acc.m3u).hashCode())
+        }
 
     private fun file(ctx: Context, key: String): File = File(ctx.filesDir, "catalog_$key.json")
 

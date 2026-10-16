@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-const val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Android TV) IPTV-TEST/0.4.3"
+const val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Android TV) IPTV-TEST/0.5.0"
 
 /** Categoria adulta é detectada só pelo NOME DA CATEGORIA do provedor. */
 private val ADULT_CATEGORY = Regex("""\+\s?18|18\s?\+|adult|xxx|er[oó]tic""")
@@ -156,7 +156,7 @@ private object RawParser {
 }
 
 /** Cliente mínimo da API Xtream Codes (player_api.php). Nada daqui sai do aparelho além das chamadas ao próprio provedor. */
-class XtreamApi(private val account: Account) {
+class XtreamApi(private val account: Account) : ListApi {
 
     private val base = account.server.trimEnd('/')
 
@@ -169,7 +169,7 @@ class XtreamApi(private val account: Account) {
         return sb.toString()
     }
 
-    fun streamUrl(kind: Kind, id: String, ext: String): String {
+    override fun streamUrl(kind: Kind, id: String, ext: String): String {
         val folder = when (kind) {
             Kind.MOVIES -> "movie"
             Kind.SERIES -> "series"
@@ -195,7 +195,7 @@ class XtreamApi(private val account: Account) {
     }
 
     /** Valida usuário/senha e devolve um resumo da conta (sem dados sensíveis). */
-    suspend fun login(): String {
+    override suspend fun login(): String {
         val root = JSONObject(getText(apiUrl()))
         val ui = root.optJSONObject("user_info") ?: throw IOException("Resposta inesperada do servidor.")
         if (ui.optInt("auth", 0) != 1) throw IOException("Usuário ou senha inválidos.")
@@ -207,7 +207,7 @@ class XtreamApi(private val account: Account) {
         return "Conta $status • vence $exp • telas: $max"
     }
 
-    suspend fun categories(kind: Kind): List<Category> {
+    override suspend fun categories(kind: Kind): List<Category> {
         val action = when (kind) {
             Kind.MOVIES -> "get_vod_categories"
             Kind.SERIES -> "get_series_categories"
@@ -224,7 +224,7 @@ class XtreamApi(private val account: Account) {
     }
 
     /** Baixa o catálogo inteiro de um tipo, lendo em fluxo. Repetidos (mesmo id) são descartados. */
-    suspend fun fetchItems(kind: Kind): List<RawItem> = withContext(Dispatchers.IO) {
+    override suspend fun fetchItems(kind: Kind): List<RawItem> = withContext(Dispatchers.IO) {
         val action = when (kind) {
             Kind.MOVIES -> "get_vod_streams"
             Kind.SERIES -> "get_series"
@@ -239,7 +239,7 @@ class XtreamApi(private val account: Account) {
         }
     }
 
-    suspend fun vodInfo(vodId: String): VodInfo {
+    override suspend fun vodInfo(vodId: String): VodInfo {
         val root = JSONObject(getText(apiUrl("get_vod_info", "&vod_id=${enc(vodId)}")))
         val i = root.optJSONObject("info") ?: JSONObject()
         return VodInfo(
@@ -252,7 +252,7 @@ class XtreamApi(private val account: Account) {
         )
     }
 
-    suspend fun seriesEpisodes(seriesId: String): List<Episode> {
+    override suspend fun seriesEpisodes(seriesId: String): List<Episode> {
         val root = JSONObject(getText(apiUrl("get_series_info", "&series_id=${enc(seriesId)}")))
         val eps = root.opt("episodes")
         val out = ArrayList<Episode>()
