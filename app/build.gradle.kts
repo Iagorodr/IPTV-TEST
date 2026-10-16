@@ -14,7 +14,7 @@ android {
         targetSdk = 34
         // versionCode sobe a cada build do GitHub Actions, assim o Android aceita atualizar por cima.
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
-        versionName = "0.4.2"
+        versionName = "0.4.3"
     }
 
     // a tabela "onde costuma passar" fica em data/ (o app também baixa a versão nova do GitHub todo dia)

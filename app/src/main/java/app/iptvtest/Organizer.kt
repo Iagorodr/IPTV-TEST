@@ -458,6 +458,28 @@ object Organizer {
 }
 
 /** Monta as prateleiras (listas horizontais) a partir dos títulos já organizados. */
+/** Sorteio das prateleiras: o que aparece na frente muda a cada vez, mas títulos bons continuam com vantagem. */
+object Mix {
+    /** [spread] < 0: embaralha de verdade; > 0: nota + recência + sorteio de 0 até [spread] pontos. */
+    fun arrange(list: List<Title>, rnd: java.util.Random, spread: Float): List<Title> {
+        if (list.size < 2) return list
+        if (spread < 0f) {
+            val l = ArrayList(list)
+            java.util.Collections.shuffle(l, rnd)
+            return l
+        }
+        val keyed = ArrayList<Pair<Title, Float>>(list.size)
+        for (t in list) keyed.add(Pair(t, t.score() + rnd.nextFloat() * spread))
+        keyed.sortByDescending { it.second }
+        val out = ArrayList<Title>(list.size)
+        for (k in keyed) out.add(k.first)
+        return out
+    }
+
+    const val GENRE = 55f
+    const val SHUFFLE = -1f
+}
+
 object Shelves {
 
     class Built(
@@ -473,12 +495,12 @@ object Shelves {
         val all: List<Title>,
     )
 
-    fun forTitles(titles: List<Title>, maxGenres: Int): List<Shelf> {
+    fun forTitles(titles: List<Title>, maxGenres: Int, rnd: java.util.Random): List<Shelf> {
         val out = ArrayList<Shelf>()
-        val launches = titles.filter { it.launch && !it.onlyCam }.sortedByDescending { it.added }
-        if (launches.size >= 6) out.add(Shelf("Lançamentos", launches))
+        val launches = titles.filter { it.launch && !it.onlyCam }
+        if (launches.size >= 6) out.add(Shelf("Lançamentos", Mix.arrange(launches, rnd, Mix.SHUFFLE), Mix.SHUFFLE))
         val recent = titles.filter { !it.onlyCam }.sortedByDescending { it.added }.take(80)
-        if (recent.size >= 6) out.add(Shelf("Adicionados recentemente", recent))
+        if (recent.size >= 6) out.add(Shelf("Adicionados recentemente", Mix.arrange(recent, rnd, Mix.SHUFFLE), Mix.SHUFFLE))
 
         val byGenre = HashMap<String, ArrayList<Title>>()
         val byPlat = HashMap<String, ArrayList<Title>>()
@@ -489,14 +511,15 @@ object Shelves {
         val genres = byGenre.entries.filter { it.value.size >= 12 }.sortedByDescending { it.value.size }
         for ((i, e) in genres.withIndex()) {
             if (i >= maxGenres) break
-            out.add(Shelf(e.key, e.value.sortedByDescending { it.score() }))
+            out.add(Shelf(e.key, Mix.arrange(e.value, rnd, Mix.GENRE), Mix.GENRE))
         }
         val plats = byPlat.entries.filter { it.value.size >= 12 }.sortedByDescending { it.value.size }
-        for (e in plats) out.add(Shelf(e.key, e.value.sortedByDescending { it.score() }))
+        for (e in plats) out.add(Shelf(e.key, Mix.arrange(e.value, rnd, Mix.GENRE), Mix.GENRE))
         return out
     }
 
-    fun buildAll(c: Catalog): Built {
+    fun buildAll(c: Catalog, seed: Long): Built {
+        val rnd = java.util.Random(seed)
         val all = ArrayList<Title>(c.movies.size + c.series.size)
         all.addAll(c.movies)
         all.addAll(c.series)
@@ -529,9 +552,9 @@ object Shelves {
             all.filter { it.launch && !it.onlyCam && it.image != null }.sortedByDescending { it.score() }.take(10)
         }
         return Built(
-            home = forTitles(all, 8),
-            movies = forTitles(c.movies, 40),
-            series = forTitles(c.series, 40),
+            home = forTitles(all, 8, rnd),
+            movies = forTitles(c.movies, 40, rnd),
+            series = forTitles(c.series, 40, rnd),
             featured = featured,
             featuredMovies = pm,
             featuredSeries = ps,

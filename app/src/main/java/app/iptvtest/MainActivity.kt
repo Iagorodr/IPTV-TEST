@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -47,10 +48,30 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
+    private var stoppedAt = 0L
+
+    override fun onStop() {
+        super.onStop()
+        stoppedAt = SystemClock.elapsedRealtime()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // voltou ao app depois de uns minutos fora (botão Home): prateleiras novas, como numa abertura nova
+        if (stoppedAt > 0L && SystemClock.elapsedRealtime() - stoppedAt > 3 * 60_000L) {
+            try {
+                ViewModelProvider(this)[MainViewModel::class.java].reshuffle()
+            } catch (e: Exception) {
+                // sem problema: fica com as prateleiras de agora
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -131,7 +152,7 @@ fun App(vm: MainViewModel = viewModel()) {
             title != null -> holder.SaveableStateProvider("title|" + title.key) {
                 TitleScreen(vm, title)
             }
-            grid != null -> holder.SaveableStateProvider("grid|" + grid.name) {
+            grid != null -> holder.SaveableStateProvider("grid|" + grid.name + "|" + System.identityHashCode(grid)) {
                 GridScreen(vm, grid)
             }
             else -> holder.SaveableStateProvider("tab|" + vm.tab.name) {

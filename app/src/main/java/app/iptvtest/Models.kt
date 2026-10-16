@@ -87,8 +87,16 @@ class Catalog(
     val builtAt: Long,
 )
 
-class Shelf(val name: String, val all: List<Title>) {
+/**
+ * Prateleira. [mix] diz como ela se reorganiza: 0 = nunca (ex.: Favoritos), negativo = embaralha de verdade,
+ * positivo = ordena por nota/recência com um sorteio por cima (a "força" do sorteio é o número).
+ */
+class Shelf(val name: String, val all: List<Title>, val mix: Float = 0f) {
     val row: List<Title> = if (all.size > 40) all.subList(0, 40) else all
+
+    /** Uma cópia com a ordem sorteada de novo (é o que o "Ver todos" abre, para o gênero sempre vir diferente). */
+    fun reshuffled(rnd: java.util.Random = java.util.Random()): Shelf =
+        if (mix == 0f) this else Shelf(name, Mix.arrange(all, rnd, mix), mix)
 }
 
 data class Episode(
@@ -131,6 +139,9 @@ class LiveInfo(
     val brand: Channel? = null,
 )
 
+/** O episódio seguinte de uma série: o rótulo (ex.: "T1 E4") e o que fazer para tocá-lo. */
+class NextEp(val label: String, val go: () -> Unit)
+
 class PlaybackRequest(
     val title: String,
     val url: String,
@@ -139,4 +150,6 @@ class PlaybackRequest(
     val zoom: Boolean = false,
     val live: LiveInfo? = null,
     val onProgress: ((Long, Long) -> Unit)? = null,
+    /** Só em séries. Devolve null enquanto a lista de episódios carrega ou quando este é o último. */
+    val next: (() -> NextEp?)? = null,
 )

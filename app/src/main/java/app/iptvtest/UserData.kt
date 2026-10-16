@@ -65,6 +65,10 @@ class UserData(ctx: Context) {
     var autoSwitch: Boolean = true
         private set
 
+    /** Fuso horário escolhido nos Ajustes (vazio = o do aparelho). */
+    var tzId: String = ""
+        private set
+
     init {
         load()
     }
@@ -75,6 +79,7 @@ class UserData(ctx: Context) {
         try {
             stabilityFirst = sp.getBoolean("stab", true)
             autoSwitch = sp.getBoolean("auto", true)
+            tzId = sp.getString("tz", "") ?: ""
             readStrings("mylist", myList)
             readStrings("favch", favChannels)
             readFavTeams()
@@ -346,6 +351,11 @@ class UserData(ctx: Context) {
     fun setAutoSwitch(v: Boolean) {
         autoSwitch = v
         sp.edit().putBoolean("auto", v).apply()
+    }
+
+    fun setTzId(v: String) {
+        tzId = v
+        sp.edit().putString("tz", v).apply()
     }
 
     fun pinnedSource(channelKey: String): String? = pinned[channelKey]

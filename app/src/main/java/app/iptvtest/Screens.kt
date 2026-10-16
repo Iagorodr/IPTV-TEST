@@ -187,53 +187,102 @@ fun LoadingScreen(vm: MainViewModel) {
 // Menu do topo
 // =========================================================================
 
+private val NavBg = Color(0xFF060607)
+private val NavLine = Color(0x2EFFFFFF)
+
+/** Aba do menu: só texto. A aba atual ganha um fundo laranja escuro e translúcido (nada de cor chapada). */
 @Composable
 private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
     FocusBox(
-        modifier = Modifier.padding(end = 4.dp),
+        modifier = Modifier.padding(end = 2.dp),
         shape = RoundedCornerShape(8.dp),
         focusScale = 1f,
         onClick = onClick,
     ) { focused ->
         Box(
             modifier = Modifier
-                .background(if (focused) PanelAlt else Color.Transparent)
-                .padding(horizontal = 14.dp, vertical = 8.dp),
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.22f) else Color.Transparent)
+                .padding(horizontal = 13.dp, vertical = 7.dp),
         ) {
             Text(
                 text = text,
-                color = if (selected) Accent else if (focused) TextMain else Muted,
-                fontSize = 17.sp,
-                fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.SemiBold,
+                color = if (selected) TextMain else if (focused) TextMain else Muted,
+                fontSize = 16.sp,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                 maxLines = 1,
             )
         }
     }
 }
 
+/** Botão só com ícone (lupa). */
+@Composable
+private fun NavIcon(selected: Boolean, onClick: () -> Unit, icon: @Composable (Color) -> Unit) {
+    FocusBox(
+        shape = RoundedCornerShape(8.dp),
+        focusScale = 1f,
+        onClick = onClick,
+    ) { focused ->
+        Box(
+            modifier = Modifier
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.22f) else Color.Transparent)
+                .padding(horizontal = 13.dp, vertical = 8.dp),
+        ) {
+            icon(if (selected || focused) TextMain else Muted)
+        }
+    }
+}
+
+/** O nome do app, que também abre os Ajustes (por isso a engrenagem ao lado). */
+@Composable
+private fun BrandButton(selected: Boolean, onClick: () -> Unit) {
+    FocusBox(
+        shape = RoundedCornerShape(8.dp),
+        focusScale = 1f,
+        onClick = onClick,
+    ) { focused ->
+        Row(
+            modifier = Modifier
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.22f) else Color.Transparent)
+                .padding(horizontal = 12.dp, vertical = 7.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("IAGO IPTV", color = Accent, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
+            Spacer(Modifier.width(8.dp))
+            GearIcon(color = if (selected || focused) TextMain else Muted)
+        }
+    }
+}
+
 @Composable
 fun TopNav(vm: MainViewModel) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 40.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text("IAGO IPTV", color = Accent, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-        Spacer(Modifier.width(24.dp))
-        NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
-        NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
-        NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
-        NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
-        NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
-        NavItem("Meus favoritos", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
-        Spacer(Modifier.weight(1f))
-        if (vm.refreshing) {
-            Text("Atualizando catálogo...", color = Muted, fontSize = 12.sp)
-            Spacer(Modifier.width(12.dp))
+    Column {
+        // faixa escura com uma linha fina embaixo: separa o menu do conteúdo
+        Column(modifier = Modifier.fillMaxWidth().background(NavBg)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 34.dp, vertical = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BrandButton(vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
+                Spacer(Modifier.width(16.dp))
+                NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
+                NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
+                NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
+                NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
+                NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
+                NavItem("Favoritos", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
+                Spacer(Modifier.weight(1f))
+                if (vm.refreshing) {
+                    CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(12.dp))
+                }
+                NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
+            }
+            Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(NavLine))
         }
-        NavItem("Buscar", vm.tab == Tab.SEARCH) { vm.selectTab(Tab.SEARCH) }
-        NavItem("Ajustes", vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
+        Spacer(Modifier.height(8.dp))
     }
 }
 
@@ -379,7 +428,7 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
 fun HomeTab(vm: MainViewModel) {
     val cont = vm.continueEntries()
     val mine = vm.myListTitles()
-    val mineShelf = remember(mine) { Shelf("Meus favoritos", mine) }
+    val mineShelf = remember(mine) { Shelf("Favoritos", mine) }
     val favs = vm.favoriteChannels()
     val hero = vm.heroAll
 
@@ -675,6 +724,30 @@ fun FavoritesTab(vm: MainViewModel) {
 // =========================================================================
 
 @Composable
+private fun TimeZoneSettings(vm: MainViewModel) {
+    val rev = AppTz.rev
+    val now = remember(rev) { System.currentTimeMillis() }
+    val clock = remember(rev) { SportsTime.clock(now, java.util.TimeZone.getDefault()) }
+    val chosen = vm.user.tzId
+    Column {
+        Text("Fuso horário", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Os horários dos jogos usam este fuso. Agora, no app: " + clock + " (" + AppTz.describe() + "). " +
+                "Se a hora estiver errada, escolha o seu fuso (ou acerte o fuso nas configurações da TV).",
+            color = Muted,
+            fontSize = 14.sp,
+        )
+        Spacer(Modifier.height(8.dp))
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            items(AppTz.OPTIONS, key = { it.first }) { o ->
+                ChipItem(text = o.second, selected = chosen == o.first) { vm.setTimeZone(o.first) }
+            }
+        }
+    }
+}
+
+@Composable
 fun SettingsTab(vm: MainViewModel) {
     var confirmLogout by remember { mutableStateOf(false) }
     val cat = vm.catalog
@@ -709,6 +782,7 @@ fun SettingsTab(vm: MainViewModel) {
                 }
             }
             item { FavTeamsSettings(vm) }
+            item { TimeZoneSettings(vm) }
             item {
                 Column {
                     Text("Canais ao vivo", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)

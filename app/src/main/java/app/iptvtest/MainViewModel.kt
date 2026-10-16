@@ -25,6 +25,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val appCtx = app.applicationContext
     private val store = AccountStore(app)
     val user = UserData(app)
+
+    /**
+     * Semente do sorteio das prateleiras: nova a cada vez que o app é aberto, e igual enquanto ele está aberto
+     * (para o catálogo atualizado em segundo plano não embaralhar tudo na frente da pessoa).
+     */
+    private var mixSeed: Long = System.nanoTime()
     private var api: XtreamApi? = null
 
     // ---- conta / login
@@ -143,6 +149,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private var loadJob: Job? = null
 
     init {
+        AppTz.apply(user.tzId)
         favTeams = user.favTeams.toList()
         favLeagues = user.favLeagues.toList()
         reminders = user.reminders.toList()
@@ -311,8 +318,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return withContext(Dispatchers.Default) { Organizer.build(vc, sc, lc, vod, ser, live) }
     }
 
+    /** Chamado quando a pessoa volta ao app depois de um tempo fora: sorteia as prateleiras de novo. */
+    fun reshuffle() {
+        mixSeed = System.nanoTime()
+        catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
+    }
+
     private suspend fun applyCatalog(c: Catalog) {
-        val built = withContext(Dispatchers.Default) { Shelves.buildAll(c) }
+        val seed = mixSeed
+        val built = withContext(Dispatchers.Default) { Shelves.buildAll(c, seed) }
         val chIdx = HashMap<String, Channel>(c.channels.size * 2)
         for (ch in c.channels) chIdx[ch.key] = ch
         eventIdx = withContext(Dispatchers.Default) { SportsChannels.indexEvents(c.channels) }
@@ -340,9 +354,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         titleIndex = built.index
         channelIndex = chIdx
         allTitles = built.all
-        heroAll = built.featured.shuffled()
-        heroMovies = built.featuredMovies.shuffled()
-        heroSeries = built.featuredSeries.shuffled()
+        heroAll = built.featured.shuffled(java.util.Random(seed))
+        heroMovies = built.featuredMovies.shuffled(java.util.Random(seed + 1))
+        heroSeries = built.featuredSeries.shuffled(java.util.Random(seed + 2))
         homeShelves = built.home
         movieShelves = built.movies
         seriesShelves = built.series
@@ -422,8 +436,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         openTitle = t
     }
 
+    /** Abre "Ver todos". Gêneros e plataformas vêm sorteados de novo a cada abertura; Favoritos mantém a ordem. */
     fun openGrid(s: Shelf) {
-        grid = s
+        grid = s.reshuffled()
     }
 
     // =====================================================================
@@ -476,6 +491,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             a.streamUrl(Kind.MOVIES, v.id, ext)
         }
         val shown = if (label.isEmpty()) title.name else title.name + "  " + label
+        // série: garante que a lista de episódios está carregada (é ela que diz qual é o próximo)
+        if (title.series) ensureInfo(title, v)
         playing = PlaybackRequest(
             title = shown,
             url = url,
@@ -483,25 +500,55 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             startMs = start,
             zoom = zoom,
             onProgress = { pos, dur -> saveProgress(title, v, epId, ext, label, pos, dur, zoom) },
+            next = if (title.series) ({ nextEpisodeOf(title, v, epId, zoom) }) else null,
         )
     }
 
     fun playMovie(title: Title, v: Version, zoom: Boolean) {
+        ignoreResumeEp = null
         startPlayback(title, v, "", v.ext, "", zoom)
     }
 
     fun playEpisode(title: Title, v: Version, ep: Episode, zoom: Boolean) {
+        ignoreResumeEp = null
         val label = String.format(Locale.US, "T%d E%d", ep.season, ep.number)
         startPlayback(title, v, ep.id, ep.ext, label, zoom)
     }
 
     fun resumeEntry(e: ResumeEntry) {
+        ignoreResumeEp = null
         val t = titleIndex[e.titleKey] ?: return
         val v = t.versions.firstOrNull { it.id == e.versionId } ?: t.versions.firstOrNull() ?: return
         startPlayback(t, v, e.epId, e.ext, e.label, e.zoom)
     }
 
+    /** O episódio que vem depois de [epId] (a lista é ordenada por temporada e número; passa de uma temporada para a outra). */
+    private fun nextEpisodeOf(title: Title, v: Version, epId: String, zoom: Boolean): NextEp? {
+        val st = episodes[v.id] ?: return null
+        val list = st.episodes.sortedWith(compareBy<Episode>({ it.season }, { it.number }))
+        val i = list.indexOfFirst { it.id == epId }
+        if (i < 0 || i + 1 >= list.size) return null
+        val n = list[i + 1]
+        val label = String.format(Locale.US, "T%d E%d", n.season, n.number)
+        return NextEp(label) { playNext(title, v, epId, n, zoom) }
+    }
+
+    /**
+     * Troca para o próximo episódio. O episódio que acabou de ser deixado não deve virar "continuar assistindo"
+     * (o player antigo ainda guarda a posição ao fechar), então ele é ignorado daqui em diante.
+     */
+    private fun playNext(title: Title, v: Version, oldEpId: String, n: Episode, zoom: Boolean) {
+        ignoreResumeEp = oldEpId
+        user.clearResume(title.key)
+        val label = String.format(Locale.US, "T%d E%d", n.season, n.number)
+        startPlayback(title, v, n.id, n.ext, label, zoom)
+        dataRev++
+    }
+
+    private var ignoreResumeEp: String? = null
+
     private fun saveProgress(title: Title, v: Version, epId: String, ext: String, label: String, pos: Long, dur: Long, zoom: Boolean) {
+        if (epId.isNotEmpty() && epId == ignoreResumeEp) return
         if (dur <= 0L || pos < 30_000L) return
         if (pos > dur * 95L / 100L) {
             user.clearResume(title.key)
@@ -993,6 +1040,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun clearStats() {
         user.clearStats()
+        dataRev++
+    }
+
+    /** Troca o fuso dos horários (vazio = o do aparelho) e refaz os nomes dos jogos avulsos dos canais. */
+    fun setTimeZone(id: String) {
+        user.setTzId(id)
+        AppTz.apply(id)
+        catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
         dataRev++
     }
 

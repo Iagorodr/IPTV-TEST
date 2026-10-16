@@ -101,7 +101,7 @@ private fun TeamLogo(url: String?, dp: Int) {
 
 @Composable
 private fun StatusPill(game: Game, now: Long) {
-    val tz = remember { TimeZone.getDefault() }
+    val tz = remember(AppTz.rev) { TimeZone.getDefault() }
     val text: String
     val bg: Color
     val fg: Color
@@ -319,7 +319,7 @@ fun GamesSection(vm: MainViewModel, now: Long) {
 
 @Composable
 fun GameDialog(vm: MainViewModel, g: Game) {
-    val tz = remember { TimeZone.getDefault() }
+    val tz = remember(AppTz.rev) { TimeZone.getDefault() }
     val now = remember(g.key) { System.currentTimeMillis() }
     val info = remember(g.key, vm.catalog) { vm.gameInfo(g) }
     var notice by remember(g.key) { mutableStateOf<String?>(null) }
@@ -459,7 +459,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
 
 @Composable
 fun AllGamesScreen(vm: MainViewModel) {
-    val tz = remember { TimeZone.getDefault() }
+    val tz = remember(AppTz.rev) { TimeZone.getDefault() }
     var now by remember { mutableStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
         while (true) {
@@ -540,7 +540,7 @@ fun AllGamesScreen(vm: MainViewModel) {
 
 @Composable
 fun GamesTab(vm: MainViewModel) {
-    val tz = remember { TimeZone.getDefault() }
+    val tz = remember(AppTz.rev) { TimeZone.getDefault() }
     var now by remember { mutableStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
         while (true) {
@@ -627,7 +627,7 @@ private fun SportCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    val tz = remember { TimeZone.getDefault() }
+    val tz = remember(AppTz.rev) { TimeZone.getDefault() }
     val fr = restoringRequester(focusId)
     FocusBox(
         modifier = modifier,

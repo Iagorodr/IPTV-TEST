@@ -24,6 +24,13 @@ Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e
 
 O GitHub Actions compila o app a cada alteração na branch `main` e publica o APK no link acima (ver `.github/workflows/build.yml`).
 
+## Novidades da v0.4.3
+
+- **Menu novo**: o nome **IAGO IPTV** (com uma engrenagem) abre os Ajustes; **Buscar** virou só uma lupa; "Meus favoritos" virou **Favoritos**. O menu fica numa faixa escura separada do conteúdo, e a aba/opção escolhida usa laranja escuro translúcido (não chapado), sem sublinhado. Os botões redondos (dia, idioma, qualidade...) seguem o mesmo estilo.
+- **Fuso horário** nos Ajustes: se os horários dos jogos estiverem com 1 h de diferença (TV/box com o fuso errado), escolha Bruxelas, Lisboa, Londres ou Brasília; "Automático" usa o do aparelho.
+- **Prateleiras sempre diferentes**: toda vez que o app abre (e quando você volta depois de alguns minutos fora), as prateleiras de Filmes, Séries e Início são sorteadas de novo — Lançamentos e Adicionados recentemente embaralham por inteiro, e os gêneros/plataformas sorteiam com preferência para os bem avaliados. Ao tocar em **Ver todos** de um gênero, a lista também vem sorteada de novo. Favoritos mantém a ordem.
+- Player: botão **Próximo episódio** nas séries (passa para a temporada seguinte quando precisa).
+
 ## Novidades da v0.4
 
 - **Ligas favoritas (até 5)**: além dos times, escolha competições (Brasileirão, Libertadores, Champions, Premier League...). Todos os jogos delas de hoje e amanhã aparecem no topo do Início; jogo de time favorito vem primeiro, com ★ e borda laranja. Liga sem jogo nesses dias some. O último cartão **Ver todos** abre a lista dos próximos dias, separada por dia.

@@ -138,6 +138,8 @@ fun PlayerScreen(
     val liveInfo = req.live
     val channel = liveInfo?.channel
     val isLive = req.isLive && liveInfo != null && channel != null
+    // lê estado da ViewModel: o botão "Próximo episódio" aparece sozinho quando a lista de episódios termina de carregar
+    val nextEp = if (isLive) null else req.next?.invoke()
     // marca (Globo...) tocando uma praça: favoritar vale para a marca toda
     val brand = liveInfo?.brand
     val favKey = brand?.key ?: channel?.key
@@ -751,6 +753,9 @@ fun PlayerScreen(
                     } else {
                         TvButton(text = "-10s") { seekBy(-10_000) }
                         TvButton(text = "+10s") { seekBy(10_000) }
+                        if (nextEp != null) {
+                            TvButton(text = "Próximo episódio", primary = true) { nextEp.go() }
+                        }
                         TvButton(text = "Áudio") {
                             touch++
                             panel = "audio"

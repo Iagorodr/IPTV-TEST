@@ -2,6 +2,7 @@ package app.iptvtest
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +38,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -125,7 +130,51 @@ fun TvButton(
     }
 }
 
-/** Opção redonda (idioma, qualidade, tela, categoria...). A escolhida fica laranja. */
+/** Lupa desenhada (não depende de fonte/emoji da TV). */
+@Composable
+fun SearchIcon(color: Color, modifier: Modifier = Modifier, size: Int = 20) {
+    Canvas(modifier = modifier.size(size.dp)) {
+        val w = this.size.minDimension
+        val stroke = w * 0.11f
+        val r = w * 0.32f
+        val c = Offset(w * 0.42f, w * 0.42f)
+        drawCircle(color = color, radius = r, center = c, style = Stroke(width = stroke))
+        drawLine(
+            color = color,
+            start = Offset(c.x + r * 0.72f, c.y + r * 0.72f),
+            end = Offset(w * 0.92f, w * 0.92f),
+            strokeWidth = stroke,
+            cap = StrokeCap.Round,
+        )
+    }
+}
+
+/** Engrenagem desenhada: aro + 8 dentes. */
+@Composable
+fun GearIcon(color: Color, modifier: Modifier = Modifier, size: Int = 18) {
+    Canvas(modifier = modifier.size(size.dp)) {
+        val w = this.size.minDimension
+        val c = Offset(w / 2f, w / 2f)
+        val ring = w * 0.30f
+        drawCircle(color = color, radius = ring, center = c, style = Stroke(width = w * 0.16f))
+        val toothW = w * 0.17f
+        val toothH = w * 0.2f
+        for (i in 0 until 8) {
+            rotate(degrees = i * 45f, pivot = c) {
+                drawRect(
+                    color = color,
+                    topLeft = Offset(c.x - toothW / 2f, c.y - w / 2f),
+                    size = androidx.compose.ui.geometry.Size(toothW, toothH),
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Opção redonda (idioma, qualidade, tela, categoria, dia...). A escolhida fica com um laranja escuro e translúcido
+ * (não chapado) e contorno fino; as outras ficam num cinza escuro.
+ */
 @Composable
 fun ChipItem(
     text: String,
@@ -143,15 +192,16 @@ fun ChipItem(
     ) { focused ->
         Box(
             modifier = Modifier
-                .background(if (selected) Accent else if (focused) PanelAlt else Panel)
-                .padding(horizontal = 18.dp, vertical = 8.dp),
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.26f) else Panel)
+                .then(if (selected) Modifier.border(1.5.dp, Accent.copy(alpha = 0.75f), RoundedCornerShape(20.dp)) else Modifier)
+                .padding(horizontal = 16.dp, vertical = 7.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = text,
-                color = if (selected) Color.Black else TextMain,
-                fontSize = 15.sp,
-                fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Normal,
+                color = if (selected) Color(0xFFFFD9C7) else TextMain,
+                fontSize = 14.sp,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 maxLines = 1,
             )
         }
