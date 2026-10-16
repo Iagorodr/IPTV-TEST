@@ -52,8 +52,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var seriesShelves by mutableStateOf<List<Shelf>>(emptyList())
         private set
-    var featured by mutableStateOf<Title?>(null)
+    var heroAll by mutableStateOf<List<Title>>(emptyList())
         private set
+    var heroMovies by mutableStateOf<List<Title>>(emptyList())
+        private set
+    var heroSeries by mutableStateOf<List<Title>>(emptyList())
+        private set
+
+    /** Canais como aparecem na aba Canais: marcas de TV juntas, jogos avulsos limpos, em ~9 pastas. */
+    var channelGroups by mutableStateOf<List<Pair<String, List<Channel>>>>(emptyList())
+        private set
+    private var channelCards: List<Channel> = emptyList()
+    private var cleanChannels: List<Channel> = emptyList()
     var allTitles: List<Title> = emptyList()
         private set
     private var titleIndex: HashMap<String, Title> = HashMap()
@@ -89,6 +99,30 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var searchPrefill by mutableStateOf<String?>(null)
         private set
+    var favLeagues by mutableStateOf<List<String>>(emptyList())
+        private set
+    var leagueGames by mutableStateOf<List<Game>>(emptyList())
+        private set
+    var allGamesOpen by mutableStateOf(false)
+        private set
+    var allGames by mutableStateOf<List<Game>>(emptyList())
+        private set
+    var allGamesLoading by mutableStateOf(false)
+        private set
+    var allGamesError by mutableStateOf<String?>(null)
+        private set
+    var popGames by mutableStateOf<List<Game>>(emptyList())
+        private set
+    var popLoading by mutableStateOf(false)
+        private set
+    var gameDialog by mutableStateOf<Game?>(null)
+        private set
+    var reminders by mutableStateOf<List<Reminder>>(emptyList())
+        private set
+    var dueReminder by mutableStateOf<Reminder?>(null)
+        private set
+    private var popAt = 0L
+    private var allGamesAt = 0L
     private var eventIdx: List<EventChan> = emptyList()
     private var gamesJob: Job? = null
     private var eventsJob: Job? = null
@@ -108,6 +142,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         favTeams = user.favTeams.toList()
+        favLeagues = user.favLeagues.toList()
+        reminders = user.reminders.toList()
+        BroadcastStore.load(appCtx)
+        viewModelScope.launch { BroadcastStore.refresh(appCtx) }
         store.load()?.let { saved ->
             startSession(saved)
             refreshAccountInfo()
@@ -170,6 +208,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         channelList = null
         pickerOpen = false
         pickerCountry = null
+        allGamesOpen = false
+        gameDialog = null
         titleStack.clear()
         CatalogCache.deleteOthers(appCtx, CatalogCache.accKey(acc))
         loadCatalog(force = false)
@@ -186,7 +226,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         homeShelves = emptyList()
         movieShelves = emptyList()
         seriesShelves = emptyList()
-        featured = null
+        heroAll = emptyList()
+        heroMovies = emptyList()
+        heroSeries = emptyList()
+        channelGroups = emptyList()
+        channelCards = emptyList()
+        cleanChannels = emptyList()
+        allGamesOpen = false
+        gameDialog = null
         allTitles = emptyList()
         titleIndex = HashMap()
         channelIndex = HashMap()
@@ -267,10 +314,33 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val chIdx = HashMap<String, Channel>(c.channels.size * 2)
         for (ch in c.channels) chIdx[ch.key] = ch
         eventIdx = withContext(Dispatchers.Default) { SportsChannels.indexEvents(c.channels) }
+        // canais: jogos avulsos limpos (hora local), marcas de TV num cartão só e as pastas reduzidas
+        val shaped = withContext(Dispatchers.Default) {
+            val clean = SportsChannels.cleanList(c.channels, System.currentTimeMillis(), java.util.TimeZone.getDefault())
+            val cards = Brands.group(clean)
+            val groups = ArrayList<Pair<String, List<Channel>>>()
+            val byGroup = HashMap<String, ArrayList<Channel>>()
+            for (ch in cards) {
+                val g = ChannelGroups.groupOf(ch) ?: continue
+                byGroup.getOrPut(g) { ArrayList() }.add(ch)
+            }
+            for (g in ChannelGroups.ORDER) {
+                val l = byGroup[g] ?: continue
+                groups.add(Pair(g, l.sortedBy { ChannelGroups.order(it, g) }))
+            }
+            Triple(clean, cards, groups)
+        }
+        cleanChannels = shaped.first
+        channelCards = shaped.second
+        channelGroups = shaped.third
+        for (ch in shaped.first) chIdx[ch.key] = ch
+        for (ch in shaped.second) chIdx[ch.key] = ch
         titleIndex = built.index
         channelIndex = chIdx
         allTitles = built.all
-        featured = if (built.featured.isEmpty()) null else built.featured.random()
+        heroAll = built.featured.shuffled()
+        heroMovies = built.featuredMovies.shuffled()
+        heroSeries = built.featuredSeries.shuffled()
         homeShelves = built.home
         movieShelves = built.movies
         seriesShelves = built.series
@@ -294,9 +364,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // =====================================================================
 
     val canGoBack: Boolean
-        get() = channelList != null || pickerOpen || openTitle != null || grid != null || tab != Tab.HOME
+        get() = gameDialog != null || allGamesOpen || channelList != null || pickerOpen || openTitle != null || grid != null || tab != Tab.HOME
 
     fun back(): Boolean {
+        if (gameDialog != null) {
+            gameDialog = null
+            return true
+        }
+        if (allGamesOpen) {
+            allGamesOpen = false
+            FocusMemory.arm()
+            return true
+        }
         if (channelList != null) {
             channelList = null
             FocusMemory.arm()
@@ -433,14 +512,51 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun playChannel(ch: Channel) {
+        if (ch.isBrand) {
+            val v = Brands.variantFor(ch, user.lastVariantOf(ch.key))
+            playVariant(ch, v)
+            return
+        }
         val a = api ?: return
         playing = PlaybackRequest(
             title = ch.name,
             url = "",
             isLive = true,
-            live = LiveInfo(ch) { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") },
+            live = LiveInfo(ch, { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }),
         )
     }
+
+    /** Toca uma praça de uma marca (Globo São Paulo...) e guarda a escolha para a próxima vez. */
+    fun playVariant(brand: Channel, v: Variant) {
+        val a = api ?: return
+        user.setLastVariant(brand.key, v.channel.key)
+        playing = PlaybackRequest(
+            title = brand.name + " · " + v.label,
+            url = "",
+            isLive = true,
+            live = LiveInfo(v.channel, { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }, brand),
+        )
+    }
+
+    /** A praça que está tocando agora numa marca (para marcar na lista). */
+    fun currentVariantKey(brand: Channel): String = Brands.variantFor(brand, user.lastVariantOf(brand.key)).channel.key
+
+    /** Busca na lista de canais; marcas também casam pelo nome de qualquer praça (ex.: "Anhanguera" acha a Globo). */
+    fun searchChannels(q: String): List<Channel> {
+        val f = Organizer.fold(q)
+        if (f.length < 2) return emptyList()
+        val out = ArrayList<Channel>()
+        for (ch in channelCards) {
+            if (ch.searchFold.contains(f)) {
+                out.add(ch)
+                if (out.size >= 30) break
+            }
+        }
+        return out
+    }
+
+    /** Canais de uma pasta do provedor (já com os jogos avulsos limpos). */
+    fun channelsInCategory(cat: String): List<Channel> = cleanChannels.filter { it.category == cat }
 
     fun stopPlaying() {
         playing = null
@@ -499,32 +615,43 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     // =====================================================================
-    // Esportes: times favoritos, jogos do dia, F1/UFC/tênis
+    // Esportes: times e ligas favoritas, jogos do dia, lembretes, F1/UFC/tênis
     // =====================================================================
+
+    private val tz: java.util.TimeZone get() = java.util.TimeZone.getDefault()
 
     /** Busca jogos e agenda na internet. Sem [force], só busca se os dados já estão velhos (1 min com jogo ao vivo, 10 min sem). */
     fun refreshSports(force: Boolean = false) {
         val now = System.currentTimeMillis()
-        val maxAge = if (games.any { it.state == 1 }) 60_000L else 600_000L
+        val live = games.any { it.state == 1 } || leagueGames.any { it.state == 1 }
+        val maxAge = if (live) 60_000L else 600_000L
         val mustGames = force || sportsDirty || now - gamesAt >= maxAge
         if (mustGames && !(gamesJob?.isActive == true && !force && !sportsDirty)) {
             sportsDirty = false
             gamesAt = now
             val teams = favTeams
+            val leagues = favLeagues
             val my = ++gamesGen
             gamesJob?.cancel()
             gamesJob = viewModelScope.launch {
                 gamesLoading = true
+                var err: String? = null
                 try {
                     games = if (teams.isEmpty()) emptyList() else SportsApi.gamesFor(teams)
-                    gamesError = null
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    gamesError = "Não consegui buscar os jogos agora."
-                } finally {
-                    if (my == gamesGen) gamesLoading = false
+                    err = "Não consegui buscar os jogos agora."
                 }
+                try {
+                    leagueGames = if (leagues.isEmpty()) emptyList() else SportsApi.leagueGames(leagues, now - SportsTime.DAY, now + 2L * SportsTime.DAY)
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    err = "Não consegui buscar os jogos agora."
+                }
+                gamesError = err
+                if (my == gamesGen) gamesLoading = false
             }
         }
         if (force || now - eventsAt >= 1_800_000L) {
@@ -540,10 +667,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 }
             }
         }
+        checkReminders(now)
     }
 
-    /** Jogos que aparecem no início, segundo a regra combinada (hoje e amanhã; sem jogo, o próximo). */
-    fun shownGames(now: Long): List<Game> = SportsPick.games(games, favTeams, now, java.util.TimeZone.getDefault())
+    /** Faixa do Início: jogos dos meus times (★) primeiro, depois os de hoje/amanhã das ligas escolhidas. */
+    fun stripGames(now: Long): List<StripGame> = LeaguePick.strip(games, leagueGames, favTeams, favLeagues, now, tz)
 
     fun gameChannelCount(g: Game): Int = SportsChannels.matchGame(g, eventIdx).size
 
@@ -558,11 +686,30 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
         user.saveFavTeams(favTeams)
         sportsDirty = true
+        allGamesAt = 0L
         dataRev++
         return null
     }
 
     fun isFavTeam(id: String): Boolean = favTeams.any { it.id == id }
+
+    /** Devolve um aviso se não deu para escolher (máximo de 3 ligas). */
+    fun toggleFavLeague(slug: String): String? {
+        val cur = favLeagues
+        if (cur.contains(slug)) {
+            favLeagues = cur.filter { it != slug }
+        } else {
+            if (cur.size >= SportsData.MAX_LEAGUES) return "Você já escolheu ${SportsData.MAX_LEAGUES} ligas. Tire uma para escolher outra."
+            favLeagues = cur + slug
+        }
+        user.saveFavLeagues(favLeagues)
+        sportsDirty = true
+        allGamesAt = 0L
+        dataRev++
+        return null
+    }
+
+    fun isFavLeague(slug: String): Boolean = favLeagues.contains(slug)
 
     fun openPicker() {
         pickerCountry = null
@@ -580,38 +727,197 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         pickerCountry = code
     }
 
-    private fun sportCategoryNames(): List<String> {
-        val c = catalog ?: return emptyList()
-        return SportsChannels.sportCategories(c.channelCategories)
+    // ---- "Ver todos": jogos dos próximos dias, agrupados por dia
+
+    fun openAllGames() {
+        allGamesOpen = true
+        loadAllGames(false)
     }
 
-    /** Toque num jogo: mostra o canal dele na lista (se achar) e os canais de esporte para escolher. */
-    fun openGame(g: Game) {
+    fun loadAllGames(force: Boolean) {
         val now = System.currentTimeMillis()
-        val tz = java.util.TimeZone.getDefault()
-        val matched = SportsChannels.matchGame(g, eventIdx)
-        val shownNames = HashMap<String, Int>()
-        val list = ArrayList<Channel>()
-        for (e in matched) {
-            val d = SportsChannels.display(e, now, tz)
-            val n = (shownNames[d.name] ?: 0) + 1
-            shownNames[d.name] = n
-            list.add(if (n == 1) d else Channel(d.key, d.name + " (" + n + ")", d.icon, d.category, d.sources))
+        if (!force && allGames.isNotEmpty() && now - allGamesAt < 600_000L) return
+        if (allGamesLoading) return
+        val slugs = (favLeagues + favTeams.flatMap { it.leagues }).distinct()
+        if (slugs.isEmpty()) {
+            allGames = emptyList()
+            return
         }
+        allGamesLoading = true
+        allGamesError = null
+        allGamesAt = now
+        viewModelScope.launch {
+            try {
+                allGames = SportsApi.leagueGames(slugs, now - SportsTime.DAY, now + 7L * SportsTime.DAY)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                allGamesError = "Não consegui buscar os jogos agora."
+                allGamesAt = 0L
+            } finally {
+                allGamesLoading = false
+            }
+        }
+    }
+
+    fun gamesByDay(now: Long): List<Pair<Long, List<StripGame>>> =
+        LeaguePick.byDay(allGames, allGames, favTeams, favLeagues, now, tz)
+
+    // ---- "Meus favoritos": jogos de hoje, dos mais populares para os menos
+
+    fun loadPopular(force: Boolean = false) {
+        val now = System.currentTimeMillis()
+        if (!force && popGames.isNotEmpty() && now - popAt < 600_000L) return
+        if (popLoading) return
+        popLoading = true
+        popAt = now
+        viewModelScope.launch {
+            try {
+                popGames = SportsApi.leagueGames(SportsData.popularLeagues, now - SportsTime.DAY, now + SportsTime.DAY)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                popAt = 0L
+            } finally {
+                popLoading = false
+            }
+        }
+    }
+
+    fun todayGames(now: Long): List<StripGame> =
+        LeaguePick.today(LeaguePick.mergeAll(LeaguePick.mergeAll(popGames, games), leagueGames), favTeams, now, tz)
+
+    // ---- pop-up do jogo
+
+    class GameInfo(
+        val matched: List<Channel>,
+        val comp: BroadcastComp?,
+        val inList: Set<String>,
+        val tableDate: String,
+    )
+
+    fun showGame(g: Game) {
+        gameDialog = g
+    }
+
+    fun closeGame() {
+        gameDialog = null
+        FocusMemory.arm()
+    }
+
+    fun gameInfo(g: Game): GameInfo {
+        val now = System.currentTimeMillis()
+        val matched = SportsChannels.displayMerged(SportsChannels.matchGame(g, eventIdx), now, tz)
+        val table = BroadcastStore.table
+        val comp = table.forKey(g.leagueSlug)
+        val inList = if (comp == null) emptySet() else Broadcasts.inList(comp.options, channelCards)
+        return GameInfo(matched, comp, inList, table.updatedPretty())
+    }
+
+    /** "Assistir agora": um canal só na lista → toca; vários → abre a lista deles. */
+    fun watchNow(g: Game) {
+        val m = gameInfo(g).matched
+        gameDialog = null
+        if (m.size == 1) playChannel(m[0]) else openGameChannels(g)
+    }
+
+    /** Mostra os canais da lista para o jogo (os achados, os das emissoras que costumam passar e os de esporte). */
+    fun openGameChannels(g: Game) {
+        gameDialog = null
+        val info = gameInfo(g)
+        val now = System.currentTimeMillis()
+        val comp = info.comp
+        val extra = if (comp != null) Broadcasts.channelsFor(comp.options, channelCards) else emptyList()
         val when0 = SportsTime.dayLabel(g.startMs, now, tz) + " " + SportsTime.clock(g.startMs, tz)
-        val hint = if (list.isNotEmpty()) {
+        val hint = if (info.matched.isNotEmpty()) {
             "Achei na sua lista. Se travar, volte e escolha outra fonte."
         } else {
-            "Este jogo não está em \"Jogos em Destaque\" da sua lista agora. Veja os canais de esporte abaixo " +
-                "ou use a busca. (A fonte de jogos não informa qual canal transmite na sua região.)"
+            "Este jogo ainda não está em \"Jogos em Destaque\" da sua lista. Veja abaixo os canais de quem costuma passar, " +
+                "os canais de esporte ou use a busca."
         }
         channelList = ChannelListRequest(
             title = g.home.short + " x " + g.away.short,
             subtitle = when0 + " · " + g.leagueName,
             hint = hint,
-            highlight = list,
+            highlight = info.matched,
             searchQuery = g.home.short,
+            extra = extra,
+            extraTitle = if (comp != null) "Costuma passar em: " + comp.options.take(4).joinToString(" · ") else "",
         )
+    }
+
+    // ---- lembretes
+
+    fun isReminded(g: Game): Boolean = reminders.any { it.gameKey == g.key }
+
+    /** Liga/desliga o lembrete do jogo. Devolve a frase para mostrar na tela. */
+    fun toggleReminder(g: Game): String {
+        val cur = reminders
+        val ex = cur.firstOrNull { it.gameKey == g.key }
+        if (ex != null) {
+            ReminderAlarms.cancel(appCtx, ex)
+            reminders = cur.filter { it.gameKey != g.key }
+            user.saveReminders(reminders)
+            return "Lembrete removido."
+        }
+        if (g.state != 0) return "Esse jogo já começou."
+        val r = Reminder(
+            gameKey = g.key,
+            title = g.home.short + " x " + g.away.short,
+            league = g.leagueName,
+            startMs = g.startMs,
+            homeId = g.home.id,
+            awayId = g.away.id,
+            homeName = g.home.name,
+            awayName = g.away.name,
+        )
+        reminders = (cur + r).sortedBy { it.startMs }
+        user.saveReminders(reminders)
+        ReminderAlarms.schedule(appCtx, r)
+        return "Pronto! Vou avisar 10 minutos antes do jogo."
+    }
+
+    private fun gameOf(r: Reminder): Game {
+        fun side(id: String, name: String, short: String) =
+            Side(id, name, short, null, null, listOf(Organizer.fold(name), Organizer.fold(short)).filter { it.isNotEmpty() })
+        val parts = r.title.split(" x ")
+        return Game(
+            id = r.gameKey.substringAfter('|'),
+            leagueSlug = r.gameKey.substringBefore('|'),
+            leagueName = r.league,
+            startMs = r.startMs,
+            state = 0,
+            detail = "",
+            home = side(r.homeId, r.homeName, parts.getOrElse(0) { r.homeName }),
+            away = side(r.awayId, r.awayName, parts.getOrElse(1) { r.awayName }),
+        )
+    }
+
+    /** Vê se algum lembrete chegou na hora (10 min antes do jogo). Chamado ao abrir o app e a cada meio minuto. */
+    fun checkReminders(now: Long) {
+        if (reminders.isEmpty()) return
+        val old = reminders.filter { it.startMs < now - 6L * 3_600_000L }
+        if (old.isNotEmpty()) {
+            reminders = reminders.filter { it.startMs >= now - 6L * 3_600_000L }
+            user.saveReminders(reminders)
+        }
+        if (dueReminder != null) return
+        dueReminder = reminders.firstOrNull { !it.seen && it.startMs - now <= ReminderAlarms.LEAD_MS && it.startMs > now - 3L * 3_600_000L }
+    }
+
+    fun dismissDue(openChannels: Boolean) {
+        val r = dueReminder ?: return
+        dueReminder = null
+        reminders = reminders.map { if (it.gameKey == r.gameKey) it.withSeen(true) else it }
+        user.saveReminders(reminders)
+        if (openChannels) openGameChannels(gameOf(r))
+    }
+
+    // ---- outros esportes
+
+    private fun sportCategoryNames(): List<String> {
+        val c = catalog ?: return emptyList()
+        return SportsChannels.sportCategories(c.channelCategories)
     }
 
     /** Toque em Fórmula 1 / UFC / Tênis: mostra os canais da lista para aquele esporte. */
@@ -619,13 +925,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val c = catalog ?: return
         val ev = sportEvents[kind]
         val now = System.currentTimeMillis()
-        val tz = java.util.TimeZone.getDefault()
         val sub = if (ev == null) {
             "Sem data confirmada agora"
         } else {
             ev.name + " · " + SportsTime.dayLabel(ev.startMs, now, tz) + " " + SportsTime.clock(ev.startMs, tz)
         }
-        val list = SportsChannels.forKind(kind, c.channels)
+        val list = SportsChannels.forKind(kind, channelCards)
+        val key = when (kind) {
+            SportKind.F1 -> "f1"
+            SportKind.UFC -> "ufc"
+            SportKind.TENNIS -> "tennis"
+        }
+        val comp = BroadcastStore.table.forKey(key)
+        val extra = if (comp != null) Broadcasts.channelsFor(comp.options, channelCards).filter { e -> list.none { it.key == e.key } } else emptyList()
         val hint = if (list.isNotEmpty()) {
             "Canais da sua lista para ${kind.label}."
         } else {
@@ -636,7 +948,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             SportKind.UFC -> "UFC"
             SportKind.TENNIS -> "tenis"
         }
-        channelList = ChannelListRequest(kind.label, sub, hint, list, q)
+        channelList = ChannelListRequest(
+            kind.label, sub, hint, list, q,
+            extra = extra,
+            extraTitle = if (comp != null) "Costuma passar em: " + comp.options.joinToString(" · ") else "",
+        )
     }
 
     fun sportCategoriesForList(): List<String> = sportCategoryNames()

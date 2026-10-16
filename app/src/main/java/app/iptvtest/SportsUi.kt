@@ -1,6 +1,7 @@
 package app.iptvtest
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
@@ -161,6 +164,8 @@ fun GameCard(
     channelCount: Int,
     focusId: String,
     modifier: Modifier = Modifier,
+    fav: Boolean = false,
+    reminded: Boolean = false,
     onClick: () -> Unit,
 ) {
     val fr = restoringRequester(focusId)
@@ -174,14 +179,19 @@ fun GameCard(
     ) { focused ->
         Column(
             modifier = Modifier
-                .background(if (focused) PanelAlt else Panel)
+                .background(if (focused) PanelAlt else if (fav) Color(0xFF2B1A10) else Panel)
+                .then(if (fav) Modifier.border(2.5.dp, Accent, RoundedCornerShape(10.dp)) else Modifier)
                 .padding(12.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                if (fav) {
+                    Text("★ ", color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold)
+                }
                 Text(
                     text = game.leagueName,
-                    color = Muted,
+                    color = if (fav) Accent else Muted,
                     fontSize = 11.sp,
+                    fontWeight = if (fav) FontWeight.Bold else FontWeight.Normal,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
@@ -197,11 +207,12 @@ fun GameCard(
             Spacer(Modifier.height(10.dp))
             Text(
                 text = when {
+                    reminded -> "⏰ Lembrete ligado"
                     channelCount == 1 -> "▶ 1 canal na sua lista"
                     channelCount > 1 -> "▶ $channelCount canais na sua lista"
-                    else -> "Ver onde assistir"
+                    else -> "Toque para ver detalhes"
                 },
-                color = if (channelCount > 0) Good else Muted,
+                color = if (reminded) Warn else if (channelCount > 0) Good else Muted,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
@@ -211,7 +222,7 @@ fun GameCard(
 }
 
 @Composable
-private fun EditTeamsTile(onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun EditTeamsTile(label: String, sub: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     FocusBox(modifier = modifier, onClick = onClick) { focused ->
         Box(
             modifier = Modifier
@@ -220,37 +231,38 @@ private fun EditTeamsTile(onClick: () -> Unit, modifier: Modifier = Modifier) {
             contentAlignment = Alignment.Center,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Meus times", color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text(label, color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(4.dp))
-                Text("escolher ou trocar", color = Muted, fontSize = 12.sp)
+                Text(sub, color = Muted, fontSize = 12.sp)
             }
         }
     }
 }
 
-/** Faixa do topo do Início: os jogos de hoje/amanhã dos times escolhidos (ou o convite para escolher). */
+/** Faixa do topo do Início: jogos dos meus times (★) e das ligas escolhidas (ou o convite para escolher). */
 @Composable
 fun GamesSection(vm: MainViewModel, now: Long) {
     val teams = vm.favTeams
+    val leagues = vm.favLeagues
     Column {
-        SectionTitle("Jogos dos seus times")
+        SectionTitle(if (leagues.isEmpty()) "Jogos dos seus times" else "Jogos dos seus times e ligas")
         Spacer(Modifier.height(6.dp))
-        if (teams.isEmpty()) {
+        if (teams.isEmpty() && leagues.isEmpty()) {
             Row(
                 modifier = Modifier.padding(horizontal = 48.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
-                    "Escolha até 5 times e os jogos deles aparecem aqui todo dia.",
+                    "Escolha até 5 times e 3 ligas e os jogos deles aparecem aqui todo dia.",
                     color = Muted,
                     fontSize = 14.sp,
                 )
-                TvButton(text = "Escolher times", primary = true) { vm.openPicker() }
+                TvButton(text = "Escolher times e ligas", primary = true) { vm.openPicker() }
             }
             return@Column
         }
-        val shown = vm.shownGames(now)
+        val shown = vm.stripGames(now)
         if (shown.isEmpty()) {
             Row(
                 modifier = Modifier.padding(horizontal = 48.dp, vertical = 8.dp),
@@ -262,7 +274,7 @@ fun GamesSection(vm: MainViewModel, now: Long) {
                     text = when {
                         vm.gamesLoading -> "Buscando os jogos..."
                         err != null -> err
-                        else -> "Nenhum jogo dos seus times nos próximos dias."
+                        else -> "Nenhum jogo dos seus times e ligas hoje ou amanhã."
                     },
                     color = Muted,
                     fontSize = 14.sp,
@@ -270,7 +282,8 @@ fun GamesSection(vm: MainViewModel, now: Long) {
                 if (!vm.gamesLoading && err != null) {
                     TvButton(text = "Tentar de novo") { vm.refreshSports(force = true) }
                 }
-                TvButton(text = "Meus times") { vm.openPicker() }
+                TvButton(text = "Ver todos") { vm.openAllGames() }
+                TvButton(text = "Meus times e ligas") { vm.openPicker() }
             }
             return@Column
         }
@@ -278,18 +291,237 @@ fun GamesSection(vm: MainViewModel, now: Long) {
             contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            items(shown, key = { it.key }) { g ->
+            items(shown, key = { it.game.key }) { sg ->
                 GameCard(
-                    game = g,
+                    game = sg.game,
                     now = now,
-                    channelCount = vm.gameChannelCount(g),
-                    focusId = "game|" + g.key,
+                    channelCount = vm.gameChannelCount(sg.game),
+                    focusId = "game|" + sg.game.key,
                     modifier = Modifier.width(262.dp),
-                    onClick = { vm.openGame(g) },
+                    fav = sg.fav,
+                    reminded = vm.isReminded(sg.game),
+                    onClick = { vm.showGame(sg.game) },
                 )
             }
+            item(key = "__all") {
+                EditTeamsTile("Ver todos", "próximos dias", onClick = { vm.openAllGames() }, modifier = Modifier.width(140.dp).height(132.dp))
+            }
             item(key = "__teams") {
-                EditTeamsTile(onClick = { vm.openPicker() }, modifier = Modifier.width(140.dp).height(132.dp))
+                EditTeamsTile("Meus times e ligas", "escolher ou trocar", onClick = { vm.openPicker() }, modifier = Modifier.width(150.dp).height(132.dp))
+            }
+        }
+    }
+}
+
+// =========================================================================
+// Pop-up do jogo: informações básicas, onde costuma passar e lembrete
+// =========================================================================
+
+@Composable
+fun GameDialog(vm: MainViewModel, g: Game) {
+    val tz = remember { TimeZone.getDefault() }
+    val now = remember(g.key) { System.currentTimeMillis() }
+    val info = remember(g.key, vm.catalog) { vm.gameInfo(g) }
+    var notice by remember(g.key) { mutableStateOf<String?>(null) }
+    val reminded = vm.isReminded(g)
+    val first = remember { FocusRequester() }
+    LaunchedEffect(g.key) {
+        delay(80)
+        try {
+            first.requestFocus()
+        } catch (e: Exception) {
+            // o botão ainda não estava na tela
+        }
+    }
+    Dialog(
+        onDismissRequest = { vm.closeGame() },
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Column(
+            modifier = Modifier
+                .width(640.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color(0xFF151416))
+                .border(1.dp, PanelAlt, RoundedCornerShape(16.dp))
+                .padding(22.dp),
+        ) {
+            Text(
+                text = g.leagueName + " · " + SportsTime.dayLabel(g.startMs, now, tz) + " " + SportsTime.clock(g.startMs, tz),
+                color = Muted,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Spacer(Modifier.height(12.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    TeamLogo(g.home.logo, 64)
+                    Spacer(Modifier.height(6.dp))
+                    Text(g.home.short, color = TextMain, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+                Text(
+                    text = if (g.state == 0) "x" else (g.home.score ?: "-") + "  x  " + (g.away.score ?: "-"),
+                    color = TextMain,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(horizontal = 14.dp),
+                )
+                Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    TeamLogo(g.away.logo, 64)
+                    Spacer(Modifier.height(6.dp))
+                    Text(g.away.short, color = TextMain, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+            }
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = when (g.state) {
+                    1 -> "AO VIVO" + (if (g.detail.isEmpty()) "" else " · " + g.detail)
+                    2 -> "Encerrado"
+                    else -> "Começa " + SportsTime.dayLabel(g.startMs, now, tz).lowercase() + " às " + SportsTime.clock(g.startMs, tz) + " (hora daqui)"
+                },
+                color = if (g.state == 1) Good else TextMain,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+
+            Spacer(Modifier.height(14.dp))
+            val comp = info.comp
+            if (comp != null) {
+                Text("Costuma passar em", color = Muted, fontSize = 12.sp)
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = Broadcasts.line(comp.options, info.inList),
+                    color = TextMain,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                if (comp.note.isNotEmpty()) {
+                    Text(comp.note, color = Muted, fontSize = 12.sp)
+                }
+                Text(
+                    text = "✓ = tem na sua lista. Pode variar por jogo e por região (tabela de " + info.tableDate + ").",
+                    color = Muted,
+                    fontSize = 11.sp,
+                )
+                if (comp.options.size < 2) {
+                    Text("Só tenho uma opção registrada: confira também os canais de esporte da sua lista.", color = Warn, fontSize = 12.sp)
+                }
+            } else {
+                Text(
+                    "Ainda não tenho o registro de onde esse campeonato passa no Brasil. Veja os canais de esporte da sua lista.",
+                    color = Muted,
+                    fontSize = 13.sp,
+                )
+            }
+            if (info.matched.isNotEmpty()) {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = if (info.matched.size == 1) "▶ Achei 1 canal desse jogo na sua lista" else "▶ Achei ${info.matched.size} canais desse jogo na sua lista",
+                    color = Good,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                if (info.matched.isNotEmpty()) {
+                    TvButton(text = "Assistir agora", primary = true, focusRequester = first) { vm.watchNow(g) }
+                    TvButton(text = "Ver canais") { vm.openGameChannels(g) }
+                } else {
+                    TvButton(text = "Ver canais", primary = true, focusRequester = first) { vm.openGameChannels(g) }
+                }
+                if (g.state == 0) {
+                    TvButton(text = if (reminded) "⏰ Lembrete ligado" else "⏰ Lembrar") {
+                        notice = vm.toggleReminder(g)
+                    }
+                }
+                TvButton(text = "Fechar") { vm.closeGame() }
+            }
+            val n = notice
+            if (n != null) {
+                Spacer(Modifier.height(8.dp))
+                Text(n, color = Warn, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+            }
+        }
+    }
+}
+
+// =========================================================================
+// "Ver todos": jogos dos próximos dias agrupados por dia
+// =========================================================================
+
+@Composable
+fun AllGamesScreen(vm: MainViewModel) {
+    val tz = remember { TimeZone.getDefault() }
+    var now by remember { mutableStateOf(System.currentTimeMillis()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            now = System.currentTimeMillis()
+            delay(30_000L)
+        }
+    }
+    val days = vm.gamesByDay(now)
+    val loading = vm.allGamesLoading
+    val err = vm.allGamesError
+
+    LazyVerticalGrid(
+        state = rememberLazyGridState(),
+        columns = GridCells.Adaptive(262.dp),
+        contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        item(key = "head", span = { GridItemSpan(maxLineSpan) }) {
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    TvButton(text = "Voltar") { vm.back() }
+                    Spacer(Modifier.width(16.dp))
+                    Column {
+                        Text("Próximos jogos", color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                        val parts = ArrayList<String>()
+                        if (vm.favTeams.isNotEmpty()) parts.add("★ " + vm.favTeams.joinToString(", ") { it.short })
+                        for (l in vm.favLeagues) parts.add(SportsData.leagueLabel(l, l))
+                        Text(
+                            parts.joinToString(" · ").ifEmpty { "Escolha times e ligas para ver os jogos aqui." },
+                            color = Muted,
+                            fontSize = 13.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
+                if (loading) {
+                    Spacer(Modifier.height(8.dp))
+                    Text("Buscando os jogos...", color = Muted, fontSize = 13.sp)
+                } else if (err != null) {
+                    Spacer(Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(err, color = ErrorColor, fontSize = 13.sp)
+                        TvButton(text = "Tentar de novo") { vm.loadAllGames(force = true) }
+                    }
+                } else if (days.isEmpty()) {
+                    Spacer(Modifier.height(8.dp))
+                    Text("Nenhum jogo nos próximos dias.", color = Muted, fontSize = 13.sp)
+                }
+            }
+        }
+        for ((day, list) in days) {
+            item(key = "day|$day", span = { GridItemSpan(maxLineSpan) }) {
+                val label = SportsTime.dayLabel(day * SportsTime.DAY + SportsTime.DAY / 2 - tz.rawOffset, now, tz)
+                Text(label, color = Accent, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 6.dp))
+            }
+            gridItems(list, key = { "g|" + it.game.key }) { sg ->
+                GameCard(
+                    game = sg.game,
+                    now = now,
+                    channelCount = vm.gameChannelCount(sg.game),
+                    focusId = "all|" + sg.game.key,
+                    modifier = Modifier.fillMaxWidth(),
+                    fav = sg.fav,
+                    reminded = vm.isReminded(sg.game),
+                    onClick = { vm.showGame(sg.game) },
+                )
             }
         }
     }
@@ -518,12 +750,63 @@ private fun CountryTeams(vm: MainViewModel, country: Country, onNotice: (String?
     }
 }
 
+private const val LEAGUES = "__leagues"
+
+@Composable
+private fun LeagueCard(label: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    FocusBox(modifier = modifier, onClick = onClick) { focused ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(if (selected) AccentDark else if (focused) PanelAlt else Panel)
+                .padding(14.dp),
+        ) {
+            Text(label, color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(
+                text = if (selected) "✓ Escolhida" else " ",
+                color = if (selected) Color.White else Muted,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.ExtraBold,
+                maxLines = 1,
+            )
+        }
+    }
+}
+
+@Composable
+private fun LeaguePicker(vm: MainViewModel, onNotice: (String?) -> Unit) {
+    LazyVerticalGrid(
+        state = rememberLazyGridState(),
+        columns = GridCells.Adaptive(220.dp),
+        contentPadding = PaddingValues(horizontal = 48.dp, vertical = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        for ((group, slugs) in SportsData.leagueGroups) {
+            item(key = "h|$group", span = { GridItemSpan(maxLineSpan) }) {
+                Text(group, color = Accent, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 6.dp))
+            }
+            gridItems(slugs, key = { "l|$it" }) { slug ->
+                LeagueCard(
+                    label = SportsData.leagueLabel(slug, slug),
+                    selected = vm.isFavLeague(slug),
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onNotice(vm.toggleFavLeague(slug)) },
+                )
+            }
+        }
+    }
+}
+
 @Composable
 fun TeamPickerScreen(vm: MainViewModel) {
     val code = vm.pickerCountry
-    val country = if (code == null) null else SportsData.country(code)
+    val isLeagues = code == LEAGUES
+    val country = if (code == null || isLeagues) null else SportsData.country(code)
     var notice by remember { mutableStateOf<String?>(null) }
     val chosen = vm.favTeams
+    val leagues = vm.favLeagues
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -535,29 +818,49 @@ fun TeamPickerScreen(vm: MainViewModel) {
             TvButton(text = "Voltar") { vm.back() }
             Spacer(Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text("Times favoritos", color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
                 Text(
-                    text = if (country == null) {
-                        "Escolha o país do seu time (até 5 times no total)."
-                    } else {
-                        country.name + " · aperte OK para escolher ou tirar um time."
+                    text = if (isLeagues) "Ligas favoritas" else "Times e ligas favoritos",
+                    color = TextMain,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+                Text(
+                    text = when {
+                        isLeagues -> "Escolha até ${SportsData.MAX_LEAGUES} competições: todos os jogos delas de hoje e amanhã aparecem no Início."
+                        country == null -> "Escolha o país do seu time (até 5 times) ou escolha ligas (até ${SportsData.MAX_LEAGUES})."
+                        else -> country.name + " · aperte OK para escolher ou tirar um time."
                     },
                     color = Muted,
                     fontSize = 13.sp,
                 )
             }
-            Text("${chosen.size}/5", color = if (chosen.size >= 5) Accent else TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+            Text(
+                text = "${chosen.size}/5 times · ${leagues.size}/${SportsData.MAX_LEAGUES} ligas",
+                color = TextMain,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.ExtraBold,
+            )
             Spacer(Modifier.width(14.dp))
+            if (code == null) {
+                TvButton(text = "Escolher ligas") {
+                    notice = null
+                    vm.pickCountry(LEAGUES)
+                }
+                Spacer(Modifier.width(10.dp))
+            }
             TvButton(text = "Concluir", primary = true) { vm.closePicker() }
         }
 
-        if (chosen.isNotEmpty()) {
+        if (chosen.isNotEmpty() || leagues.isNotEmpty()) {
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 48.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                items(chosen, key = { it.id }) { t ->
-                    ChipItem(text = t.short + "  ✕", selected = true) { notice = vm.toggleFavTeam(t) }
+                items(chosen, key = { "t|" + it.id }) { t ->
+                    ChipItem(text = "★ " + t.short + "  ✕", selected = true) { notice = vm.toggleFavTeam(t) }
+                }
+                items(leagues, key = { "l|$it" }) { slug ->
+                    ChipItem(text = SportsData.leagueLabel(slug, slug) + "  ✕", selected = true) { notice = vm.toggleFavLeague(slug) }
                 }
             }
         }
@@ -566,7 +869,9 @@ fun TeamPickerScreen(vm: MainViewModel) {
             Text(n, color = Warn, fontSize = 13.sp, modifier = Modifier.padding(horizontal = 48.dp, vertical = 4.dp))
         }
 
-        if (country == null) {
+        if (isLeagues) {
+            LeaguePicker(vm, onNotice = { notice = it })
+        } else if (country == null) {
             LazyVerticalGrid(
                 state = rememberLazyGridState(),
                 columns = GridCells.Adaptive(210.dp),
@@ -603,7 +908,7 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
     val cats = remember(cat) { vm.sportCategoriesForList() }
     var selected by rememberSaveable { mutableStateOf(cats.firstOrNull() ?: "") }
     val list = remember(selected, cat) {
-        if (cat == null || selected.isEmpty()) emptyList() else cat.channels.filter { it.category == selected }
+        if (cat == null || selected.isEmpty()) emptyList() else vm.channelsInCategory(selected)
     }
 
     LazyVerticalGrid(
@@ -638,6 +943,30 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
                     ch = ch,
                     stability = vm.channelStability(ch),
                     focusId = "hl|" + ch.key,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { vm.playChannel(ch) },
+                )
+            }
+        }
+        if (req.extra.isNotEmpty()) {
+            item(key = "extra-head", span = { GridItemSpan(maxLineSpan) }) {
+                Column {
+                    Text(
+                        "Canais que costumam passar",
+                        color = TextMain,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                    )
+                    if (req.extraTitle.isNotEmpty()) {
+                        Text(req.extraTitle + " (pode variar por jogo)", color = Muted, fontSize = 12.sp)
+                    }
+                }
+            }
+            gridItems(req.extra, key = { "ex|" + it.key }) { ch ->
+                ChannelTile(
+                    ch = ch,
+                    stability = vm.channelStability(ch),
+                    focusId = "ex|" + ch.key,
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { vm.playChannel(ch) },
                 )
@@ -688,23 +1017,32 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
 @Composable
 fun FavTeamsSettings(vm: MainViewModel) {
     Column {
-        Text("Times favoritos", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Text("Times e ligas favoritos", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.height(4.dp))
         Text(
-            text = if (vm.favTeams.isEmpty()) {
-                "Nenhum time escolhido. Os jogos deles aparecem no topo do Início."
+            text = if (vm.favTeams.isEmpty() && vm.favLeagues.isEmpty()) {
+                "Nada escolhido. Os jogos de times e ligas aparecem no topo do Início."
             } else {
-                "${vm.favTeams.size}/5 · os jogos deles aparecem no topo do Início."
+                "${vm.favTeams.size}/5 times · ${vm.favLeagues.size}/${SportsData.MAX_LEAGUES} ligas · os jogos aparecem no topo do Início."
             },
             color = Muted,
             fontSize = 14.sp,
         )
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-            TvButton(text = if (vm.favTeams.isEmpty()) "Escolher times" else "Trocar times") { vm.openPicker() }
+            TvButton(text = if (vm.favTeams.isEmpty() && vm.favLeagues.isEmpty()) "Escolher times e ligas" else "Trocar times e ligas") { vm.openPicker() }
             for (t in vm.favTeams) {
-                Text(t.short, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text("★ " + t.short, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            }
+            for (l in vm.favLeagues) {
+                Text(SportsData.leagueLabel(l, l), color = Muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Onde costuma passar: tabela de " + BroadcastStore.table.updatedPretty() + " (atualizada todo mês).",
+            color = Muted,
+            fontSize = 12.sp,
+        )
     }
 }

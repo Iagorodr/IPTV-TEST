@@ -1,5 +1,7 @@
 package app.iptvtest
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -28,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -216,7 +222,7 @@ fun TopNav(vm: MainViewModel) {
         NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
         NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
         NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
-        NavItem("Minha lista", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
+        NavItem("Meus favoritos", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
         Spacer(Modifier.weight(1f))
         if (vm.refreshing) {
             Text("Atualizando catálogo...", color = Muted, fontSize = 12.sp)
@@ -231,10 +237,10 @@ fun TopNav(vm: MainViewModel) {
 fun TabScreen(vm: MainViewModel) {
     when (vm.tab) {
         Tab.HOME -> HomeTab(vm)
-        Tab.MOVIES -> ShelfTab(vm, vm.movieShelves)
-        Tab.SERIES -> ShelfTab(vm, vm.seriesShelves)
+        Tab.MOVIES -> ShelfTab(vm, vm.movieShelves, vm.heroMovies)
+        Tab.SERIES -> ShelfTab(vm, vm.seriesShelves, vm.heroSeries)
         Tab.CHANNELS -> ChannelsTab(vm)
-        Tab.LIST -> MyListTab(vm)
+        Tab.LIST -> FavoritesTab(vm)
         Tab.SEARCH -> SearchTab(vm)
         Tab.SETTINGS -> SettingsTab(vm)
     }
@@ -244,14 +250,10 @@ fun TabScreen(vm: MainViewModel) {
 // Início, Filmes, Séries
 // =========================================================================
 
+/** Texto e capa do destaque (a parte que troca com um esmaecer; os botões ficam fixos por cima). */
 @Composable
-private fun HeroBanner(vm: MainViewModel, t: Title) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(250.dp)
-            .background(Brush.horizontalGradient(listOf(AccentDark, Bg))),
-    ) {
+private fun HeroContent(t: Title) {
+    Box(modifier = Modifier.fillMaxSize()) {
         val img = t.image
         if (img != null) {
             AsyncImage(
@@ -261,15 +263,15 @@ private fun HeroBanner(vm: MainViewModel, t: Title) {
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .padding(end = 72.dp)
-                    .height(210.dp)
+                    .height(230.dp)
                     .aspectRatio(2f / 3f)
                     .clip(RoundedCornerShape(12.dp)),
             )
         }
         Column(
             modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 48.dp)
+                .align(Alignment.TopStart)
+                .padding(start = 48.dp, top = 22.dp)
                 .width(560.dp),
         ) {
             Text("EM DESTAQUE", color = Accent, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold)
@@ -286,10 +288,60 @@ private fun HeroBanner(vm: MainViewModel, t: Title) {
                 Spacer(Modifier.height(6.dp))
                 Text(t.plot, color = TextMain, fontSize = 14.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
-            Spacer(Modifier.height(14.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                TvButton(text = "Ver detalhes", primary = true) { vm.open(t) }
-                TvButton(text = if (vm.inMyList(t.key)) "✓ Minha lista" else "+ Minha lista") { vm.toggleMyList(t.key) }
+        }
+    }
+}
+
+/**
+ * Destaques que trocam sozinhos (ordem aleatória, a cada 7 s) com um esmaecer. Quando a pessoa põe o cursor
+ * nos botões, a troca pausa para o botão sempre abrir o título que ela está vendo.
+ */
+@Composable
+private fun HeroCarousel(vm: MainViewModel, titles: List<Title>) {
+    if (titles.isEmpty()) return
+    var idx by remember(titles) { mutableIntStateOf(0) }
+    var paused by remember { mutableStateOf(false) }
+    LaunchedEffect(titles, paused) {
+        while (!paused && titles.size > 1) {
+            delay(7_000L)
+            idx = (idx + 1) % titles.size
+        }
+    }
+    val t = titles[idx.coerceIn(0, titles.size - 1)]
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(285.dp)
+            .background(Brush.horizontalGradient(listOf(AccentDark, Bg))),
+    ) {
+        Crossfade(targetState = t, animationSpec = tween(700), label = "hero") { cur ->
+            HeroContent(cur)
+        }
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(start = 48.dp, bottom = 16.dp)
+                .onFocusChanged { paused = it.hasFocus },
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            TvButton(text = "Ver detalhes", primary = true) { vm.open(t) }
+            TvButton(text = if (vm.inMyList(t.key)) "✓ Favoritos" else "+ Favoritos") { vm.toggleMyList(t.key) }
+        }
+        if (titles.size > 1) {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 72.dp, bottom = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+            ) {
+                for (i in titles.indices) {
+                    Box(
+                        modifier = Modifier
+                            .size(if (i == idx) 9.dp else 6.dp)
+                            .clip(CircleShape)
+                            .background(if (i == idx) Accent else PanelAlt),
+                    )
+                }
             }
         }
     }
@@ -299,9 +351,9 @@ private fun HeroBanner(vm: MainViewModel, t: Title) {
 fun HomeTab(vm: MainViewModel) {
     val cont = vm.continueEntries()
     val mine = vm.myListTitles()
-    val mineShelf = remember(mine) { Shelf("Minha lista", mine) }
+    val mineShelf = remember(mine) { Shelf("Meus favoritos", mine) }
     val favs = vm.favoriteChannels()
-    val hero = vm.featured
+    val hero = vm.heroAll
 
     // "agora" para os horários dos jogos; também puxa jogos novos ao entrar e a cada meio minuto
     var now by remember { mutableStateOf(System.currentTimeMillis()) }
@@ -322,8 +374,8 @@ fun HomeTab(vm: MainViewModel) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item(key = "games") { GamesSection(vm, now) }
-            if (hero != null) {
-                item(key = "hero") { HeroBanner(vm, hero) }
+            if (hero.isNotEmpty()) {
+                item(key = "hero") { HeroCarousel(vm, hero) }
             }
             item(key = "sports") { SportEventsRow(vm, now) }
             if (cont.isNotEmpty()) {
@@ -370,7 +422,7 @@ fun HomeTab(vm: MainViewModel) {
 }
 
 @Composable
-fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>) {
+fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         if (shelves.isEmpty()) {
@@ -381,9 +433,12 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>) {
             LazyColumn(
                 state = rememberLazyListState(),
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(top = 4.dp, bottom = 40.dp),
+                contentPadding = PaddingValues(top = 0.dp, bottom = 40.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+                if (hero.isNotEmpty()) {
+                    item(key = "hero") { HeroCarousel(vm, hero) }
+                }
                 items(shelves, key = { it.name }) { s ->
                     ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
                 }
@@ -453,14 +508,7 @@ fun SearchTab(vm: MainViewModel) {
             vm.allTitles.filter { it.fold.contains(f) }.sortedByDescending { it.score() }.take(150)
         }
     }
-    val chans = remember(q, cat) {
-        val f = Organizer.fold(q)
-        if (f.length < 2 || cat == null) {
-            emptyList()
-        } else {
-            cat.channels.filter { it.fold.contains(f) }.take(30)
-        }
-    }
+    val chans = remember(q, cat) { vm.searchChannels(q) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
@@ -526,64 +574,119 @@ fun SearchTab(vm: MainViewModel) {
 }
 
 // =========================================================================
-// Minha lista
+// Meus favoritos: jogos de hoje + filmes/séries salvos + canais favoritos
 // =========================================================================
 
 @Composable
-fun MyListTab(vm: MainViewModel) {
+fun FavoritesTab(vm: MainViewModel) {
     val mine = vm.myListTitles()
     val favs = vm.favoriteChannels()
-    val mineShelf = remember(mine) { Shelf("Minha lista", mine) }
+    val mineShelf = remember(mine) { Shelf("Meus filmes e séries", mine) }
+
+    var now by remember { mutableStateOf(System.currentTimeMillis()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            now = System.currentTimeMillis()
+            vm.loadPopular()
+            vm.refreshSports()
+            delay(30_000L)
+        }
+    }
+    val today = vm.todayGames(now)
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
-        if (mine.isEmpty() && favs.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    "Sua lista está vazia.\nAbra um filme ou série e escolha \"+ Minha lista\".\nNos canais, use a estrela ★ dentro do player.",
-                    color = Muted,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        } else {
-            LazyColumn(
-                state = rememberLazyListState(),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(top = 4.dp, bottom = 40.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-            ) {
-                if (mine.isNotEmpty()) {
-                    item(key = "mine") {
-                        ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
-                    }
-                }
-                if (favs.isNotEmpty()) {
-                    item(key = "favch") {
-                        Column {
-                            Text(
-                                "Canais favoritos",
-                                color = TextMain,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.ExtraBold,
-                                modifier = Modifier.padding(horizontal = 48.dp),
-                            )
-                            Spacer(Modifier.height(6.dp))
-                            LazyRow(
-                                contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(14.dp),
-                            ) {
-                                items(favs, key = { it.key }) { c ->
-                                    ChannelTile(
-                                        ch = c,
-                                        stability = vm.channelStability(c),
-                                        focusId = "fav|" + c.key,
-                                        modifier = Modifier.width(190.dp),
-                                        onClick = { vm.playChannel(c) },
-                                    )
-                                }
+        LazyColumn(
+            state = rememberLazyListState(),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(top = 4.dp, bottom = 40.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            item(key = "today") {
+                Column {
+                    Text(
+                        "Jogos de hoje",
+                        color = TextMain,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.padding(horizontal = 48.dp),
+                    )
+                    Text(
+                        "Os mais populares primeiro. ★ = jogo de um time seu.",
+                        color = Muted,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(horizontal = 48.dp),
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    if (today.isEmpty()) {
+                        Text(
+                            text = if (vm.popLoading) "Buscando os jogos..." else "Nenhum jogo de hoje nas principais ligas.",
+                            color = Muted,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(horizontal = 48.dp, vertical = 8.dp),
+                        )
+                    } else {
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(14.dp),
+                        ) {
+                            items(today, key = { it.game.key }) { sg ->
+                                GameCard(
+                                    game = sg.game,
+                                    now = now,
+                                    channelCount = vm.gameChannelCount(sg.game),
+                                    focusId = "today|" + sg.game.key,
+                                    modifier = Modifier.width(262.dp),
+                                    fav = sg.fav,
+                                    reminded = vm.isReminded(sg.game),
+                                    onClick = { vm.showGame(sg.game) },
+                                )
                             }
                         }
                     }
+                }
+            }
+            if (mine.isNotEmpty()) {
+                item(key = "mine") {
+                    ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
+                }
+            }
+            if (favs.isNotEmpty()) {
+                item(key = "favch") {
+                    Column {
+                        Text(
+                            "Canais favoritos",
+                            color = TextMain,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            modifier = Modifier.padding(horizontal = 48.dp),
+                        )
+                        Spacer(Modifier.height(6.dp))
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(14.dp),
+                        ) {
+                            items(favs, key = { it.key }) { c ->
+                                ChannelTile(
+                                    ch = c,
+                                    stability = vm.channelStability(c),
+                                    focusId = "fav|" + c.key,
+                                    modifier = Modifier.width(190.dp),
+                                    onClick = { vm.playChannel(c) },
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            if (mine.isEmpty() && favs.isEmpty()) {
+                item(key = "hint") {
+                    Text(
+                        "Aqui também ficam seus filmes e séries (botão \"+ Favoritos\" no título) e seus canais (estrela ★ no player).",
+                        color = Muted,
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(horizontal = 48.dp),
+                    )
                 }
             }
         }

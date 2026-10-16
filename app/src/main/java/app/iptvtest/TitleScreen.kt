@@ -337,7 +337,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                             Spacer(Modifier.height(14.dp))
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
                                 TvButton(text = watchLabel, primary = true, focusRequester = firstPlay) { play() }
-                                TvButton(text = if (vm.inMyList(title.key)) "✓ Minha lista" else "+ Minha lista") {
+                                TvButton(text = if (vm.inMyList(title.key)) "✓ Favoritos" else "+ Favoritos") {
                                     vm.toggleMyList(title.key)
                                 }
                             }

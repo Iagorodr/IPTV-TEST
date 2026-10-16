@@ -29,56 +29,68 @@ import androidx.compose.foundation.lazy.grid.items as gridItems
 
 private const val ALL = "__all"
 private const val FAVS = "__favs"
+private const val K4 = "__4k"
+private const val YT = "__yt"
 
 /**
- * Canais ao vivo: um cartão por canal (as dezenas de cópias do mesmo canal ficam dentro dele,
- * como "fontes" que a pessoa pode trocar dentro do player).
+ * Canais ao vivo: um cartão por canal (as cópias do mesmo canal ficam dentro dele, como "fontes"), as marcas de TV
+ * (Globo, Record, SBT, Band, RedeTV) num cartão só com as praças dentro, e poucas pastas.
  */
 @Composable
 fun ChannelsTab(vm: MainViewModel) {
     val cat = vm.catalog
+    val groups = vm.channelGroups
     var selected by rememberSaveable { mutableStateOf(ALL) }
     val favs = vm.favoriteChannels()
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
-        if (cat == null || cat.channels.isEmpty()) {
+        if (cat == null || groups.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Nenhum canal encontrado nesta lista.", color = Muted)
             }
             return@Column
         }
 
+        val all = remember(groups) { groups.flatMap { it.second } }
         val sel = if (selected == FAVS && favs.isEmpty()) ALL else selected
         LazyRow(
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             item(key = ALL) {
-                ChipItem(text = "Todos (${cat.channels.size})", selected = sel == ALL) { selected = ALL }
+                ChipItem(text = "Todos (${all.size})", selected = sel == ALL) { selected = ALL }
             }
             if (favs.isNotEmpty()) {
                 item(key = FAVS) {
                     ChipItem(text = "★ Favoritos (${favs.size})", selected = sel == FAVS) { selected = FAVS }
                 }
             }
-            items(cat.channelCategories, key = { it }) { name ->
-                ChipItem(text = name, selected = sel == name) { selected = name }
+            items(groups, key = { it.first }) { g ->
+                ChipItem(text = g.first + " (${g.second.size})", selected = sel == g.first) { selected = g.first }
+            }
+            item(key = K4) {
+                ChipItem(text = "4K", selected = sel == K4) { selected = K4 }
+            }
+            item(key = YT) {
+                ChipItem(text = "YouTube", selected = sel == YT) { selected = YT }
             }
         }
 
-        val list = remember(sel, cat, favs) {
+        val list = remember(sel, groups, favs) {
             when (sel) {
-                ALL -> cat.channels
+                ALL -> all
                 FAVS -> favs
-                else -> cat.channels.filter { it.category == sel }
+                K4 -> all.filter { ChannelGroups.has4k(it) }
+                YT -> all.filter { ChannelGroups.isYoutube(it) }
+                else -> groups.firstOrNull { it.first == sel }?.second ?: emptyList()
             }
         }
 
         Row(modifier = Modifier.padding(horizontal = 44.dp, vertical = 4.dp)) {
             Text(
                 text = "${list.size} canais · a bolinha mostra a estabilidade medida (cinza = ainda não testado). " +
-                    "Dentro do canal, o botão Fontes deixa você escolher e testar.",
+                    "Nos cartões de TV (Globo, Record...) você escolhe a praça dentro do player.",
                 color = Muted,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Normal,

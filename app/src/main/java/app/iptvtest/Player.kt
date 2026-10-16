@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -124,12 +126,21 @@ private fun liveItem(url: String): MediaItem =
         .build()
 
 @Composable
-fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
+fun PlayerScreen(
+    req: PlaybackRequest,
+    user: UserData,
+    onExit: () -> Unit,
+    onVariant: (Channel, Variant) -> Unit = { _, _ -> },
+    currentVariantKey: (Channel) -> String = { "" },
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val liveInfo = req.live
     val channel = liveInfo?.channel
     val isLive = req.isLive && liveInfo != null && channel != null
+    // marca (Globo...) tocando uma praça: favoritar vale para a marca toda
+    val brand = liveInfo?.brand
+    val favKey = brand?.key ?: channel?.key
 
     val exo = remember {
         val http = DefaultHttpDataSource.Factory()
@@ -181,7 +192,8 @@ fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
     var testingId by remember { mutableStateOf<String?>(null) }
     var autoSwitch by remember { mutableStateOf(user.autoSwitch) }
     var stabilityFirst by remember { mutableStateOf(user.stabilityFirst) }
-    var favorite by remember { mutableStateOf(channel != null && user.favChannels.contains(channel.key)) }
+    var favorite by remember { mutableStateOf(favKey != null && user.favChannels.contains(favKey)) }
+    var bestAfterTest by remember { mutableStateOf(false) }
     val testResults = remember { mutableStateMapOf<String, ProbeResult>() }
     var testJob by remember { mutableStateOf<Job?>(null) }
     var testPrev by remember { mutableStateOf<Source?>(null) }
@@ -272,12 +284,13 @@ fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
         if (prev != null) playSource(prev, "Teste cancelado.")
     }
 
-    fun startTest() {
+    fun startTest(pickBest: Boolean = false) {
         val ch = channel ?: return
         val info = liveInfo ?: return
         if (testing) return
         recordSession(0)
         testPrev = current
+        bestAfterTest = pickBest
         testing = true
         testResults.clear()
         error = null
@@ -287,7 +300,9 @@ fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
         buffering = false
         testJob = scope.launch {
             try {
-                val order = user.rank(ch)
+                // "melhor fonte": só mede quem ainda não tem nota (no máximo 8, para não demorar demais)
+                val all = user.rank(ch)
+                val order = if (pickBest) all.filter { user.reliability(it.id) == null }.take(8) else all
                 for (s in order) {
                     testingId = s.id
                     val res = Probe.run(info.urlOf(s))
@@ -301,17 +316,46 @@ fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
                 val best = user.rank(ch)
                 ranked = best
                 val pin = pinnedId
-                val target = best.firstOrNull { it.id == pin } ?: best.firstOrNull()
+                val target = if (pickBest) {
+                    user.bestBalanced(ch)
+                } else {
+                    best.firstOrNull { it.id == pin } ?: best.firstOrNull()
+                }
                 if (target != null) {
                     session.tried.clear()
                     session.tried.add(target.id)
-                    playSource(target, "Teste concluído. Reproduzindo " + target.label + ".")
+                    playSource(
+                        target,
+                        if (pickBest) "Melhor fonte: " + target.label + "." else "Teste concluído. Reproduzindo " + target.label + ".",
+                    )
                 }
+                if (pickBest) panel = null
             } finally {
                 testingId = null
                 testing = false
             }
         }
+    }
+
+    /** "Melhor fonte (automático)": mede as que ainda não têm nota e toca a de melhor estabilidade + qualidade. */
+    fun playBest() {
+        val ch = channel ?: return
+        if (testing) return
+        if (user.unmeasured(ch) > 0) {
+            user.setPinned(ch.key, null)
+            pinnedId = null
+            startTest(true)
+            return
+        }
+        recordSession(0)
+        user.setPinned(ch.key, null)
+        pinnedId = null
+        val target = user.bestBalanced(ch) ?: return
+        ranked = user.rank(ch)
+        session.tried.clear()
+        session.tried.add(target.id)
+        playSource(target, "Melhor fonte: " + target.label + ".")
+        panel = null
     }
 
     // ------------------------------------------------------------------ ciclo de vida do player
@@ -689,13 +733,20 @@ fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
                             touch++
                             panel = "sources"
                         }
+                        if (brand != null && brand.variants.size > 1) {
+                            val here = brand.variants.firstOrNull { it.channel.key == channel?.key }
+                            TvButton(text = "Praça: " + (here?.label ?: "trocar")) {
+                                touch++
+                                panel = "variants"
+                            }
+                        }
                         TvButton(text = "Áudio") {
                             touch++
                             panel = "audio"
                         }
                         TvButton(text = if (favorite) "✓ Favorito" else "Favoritar") {
                             touch++
-                            if (channel != null) favorite = user.toggleFavChannel(channel.key)
+                            if (favKey != null) favorite = user.toggleFavChannel(favKey)
                         }
                     } else {
                         TvButton(text = "-10s") { seekBy(-10_000) }
@@ -736,6 +787,7 @@ fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
                 stabilityFirst = stabilityFirst,
                 firstFocus = panelFocus,
                 onAuto = { backToAuto() },
+                onBest = { playBest() },
                 onPick = { pickSource(it) },
                 onTest = { startTest() },
                 onToggleAuto = {
@@ -746,6 +798,20 @@ fun PlayerScreen(req: PlaybackRequest, user: UserData, onExit: () -> Unit) {
                     user.setStabilityFirst(it)
                     stabilityFirst = it
                     ranked = user.rank(channel)
+                },
+            )
+        } else if (which == "variants" && isLive && brand != null && channel != null) {
+            VariantsPanel(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(24.dp)
+                    .width(420.dp),
+                brand = brand,
+                currentKey = channel.key,
+                firstFocus = panelFocus,
+                onPick = { v ->
+                    panel = null
+                    if (v.channel.key != channel.key) onVariant(brand, v)
                 },
             )
         } else if (which == "audio" || which == "text") {
@@ -833,6 +899,7 @@ private fun SourcesPanel(
     stabilityFirst: Boolean,
     firstFocus: FocusRequester,
     onAuto: () -> Unit,
+    onBest: () -> Unit,
     onPick: (Source) -> Unit,
     onTest: () -> Unit,
     onToggleAuto: (Boolean) -> Unit,
@@ -863,6 +930,14 @@ private fun SourcesPanel(
                 TvButton(text = "Voltar ao automático") { if (!testing) onAuto() }
             }
         }
+        Spacer(Modifier.height(8.dp))
+        TvButton(text = "Melhor fonte (automático)") { if (!testing) onBest() }
+        Text(
+            "Escolhe a de maior estabilidade e qualidade. Se ainda não mediu alguma, mede antes.",
+            color = Muted,
+            fontSize = 11.sp,
+            modifier = Modifier.padding(top = 3.dp),
+        )
         Spacer(Modifier.height(8.dp))
         LazyColumn(
             modifier = Modifier.weight(1f),
@@ -938,6 +1013,105 @@ private fun SourcesPanel(
             Text("Trocar sozinho se travar", color = Muted, fontSize = 12.sp)
             ChipItem(text = "Sim", selected = autoSwitch) { onToggleAuto(true) }
             ChipItem(text = "Não", selected = !autoSwitch) { onToggleAuto(false) }
+        }
+    }
+}
+
+// =========================================================================
+// Painel de praças (Globo São Paulo, Globo Rio...)
+// =========================================================================
+
+@Composable
+private fun VariantsPanel(
+    modifier: Modifier,
+    brand: Channel,
+    currentKey: String,
+    firstFocus: FocusRequester,
+    onPick: (Variant) -> Unit,
+) {
+    // linhas: cabeçalho da região (quando houver) e depois as praças
+    val rows = remember(brand) {
+        val out = ArrayList<Any>()
+        var last: String? = null
+        for (v in brand.variants) {
+            if (v.region.isNotEmpty() && v.region != last) {
+                out.add(v.region)
+                last = v.region
+            }
+            out.add(v)
+        }
+        out
+    }
+    val startAt = remember(brand, currentKey) {
+        val i = rows.indexOfFirst { it is Variant && it.channel.key == currentKey }
+        if (i < 0) 0 else maxOf(0, i - 2)
+    }
+    val state = rememberLazyListState(initialFirstVisibleItemIndex = startAt)
+    Column(
+        modifier = modifier
+            .fillMaxHeight()
+            .clip(RoundedCornerShape(14.dp))
+            .background(Color(0xF0101018))
+            .padding(14.dp),
+    ) {
+        Text("Praça · " + brand.name, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Spacer(Modifier.height(2.dp))
+        Text("Escolha a sua região. Fica salva para a próxima vez.", color = Muted, fontSize = 12.sp)
+        Spacer(Modifier.height(8.dp))
+        LazyColumn(
+            state = state,
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+        ) {
+            items(rows.size) { i ->
+                val r = rows[i]
+                if (r is String) {
+                    Text(
+                        r.uppercase(),
+                        color = Accent,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.padding(top = 6.dp, start = 4.dp),
+                    )
+                } else if (r is Variant) {
+                    val isCur = r.channel.key == currentKey
+                    FocusBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        focusScale = 1.02f,
+                        focusRequester = if (isCur) firstFocus else null,
+                        onClick = { onPick(r) },
+                    ) { focused ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(if (focused) PanelAlt else Panel)
+                                .padding(horizontal = 12.dp, vertical = 9.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = if (isCur) "▶" else "",
+                                color = Accent,
+                                fontSize = 13.sp,
+                                modifier = Modifier.width(22.dp),
+                            )
+                            Text(
+                                text = r.label,
+                                color = TextMain,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f),
+                            )
+                            Text(
+                                text = "${r.channel.sources.size} fontes",
+                                color = Muted,
+                                fontSize = 11.sp,
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

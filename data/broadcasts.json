@@ -1,0 +1,96 @@
+{
+  "updated": "2026-10-16",
+  "note": "Onde costuma passar no Brasil. Pesquisado em fontes públicas e pode estar desatualizado: contratos mudam. Atualizado todo mês.",
+  "comps": {
+    "bra.1": {
+      "label": "Brasileirão Série A",
+      "options": ["Globo", "SporTV", "Premiere", "Record", "Prime Video", "CazéTV"],
+      "note": "Globo passa por região. Record e Prime Video: 1 jogo por rodada."
+    },
+    "bra.2": {
+      "label": "Brasileirão Série B",
+      "options": ["SporTV", "Premiere", "ESPN", "Disney+", "Globo", "RedeTV", "GE TV"],
+      "note": "Globo e RedeTV só em jogos escolhidos."
+    },
+    "bra.copa_do_brazil": {
+      "label": "Copa do Brasil",
+      "options": ["Globo", "SporTV", "Premiere", "Prime Video", "GE TV"],
+      "note": "Nem todo jogo passa em todos."
+    },
+    "conmebol.libertadores": {
+      "label": "Libertadores",
+      "options": ["Globo", "ESPN", "Disney+", "Paramount+"],
+      "note": "Na fase de grupos a Globo passa por região."
+    },
+    "conmebol.sudamericana": {
+      "label": "Sul-Americana",
+      "options": ["SBT", "ESPN", "Disney+", "Paramount+"],
+      "note": ""
+    },
+    "uefa.champions": {
+      "label": "Champions League",
+      "options": ["SBT", "TNT Sports", "HBO Max", "Space"],
+      "note": "SBT: 1 jogo na terça. TNT Sports também passa alguns jogos no YouTube."
+    },
+    "uefa.europa": {
+      "label": "Europa League",
+      "options": ["CazéTV"],
+      "note": "Na temporada 2026/27 só a CazéTV (YouTube) está confirmada."
+    },
+    "uefa.europa.conf": {
+      "label": "Conference League",
+      "options": ["CazéTV"],
+      "note": "Na temporada 2026/27 só a CazéTV (YouTube) está confirmada."
+    },
+    "eng.1": {
+      "label": "Premier League",
+      "options": ["Disney+", "ESPN", "CazéTV"],
+      "note": "Disney+ tem todos os jogos. CazéTV: 1 jogo por rodada no YouTube."
+    },
+    "esp.1": {
+      "label": "LaLiga",
+      "options": ["CazéTV", "Sportynet"],
+      "note": "Passa no YouTube."
+    },
+    "ita.1": {
+      "label": "Serie A",
+      "options": ["ESPN", "Disney+", "Sportynet", "CazéTV"],
+      "note": "Sportynet: 2 jogos por rodada. CazéTV: 1 por rodada."
+    },
+    "ger.1": {
+      "label": "Bundesliga",
+      "options": ["SporTV", "Sportynet", "CazéTV", "Jovem Pan", "Xsports", "Canal GOAT", "OneFootball"],
+      "note": "Cada um passa alguns jogos da rodada."
+    },
+    "fra.1": {
+      "label": "Ligue 1",
+      "options": ["CazéTV", "Xsports"],
+      "note": "Xsports: 3 jogos por rodada."
+    },
+    "arg.1": {
+      "label": "Campeonato Argentino",
+      "options": ["ESPN", "Fox Sports"],
+      "note": ""
+    },
+    "usa.1": {
+      "label": "MLS",
+      "options": ["Apple TV"],
+      "note": "Na lista do provedor costuma estar em Esportes PPV."
+    },
+    "f1": {
+      "label": "Fórmula 1",
+      "options": ["Globo", "SporTV", "Globoplay", "F1 TV"],
+      "note": "Globo passa todas as corridas."
+    },
+    "ufc": {
+      "label": "UFC",
+      "options": ["Paramount+"],
+      "note": "Desde 2026 o UFC passa só no Paramount+."
+    },
+    "tennis": {
+      "label": "Tênis",
+      "options": ["ESPN", "Disney+"],
+      "note": "ESPN tem os quatro Grand Slams."
+    }
+  }
+}

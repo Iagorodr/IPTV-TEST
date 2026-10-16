@@ -58,14 +58,25 @@ data class Source(
     val label: String,
 )
 
+/** Uma "praça" (versão regional) de uma marca de TV, como Globo São Paulo ou SBT Rio. */
+class Variant(val label: String, val region: String, val channel: Channel)
+
 class Channel(
     val key: String,
     val name: String,
     val icon: String?,
     val category: String,
     val sources: List<Source>,
+    /** Só nos cartões de marca (Globo, Record, SBT, Band, RedeTV): as praças que a pessoa pode escolher. */
+    val variants: List<Variant> = emptyList(),
 ) {
     val fold: String by lazy(LazyThreadSafetyMode.NONE) { Organizer.fold(name) }
+    val isBrand: Boolean get() = variants.isNotEmpty()
+
+    /** Nome do cartão + nome de cada praça, para a busca achar "Anhanguera" dentro da Globo. */
+    val searchFold: String by lazy(LazyThreadSafetyMode.NONE) {
+        if (variants.isEmpty()) fold else fold + " " + variants.joinToString(" ") { it.channel.fold }
+    }
 }
 
 class Catalog(
@@ -116,6 +127,8 @@ data class ResumeEntry(
 class LiveInfo(
     val channel: Channel,
     val urlOf: (Source) -> String,
+    /** Se for uma praça de uma marca (Globo São Paulo...), o cartão da marca, para trocar de praça dentro do player. */
+    val brand: Channel? = null,
 )
 
 class PlaybackRequest(

@@ -195,6 +195,27 @@ object SportsData {
     )
 
     fun leagueLabel(slug: String, fallback: String): String = LABELS[slug] ?: fallback.ifEmpty { slug }
+
+    /** Competições que a pessoa pode escolher (até 3) para ver todos os jogos delas no Início. */
+    val leagueGroups: List<Pair<String, List<String>>> = listOf(
+        "Brasil" to listOf("bra.1", "bra.2", "bra.copa_do_brazil"),
+        "América do Sul" to listOf("conmebol.libertadores", "conmebol.sudamericana", "arg.1"),
+        "Europa" to listOf(
+            "uefa.champions", "uefa.europa", "uefa.europa.conf", "eng.1", "esp.1", "ita.1", "ger.1", "fra.1",
+            "por.1", "ned.1", "bel.1", "tur.1", "sco.1",
+        ),
+        "Copas nacionais" to listOf("eng.fa", "eng.league_cup", "esp.copa_del_rey", "ita.coppa_italia", "ger.dfb_pokal", "fra.coupe_de_france"),
+        "Américas" to listOf("usa.1", "mex.1"),
+        "Seleções" to listOf("fifa.world", "uefa.nations", "uefa.euro", "conmebol.america", "concacaf.gold", "fifa.friendly"),
+    )
+
+    /** Ligas olhadas para montar "jogos de hoje" quando a pessoa não escolheu nada (as mais populares). */
+    val popularLeagues: List<String> = listOf(
+        "bra.1", "conmebol.libertadores", "uefa.champions", "eng.1", "esp.1", "ita.1", "ger.1", "fra.1",
+        "uefa.europa", "conmebol.sudamericana", "bra.copa_do_brazil", "bra.2", "por.1",
+    )
+
+    const val MAX_LEAGUES = 3
 }
 
 // =========================================================================
@@ -411,6 +432,12 @@ object SportsChannels {
         }
     }
 
+    /** Hora de Brasília (minutos desde a meia-noite) → hora do aparelho. */
+    fun localMinutes(brtMin: Int, now: Long, tz: TimeZone): Int {
+        val deltaMin = tz.getOffset(now) / 60_000 + 180
+        return Math.floorMod(brtMin + deltaMin, 1440)
+    }
+
     /** O canal com um nome que a pessoa entende ("18:45 · LASK Linz x Liverpool"), na hora do aparelho. */
     fun display(e: EventChan, now: Long, tz: TimeZone): Channel {
         val ch = e.channel
@@ -418,12 +445,82 @@ object SportsChannels {
         val name = if (t == null) {
             e.ev.a + " x " + e.ev.b
         } else {
-            val deltaMin = tz.getOffset(now) / 60_000 + 180
-            val local = Math.floorMod(t + deltaMin, 1440)
+            val local = localMinutes(t, now, tz)
             String.format(Locale.US, "%02d:%02d", local / 60, local % 60) + " · " + e.ev.a + " x " + e.ev.b
         }
         return Channel(ch.key, name, ch.icon, ch.category, ch.sources)
     }
+
+    private val NUM_SUFFIX = Regex(""" \(\d+\)$""")
+
+    /** Junta as fontes de canais que são o mesmo jogo, sem repetir fonte e refazendo os rótulos. */
+    fun mergeSources(lists: List<List<Source>>): List<Source> {
+        val all = LinkedHashMap<String, Source>()
+        for (l in lists) for (s in l) if (!all.containsKey(s.id)) all[s.id] = s
+        val ordered = all.values.sortedWith(compareByDescending<Source> { it.rank }.thenBy { it.group }.thenBy { it.label })
+        val seen = HashMap<String, Int>()
+        val out = ArrayList<Source>(ordered.size)
+        for (s in ordered) {
+            val base = NUM_SUFFIX.replace(s.label, "")
+            val n = (seen[base] ?: 0) + 1
+            seen[base] = n
+            out.add(s.copy(label = if (n == 1) base else "$base ($n)"))
+        }
+        return out
+    }
+
+    /** Vários canais da lista para o mesmo jogo viram um canal só (com todas as fontes), na hora do aparelho. */
+    fun displayMerged(events: List<EventChan>, now: Long, tz: TimeZone): List<Channel> {
+        val groups = LinkedHashMap<String, ArrayList<Channel>>()
+        for (e in events) {
+            val d = display(e, now, tz)
+            groups.getOrPut(Organizer.fold(d.name)) { ArrayList() }.add(d)
+        }
+        val out = ArrayList<Channel>()
+        for (l in groups.values) {
+            val first = l.first()
+            out.add(if (l.size == 1) first else Channel(first.key, first.name, first.icon, first.category, mergeSources(l.map { it.sources })))
+        }
+        return out
+    }
+
+    /**
+     * A lista de canais com os jogos avulsos "limpos": hora do aparelho em vez da de Brasília, nome curto
+     * e o mesmo jogo uma vez só. Os outros canais ficam como estavam.
+     */
+    fun cleanList(channels: List<Channel>, now: Long, tz: TimeZone): List<Channel> {
+        val catOk = HashMap<String, Boolean>()
+        val eventSlots = ArrayList<Int>()
+        val drops = HashSet<Int>()
+        val events = ArrayList<EventChan>()
+        for ((i, ch) in channels.withIndex()) {
+            val ok = catOk.getOrPut(ch.category) { isSportCategory(ch.category) }
+            if (!ok) continue
+            val ev = EventNames.parse(ch.name)
+            if (ev == null || ev.timeMin == null) {
+                // "(13)", "(14)"...: vagas vazias da lista, sem jogo dentro
+                if (ev == null && Organizer.fold(ch.name).all { it.isDigit() || it == ' ' }) drops.add(i)
+                continue
+            }
+            eventSlots.add(i)
+            events.add(EventChan(ch, ev, Organizer.fold(ev.a), Organizer.fold(ev.b)))
+        }
+        if (events.isEmpty() && drops.isEmpty()) return channels
+        // por pasta: o mesmo jogo junto e em ordem de horário (de Brasília: é a ordem em que acontecem)
+        val out = ArrayList<Channel>(channels)
+        for (i in drops) out[i] = DROP
+        val byCat = LinkedHashMap<String, ArrayList<Int>>()
+        for (k in events.indices) byCat.getOrPut(events[k].channel.category) { ArrayList() }.add(k)
+        for ((_, ks) in byCat) {
+            val evs = ks.map { events[it] }.sortedBy { it.ev.timeMin ?: 9999 }
+            val merged = displayMerged(evs, now, tz)
+            val positions = ks.map { eventSlots[it] }
+            for ((j, pos) in positions.withIndex()) out[pos] = if (j < merged.size) merged[j] else DROP
+        }
+        return out.filter { it !== DROP }
+    }
+
+    private val DROP = Channel("__drop", "", null, "", emptyList())
 
     fun forKind(kind: SportKind, channels: List<Channel>): List<Channel> {
         val re = when (kind) {
@@ -440,4 +537,167 @@ object SportsChannels {
         }
         return out
     }
+}
+
+
+// =========================================================================
+// Ligas favoritas, jogos dos meus times (★) e popularidade
+// =========================================================================
+
+/** Um jogo na faixa do Início; [fav] = envolve um time favorito (aparece com ★ e borda laranja). */
+class StripGame(val game: Game, val fav: Boolean)
+
+object Popularity {
+
+    private val LEAGUE: Map<String, Int> = mapOf(
+        "fifa.world" to 100,
+        "uefa.champions" to 100,
+        "conmebol.libertadores" to 96,
+        "eng.1" to 92,
+        "bra.1" to 92,
+        "esp.1" to 90,
+        "bra.copa_do_brazil" to 84,
+        "ita.1" to 78,
+        "ger.1" to 76,
+        "uefa.europa" to 72,
+        "uefa.nations" to 70,
+        "conmebol.america" to 70,
+        "uefa.euro" to 70,
+        "conmebol.sudamericana" to 66,
+        "fra.1" to 62,
+        "uefa.europa.conf" to 55,
+        "por.1" to 50,
+        "eng.fa" to 50,
+        "esp.copa_del_rey" to 46,
+        "bra.2" to 45,
+        "arg.1" to 45,
+        "eng.league_cup" to 40,
+        "ita.coppa_italia" to 40,
+        "ger.dfb_pokal" to 40,
+        "usa.1" to 35,
+        "ned.1" to 35,
+        "tur.1" to 32,
+        "bel.1" to 30,
+        "mex.1" to 30,
+        "fra.coupe_de_france" to 30,
+        "concacaf.gold" to 30,
+        "sco.1" to 25,
+        "fifa.friendly" to 20,
+    )
+
+    /** Clubes e seleções que levam mais gente a assistir (nomes sem acento). */
+    private val BIG = listOf(
+        "flamengo", "palmeiras", "corinthians", "sao paulo", "santos", "gremio", "internacional", "cruzeiro",
+        "atletico mineiro", "fluminense", "botafogo", "vasco", "bahia", "fortaleza",
+        "real madrid", "barcelona", "atletico madrid", "manchester city", "manchester united", "liverpool",
+        "arsenal", "chelsea", "tottenham", "bayern munich", "bayern", "borussia dortmund", "paris saint germain",
+        "psg", "juventus", "inter milan", "ac milan", "napoli", "roma", "benfica", "porto", "sporting cp",
+        "boca juniors", "river plate", "ajax", "galatasaray", "fenerbahce", "inter miami",
+        "brazil", "argentina", "france", "england", "portugal", "spain", "germany", "italy", "uruguay", "netherlands", "belgium",
+    )
+
+    private fun big(side: Side): Boolean {
+        for (n in side.names) for (b in BIG) {
+            if (n == b || n.startsWith("$b ") || n.endsWith(" $b")) return true
+        }
+        return false
+    }
+
+    fun leagueWeight(slug: String): Int = LEAGUE[slug] ?: 20
+
+    fun score(g: Game, fav: Boolean): Int {
+        var v = leagueWeight(g.leagueSlug)
+        if (big(g.home)) v += 12
+        if (big(g.away)) v += 12
+        if (g.state == 1) v += 25
+        if (g.state == 2) v -= 30
+        if (fav) v += 60
+        return v
+    }
+}
+
+object LeaguePick {
+
+    private fun involves(g: Game, ids: Set<String>): Boolean = ids.contains(g.home.id) || ids.contains(g.away.id)
+
+    private fun merge(a: List<Game>, b: List<Game>): List<Game> {
+        val m = LinkedHashMap<String, Game>()
+        for (g in a) m[g.key] = g
+        for (g in b) m[g.key] = g
+        return m.values.toList()
+    }
+
+    /**
+     * Faixa do Início: primeiro os jogos dos times favoritos (★), depois todos os jogos de hoje/amanhã
+     * (e ao vivo) das ligas escolhidas. Liga sem jogo nesses dias não aparece.
+     */
+    fun strip(teamGames: List<Game>, leagueGames: List<Game>, favs: List<FavTeam>, leagues: List<String>, now: Long, tz: TimeZone): List<StripGame> {
+        val pool = merge(teamGames, leagueGames)
+        val favIds = HashSet<String>()
+        for (f in favs) favIds.add(f.id)
+        val mine = SportsPick.games(pool, favs, now, tz)
+        val out = ArrayList<StripGame>()
+        val used = HashSet<String>()
+        for (g in mine) {
+            out.add(StripGame(g, true))
+            used.add(g.key)
+        }
+        val today = SportsTime.dayNumber(now, tz)
+        val rest = ArrayList<Game>()
+        for (g in leagueGames) {
+            if (used.contains(g.key) || !leagues.contains(g.leagueSlug)) continue
+            if (g.state == 0 && g.startMs < now - 3L * 3_600_000L) continue
+            val d = SportsTime.dayNumber(g.startMs, tz) - today
+            if (g.state == 1 || d == 0L || d == 1L) rest.add(g)
+        }
+        rest.sortWith(
+            compareBy<Game>(
+                { if (it.state == 1) 0 else if (it.state == 0) 1 else 2 },
+                { if (it.state == 2) -it.startMs else it.startMs },
+            ),
+        )
+        for (g in rest) out.add(StripGame(g, favIds.isNotEmpty() && involves(g, favIds)))
+        return out
+    }
+
+    /** Tela "Ver todos": dia a dia (hoje em diante), cada dia com os jogos por horário e os favoritos primeiro. */
+    fun byDay(teamGames: List<Game>, leagueGames: List<Game>, favs: List<FavTeam>, leagues: List<String>, now: Long, tz: TimeZone): List<Pair<Long, List<StripGame>>> {
+        val favIds = HashSet<String>()
+        for (f in favs) favIds.add(f.id)
+        val today = SportsTime.dayNumber(now, tz)
+        val days = java.util.TreeMap<Long, ArrayList<StripGame>>()
+        for (g in merge(teamGames, leagueGames)) {
+            val mineGame = involves(g, favIds)
+            if (!mineGame && !leagues.contains(g.leagueSlug)) continue
+            if (g.state == 2) continue
+            if (g.state == 0 && g.startMs < now - 3L * 3_600_000L) continue
+            val d = if (g.state == 1) today else SportsTime.dayNumber(g.startMs, tz)
+            if (d < today) continue
+            days.getOrPut(d) { ArrayList() }.add(StripGame(g, mineGame))
+        }
+        val out = ArrayList<Pair<Long, List<StripGame>>>()
+        for ((d, l) in days) {
+            l.sortWith(compareBy<StripGame>({ if (it.fav) 0 else 1 }, { if (it.game.state == 1) 0 else 1 }, { it.game.startMs }))
+            out.add(Pair(d, l))
+        }
+        return out
+    }
+
+    /** Jogos de hoje (e ao vivo) de qualquer liga conhecida, dos mais populares para os menos. Jogos dos meus times têm bônus. */
+    fun today(pool: List<Game>, favs: List<FavTeam>, now: Long, tz: TimeZone): List<StripGame> {
+        val favIds = HashSet<String>()
+        for (f in favs) favIds.add(f.id)
+        val today = SportsTime.dayNumber(now, tz)
+        val out = ArrayList<StripGame>()
+        for (g in pool) {
+            if (g.state == 0 && g.startMs < now - 3L * 3_600_000L) continue
+            val d = SportsTime.dayNumber(g.startMs, tz) - today
+            if (g.state != 1 && d != 0L) continue
+            out.add(StripGame(g, involves(g, favIds)))
+        }
+        out.sortWith(compareByDescending<StripGame> { Popularity.score(it.game, it.fav) }.thenBy { it.game.startMs })
+        return out
+    }
+
+    fun mergeAll(a: List<Game>, b: List<Game>): List<Game> = merge(a, b)
 }

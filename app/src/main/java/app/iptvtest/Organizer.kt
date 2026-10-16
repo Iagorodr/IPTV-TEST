@@ -464,7 +464,11 @@ object Shelves {
         val home: List<Shelf>,
         val movies: List<Shelf>,
         val series: List<Shelf>,
+        /** Destaques do Início: filmes e séries misturados. */
         val featured: List<Title>,
+        /** Destaques da página Filmes e da página Séries. */
+        val featuredMovies: List<Title>,
+        val featuredSeries: List<Title>,
         val index: HashMap<String, Title>,
         val all: List<Title>,
     )
@@ -503,14 +507,17 @@ object Shelves {
         fun best(list: List<Title>): List<Title> =
             list.filter { it.launch && !it.onlyCam && it.image != null && it.platforms.isNotEmpty() && it.rating >= 6f }
                 .sortedByDescending { it.score() }
-                .take(8)
-        val pm = best(c.movies)
+                .take(12)
+        var pm = best(c.movies)
         // série quase nunca vem marcada como lançamento: usa as adicionadas há pouco, de plataforma conhecida e bem avaliadas
         val year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
-        val ps = c.series
+        var ps = c.series
             .filter { it.image != null && !it.onlyCam && it.platforms.isNotEmpty() && it.rating >= 7f && (it.year.toIntOrNull() ?: 0) >= year - 2 }
             .sortedByDescending { it.added }
-            .take(8)
+            .take(12)
+        // se faltar gente para girar, completa com os mais bem avaliados (com capa) de cada tipo
+        if (pm.size < 4) pm = c.movies.filter { it.image != null && !it.onlyCam && it.rating >= 6f }.sortedByDescending { it.score() }.take(12)
+        if (ps.size < 4) ps = c.series.filter { it.image != null && !it.onlyCam && it.rating >= 6f }.sortedByDescending { it.score() }.take(12)
         val picks = ArrayList<Title>()
         for (i in 0 until maxOf(pm.size, ps.size)) {
             if (i < pm.size) picks.add(pm[i])
@@ -526,6 +533,8 @@ object Shelves {
             movies = forTitles(c.movies, 40),
             series = forTitles(c.series, 40),
             featured = featured,
+            featuredMovies = pm,
+            featuredSeries = ps,
             index = index,
             all = all,
         )

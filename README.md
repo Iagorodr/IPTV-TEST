@@ -24,6 +24,22 @@ Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e
 
 O GitHub Actions compila o app a cada alteração na branch `main` e publica o APK no link acima (ver `.github/workflows/build.yml`).
 
+## Novidades da v0.4
+
+- **Ligas favoritas (até 3)**: além dos times, escolha competições (Brasileirão, Libertadores, Champions, Premier League...). Todos os jogos delas de hoje e amanhã aparecem no topo do Início; jogo de time favorito vem primeiro, com ★ e borda laranja. Liga sem jogo nesses dias some. O último cartão **Ver todos** abre a lista dos próximos dias, separada por dia.
+- **Horário certo**: os canais de jogo avulso da lista vêm no horário de Brasília; o app converte para o fuso da TV e limpa os nomes em todas as telas.
+- **Pop-up do jogo**: times, liga, dia e hora locais, **"Costuma passar em…"**, e botões *Ver canais*, *Assistir agora* (quando há canal avulso do jogo) e *Lembrar*.
+- **Lembrete**: 10 minutos antes aparece um aviso no app (com atalho para os canais) e, onde a TV mostra notificações, também uma notificação do sistema. Se a TV foi desligada, o aviso dentro do app cobre ao abrir.
+- **Canais por marca**: Globo, Record, SBT, Band e RedeTV viram um cartão cada, com as praças (São Paulo, Rio...) dentro; o app lembra a última escolhida e no player há o botão **Praça**. Pastas reduzidas para ~9 (Esportes, TV aberta, Notícias, Filmes e séries, Infantil e anime, Variedades e reality, Documentários, Música e rádios, Religiosos); 4K e YouTube viram filtros.
+- **Destaques girando** (ordem aleatória) no Início, em Filmes (só filmes) e em Séries (só séries).
+- **Meus favoritos** (antes "Minha lista"): jogos de hoje por popularidade (os seus times marcados com ★), seus filmes/séries e seus canais.
+- Canais sem imagem (ou com link quebrado) ganham um cartão colorido com as iniciais.
+- Player: botão **Melhor fonte (automático)** no painel Fontes — escolhe a de maior estabilidade e qualidade (mede antes as que ainda não têm nota).
+
+### Onde costuma passar (tabela mensal)
+
+O arquivo [`data/broadcasts.json`](data/broadcasts.json) diz quais emissoras do Brasil costumam passar cada competição (sempre mais de uma opção, porque pode mudar). Ele vai dentro do app e o app também baixa a versão mais nova daqui, uma vez por dia — então **atualizar o arquivo e dar push na `main` já atualiza os aparelhos, sem novo APK** (mudanças em `data/**` não disparam compilação). Para atualizar todo mês: pesquise as transmissões da temporada, edite as listas `options`, mude `updated` para a data de hoje e envie.
+
 ## Novidades da v0.3
 
 - **Times favoritos (até 5)**: Ajustes → Times favoritos, ou o botão no topo do Início. Escolha por país: Brasil (Série A e Série B) e a divisão principal de outros países (Inglaterra, Espanha, Itália, Alemanha, França, Portugal, Holanda, Bélgica, Turquia, Escócia, Argentina, México, EUA); a **seleção** do país também está na lista.

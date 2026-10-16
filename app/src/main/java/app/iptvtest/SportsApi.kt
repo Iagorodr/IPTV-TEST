@@ -21,6 +21,9 @@ class ChannelListRequest(
     val hint: String,
     val highlight: List<Channel>,
     val searchQuery: String,
+    /** Canais das emissoras que costumam passar (não é garantia de que o jogo está lá). */
+    val extra: List<Channel> = emptyList(),
+    val extraTitle: String = "",
 )
 
 private fun JSONObject.s(key: String): String = if (isNull(key)) "" else optString(key, "")
@@ -206,6 +209,61 @@ object SportsApi {
         }
         if (ok == 0) throw IOException("Sem resposta do serviço de jogos.")
         if (rangeOk == null) rangeOk = false
+        found.values.toList()
+    }
+
+    /**
+     * Todos os jogos das competições [slugs] entre [fromMs] e [toMs]. Tenta o intervalo de datas numa chamada só
+     * por competição; se a ESPN não aceitar, procura dia a dia (no máximo 10 dias). Competição que der erro é ignorada;
+     * só falha se nenhuma responder.
+     */
+    suspend fun leagueGames(slugs: List<String>, fromMs: Long, toMs: Long): List<Game> = coroutineScope {
+        val list = slugs.distinct()
+        if (list.isEmpty()) return@coroutineScope emptyList()
+        val found = LinkedHashMap<String, Game>()
+        var ok = 0
+        val sem = Semaphore(5)
+
+        suspend fun load(dates: String) {
+            val res = list.map { slug ->
+                async(Dispatchers.IO) {
+                    sem.withPermit {
+                        try {
+                            scoreboard(slug, dates)
+                        } catch (e: Exception) {
+                            null
+                        }
+                    }
+                }
+            }.awaitAll()
+            for (r in res) {
+                if (r == null) continue
+                ok++
+                for (g in r) found[g.key] = g
+            }
+        }
+
+        val first = SportsTime.espnDay(fromMs)
+        val last = SportsTime.espnDay(toMs)
+        if (first == last) {
+            load(first)
+        } else {
+            if (rangeOk != false) {
+                load("$first-$last")
+                if (ok > 0) rangeOk = true
+            }
+            if (ok == 0) {
+                var t = fromMs
+                var n = 0
+                while (SportsTime.espnDay(t) <= last && n < 10) {
+                    load(SportsTime.espnDay(t))
+                    t += SportsTime.DAY
+                    n++
+                }
+                if (rangeOk == null) rangeOk = false
+            }
+        }
+        if (ok == 0) throw IOException("Sem resposta do serviço de jogos.")
         found.values.toList()
     }
 

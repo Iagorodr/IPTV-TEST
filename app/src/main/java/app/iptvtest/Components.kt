@@ -416,24 +416,7 @@ fun ChannelTile(
                     .background(PanelAlt),
                 contentAlignment = Alignment.Center,
             ) {
-                val icon = ch.icon
-                if (icon != null) {
-                    AsyncImage(
-                        model = icon,
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(14.dp),
-                    )
-                } else {
-                    Text(
-                        text = ch.name.take(1).uppercase(),
-                        color = Muted,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
+                ChannelLogo(name = ch.name, icon = ch.icon, modifier = Modifier.fillMaxSize())
                 Row(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -451,7 +434,7 @@ fun ChannelTile(
                     )
                     Spacer(Modifier.width(6.dp))
                     Text(
-                        text = if (ch.sources.size == 1) "1 fonte" else "${ch.sources.size} fontes",
+                        text = if (ch.isBrand) "${ch.variants.size} praças" else if (ch.sources.size == 1) "1 fonte" else "${ch.sources.size} fontes",
                         color = TextMain,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
@@ -466,6 +449,56 @@ fun ChannelTile(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+            )
+        }
+    }
+}
+
+
+// =========================================================================
+// Logo do canal (com quadradinho colorido quando não tem imagem ou a imagem não abre)
+// =========================================================================
+
+private val PLACEHOLDER_COLORS = listOf(
+    Color(0xFF3D5A99), Color(0xFF2F7D6B), Color(0xFF8A4F9E), Color(0xFFB0573A),
+    Color(0xFF4F7A28), Color(0xFF9B3D5A), Color(0xFF3A7CA5), Color(0xFF7A6A2F),
+)
+
+/** "Globo Minas" → "GM", "Zapping Music Rock" → "ZM", "SBT" → "SB". */
+fun channelInitials(name: String): String {
+    val words = name.split(' ', '-', '|', '•').filter { w -> w.isNotEmpty() && w[0].isLetterOrDigit() }
+    return when {
+        words.isEmpty() -> "?"
+        words.size == 1 -> words[0].take(2).uppercase()
+        else -> (words[0].take(1) + words[1].take(1)).uppercase()
+    }
+}
+
+@Composable
+fun ChannelLogo(name: String, icon: String?, modifier: Modifier = Modifier, pad: Int = 14) {
+    var failed by remember(icon) { mutableStateOf(false) }
+    if (icon != null && !failed) {
+        AsyncImage(
+            model = icon,
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            onError = { failed = true },
+            modifier = modifier.padding(pad.dp),
+        )
+    } else {
+        val color = PLACEHOLDER_COLORS[Math.floorMod(name.hashCode(), PLACEHOLDER_COLORS.size)]
+        Box(
+            modifier = modifier
+                .padding(10.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(color),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = channelInitials(name),
+                color = Color.White,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.ExtraBold,
             )
         }
     }

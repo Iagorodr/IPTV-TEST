@@ -51,6 +51,15 @@ class UserData(ctx: Context) {
     /** Times favoritos (no máximo 5), na ordem em que a pessoa escolheu. */
     val favTeams = ArrayList<FavTeam>()
 
+    /** Ligas/competições escolhidas (até 3), pelo código da ESPN (ex.: "bra.1"). */
+    val favLeagues = ArrayList<String>()
+
+    /** Lembretes de jogos ("Lembrar"), do mais próximo ao mais distante. */
+    val reminders = ArrayList<Reminder>()
+
+    /** Última praça escolhida de cada marca de TV (marca → chave do canal). */
+    private val lastVariant = HashMap<String, String>()
+
     var stabilityFirst: Boolean = true
         private set
     var autoSwitch: Boolean = true
@@ -69,6 +78,9 @@ class UserData(ctx: Context) {
             readStrings("mylist", myList)
             readStrings("favch", favChannels)
             readFavTeams()
+            readStrings("favleagues", favLeagues)
+            readReminders()
+            readVariants()
 
             val rs = sp.getString("resume", null)
             if (rs != null) {
@@ -187,6 +199,80 @@ class UserData(ctx: Context) {
             a.put(o)
         }
         sp.edit().putString("favteams", a.toString()).apply()
+    }
+
+    // ------------------------------------------------------------------ ligas favoritas
+
+    fun saveFavLeagues(list: List<String>) {
+        favLeagues.clear()
+        favLeagues.addAll(list)
+        writeStrings("favleagues", favLeagues)
+    }
+
+    // ------------------------------------------------------------------ lembretes de jogos
+
+    private fun readReminders() {
+        val s = sp.getString("reminders", null) ?: return
+        val a = JSONArray(s)
+        for (i in 0 until a.length()) {
+            val o = a.optJSONObject(i) ?: continue
+            val key = o.optString("k")
+            if (key.isEmpty()) continue
+            reminders.add(
+                Reminder(
+                    gameKey = key,
+                    title = o.optString("t"),
+                    league = o.optString("l"),
+                    startMs = o.optLong("s"),
+                    homeId = o.optString("h"),
+                    awayId = o.optString("a"),
+                    homeName = o.optString("hn"),
+                    awayName = o.optString("an"),
+                    seen = o.optBoolean("x"),
+                ),
+            )
+        }
+    }
+
+    fun saveReminders(list: List<Reminder>) {
+        reminders.clear()
+        reminders.addAll(list)
+        val a = JSONArray()
+        for (r in list) {
+            val o = JSONObject()
+            o.put("k", r.gameKey)
+            o.put("t", r.title)
+            o.put("l", r.league)
+            o.put("s", r.startMs)
+            o.put("h", r.homeId)
+            o.put("a", r.awayId)
+            o.put("hn", r.homeName)
+            o.put("an", r.awayName)
+            o.put("x", r.seen)
+            a.put(o)
+        }
+        sp.edit().putString("reminders", a.toString()).apply()
+    }
+
+    // ------------------------------------------------------------------ praça escolhida de cada marca
+
+    private fun readVariants() {
+        val s = sp.getString("variants", null) ?: return
+        val o = JSONObject(s)
+        val it = o.keys()
+        while (it.hasNext()) {
+            val k = it.next()
+            lastVariant[k] = o.optString(k)
+        }
+    }
+
+    fun lastVariantOf(brandKey: String): String? = lastVariant[brandKey]
+
+    fun setLastVariant(brandKey: String, channelKey: String) {
+        lastVariant[brandKey] = channelKey
+        val o = JSONObject()
+        for ((k, v) in lastVariant) o.put(k, v)
+        sp.edit().putString("variants", o.toString()).apply()
     }
 
     // ------------------------------------------------------------------ minha lista / favoritos
@@ -335,6 +421,25 @@ class UserData(ctx: Context) {
         val rr = reliability(s.id) ?: prior
         return if (stabilityFirst) rr * 100f + s.rank * 6f else s.rank * 40f + rr * 40f
     }
+
+    /** Nota que pesa estabilidade e qualidade juntas (botão "melhor fonte automática"). */
+    private fun balancedScore(s: Source): Float {
+        val prior = when (s.quality) {
+            "SD" -> 0.80f
+            "HD" -> 0.75f
+            "FHD" -> 0.70f
+            "H265" -> 0.60f
+            else -> 0.50f
+        }
+        val rr = reliability(s.id) ?: prior
+        return rr * 60f + s.rank * 10f
+    }
+
+    /** A fonte com a melhor mistura de estabilidade e qualidade, independente da prioridade escolhida nos Ajustes. */
+    fun bestBalanced(channel: Channel): Source? = channel.sources.maxByOrNull { balancedScore(it) }
+
+    /** Quantas fontes do canal ainda não têm nenhuma medição. */
+    fun unmeasured(channel: Channel): Int = channel.sources.count { reliability(it.id) == null }
 
     /** Fontes do canal da melhor para a pior, segundo a prioridade escolhida. */
     fun rank(channel: Channel): List<Source> = channel.sources.sortedByDescending { sourceScore(it) }
