@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -35,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -57,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.grid.items as gridItems
 
 // =========================================================================
@@ -76,7 +79,7 @@ fun LoginScreen(vm: MainViewModel) {
             modifier = Modifier.width(560.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("IPTV TEST", color = Accent, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
+            Text("IAGO IPTV", color = Accent, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(4.dp))
             Text(
                 "Entre com os dados da sua lista (Xtream Codes).\nEles ficam guardados só nesta TV.",
@@ -152,7 +155,7 @@ fun LoadingScreen(vm: MainViewModel) {
             modifier = Modifier.width(560.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("IPTV TEST", color = Accent, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
+            Text("IAGO IPTV", color = Accent, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(18.dp))
             val err = vm.loadError
             if (err != null) {
@@ -216,7 +219,7 @@ fun TopNav(vm: MainViewModel) {
             .padding(horizontal = 40.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("IPTV TEST", color = Accent, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+        Text("IAGO IPTV", color = Accent, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.width(24.dp))
         NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
         NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
@@ -262,8 +265,8 @@ private fun HeroContent(t: Title) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .padding(end = 72.dp)
-                    .height(230.dp)
+                    .padding(end = 72.dp, top = 8.dp)
+                    .height(200.dp)
                     .aspectRatio(2f / 3f)
                     .clip(RoundedCornerShape(12.dp)),
             )
@@ -271,13 +274,21 @@ private fun HeroContent(t: Title) {
         Column(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(start = 48.dp, top = 22.dp)
+                .padding(start = 48.dp, top = 14.dp)
                 .width(560.dp),
         ) {
             Text("EM DESTAQUE", color = Accent, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold)
-            Spacer(Modifier.height(6.dp))
-            Text(t.name, color = TextMain, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(4.dp))
+            Text(
+                t.name,
+                color = TextMain,
+                fontSize = 30.sp,
+                lineHeight = 36.sp,
+                fontWeight = FontWeight.ExtraBold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Spacer(Modifier.height(5.dp))
             val meta = listOf(
                 if (t.series) "Série" else "Filme",
                 t.year,
@@ -285,20 +296,22 @@ private fun HeroContent(t: Title) {
             ).filter { it.isNotEmpty() }.joinToString(" · ")
             Text(meta, color = Muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
             if (t.plot.isNotEmpty()) {
-                Spacer(Modifier.height(6.dp))
-                Text(t.plot, color = TextMain, fontSize = 14.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Spacer(Modifier.height(5.dp))
+                Text(t.plot, color = TextMain, fontSize = 13.sp, lineHeight = 17.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         }
     }
 }
 
 /**
- * Destaques que trocam sozinhos (ordem aleatória, a cada 7 s) com um esmaecer. Quando a pessoa põe o cursor
- * nos botões, a troca pausa para o botão sempre abrir o título que ela está vendo.
+ * Destaques que trocam sozinhos (ordem aleatória, a cada 7 s) com um esmaecer. Dá para andar de um para o outro
+ * com "Anterior" / "Próximo". Quando o cursor está nos botões a troca pausa, para o botão sempre abrir o título que a
+ * pessoa está vendo, e a lista rola de volta para mostrar o destaque inteiro (aparece 100% mesmo depois de descer e subir).
  */
 @Composable
-private fun HeroCarousel(vm: MainViewModel, titles: List<Title>) {
+private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: LazyListState, anchor: Int) {
     if (titles.isEmpty()) return
+    val scope = rememberCoroutineScope()
     var idx by remember(titles) { mutableIntStateOf(0) }
     var paused by remember { mutableStateOf(false) }
     LaunchedEffect(titles, paused) {
@@ -307,11 +320,12 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>) {
             idx = (idx + 1) % titles.size
         }
     }
-    val t = titles[idx.coerceIn(0, titles.size - 1)]
+    val n = titles.size
+    val t = titles[idx.coerceIn(0, n - 1)]
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(285.dp)
+            .height(235.dp)
             .background(Brush.horizontalGradient(listOf(AccentDark, Bg))),
     ) {
         Crossfade(targetState = t, animationSpec = tween(700), label = "hero") { cur ->
@@ -320,29 +334,41 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>) {
         Row(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(start = 48.dp, bottom = 16.dp)
-                .onFocusChanged { paused = it.hasFocus },
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(start = 48.dp, bottom = 12.dp)
+                .onFocusChanged {
+                    val f = it.hasFocus
+                    if (f && !paused) {
+                        scope.launch {
+                            try {
+                                listState.animateScrollToItem(anchor)
+                            } catch (e: Exception) {
+                                // a lista saiu da tela: sem importância
+                            }
+                        }
+                    }
+                    paused = f
+                },
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            if (n > 1) {
+                TvButton(text = "◀ Anterior") { idx = (idx - 1 + n) % n }
+            }
             TvButton(text = "Ver detalhes", primary = true) { vm.open(t) }
             TvButton(text = if (vm.inMyList(t.key)) "✓ Favoritos" else "+ Favoritos") { vm.toggleMyList(t.key) }
+            if (n > 1) {
+                TvButton(text = "Próximo ▶") { idx = (idx + 1) % n }
+            }
         }
-        if (titles.size > 1) {
-            Row(
+        if (n > 1) {
+            Text(
+                text = "${idx + 1} / $n",
+                color = Muted,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(end = 72.dp, bottom = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(5.dp),
-            ) {
-                for (i in titles.indices) {
-                    Box(
-                        modifier = Modifier
-                            .size(if (i == idx) 9.dp else 6.dp)
-                            .clip(CircleShape)
-                            .background(if (i == idx) Accent else PanelAlt),
-                    )
-                }
-            }
+                    .padding(end = 72.dp, bottom = 14.dp),
+            )
         }
     }
 }
@@ -365,17 +391,19 @@ fun HomeTab(vm: MainViewModel) {
         }
     }
 
+    val listState = rememberLazyListState()
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         LazyColumn(
-            state = rememberLazyListState(),
+            state = listState,
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 40.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item(key = "games") { GamesSection(vm, now) }
             if (hero.isNotEmpty()) {
-                item(key = "hero") { HeroCarousel(vm, hero) }
+                // âncora 0: ao voltar para o destaque a lista sobe até o topo e mostra jogos + destaque inteiros
+                item(key = "hero") { HeroCarousel(vm, hero, listState, 0) }
             }
             item(key = "sports") { SportEventsRow(vm, now) }
             if (cont.isNotEmpty()) {
@@ -423,6 +451,7 @@ fun HomeTab(vm: MainViewModel) {
 
 @Composable
 fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
+    val listState = rememberLazyListState()
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         if (shelves.isEmpty()) {
@@ -431,13 +460,13 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
             }
         } else {
             LazyColumn(
-                state = rememberLazyListState(),
+                state = listState,
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(top = 0.dp, bottom = 40.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 if (hero.isNotEmpty()) {
-                    item(key = "hero") { HeroCarousel(vm, hero) }
+                    item(key = "hero") { HeroCarousel(vm, hero, listState, 0) }
                 }
                 items(shelves, key = { it.name }) { s ->
                     ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })

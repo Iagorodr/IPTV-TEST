@@ -693,7 +693,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun isFavTeam(id: String): Boolean = favTeams.any { it.id == id }
 
-    /** Devolve um aviso se não deu para escolher (máximo de 3 ligas). */
+    /** Devolve um aviso se não deu para escolher (máximo de 5 ligas). */
     fun toggleFavLeague(slug: String): String? {
         val cur = favLeagues
         if (cur.contains(slug)) {

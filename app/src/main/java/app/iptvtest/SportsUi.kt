@@ -135,12 +135,12 @@ private fun StatusPill(game: Game, now: Long) {
 @Composable
 private fun TeamLine(side: Side, showScore: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        TeamLogo(side.logo, 28)
+        TeamLogo(side.logo, 22)
         Spacer(Modifier.width(8.dp))
         Text(
             text = side.short,
             color = TextMain,
-            fontSize = 15.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -181,7 +181,7 @@ fun GameCard(
             modifier = Modifier
                 .background(if (focused) PanelAlt else if (fav) Color(0xFF2B1A10) else Panel)
                 .then(if (fav) Modifier.border(2.5.dp, Accent, RoundedCornerShape(10.dp)) else Modifier)
-                .padding(12.dp),
+                .padding(horizontal = 12.dp, vertical = 9.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (fav) {
@@ -199,12 +199,12 @@ fun GameCard(
                 Spacer(Modifier.width(6.dp))
                 StatusPill(game, now)
             }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(5.dp))
             val showScore = game.state != 0
             TeamLine(game.home, showScore)
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(3.dp))
             TeamLine(game.away, showScore)
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(5.dp))
             Text(
                 text = when {
                     reminded -> "⏰ Lembrete ligado"
@@ -254,7 +254,7 @@ fun GamesSection(vm: MainViewModel, now: Long) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
-                    "Escolha até 5 times e 3 ligas e os jogos deles aparecem aqui todo dia.",
+                    "Escolha até 5 times e 5 ligas e os jogos deles aparecem aqui todo dia.",
                     color = Muted,
                     fontSize = 14.sp,
                 )
@@ -304,10 +304,10 @@ fun GamesSection(vm: MainViewModel, now: Long) {
                 )
             }
             item(key = "__all") {
-                EditTeamsTile("Ver todos", "próximos dias", onClick = { vm.openAllGames() }, modifier = Modifier.width(140.dp).height(132.dp))
+                EditTeamsTile("Ver todos", "próximos dias", onClick = { vm.openAllGames() }, modifier = Modifier.width(140.dp).height(112.dp))
             }
             item(key = "__teams") {
-                EditTeamsTile("Meus times e ligas", "escolher ou trocar", onClick = { vm.openPicker() }, modifier = Modifier.width(150.dp).height(132.dp))
+                EditTeamsTile("Meus times e ligas", "escolher ou trocar", onClick = { vm.openPicker() }, modifier = Modifier.width(150.dp).height(112.dp))
             }
         }
     }

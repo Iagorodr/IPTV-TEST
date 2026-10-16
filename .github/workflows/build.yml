@@ -47,6 +47,6 @@ jobs:
           cp app/build/outputs/apk/release/app-release.apk iptv-test.apk
           gh release delete latest --yes --cleanup-tag || true
           gh release create latest iptv-test.apk \
-            --title "IPTV TEST - build ${{ github.run_number }}" \
+            --title "IAGO IPTV - build ${{ github.run_number }}" \
             --notes "APK mais recente (build ${{ github.run_number }}, commit ${GITHUB_SHA::7})." \
             --target "$GITHUB_SHA"

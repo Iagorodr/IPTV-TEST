@@ -1,8 +1,8 @@
-# IPTV TEST
+# IAGO IPTV
 
 Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e mostra filmes, séries e canais por categoria.
 
-> Versão **0.3** — o Início virou uma visão geral: jogos dos seus times favoritos no topo (buscados na internet, sem depender da aba "jogos do dia" da lista), Fórmula 1 / UFC / Tênis, destaque com filmes **e** séries. Mantém tudo da 0.2: organização por gênero/plataforma, dublado+legendado juntos e a fonte mais estável de cada canal.
+> Versão **0.4** — o Início virou uma visão geral: jogos dos seus times favoritos no topo (buscados na internet, sem depender da aba "jogos do dia" da lista), Fórmula 1 / UFC / Tênis, destaque com filmes **e** séries. Mantém tudo da 0.2: organização por gênero/plataforma, dublado+legendado juntos e a fonte mais estável de cada canal.
 
 ## Instalar na TV (Downloader)
 
@@ -26,12 +26,13 @@ O GitHub Actions compila o app a cada alteração na branch `main` e publica o A
 
 ## Novidades da v0.4
 
-- **Ligas favoritas (até 3)**: além dos times, escolha competições (Brasileirão, Libertadores, Champions, Premier League...). Todos os jogos delas de hoje e amanhã aparecem no topo do Início; jogo de time favorito vem primeiro, com ★ e borda laranja. Liga sem jogo nesses dias some. O último cartão **Ver todos** abre a lista dos próximos dias, separada por dia.
+- **Ligas favoritas (até 5)**: além dos times, escolha competições (Brasileirão, Libertadores, Champions, Premier League...). Todos os jogos delas de hoje e amanhã aparecem no topo do Início; jogo de time favorito vem primeiro, com ★ e borda laranja. Liga sem jogo nesses dias some. O último cartão **Ver todos** abre a lista dos próximos dias, separada por dia.
 - **Horário certo**: os canais de jogo avulso da lista vêm no horário de Brasília; o app converte para o fuso da TV e limpa os nomes em todas as telas.
 - **Pop-up do jogo**: times, liga, dia e hora locais, **"Costuma passar em…"**, e botões *Ver canais*, *Assistir agora* (quando há canal avulso do jogo) e *Lembrar*.
 - **Lembrete**: 10 minutos antes aparece um aviso no app (com atalho para os canais) e, onde a TV mostra notificações, também uma notificação do sistema. Se a TV foi desligada, o aviso dentro do app cobre ao abrir.
 - **Canais por marca**: Globo, Record, SBT, Band e RedeTV viram um cartão cada, com as praças (São Paulo, Rio...) dentro; o app lembra a última escolhida e no player há o botão **Praça**. Pastas reduzidas para ~9 (Esportes, TV aberta, Notícias, Filmes e séries, Infantil e anime, Variedades e reality, Documentários, Música e rádios, Religiosos); 4K e YouTube viram filtros.
-- **Destaques girando** (ordem aleatória) no Início, em Filmes (só filmes) e em Séries (só séries).
+- **Destaques girando** (ordem aleatória) no Início, em Filmes (só filmes) e em Séries (só séries), com botões **Anterior / Próximo** para andar de um para o outro; a lista rola de volta e mostra o destaque inteiro.
+- **Pasta "Do provedor"** (última das pastas de canais): jogos do dia, avisos e área do cliente da lista ficam separados e não aparecem em "Todos" nem em "Esportes".
 - **Meus favoritos** (antes "Minha lista"): jogos de hoje por popularidade (os seus times marcados com ★), seus filmes/séries e seus canais.
 - Canais sem imagem (ou com link quebrado) ganham um cartão colorido com as iniciais.
 - Player: botão **Melhor fonte (automático)** no painel Fontes — escolhe a de maior estabilidade e qualidade (mede antes as que ainda não têm nota).

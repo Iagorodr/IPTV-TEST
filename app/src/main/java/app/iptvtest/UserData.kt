@@ -51,7 +51,7 @@ class UserData(ctx: Context) {
     /** Times favoritos (no máximo 5), na ordem em que a pessoa escolheu. */
     val favTeams = ArrayList<FavTeam>()
 
-    /** Ligas/competições escolhidas (até 3), pelo código da ESPN (ex.: "bra.1"). */
+    /** Ligas/competições escolhidas (até 5), pelo código da ESPN (ex.: "bra.1"). */
     val favLeagues = ArrayList<String>()
 
     /** Lembretes de jogos ("Lembrar"), do mais próximo ao mais distante. */

@@ -196,7 +196,7 @@ object SportsData {
 
     fun leagueLabel(slug: String, fallback: String): String = LABELS[slug] ?: fallback.ifEmpty { slug }
 
-    /** Competições que a pessoa pode escolher (até 3) para ver todos os jogos delas no Início. */
+    /** Competições que a pessoa pode escolher (até 5) para ver todos os jogos delas no Início. */
     val leagueGroups: List<Pair<String, List<String>>> = listOf(
         "Brasil" to listOf("bra.1", "bra.2", "bra.copa_do_brazil"),
         "América do Sul" to listOf("conmebol.libertadores", "conmebol.sudamericana", "arg.1"),
@@ -215,7 +215,7 @@ object SportsData {
         "uefa.europa", "conmebol.sudamericana", "bra.copa_do_brazil", "bra.2", "por.1",
     )
 
-    const val MAX_LEAGUES = 3
+    const val MAX_LEAGUES = 5
 }
 
 // =========================================================================

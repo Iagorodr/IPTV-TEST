@@ -52,7 +52,8 @@ fun ChannelsTab(vm: MainViewModel) {
             return@Column
         }
 
-        val all = remember(groups) { groups.flatMap { it.second } }
+        // "Todos" não inclui o que é só do provedor (jogos do dia, avisos): isso fica na pasta "Do provedor"
+        val all = remember(groups) { groups.filter { it.first != ChannelGroups.PROVIDER }.flatMap { it.second } }
         val sel = if (selected == FAVS && favs.isEmpty()) ALL else selected
         LazyRow(
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),

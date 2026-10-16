@@ -126,6 +126,14 @@ object Brands {
 /** As ~9 pastas de canais (no lugar das 47 do provedor). */
 object ChannelGroups {
 
+    /** O que é do próprio provedor do sinal (lista de jogos do dia, avisos, área do cliente), separado do resto. */
+    const val PROVIDER = "Do provedor"
+
+    /** Jogo avulso já com a hora local limpa pelo app ("17:45 · Lyon x Crystal Palace"). */
+    private val CLEAN_EVENT = Regex("""^\d{1,2}:\d{2} · .+""")
+
+    private val PROVIDER_CATS = listOf("jogos em destaque", "eventos em destaque", "jogos do dia", "jogos de hoje", "cliente")
+
     val ORDER = listOf(
         "Esportes",
         "TV aberta",
@@ -137,6 +145,7 @@ object ChannelGroups {
         "Música e rádios",
         "Religiosos",
         "Outros",
+        PROVIDER,
     )
 
     private val ESPORTES = listOf("jogo", "evento", "f1", "premiere", "sportv", "espn", "esporte", "copa", "campeonato", "ppv", "tnt", "combate", "ufc")
@@ -146,19 +155,19 @@ object ChannelGroups {
     private val VARIEDADES = listOf("variedade", "entretenimento", "fazenda", "comedia", "reality", "lives", "youtube channels", "shows")
     private val MUSICA = listOf("radio", "urban", "music", "musica")
     private val MUSICA_NOME = listOf("zapping music", "mtv", "music box", "trace ", "radio")
-    private val HIDDEN = listOf("cliente")
 
     private fun has(f: String, keys: List<String>): Boolean {
         for (k in keys) if (f.contains(k)) return true
         return false
     }
 
-    /** Nome da pasta do canal, ou null se ele deve ficar escondido (ex.: "Área do Cliente"). */
+    /** Nome da pasta do canal, ou null se ele deve ficar escondido. */
     fun groupOf(ch: Channel): String? {
         if (ch.isBrand) return "TV aberta"
         val c = Organizer.fold(ch.category)
         val n = ch.fold
-        if (has(c, HIDDEN)) return null
+        // lista de jogos do dia do provedor: pela pasta, ou pelo nome ("17:45 · A x B") se ela vier numa pasta nova
+        if (has(c, PROVIDER_CATS) || CLEAN_EVENT.containsMatchIn(ch.name)) return PROVIDER
         if (c == "4k") {
             // o que sobrou da pasta 4K vai pelo nome
             return when {

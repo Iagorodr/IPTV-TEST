@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-const val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Android TV) IPTV-TEST/0.4"
+const val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Android TV) IPTV-TEST/0.4.1"
 
 /** Categoria adulta é detectada só pelo NOME DA CATEGORIA do provedor. */
 private val ADULT_CATEGORY = Regex("""\+\s?18|18\s?\+|adult|xxx|er[oó]tic""")
