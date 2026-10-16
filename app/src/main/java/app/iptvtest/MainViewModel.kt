@@ -115,6 +115,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var popLoading by mutableStateOf(false)
         private set
+    var popError by mutableStateOf<String?>(null)
+        private set
     var gameDialog by mutableStateOf<Game?>(null)
         private set
     var reminders by mutableStateOf<List<Reminder>>(emptyList())
@@ -763,29 +765,36 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun gamesByDay(now: Long): List<Pair<Long, List<StripGame>>> =
         LeaguePick.byDay(allGames, allGames, favTeams, favLeagues, now, tz)
 
-    // ---- "Meus favoritos": jogos de hoje, dos mais populares para os menos
+    // ---- aba "Jogos": ontem, hoje, amanhã e os próximos dias, dos mais populares para os menos
 
-    fun loadPopular(force: Boolean = false) {
+    /** Busca ontem até daqui a 5 dias nas ligas mais populares + as dos meus times e ligas. A ESPN agrupa pelo dia dos EUA, por isso 2 dias para trás. */
+    fun loadDayGames(force: Boolean = false) {
         val now = System.currentTimeMillis()
-        if (!force && popGames.isNotEmpty() && now - popAt < 600_000L) return
+        val live = popGames.any { it.state == 1 }
+        val maxAge = if (live) 60_000L else 600_000L
+        if (!force && popGames.isNotEmpty() && now - popAt < maxAge) return
         if (popLoading) return
         popLoading = true
+        popError = null
         popAt = now
+        val slugs = (SportsData.popularLeagues + favLeagues + favTeams.flatMap { it.leagues }).distinct()
         viewModelScope.launch {
             try {
-                popGames = SportsApi.leagueGames(SportsData.popularLeagues, now - SportsTime.DAY, now + SportsTime.DAY)
+                popGames = SportsApi.leagueGames(slugs, now - 2L * SportsTime.DAY, now + 6L * SportsTime.DAY)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 popAt = 0L
+                popError = "Não consegui buscar os jogos agora."
             } finally {
                 popLoading = false
             }
         }
     }
 
-    fun todayGames(now: Long): List<StripGame> =
-        LeaguePick.today(LeaguePick.mergeAll(LeaguePick.mergeAll(popGames, games), leagueGames), favTeams, now, tz)
+    /** Jogos do dia [offset] (-1 ontem, 0 hoje, 1 amanhã...) já com os dados mais novos de cada fonte. */
+    fun dayGames(offset: Int, now: Long): List<StripGame> =
+        LeaguePick.forDay(LeaguePick.mergeAll(LeaguePick.mergeAll(popGames, games), leagueGames), favTeams, offset, now, tz)
 
     // ---- pop-up do jogo
 

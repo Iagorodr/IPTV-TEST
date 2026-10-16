@@ -33,7 +33,8 @@ O GitHub Actions compila o app a cada alteração na branch `main` e publica o A
 - **Canais por marca**: Globo, Record, SBT, Band e RedeTV viram um cartão cada, com as praças (São Paulo, Rio...) dentro; o app lembra a última escolhida e no player há o botão **Praça**. Pastas reduzidas para ~9 (Esportes, TV aberta, Notícias, Filmes e séries, Infantil e anime, Variedades e reality, Documentários, Música e rádios, Religiosos); 4K e YouTube viram filtros.
 - **Destaques girando** (ordem aleatória) no Início, em Filmes (só filmes) e em Séries (só séries), com botões **Anterior / Próximo** para andar de um para o outro; a lista rola de volta e mostra o destaque inteiro.
 - **Pasta "Do provedor"** (última das pastas de canais): jogos do dia, avisos e área do cliente da lista ficam separados e não aparecem em "Todos" nem em "Esportes".
-- **Meus favoritos** (antes "Minha lista"): jogos de hoje por popularidade (os seus times marcados com ★), seus filmes/séries e seus canais.
+- **Aba Jogos**: navegue por **Ontem, Hoje, Amanhã** e os próximos 4 dias. Jogos das principais ligas e dos seus times/ligas, ao vivo primeiro e depois os mais populares (seus times com ★). Ontem mostra os resultados; tocar abre o pop-up do jogo.
+- **Meus favoritos** (antes "Minha lista"): seus filmes/séries e seus canais.
 - Canais sem imagem (ou com link quebrado) ganham um cartão colorido com as iniciais.
 - Player: botão **Melhor fonte (automático)** no painel Fontes — escolhe a de maior estabilidade e qualidade (mede antes as que ainda não têm nota).
 

@@ -683,19 +683,27 @@ object LeaguePick {
         return out
     }
 
-    /** Jogos de hoje (e ao vivo) de qualquer liga conhecida, dos mais populares para os menos. Jogos dos meus times têm bônus. */
-    fun today(pool: List<Game>, favs: List<FavTeam>, now: Long, tz: TimeZone): List<StripGame> {
+    /**
+     * Aba Jogos: os jogos do dia [offset] (-1 = ontem, 0 = hoje, 1 = amanhã...) de qualquer liga conhecida.
+     * Ao vivo primeiro (sempre contam como hoje) e depois dos mais populares para os menos; jogos dos meus times têm bônus.
+     */
+    fun forDay(pool: List<Game>, favs: List<FavTeam>, offset: Int, now: Long, tz: TimeZone): List<StripGame> {
         val favIds = HashSet<String>()
         for (f in favs) favIds.add(f.id)
         val today = SportsTime.dayNumber(now, tz)
         val out = ArrayList<StripGame>()
         for (g in pool) {
-            if (g.state == 0 && g.startMs < now - 3L * 3_600_000L) continue
-            val d = SportsTime.dayNumber(g.startMs, tz) - today
-            if (g.state != 1 && d != 0L) continue
+            val day = if (g.state == 1) 0L else SportsTime.dayNumber(g.startMs, tz) - today
+            if (day != offset.toLong()) continue
+            // jogo marcado que devia ter começado há horas e a fonte não atualizou: some só de hoje
+            if (offset == 0 && g.state == 0 && g.startMs < now - 3L * 3_600_000L) continue
             out.add(StripGame(g, involves(g, favIds)))
         }
-        out.sortWith(compareByDescending<StripGame> { Popularity.score(it.game, it.fav) }.thenBy { it.game.startMs })
+        out.sortWith(
+            compareBy<StripGame> { if (it.game.state == 1) 0 else 1 }
+                .thenByDescending { Popularity.score(it.game, it.fav) }
+                .thenBy { it.game.startMs },
+        )
         return out
     }
 

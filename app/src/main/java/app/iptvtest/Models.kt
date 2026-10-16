@@ -6,7 +6,7 @@ enum class Kind(val label: String) {
     LIVE("Canais"),
 }
 
-enum class Tab { HOME, MOVIES, SERIES, CHANNELS, LIST, SEARCH, SETTINGS }
+enum class Tab { HOME, GAMES, MOVIES, SERIES, CHANNELS, LIST, SEARCH, SETTINGS }
 
 data class Account(val server: String, val user: String, val pass: String)
 

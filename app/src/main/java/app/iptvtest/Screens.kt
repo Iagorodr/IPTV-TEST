@@ -222,6 +222,7 @@ fun TopNav(vm: MainViewModel) {
         Text("IAGO IPTV", color = Accent, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.width(24.dp))
         NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
+        NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
         NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
         NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
         NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
@@ -240,6 +241,7 @@ fun TopNav(vm: MainViewModel) {
 fun TabScreen(vm: MainViewModel) {
     when (vm.tab) {
         Tab.HOME -> HomeTab(vm)
+        Tab.GAMES -> GamesTab(vm)
         Tab.MOVIES -> ShelfTab(vm, vm.movieShelves, vm.heroMovies)
         Tab.SERIES -> ShelfTab(vm, vm.seriesShelves, vm.heroSeries)
         Tab.CHANNELS -> ChannelsTab(vm)
@@ -603,7 +605,7 @@ fun SearchTab(vm: MainViewModel) {
 }
 
 // =========================================================================
-// Meus favoritos: jogos de hoje + filmes/séries salvos + canais favoritos
+// Meus favoritos: filmes/séries salvos + canais favoritos
 // =========================================================================
 
 @Composable
@@ -612,69 +614,25 @@ fun FavoritesTab(vm: MainViewModel) {
     val favs = vm.favoriteChannels()
     val mineShelf = remember(mine) { Shelf("Meus filmes e séries", mine) }
 
-    var now by remember { mutableStateOf(System.currentTimeMillis()) }
-    LaunchedEffect(Unit) {
-        while (true) {
-            now = System.currentTimeMillis()
-            vm.loadPopular()
-            vm.refreshSports()
-            delay(30_000L)
-        }
-    }
-    val today = vm.todayGames(now)
-
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
+        if (mine.isEmpty() && favs.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    "Nada por aqui ainda.\nAbra um filme ou série e escolha \"+ Favoritos\".\nNos canais, use a estrela ★ dentro do player.",
+                    color = Muted,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.Center,
+                )
+            }
+            return@Column
+        }
         LazyColumn(
             state = rememberLazyListState(),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(top = 4.dp, bottom = 40.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            item(key = "today") {
-                Column {
-                    Text(
-                        "Jogos de hoje",
-                        color = TextMain,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        modifier = Modifier.padding(horizontal = 48.dp),
-                    )
-                    Text(
-                        "Os mais populares primeiro. ★ = jogo de um time seu.",
-                        color = Muted,
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(horizontal = 48.dp),
-                    )
-                    Spacer(Modifier.height(6.dp))
-                    if (today.isEmpty()) {
-                        Text(
-                            text = if (vm.popLoading) "Buscando os jogos..." else "Nenhum jogo de hoje nas principais ligas.",
-                            color = Muted,
-                            fontSize = 14.sp,
-                            modifier = Modifier.padding(horizontal = 48.dp, vertical = 8.dp),
-                        )
-                    } else {
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(14.dp),
-                        ) {
-                            items(today, key = { it.game.key }) { sg ->
-                                GameCard(
-                                    game = sg.game,
-                                    now = now,
-                                    channelCount = vm.gameChannelCount(sg.game),
-                                    focusId = "today|" + sg.game.key,
-                                    modifier = Modifier.width(262.dp),
-                                    fav = sg.fav,
-                                    reminded = vm.isReminded(sg.game),
-                                    onClick = { vm.showGame(sg.game) },
-                                )
-                            }
-                        }
-                    }
-                }
-            }
             if (mine.isNotEmpty()) {
                 item(key = "mine") {
                     ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
@@ -706,16 +664,6 @@ fun FavoritesTab(vm: MainViewModel) {
                             }
                         }
                     }
-                }
-            }
-            if (mine.isEmpty() && favs.isEmpty()) {
-                item(key = "hint") {
-                    Text(
-                        "Aqui também ficam seus filmes e séries (botão \"+ Favoritos\" no título) e seus canais (estrela ★ no player).",
-                        color = Muted,
-                        fontSize = 14.sp,
-                        modifier = Modifier.padding(horizontal = 48.dp),
-                    )
                 }
             }
         }

@@ -324,6 +324,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
     val info = remember(g.key, vm.catalog) { vm.gameInfo(g) }
     var notice by remember(g.key) { mutableStateOf<String?>(null) }
     val reminded = vm.isReminded(g)
+    val finished = g.state == 2
     val first = remember { FocusRequester() }
     LaunchedEffect(g.key) {
         delay(80)
@@ -384,8 +385,10 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             )
 
             Spacer(Modifier.height(14.dp))
-            val comp = info.comp
-            if (comp != null) {
+            val comp = if (finished) null else info.comp
+            if (finished) {
+                Text("Jogo encerrado: não há mais o que assistir ao vivo.", color = Muted, fontSize = 13.sp)
+            } else if (comp != null) {
                 Text("Costuma passar em", color = Muted, fontSize = 12.sp)
                 Spacer(Modifier.height(2.dp))
                 Text(
@@ -412,7 +415,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
                     fontSize = 13.sp,
                 )
             }
-            if (info.matched.isNotEmpty()) {
+            if (!finished && info.matched.isNotEmpty()) {
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = if (info.matched.size == 1) "▶ Achei 1 canal desse jogo na sua lista" else "▶ Achei ${info.matched.size} canais desse jogo na sua lista",
@@ -424,18 +427,22 @@ fun GameDialog(vm: MainViewModel, g: Game) {
 
             Spacer(Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                if (info.matched.isNotEmpty()) {
-                    TvButton(text = "Assistir agora", primary = true, focusRequester = first) { vm.watchNow(g) }
-                    TvButton(text = "Ver canais") { vm.openGameChannels(g) }
+                if (finished) {
+                    TvButton(text = "Fechar", primary = true, focusRequester = first) { vm.closeGame() }
                 } else {
-                    TvButton(text = "Ver canais", primary = true, focusRequester = first) { vm.openGameChannels(g) }
-                }
-                if (g.state == 0) {
-                    TvButton(text = if (reminded) "⏰ Lembrete ligado" else "⏰ Lembrar") {
-                        notice = vm.toggleReminder(g)
+                    if (info.matched.isNotEmpty()) {
+                        TvButton(text = "Assistir agora", primary = true, focusRequester = first) { vm.watchNow(g) }
+                        TvButton(text = "Ver canais") { vm.openGameChannels(g) }
+                    } else {
+                        TvButton(text = "Ver canais", primary = true, focusRequester = first) { vm.openGameChannels(g) }
                     }
+                    if (g.state == 0) {
+                        TvButton(text = if (reminded) "⏰ Lembrete ligado" else "⏰ Lembrar") {
+                            notice = vm.toggleReminder(g)
+                        }
+                    }
+                    TvButton(text = "Fechar") { vm.closeGame() }
                 }
-                TvButton(text = "Fechar") { vm.closeGame() }
             }
             val n = notice
             if (n != null) {
@@ -517,6 +524,86 @@ fun AllGamesScreen(vm: MainViewModel) {
                     now = now,
                     channelCount = vm.gameChannelCount(sg.game),
                     focusId = "all|" + sg.game.key,
+                    modifier = Modifier.fillMaxWidth(),
+                    fav = sg.fav,
+                    reminded = vm.isReminded(sg.game),
+                    onClick = { vm.showGame(sg.game) },
+                )
+            }
+        }
+    }
+}
+
+// =========================================================================
+// Aba Jogos: ontem, hoje, amanhã e os próximos dias
+// =========================================================================
+
+@Composable
+fun GamesTab(vm: MainViewModel) {
+    val tz = remember { TimeZone.getDefault() }
+    var now by remember { mutableStateOf(System.currentTimeMillis()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            now = System.currentTimeMillis()
+            vm.loadDayGames()
+            vm.refreshSports()
+            delay(30_000L)
+        }
+    }
+    var offset by rememberSaveable { mutableStateOf(0) }
+    val offsets = remember { (-1..5).toList() }
+    val perDay = offsets.map { vm.dayGames(it, now) }
+    val list = perDay[(offset + 1).coerceIn(0, offsets.size - 1)]
+    val loading = vm.popLoading
+    val err = vm.popError
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopNav(vm)
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            items(offsets, key = { it }) { o ->
+                val label = if (o == 0) "Hoje" else SportsTime.dayLabel(now + o * SportsTime.DAY, now, tz)
+                ChipItem(text = label + " (" + perDay[o + 1].size + ")", selected = o == offset) { offset = o }
+            }
+            item(key = "__teams") {
+                ChipItem(text = "Meus times e ligas", selected = false) { vm.openPicker() }
+            }
+        }
+        Row(
+            modifier = Modifier.padding(horizontal = 44.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = when {
+                    list.isNotEmpty() -> "${list.size} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · toque para ver canais e lembrar"
+                    loading -> "Buscando os jogos..."
+                    err != null -> err
+                    else -> "Nenhum jogo das principais ligas neste dia."
+                },
+                color = if (list.isEmpty() && err != null && !loading) ErrorColor else Muted,
+                fontSize = 12.sp,
+            )
+            if (err != null && !loading && list.isEmpty()) {
+                TvButton(text = "Tentar de novo") { vm.loadDayGames(force = true) }
+            }
+        }
+        LazyVerticalGrid(
+            state = rememberLazyGridState(),
+            columns = GridCells.Adaptive(262.dp),
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            modifier = Modifier.fillMaxWidth().weight(1f),
+        ) {
+            gridItems(list, key = { "gd|" + it.game.key }) { sg ->
+                GameCard(
+                    game = sg.game,
+                    now = now,
+                    channelCount = if (sg.game.state == 2) 0 else vm.gameChannelCount(sg.game),
+                    focusId = "gd|" + offset + "|" + sg.game.key,
                     modifier = Modifier.fillMaxWidth(),
                     fav = sg.fav,
                     reminded = vm.isReminded(sg.game),
