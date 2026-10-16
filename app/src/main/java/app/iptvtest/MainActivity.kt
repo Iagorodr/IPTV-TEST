@@ -33,6 +33,7 @@ fun App(vm: MainViewModel = viewModel()) {
     val catalog = vm.catalog
     val title = vm.openTitle
     val grid = vm.grid
+    val chList = vm.channelList
 
     BackHandler(enabled = account != null && playing == null && vm.canGoBack) {
         vm.back()
@@ -43,6 +44,12 @@ fun App(vm: MainViewModel = viewModel()) {
             account == null -> LoginScreen(vm)
             playing != null -> PlayerScreen(playing, vm.user, onExit = { vm.stopPlaying() })
             catalog == null -> LoadingScreen(vm)
+            vm.pickerOpen -> holder.SaveableStateProvider("picker") {
+                TeamPickerScreen(vm)
+            }
+            chList != null -> holder.SaveableStateProvider("chlist|" + chList.title + "|" + chList.subtitle) {
+                ChannelListScreen(vm, chList)
+            }
             title != null -> holder.SaveableStateProvider("title|" + title.key) {
                 TitleScreen(vm, title)
             }

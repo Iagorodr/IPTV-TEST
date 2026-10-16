@@ -14,7 +14,7 @@ android {
         targetSdk = 34
         // versionCode sobe a cada build do GitHub Actions, assim o Android aceita atualizar por cima.
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
-        versionName = "0.2.0"
+        versionName = "0.3.0"
     }
 
     signingConfigs {

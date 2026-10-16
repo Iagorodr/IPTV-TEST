@@ -70,6 +70,33 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     private val titleStack = ArrayList<Title>()
 
+    // ---- esportes
+    var favTeams by mutableStateOf<List<FavTeam>>(emptyList())
+        private set
+    var games by mutableStateOf<List<Game>>(emptyList())
+        private set
+    var gamesLoading by mutableStateOf(false)
+        private set
+    var gamesError by mutableStateOf<String?>(null)
+        private set
+    var sportEvents by mutableStateOf<Map<SportKind, SportEvent>>(emptyMap())
+        private set
+    var pickerOpen by mutableStateOf(false)
+        private set
+    var pickerCountry by mutableStateOf<String?>(null)
+        private set
+    var channelList by mutableStateOf<ChannelListRequest?>(null)
+        private set
+    var searchPrefill by mutableStateOf<String?>(null)
+        private set
+    private var eventIdx: List<EventChan> = emptyList()
+    private var gamesJob: Job? = null
+    private var eventsJob: Job? = null
+    private var gamesAt = 0L
+    private var eventsAt = 0L
+    private var gamesGen = 0
+    private var sportsDirty = false
+
     /** Sobe quando minha lista, favoritos ou "continuar assistindo" mudam, para a tela se atualizar. */
     var dataRev by mutableIntStateOf(0)
         private set
@@ -80,9 +107,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private var loadJob: Job? = null
 
     init {
+        favTeams = user.favTeams.toList()
         store.load()?.let { saved ->
             startSession(saved)
             refreshAccountInfo()
+            refreshSports(force = true)
         }
     }
 
@@ -138,6 +167,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         openTitle = null
         grid = null
         playing = null
+        channelList = null
+        pickerOpen = false
+        pickerCountry = null
         titleStack.clear()
         CatalogCache.deleteOthers(appCtx, CatalogCache.accKey(acc))
         loadCatalog(force = false)
@@ -161,6 +193,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         openTitle = null
         grid = null
         playing = null
+        channelList = null
+        pickerOpen = false
+        pickerCountry = null
+        eventIdx = emptyList()
         titleStack.clear()
         loadMsg = null
         loadError = null
@@ -230,6 +266,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val built = withContext(Dispatchers.Default) { Shelves.buildAll(c) }
         val chIdx = HashMap<String, Channel>(c.channels.size * 2)
         for (ch in c.channels) chIdx[ch.key] = ch
+        eventIdx = withContext(Dispatchers.Default) { SportsChannels.indexEvents(c.channels) }
         titleIndex = built.index
         channelIndex = chIdx
         allTitles = built.all
@@ -257,9 +294,23 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // =====================================================================
 
     val canGoBack: Boolean
-        get() = openTitle != null || grid != null || tab != Tab.HOME
+        get() = channelList != null || pickerOpen || openTitle != null || grid != null || tab != Tab.HOME
 
     fun back(): Boolean {
+        if (channelList != null) {
+            channelList = null
+            FocusMemory.arm()
+            return true
+        }
+        if (pickerOpen) {
+            if (pickerCountry != null) {
+                pickerCountry = null
+                FocusMemory.arm()
+            } else {
+                closePicker()
+            }
+            return true
+        }
         if (openTitle != null) {
             openTitle = if (titleStack.isNotEmpty()) titleStack.removeAt(titleStack.size - 1) else null
             FocusMemory.arm()
@@ -445,6 +496,160 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun channelStability(ch: Channel): Float? {
         if (dataRev < 0) return null
         return user.bestReliability(ch)
+    }
+
+    // =====================================================================
+    // Esportes: times favoritos, jogos do dia, F1/UFC/tênis
+    // =====================================================================
+
+    /** Busca jogos e agenda na internet. Sem [force], só busca se os dados já estão velhos (1 min com jogo ao vivo, 10 min sem). */
+    fun refreshSports(force: Boolean = false) {
+        val now = System.currentTimeMillis()
+        val maxAge = if (games.any { it.state == 1 }) 60_000L else 600_000L
+        val mustGames = force || sportsDirty || now - gamesAt >= maxAge
+        if (mustGames && !(gamesJob?.isActive == true && !force && !sportsDirty)) {
+            sportsDirty = false
+            gamesAt = now
+            val teams = favTeams
+            val my = ++gamesGen
+            gamesJob?.cancel()
+            gamesJob = viewModelScope.launch {
+                gamesLoading = true
+                try {
+                    games = if (teams.isEmpty()) emptyList() else SportsApi.gamesFor(teams)
+                    gamesError = null
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    gamesError = "Não consegui buscar os jogos agora."
+                } finally {
+                    if (my == gamesGen) gamesLoading = false
+                }
+            }
+        }
+        if (force || now - eventsAt >= 1_800_000L) {
+            eventsAt = now
+            eventsJob?.cancel()
+            eventsJob = viewModelScope.launch {
+                try {
+                    sportEvents = SportsApi.sportEvents()
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    // sem internet ou serviço fora do ar: os cartões seguem sem data
+                }
+            }
+        }
+    }
+
+    /** Jogos que aparecem no início, segundo a regra combinada (hoje e amanhã; sem jogo, o próximo). */
+    fun shownGames(now: Long): List<Game> = SportsPick.games(games, favTeams, now, java.util.TimeZone.getDefault())
+
+    fun gameChannelCount(g: Game): Int = SportsChannels.matchGame(g, eventIdx).size
+
+    /** Devolve um aviso se não deu para escolher (máximo de 5 times). */
+    fun toggleFavTeam(t: FavTeam): String? {
+        val cur = favTeams
+        if (cur.any { it.id == t.id }) {
+            favTeams = cur.filter { it.id != t.id }
+        } else {
+            if (cur.size >= 5) return "Você já escolheu 5 times. Tire um para escolher outro."
+            favTeams = cur + t
+        }
+        user.saveFavTeams(favTeams)
+        sportsDirty = true
+        dataRev++
+        return null
+    }
+
+    fun isFavTeam(id: String): Boolean = favTeams.any { it.id == id }
+
+    fun openPicker() {
+        pickerCountry = null
+        pickerOpen = true
+    }
+
+    fun closePicker() {
+        pickerOpen = false
+        pickerCountry = null
+        FocusMemory.arm()
+        refreshSports(force = false)
+    }
+
+    fun pickCountry(code: String?) {
+        pickerCountry = code
+    }
+
+    private fun sportCategoryNames(): List<String> {
+        val c = catalog ?: return emptyList()
+        return SportsChannels.sportCategories(c.channelCategories)
+    }
+
+    /** Toque num jogo: mostra o canal dele na lista (se achar) e os canais de esporte para escolher. */
+    fun openGame(g: Game) {
+        val now = System.currentTimeMillis()
+        val tz = java.util.TimeZone.getDefault()
+        val matched = SportsChannels.matchGame(g, eventIdx)
+        val shownNames = HashMap<String, Int>()
+        val list = ArrayList<Channel>()
+        for (e in matched) {
+            val d = SportsChannels.display(e, now, tz)
+            val n = (shownNames[d.name] ?: 0) + 1
+            shownNames[d.name] = n
+            list.add(if (n == 1) d else Channel(d.key, d.name + " (" + n + ")", d.icon, d.category, d.sources))
+        }
+        val when0 = SportsTime.dayLabel(g.startMs, now, tz) + " " + SportsTime.clock(g.startMs, tz)
+        val hint = if (list.isNotEmpty()) {
+            "Achei na sua lista. Se travar, volte e escolha outra fonte."
+        } else {
+            "Este jogo não está em \"Jogos em Destaque\" da sua lista agora. Veja os canais de esporte abaixo " +
+                "ou use a busca. (A fonte de jogos não informa qual canal transmite na sua região.)"
+        }
+        channelList = ChannelListRequest(
+            title = g.home.short + " x " + g.away.short,
+            subtitle = when0 + " · " + g.leagueName,
+            hint = hint,
+            highlight = list,
+            searchQuery = g.home.short,
+        )
+    }
+
+    /** Toque em Fórmula 1 / UFC / Tênis: mostra os canais da lista para aquele esporte. */
+    fun openSport(kind: SportKind) {
+        val c = catalog ?: return
+        val ev = sportEvents[kind]
+        val now = System.currentTimeMillis()
+        val tz = java.util.TimeZone.getDefault()
+        val sub = if (ev == null) {
+            "Sem data confirmada agora"
+        } else {
+            ev.name + " · " + SportsTime.dayLabel(ev.startMs, now, tz) + " " + SportsTime.clock(ev.startMs, tz)
+        }
+        val list = SportsChannels.forKind(kind, c.channels)
+        val hint = if (list.isNotEmpty()) {
+            "Canais da sua lista para ${kind.label}."
+        } else {
+            "Não achei canais de ${kind.label} pelo nome. Veja os canais de esporte abaixo ou use a busca."
+        }
+        val q = when (kind) {
+            SportKind.F1 -> "F1"
+            SportKind.UFC -> "UFC"
+            SportKind.TENNIS -> "tenis"
+        }
+        channelList = ChannelListRequest(kind.label, sub, hint, list, q)
+    }
+
+    fun sportCategoriesForList(): List<String> = sportCategoryNames()
+
+    fun searchFor(q: String) {
+        channelList = null
+        pickerOpen = false
+        searchPrefill = q
+        selectTab(Tab.SEARCH)
+    }
+
+    fun clearSearchPrefill() {
+        searchPrefill = null
     }
 
     // =====================================================================

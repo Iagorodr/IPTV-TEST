@@ -499,9 +499,23 @@ object Shelves {
         val index = HashMap<String, Title>(all.size * 2)
         for (t in all) index[t.key] = t
         // destaque: lançamentos de plataformas conhecidas, com capa e nota decente (evita títulos obscuros)
-        val picks = all.filter { it.launch && !it.onlyCam && it.image != null && it.platforms.isNotEmpty() && it.rating >= 6f }
-            .sortedByDescending { it.score() }
-            .take(12)
+        // filmes e séries se alternam, para o início não parecer "só filmes"
+        fun best(list: List<Title>): List<Title> =
+            list.filter { it.launch && !it.onlyCam && it.image != null && it.platforms.isNotEmpty() && it.rating >= 6f }
+                .sortedByDescending { it.score() }
+                .take(8)
+        val pm = best(c.movies)
+        // série quase nunca vem marcada como lançamento: usa as adicionadas há pouco, de plataforma conhecida e bem avaliadas
+        val year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        val ps = c.series
+            .filter { it.image != null && !it.onlyCam && it.platforms.isNotEmpty() && it.rating >= 7f && (it.year.toIntOrNull() ?: 0) >= year - 2 }
+            .sortedByDescending { it.added }
+            .take(8)
+        val picks = ArrayList<Title>()
+        for (i in 0 until maxOf(pm.size, ps.size)) {
+            if (i < pm.size) picks.add(pm[i])
+            if (i < ps.size) picks.add(ps[i])
+        }
         val featured = if (picks.size >= 4) {
             picks
         } else {

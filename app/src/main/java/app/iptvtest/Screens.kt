@@ -26,6 +26,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +50,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.lazy.grid.items as gridItems
 
 // =========================================================================
@@ -298,7 +300,19 @@ fun HomeTab(vm: MainViewModel) {
     val cont = vm.continueEntries()
     val mine = vm.myListTitles()
     val mineShelf = remember(mine) { Shelf("Minha lista", mine) }
+    val favs = vm.favoriteChannels()
     val hero = vm.featured
+
+    // "agora" para os horários dos jogos; também puxa jogos novos ao entrar e a cada meio minuto
+    var now by remember { mutableStateOf(System.currentTimeMillis()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            now = System.currentTimeMillis()
+            vm.refreshSports()
+            delay(30_000L)
+        }
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         LazyColumn(
@@ -307,11 +321,41 @@ fun HomeTab(vm: MainViewModel) {
             contentPadding = PaddingValues(bottom = 40.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            item(key = "games") { GamesSection(vm, now) }
             if (hero != null) {
                 item(key = "hero") { HeroBanner(vm, hero) }
             }
+            item(key = "sports") { SportEventsRow(vm, now) }
             if (cont.isNotEmpty()) {
                 item(key = "cont") { ContinueRow(cont, onResume = { vm.resumeEntry(it) }) }
+            }
+            if (favs.isNotEmpty()) {
+                item(key = "favch") {
+                    Column {
+                        Text(
+                            "Seus canais",
+                            color = TextMain,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            modifier = Modifier.padding(horizontal = 48.dp),
+                        )
+                        Spacer(Modifier.height(6.dp))
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(14.dp),
+                        ) {
+                            items(favs, key = { it.key }) { c ->
+                                ChannelTile(
+                                    ch = c,
+                                    stability = vm.channelStability(c),
+                                    focusId = "homefav|" + c.key,
+                                    modifier = Modifier.width(190.dp),
+                                    onClick = { vm.playChannel(c) },
+                                )
+                            }
+                        }
+                    }
+                }
             }
             if (mine.isNotEmpty()) {
                 item(key = "mine") {
@@ -393,6 +437,13 @@ fun GridScreen(vm: MainViewModel, shelf: Shelf) {
 @Composable
 fun SearchTab(vm: MainViewModel) {
     var q by rememberSaveable { mutableStateOf("") }
+    val prefill = vm.searchPrefill
+    LaunchedEffect(prefill) {
+        if (prefill != null) {
+            q = prefill
+            vm.clearSearchPrefill()
+        }
+    }
     val cat = vm.catalog
     val titles = remember(q, cat) {
         val f = Organizer.fold(q)
@@ -577,6 +628,7 @@ fun SettingsTab(vm: MainViewModel) {
                     }
                 }
             }
+            item { FavTeamsSettings(vm) }
             item {
                 Column {
                     Text("Canais ao vivo", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)

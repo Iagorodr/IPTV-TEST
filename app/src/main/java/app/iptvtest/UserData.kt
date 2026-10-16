@@ -48,6 +48,9 @@ class UserData(ctx: Context) {
     private val pinned = HashMap<String, String>()
     private val stats = HashMap<String, ArrayList<Obs>>()
 
+    /** Times favoritos (no máximo 5), na ordem em que a pessoa escolheu. */
+    val favTeams = ArrayList<FavTeam>()
+
     var stabilityFirst: Boolean = true
         private set
     var autoSwitch: Boolean = true
@@ -65,6 +68,7 @@ class UserData(ctx: Context) {
             autoSwitch = sp.getBoolean("auto", true)
             readStrings("mylist", myList)
             readStrings("favch", favChannels)
+            readFavTeams()
 
             val rs = sp.getString("resume", null)
             if (rs != null) {
@@ -139,6 +143,50 @@ class UserData(ctx: Context) {
         val a = JSONArray()
         for (v in from) a.put(v)
         sp.edit().putString(key, a.toString()).apply()
+    }
+
+    // ------------------------------------------------------------------ times favoritos
+
+    private fun readFavTeams() {
+        val s = sp.getString("favteams", null) ?: return
+        val a = JSONArray(s)
+        for (i in 0 until a.length()) {
+            val o = a.optJSONObject(i) ?: continue
+            val id = o.optString("i")
+            if (id.isEmpty()) continue
+            val lg = ArrayList<String>()
+            val la = o.optJSONArray("g")
+            if (la != null) for (j in 0 until la.length()) lg.add(la.optString(j))
+            favTeams.add(
+                FavTeam(
+                    id = id,
+                    name = o.optString("n"),
+                    short = o.optString("s"),
+                    logo = o.optString("l").ifEmpty { null },
+                    leagues = lg,
+                    national = o.optBoolean("t"),
+                ),
+            )
+        }
+    }
+
+    fun saveFavTeams(list: List<FavTeam>) {
+        favTeams.clear()
+        favTeams.addAll(list)
+        val a = JSONArray()
+        for (t in list) {
+            val o = JSONObject()
+            o.put("i", t.id)
+            o.put("n", t.name)
+            o.put("s", t.short)
+            o.put("l", t.logo ?: "")
+            val g = JSONArray()
+            for (x in t.leagues) g.put(x)
+            o.put("g", g)
+            o.put("t", t.national)
+            a.put(o)
+        }
+        sp.edit().putString("favteams", a.toString()).apply()
     }
 
     // ------------------------------------------------------------------ minha lista / favoritos
