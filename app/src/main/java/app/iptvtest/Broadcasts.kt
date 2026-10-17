@@ -144,10 +144,11 @@ object Broadcasts {
             if (n.length >= 3 && (hasWords(n, w) || hasWords(w, n))) best = 2
         }
         if (best == 0) {
+            // divide uma palavra forte (5+ letras), igual ou o começo dela: "Hamburgo" ~ "Hamburg", "Atlético-MG" ~ "Atlético Mineiro"
             val wt = w.split(' ').filter { it.length >= 5 }
             for (n in side.names) {
-                val nt = n.split(' ')
-                if (wt.any { nt.contains(it) }) {
+                val nt = n.split(' ').filter { it.length >= 5 }
+                if (wt.any { a -> nt.any { b -> a == b || (a.length <= b.length && b.startsWith(a)) || (b.length <= a.length && a.startsWith(b)) } }) {
                     best = 1
                     break
                 }
