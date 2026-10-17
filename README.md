@@ -24,6 +24,14 @@ Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e
 
 O GitHub Actions compila o app a cada alteração na branch `main` e publica o APK no link acima (ver `.github/workflows/build.yml`).
 
+## Novidades da v0.6.1
+
+- **Canais, mini tela**: ao apertar OK num canal, ela abre direto na **fonte fixada**; sem fixada, na **última que tocou** naquele canal; se nunca tocou, numa das 3 melhores **sorteada**. Não varre mais todas as fontes: se a fonte não abrir, avisa e você escolhe outra em FONTES (ou abre em tela cheia, que troca sozinha). A tela cheia também começa pela última fonte que funcionou.
+- **Controle remoto nos Canais**: da lista, a seta **→** vai para a **mini tela** (ela ganha o contorno branco; **OK nela abre em tela cheia**) e dali dá para descer para **Tela cheia, Favoritar, PRAÇA e FONTES**.
+- **Menu do topo** mais para dentro (margem de segurança de TV: algumas TVs cortam a borda da imagem) e fileiras de chips que continuam para o lado agora **esmaecem na ponta**, em vez de cortar o texto seco.
+- **Início/Filmes/Séries**: voltar para cima (destaque, faixa de jogos ou chips) **rola a lista até o topo** e o destaque aparece inteiro.
+- **Cartão do app na TV** novo, com as nossas cores e o nome. O nome vem de um lugar só (`app_name` em `strings.xml`): o nome no menu, na abertura, no login, na página do celular e no cartão da TV mudam juntos (o cartão é redesenhado pelo `tools/make_banner.py` a cada compilação). Se a TV continuar mostrando o cartão antigo, é cache da tela inicial: reinicie a caixa.
+
 ## Novidades da v0.6.0
 
 - **Visual novo, "noite carmim"**: fundo em degradê azul-noite → vinho, texto creme, destaque salmão (#FFA586) e botões principais vermelhos. O menu do topo ficou solto sobre o fundo (sem faixa), com a aba atual num salmão translúcido.

@@ -18,6 +18,7 @@ import kotlin.concurrent.thread
  */
 class PhoneLoginServer(
     private val token: String,
+    private val appName: String,
     private val onSubmit: (mode: String, fields: Map<String, String>) -> Unit,
 ) {
     private var server: ServerSocket? = null
@@ -181,20 +182,22 @@ class PhoneLoginServer(
         out.flush()
     }
 
-    private val style = "body{margin:0;padding:20px;background:#0D0D0F;color:#F3EDE6;font-family:system-ui,sans-serif}" +
-        "h1{font-size:22px;color:#FF6B2B;margin:0 0 6px}h2{font-size:17px;margin:0}" +
-        "p{color:#9A948A;font-size:14px;line-height:1.45}a{color:#FF6B2B}" +
-        ".card{background:#1B1A1C;border-radius:14px;padding:16px;margin:16px 0}" +
-        "label{display:block;font-size:13px;color:#9A948A;margin:12px 0 4px}" +
-        "input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #3A3836;" +
-        "background:#0D0D0F;color:#F3EDE6;font-size:16px}" +
-        "button{width:100%;margin-top:18px;padding:14px;border:0;border-radius:24px;background:#FF6B2B;" +
-        "color:#111;font-size:17px;font-weight:700}"
+    private val style = "body{margin:0;padding:20px;background:#161E2F;color:#FFF3EC;font-family:system-ui,sans-serif}" +
+        "h1{font-size:22px;color:#FFA586;margin:0 0 6px}h2{font-size:17px;margin:0}" +
+        "p{color:#9AA3B8;font-size:14px;line-height:1.45}a{color:#FFA586}" +
+        ".card{background:#242F49;border-radius:14px;padding:16px;margin:16px 0}" +
+        "label{display:block;font-size:13px;color:#9AA3B8;margin:12px 0 4px}" +
+        "input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #3A4766;" +
+        "background:#161E2F;color:#FFF3EC;font-size:16px}" +
+        "button{width:100%;margin-top:18px;padding:14px;border:0;border-radius:24px;background:#B51A2B;" +
+        "color:#FFF3EC;font-size:17px;font-weight:700}"
+
+    private val safeName = appName.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
     private fun head(): String =
         "<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\">" +
-            "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>IAGO IPTV</title>" +
-            "<style>" + style + "</style></head><body><h1>IAGO IPTV</h1>"
+            "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>" + safeName + "</title>" +
+            "<style>" + style + "</style></head><body><h1>" + safeName + "</h1>"
 
     private fun simplePage(msg: String, backLink: Boolean = false): String =
         head() + "<p>" + msg + "</p>" +

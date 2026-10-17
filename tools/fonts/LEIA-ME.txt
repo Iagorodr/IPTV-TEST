@@ -1,0 +1,2 @@
+Poppins (Indian Type Foundry) - SIL Open Font License 1.1.
+Usada só por tools/make_banner.py para desenhar o cartão (banner) do app na TV.

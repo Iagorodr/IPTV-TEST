@@ -22,6 +22,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # o cartão do app na TV é desenhado a partir do nome em strings.xml: mudou o nome, o cartão acompanha
+      - name: Gerar o cartão (banner) com o nome do app
+        continue-on-error: true
+        run: |
+          python3 -c "import PIL" 2>/dev/null || pip install --quiet --break-system-packages pillow
+          python3 tools/make_banner.py
+
+      - name: Ler o nome do app
+        id: nome
+        run: |
+          NOME=$(sed -n 's:.*<string name="app_name">\(.*\)</string>.*:\1:p' app/src/main/res/values/strings.xml | head -n1)
+          echo "app=${NOME:-IPTV}" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -47,6 +60,6 @@ jobs:
           cp app/build/outputs/apk/release/app-release.apk iptv-test.apk
           gh release delete latest --yes --cleanup-tag || true
           gh release create latest iptv-test.apk \
-            --title "IAGO IPTV - build ${{ github.run_number }}" \
+            --title "${{ steps.nome.outputs.app }} - build ${{ github.run_number }}" \
             --notes "APK mais recente (build ${{ github.run_number }}, commit ${GITHUB_SHA::7})." \
             --target "$GITHUB_SHA"

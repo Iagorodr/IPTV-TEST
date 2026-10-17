@@ -274,7 +274,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         val token = PhoneLoginServer.newToken()
-        val srv = PhoneLoginServer(token) { mode, f ->
+        val srv = PhoneLoginServer(token, getApplication<Application>().getString(R.string.app_name)) { mode, f ->
             viewModelScope.launch { onPhoneSubmit(mode, f) }
         }
         if (!srv.start()) {

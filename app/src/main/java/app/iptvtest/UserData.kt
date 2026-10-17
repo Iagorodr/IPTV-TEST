@@ -46,6 +46,9 @@ class UserData(ctx: Context) {
     val favChannels = LinkedHashSet<String>()
     val resume = LinkedHashMap<String, ResumeEntry>()
     private val pinned = HashMap<String, String>()
+
+    /** Última fonte que realmente tocou em cada canal (canal → fonte). Abre primeiro na próxima vez. */
+    private val lastOk = LinkedHashMap<String, String>()
     private val stats = HashMap<String, ArrayList<Obs>>()
 
     /** Times favoritos (no máximo 5), na ordem em que a pessoa escolheu. */
@@ -115,6 +118,16 @@ class UserData(ctx: Context) {
                 while (it.hasNext()) {
                     val k = it.next()
                     pinned[k] = o.optString(k)
+                }
+            }
+
+            val lo = sp.getString("lastok", null)
+            if (lo != null) {
+                val o = JSONObject(lo)
+                val it = o.keys()
+                while (it.hasNext()) {
+                    val k = it.next()
+                    lastOk[k] = o.optString(k)
                 }
             }
 
@@ -365,6 +378,18 @@ class UserData(ctx: Context) {
         val o = JSONObject()
         for ((k, v) in pinned) o.put(k, v)
         sp.edit().putString("pinned", o.toString()).apply()
+    }
+
+    fun lastOkSource(channelKey: String): String? = lastOk[channelKey]
+
+    fun setLastOk(channelKey: String, sourceId: String) {
+        if (lastOk[channelKey] == sourceId) return
+        lastOk[channelKey] = sourceId
+        // não deixa crescer sem fim: guarda só as últimas 400
+        while (lastOk.size > 400) lastOk.remove(lastOk.keys.first())
+        val o = JSONObject()
+        for ((k, v) in lastOk) o.put(k, v)
+        sp.edit().putString("lastok", o.toString()).apply()
     }
 
     // ------------------------------------------------------------------ estabilidade das fontes

@@ -90,3 +90,15 @@ fun Modifier.fadeEdges(left: Float = 0.45f, bottom: Float = 0.3f): Modifier =
                 blendMode = BlendMode.DstIn,
             )
         }
+
+/** Esmaece a ponta direita (fileiras de chips que continuam para o lado: some aos poucos em vez de cortar seco). */
+fun Modifier.fadeRight(fraction: Float = 0.08f): Modifier =
+    this
+        .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+        .drawWithContent {
+            drawContent()
+            drawRect(
+                brush = Brush.horizontalGradient(0f to Color.Black, (1f - fraction) to Color.Black, 1f to Color.Transparent),
+                blendMode = BlendMode.DstIn,
+            )
+        }

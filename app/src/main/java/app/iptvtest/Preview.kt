@@ -64,8 +64,10 @@ private fun Context.findOwner(): LifecycleOwner? {
  * por isso o player é liberado assim que a aba sai da tela (ex.: ao abrir em tela cheia) e pausa quando o app vai para
  * segundo plano.
  *
- * [wantedSource] é a fonte que a pessoa escolheu nos botões; sem ela vale a fixada ou a melhor. Se a fonte
- * automática falha, passa sozinha para a próxima. [onCurrent] avisa qual fonte está tocando.
+ * [wantedSource] é a fonte que a pessoa escolheu nos botões. Sem ela abre a fixada; sem fixada, a última que tocou
+ * de verdade naquele canal; e se nunca tocou, uma das melhores, sorteada. Não fica varrendo as outras fontes: se a
+ * fonte não abrir, avisa e deixa a pessoa escolher outra (ou abrir em tela cheia, que tem a troca automática).
+ * [onCurrent] avisa qual fonte está tocando.
  */
 @Composable
 fun ChannelPreview(
@@ -78,7 +80,6 @@ fun ChannelPreview(
     val context = LocalContext.current
     val liveNow by rememberUpdatedState(live)
     val wantedNow by rememberUpdatedState(wantedSource)
-    val tried = remember { HashSet<String>() }
     var current by remember { mutableStateOf<Source?>(null) }
     var buffering by remember { mutableStateOf(false) }
     var ready by remember { mutableStateOf(false) }
@@ -131,6 +132,10 @@ fun ChannelPreview(
                 if (state == Player.STATE_READY) {
                     ready = true
                     error = null
+                    // guarda a fonte que tocou: é por ela que abre da próxima vez
+                    val k = liveNow?.channel?.key
+                    val cur = current
+                    if (k != null && cur != null) user.setLastOk(k, cur.id)
                 }
             }
 
@@ -140,18 +145,10 @@ fun ChannelPreview(
                     exo.prepare()
                     return
                 }
-                val l = liveNow ?: return
-                val cur = current
-                if (cur != null) tried.add(cur.id)
-                // fonte escolhida à mão não troca sozinha: a pessoa quis aquela
-                val next = if (wantedNow == null) user.rank(l.channel).firstOrNull { !tried.contains(it.id) } else null
-                if (next != null) {
-                    play(next)
-                } else {
-                    buffering = false
-                    ready = false
-                    error = "Este canal não abriu agora. Tente outra fonte."
-                }
+                // sem varrer as outras fontes: avisa, e a pessoa escolhe outra ou abre em tela cheia
+                buffering = false
+                ready = false
+                error = "Esta fonte não abriu.\nEscolha outra em FONTES ou aperte OK para abrir em tela cheia."
             }
         }
         exo.addListener(listener)
@@ -181,7 +178,6 @@ fun ChannelPreview(
     val channelKey = live?.channel?.key
     val wantedId = wantedSource?.id
     LaunchedEffect(channelKey, wantedId) {
-        tried.clear()
         error = null
         ready = false
         val l = liveNow
@@ -192,9 +188,12 @@ fun ChannelPreview(
             current = null
             return@LaunchedEffect
         }
+        val key = l.channel.key
         val first = wantedNow
-            ?: l.channel.sources.firstOrNull { it.id == user.pinnedSource(l.channel.key) }
-            ?: user.rank(l.channel).firstOrNull()
+            ?: l.channel.sources.firstOrNull { it.id == user.pinnedSource(key) }
+            ?: l.channel.sources.firstOrNull { it.id == user.lastOkSource(key) }
+            // nunca tocou: sorteia entre as 3 melhores (não varre todas, e as piores nem entram)
+            ?: user.rank(l.channel).take(3).randomOrNull()
         if (first == null) {
             exo.stop()
             exo.clearMediaItems()
@@ -203,7 +202,6 @@ fun ChannelPreview(
             error = "Este canal não tem fontes."
             return@LaunchedEffect
         }
-        tried.add(first.id)
         play(first)
     }
     LaunchedEffect(current) { onCurrent(current) }

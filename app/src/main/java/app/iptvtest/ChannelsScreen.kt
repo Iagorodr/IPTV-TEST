@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -67,6 +68,8 @@ fun ChannelsTab(vm: MainViewModel) {
     var playingKey by remember { mutableStateOf<String?>(if (returning) ChannelsMemory.playing else null) }
     var wantedId by remember(playingKey) { mutableStateOf<String?>(null) }
     var shownId by remember(playingKey) { mutableStateOf<String?>(null) }
+    // a mini tela é um item do foco: o controle chega nela (para a direita, a partir da lista) e OK abre em tela cheia
+    val previewFr = remember { FocusRequester() }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
@@ -106,6 +109,7 @@ fun ChannelsTab(vm: MainViewModel) {
             // ---------------- lista
             Column(modifier = Modifier.weight(0.46f).fillMaxSize()) {
                 LazyRow(
+                    modifier = Modifier.fadeRight(0.1f),
                     contentPadding = PaddingValues(vertical = 4.dp, horizontal = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
@@ -141,6 +145,7 @@ fun ChannelsTab(vm: MainViewModel) {
                                 playing = ch.key == playingKey,
                                 fav = vm.isFavChannel(ch.key),
                                 focusId = "chrow|" + sel + "|" + ch.key,
+                                rightTo = if (playingCh != null && live != null) previewFr else null,
                                 onClick = {
                                     if (ch.key == playingKey) {
                                         vm.playChannel(ch)
@@ -157,13 +162,31 @@ fun ChannelsTab(vm: MainViewModel) {
 
             // ---------------- mini tela
             Column(modifier = Modifier.weight(0.54f).fillMaxSize()) {
-                ChannelPreview(
-                    live = live,
-                    wantedSource = live?.channel?.sources?.firstOrNull { it.id == wantedId },
-                    user = vm.user,
-                    modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
-                    onCurrent = { shownId = it?.id },
-                )
+                if (playingCh != null && live != null) {
+                    FocusBox(
+                        modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
+                        shape = RoundedCornerShape(16.dp),
+                        focusRequester = previewFr,
+                        focusScale = 1f,
+                        onClick = { vm.playChannel(playingCh) },
+                    ) { _ ->
+                        ChannelPreview(
+                            live = live,
+                            wantedSource = live.channel.sources.firstOrNull { it.id == wantedId },
+                            user = vm.user,
+                            modifier = Modifier.fillMaxSize(),
+                            onCurrent = { shownId = it?.id },
+                        )
+                    }
+                } else {
+                    ChannelPreview(
+                        live = null,
+                        wantedSource = null,
+                        user = vm.user,
+                        modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
+                        onCurrent = { shownId = it?.id },
+                    )
+                }
                 Spacer(Modifier.height(10.dp))
                 if (playingCh == null || live == null) {
                     Text(
@@ -282,6 +305,7 @@ private fun ChannelRow(
     playing: Boolean,
     fav: Boolean,
     focusId: String,
+    rightTo: FocusRequester?,
     onClick: () -> Unit,
 ) {
     val fr = remember { FocusRequester() }
@@ -298,7 +322,9 @@ private fun ChannelRow(
     }
     val shape = RoundedCornerShape(12.dp)
     FocusBox(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (rightTo != null) Modifier.focusProperties { right = rightTo } else Modifier),
         shape = shape,
         focusRequester = fr,
         focusScale = 1f,

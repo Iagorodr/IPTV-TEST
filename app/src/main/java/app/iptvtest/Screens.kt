@@ -54,6 +54,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -106,7 +107,7 @@ fun LoginScreen(vm: MainViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                Text("IAGO IPTV", color = Accent, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold)
+                Text(stringResource(R.string.app_name), color = Accent, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(6.dp))
                 Text(
                     "Entre com a sua lista.\nOs dados ficam guardados só nesta TV.",
@@ -278,7 +279,7 @@ fun LoadingScreen(vm: MainViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(150.dp))
-            Text("IAGO IPTV", color = Accent, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
+            Text(stringResource(R.string.app_name), color = Accent, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(18.dp))
             val err = vm.loadError
             if (err != null) {
@@ -367,7 +368,7 @@ private fun BrandButton(selected: Boolean, onClick: () -> Unit) {
                 .padding(horizontal = 12.dp, vertical = 7.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text("IAGO IPTV", color = Accent, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
+            Text(stringResource(R.string.app_name), color = Accent, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
             Spacer(Modifier.width(8.dp))
             GearIcon(color = if (selected || focused) TextMain else Muted)
         }
@@ -380,7 +381,8 @@ fun TopNav(vm: MainViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 34.dp, vertical = 8.dp),
+            // margem de segurança de TV: muitas TVs "comem" a borda da imagem (overscan), por isso o menu fica mais para dentro
+            .padding(start = 40.dp, end = 44.dp, top = 22.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BrandButton(vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
@@ -510,6 +512,28 @@ private fun HeroContent(t: Title) {
     }
 }
 
+/**
+ * Quando o foco entra neste bloco (destaque, jogos ou chips), a lista volta ao topo e o destaque aparece inteiro.
+ * Espera um instante porque o próprio foco também puxa a lista só até o botão aparecer, e essa rolagem curta é que
+ * acabava ganhando e deixava o destaque cortado em cima.
+ */
+@Composable
+private fun Modifier.topOnFocus(listState: LazyListState): Modifier {
+    val scope = rememberCoroutineScope()
+    return this.onFocusChanged {
+        if (it.hasFocus) {
+            scope.launch {
+                delay(90)
+                try {
+                    listState.animateScrollToItem(0)
+                } catch (e: Exception) {
+                    // a lista saiu da tela: sem importância
+                }
+            }
+        }
+    }
+}
+
 /** Botão redondo com um símbolo (+, ✓, ‹, ›). */
 @Composable
 private fun CircleAction(symbol: String, onClick: () -> Unit) {
@@ -560,6 +584,7 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
                     val f = it.hasFocus
                     if (f && !paused) {
                         scope.launch {
+                            delay(90)
                             try {
                                 listState.animateScrollToItem(anchor)
                             } catch (e: Exception) {
@@ -592,6 +617,7 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
 @Composable
 private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: String?, onSelect: (String?) -> Unit) {
     LazyRow(
+        modifier = Modifier.fadeRight(0.07f),
         contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -674,8 +700,10 @@ fun HomeTab(vm: MainViewModel) {
                 // âncora 0: ao voltar para o destaque a lista sobe até o topo e mostra o destaque inteiro
                 item(key = "hero") { HeroCarousel(vm, hero, listState, 0) }
             }
-            item(key = "games") { GamesStrip(vm, now) }
-            item(key = "chips") { FilterChips(vm, shelves, sel) { sel = it } }
+            item(key = "games") { Box(modifier = Modifier.topOnFocus(listState)) { GamesStrip(vm, now) } }
+            item(key = "chips") {
+                Box(modifier = Modifier.topOnFocus(listState)) { FilterChips(vm, shelves, sel) { sel = it } }
+            }
             if (picked != null) {
                 filteredShelf(picked) { vm.open(it) }
             } else {
@@ -744,7 +772,9 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
                 if (hero.isNotEmpty()) {
                     item(key = "hero") { HeroCarousel(vm, hero, listState, 0) }
                 }
-                item(key = "chips") { FilterChips(vm, shelves, sel) { sel = it } }
+                item(key = "chips") {
+                    Box(modifier = Modifier.topOnFocus(listState)) { FilterChips(vm, shelves, sel) { sel = it } }
+                }
                 if (picked != null) {
                     filteredShelf(picked) { vm.open(it) }
                 } else {

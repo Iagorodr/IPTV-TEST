@@ -374,6 +374,9 @@ fun PlayerScreen(
                     if (!session.ready) {
                         session.ready = true
                         session.startupMs = SystemClock.elapsedRealtime() - session.startedAt
+                        val chNow = channel
+                        val sid = session.sourceId
+                        if (chNow != null && isLive && !sid.isNullOrEmpty()) user.setLastOk(chNow.key, sid)
                     }
                     session.retries = 0
                 }
@@ -426,7 +429,10 @@ fun PlayerScreen(
             val order = user.rank(channel)
             ranked = order
             val pin = user.pinnedSource(channel.key)
-            val start = order.firstOrNull { it.id == pin } ?: order.firstOrNull()
+            // fixada > a última que tocou nesse canal > a melhor nota
+            val start = order.firstOrNull { it.id == pin }
+                ?: order.firstOrNull { it.id == user.lastOkSource(channel.key) }
+                ?: order.firstOrNull()
             if (start == null) {
                 error = "Este canal não tem fontes disponíveis."
             } else {

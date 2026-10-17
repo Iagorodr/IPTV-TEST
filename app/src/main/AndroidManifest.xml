@@ -13,7 +13,7 @@
 
     <application
         android:allowBackup="false"
-        android:banner="@drawable/banner"
+        android:banner="@drawable/tv_banner"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.IptvTest"
@@ -22,6 +22,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation|uiMode|screenLayout|smallestScreenSize"
+            android:banner="@drawable/tv_banner"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
