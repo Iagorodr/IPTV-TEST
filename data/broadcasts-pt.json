@@ -1,0 +1,422 @@
+{
+  "updated": "2026-10-17",
+  "country": "PT",
+  "tz": "Europe/Lisbon",
+  "note": "Onde costuma passar em Portugal. Pesquisado em agendas públicas e pode estar desatualizado; jogos 'prováveis' vêm de uma agenda de TV agregadora.",
+  "comps": {
+    "uefa.champions": {
+      "label": "Champions League",
+      "options": [
+        "Sport TV",
+        "DAZN"
+      ],
+      "note": "Sport TV e DAZN dividem os jogos."
+    },
+    "uefa.europa": {
+      "label": "Europa League",
+      "options": [
+        "Sport TV",
+        "DAZN"
+      ],
+      "note": "Jogos do Benfica na Sport TV."
+    },
+    "uefa.europa.conf": {
+      "label": "Conference League",
+      "options": [
+        "Sport TV",
+        "DAZN"
+      ],
+      "note": "Nem todo jogo tem canal confirmado."
+    },
+    "por.1": {
+      "label": "Liga Portugal",
+      "options": [
+        "Sport TV",
+        "Benfica TV",
+        "Sporting TV",
+        "FC Porto Canal"
+      ],
+      "note": "Sport TV passa a maioria; jogos em casa de Benfica podem ser só na Benfica TV."
+    },
+    "por.taca": {
+      "label": "Taça de Portugal",
+      "options": [
+        "Canal 11",
+        "Sport TV"
+      ],
+      "note": ""
+    },
+    "por.taca_liga": {
+      "label": "Taça da Liga",
+      "options": [
+        "Sport TV"
+      ],
+      "note": ""
+    },
+    "eng.1": {
+      "label": "Premier League",
+      "options": [
+        "DAZN",
+        "Sport TV"
+      ],
+      "note": "DAZN passa a maioria dos jogos."
+    },
+    "esp.1": {
+      "label": "LaLiga",
+      "options": [
+        "DAZN"
+      ],
+      "note": ""
+    },
+    "ita.1": {
+      "label": "Serie A",
+      "options": [
+        "Sport TV"
+      ],
+      "note": ""
+    },
+    "ger.1": {
+      "label": "Bundesliga",
+      "options": [
+        "DAZN"
+      ],
+      "note": ""
+    },
+    "fra.1": {
+      "label": "Ligue 1",
+      "options": [
+        "Sport TV"
+      ],
+      "note": ""
+    },
+    "f1": {
+      "label": "Fórmula 1",
+      "options": [
+        "DAZN"
+      ],
+      "note": "DAZN tem os direitos da F1 em Portugal."
+    }
+  },
+  "games": [
+    {
+      "d": "2026-10-17",
+      "comp": "por.taca",
+      "h": "Lamelas",
+      "a": "Vitória de Guimarães",
+      "tv": [
+        "Canal 11"
+      ],
+      "ok": 0,
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-17",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Chelsea",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-17",
+      "comp": "esp.1",
+      "h": "Espanyol",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 3",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-17",
+      "comp": "eng.1",
+      "h": "Manchester City",
+      "a": "Ipswich Town",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-17",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Liverpool",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 2",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-17",
+      "comp": "fra.1",
+      "h": "Strasbourg",
+      "a": "Paris Saint-Germain",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 4",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-17",
+      "comp": "esp.1",
+      "h": "Real Betis",
+      "a": "Barcelona",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 2",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-17",
+      "comp": "ger.1",
+      "h": "Bayern München",
+      "a": "RB Leipzig",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 3",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-18",
+      "comp": "eng.1",
+      "h": "Leeds United",
+      "a": "Manchester United",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-18",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Arsenal",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-18",
+      "comp": "ita.1",
+      "h": "Milan",
+      "a": "Atalanta",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-18",
+      "comp": "ita.1",
+      "h": "Juventus",
+      "a": "Lazio",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-18",
+      "comp": "esp.1",
+      "h": "Real Madrid",
+      "a": "Sevilla",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "DAZN 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-19",
+      "comp": "por.1",
+      "h": "Sporting de Braga",
+      "a": "Gil Vicente",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Jogo adiado da jornada 2; Sport TV 1",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-10-20",
+      "comp": "uefa.champions",
+      "h": "FC Porto",
+      "a": "PSV Eindhoven",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 5",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-20",
+      "comp": "uefa.champions",
+      "h": "Paris Saint-Germain",
+      "a": "Barcelona",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "Mandante a confirmar (fonte BR cita Barcelona em casa)",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-21",
+      "comp": "uefa.champions",
+      "h": "Como",
+      "a": "Manchester United",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-21",
+      "comp": "uefa.champions",
+      "h": "Sporting CP",
+      "a": "LASK Linz",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 5",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-22",
+      "comp": "uefa.europa",
+      "h": "Omonia",
+      "a": "Benfica",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 5",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-24",
+      "comp": "por.1",
+      "h": "Gil Vicente",
+      "a": "FC Porto",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-25",
+      "comp": "por.1",
+      "h": "Sporting CP",
+      "a": "Académico de Viseu",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-26",
+      "comp": "por.1",
+      "h": "Santa Clara",
+      "a": "Benfica",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-27",
+      "comp": "por.taca_liga",
+      "h": "Sporting CP",
+      "a": "Marítimo",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-28",
+      "comp": "por.taca_liga",
+      "h": "FC Porto",
+      "a": "Académico de Viseu",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-29",
+      "comp": "por.taca_liga",
+      "h": "Benfica",
+      "a": "Gil Vicente",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-30",
+      "comp": "por.1",
+      "h": "Casa Pia",
+      "a": "Sporting CP",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "por.1",
+      "h": "FC Porto",
+      "a": "Estoril",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Sport TV 1",
+      "src": "ondebola.com"
+    }
+  ]
+}
