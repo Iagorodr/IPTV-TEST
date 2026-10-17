@@ -1007,6 +1007,48 @@ private fun TimeZoneSettings(vm: MainViewModel) {
     }
 }
 
+/** País da tabela "onde passa": define de onde vêm as emissoras de cada jogo (e os nomes delas). */
+@Composable
+private fun BroadcastSettings(vm: MainViewModel) {
+    // a tabela entra como chave: quando ela muda, esta parte da tela se refaz
+    val t = remember(BroadcastStore.rev) { BroadcastStore.table }
+    val chosen = vm.user.bcCountry
+    var msg by remember { mutableStateOf<String?>(null) }
+    var checking by remember { mutableStateOf(false) }
+    Column {
+        Text("País da busca (onde passa)", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Spacer(Modifier.height(4.dp))
+        val jogos = if (t.games.isEmpty()) "sem jogos confirmados ainda" else t.games.size.toString() + " jogos dos próximos dias"
+        Text(
+            "Define de qual país vem a tabela de emissoras de cada jogo, com os nomes dos canais do país (use o da sua lista: " +
+                "lista do Brasil → Brasil; lista de Portugal → Portugal). Agora: " + BroadcastStore.countryName() +
+                ", tabela de " + t.updatedPretty() + " (" + jogos + "). Pesquisada na internet e atualizada toda semana.",
+            color = Muted,
+            fontSize = 14.sp,
+        )
+        Spacer(Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+            for (c in BroadcastStore.COUNTRIES) {
+                ChipItem(text = c.second, selected = chosen == c.first) { vm.setBroadcastCountry(c.first) }
+            }
+            TvButton(text = if (checking) "Conferindo..." else "Conferir tabela agora") {
+                if (!checking) {
+                    checking = true
+                    vm.recheckBroadcasts { m ->
+                        checking = false
+                        msg = m
+                    }
+                }
+            }
+        }
+        val m = msg
+        if (m != null) {
+            Spacer(Modifier.height(4.dp))
+            Text(m, color = Muted, fontSize = 13.sp)
+        }
+    }
+}
+
 @Composable
 fun SettingsTab(vm: MainViewModel) {
     var confirmLogout by remember { mutableStateOf(false) }
@@ -1043,6 +1085,7 @@ fun SettingsTab(vm: MainViewModel) {
             }
             item { FavTeamsSettings(vm) }
             item { TimeZoneSettings(vm) }
+            item { BroadcastSettings(vm) }
             item {
                 Column {
                     Text("Canais ao vivo", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)

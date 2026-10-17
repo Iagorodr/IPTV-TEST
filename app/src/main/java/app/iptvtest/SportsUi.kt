@@ -388,8 +388,10 @@ fun GamesStrip(vm: MainViewModel, now: Long) {
 fun GameDialog(vm: MainViewModel, g: Game) {
     val tz = remember(AppTz.rev) { TimeZone.getDefault() }
     val now = remember(g.key) { System.currentTimeMillis() }
-    val info = remember(g.key, vm.catalog) { vm.gameInfo(g) }
+    val info = remember(g.key, vm.catalog, BroadcastStore.rev) { vm.gameInfo(g) }
     var notice by remember(g.key) { mutableStateOf<String?>(null) }
+    var checking by remember(g.key) { mutableStateOf(false) }
+    var checkMsg by remember(g.key) { mutableStateOf<String?>(null) }
     val reminded = vm.isReminded(g)
     val finished = g.state == 2
     val first = remember { FocusRequester() }
@@ -453,10 +455,35 @@ fun GameDialog(vm: MainViewModel, g: Game) {
 
             Spacer(Modifier.height(14.dp))
             val comp = if (finished) null else info.comp
+            val bg = if (finished) null else info.bgame
             if (finished) {
                 Text("Jogo encerrado: não há mais o que assistir ao vivo.", color = Muted, fontSize = 13.sp)
+            } else if (bg != null) {
+                // o jogo está na tabela: mostra onde passa, e se foi confirmado por uma fonte do próprio jogo
+                Text(
+                    text = if (bg.confirmed) "Passa em (" + info.country + ")" else "Provavelmente passa em (" + info.country + ")",
+                    color = if (bg.confirmed) Good else Warn,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = Broadcasts.line(bg.tv, info.inList),
+                    color = TextMain,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                if (bg.obs.isNotEmpty()) {
+                    Text(bg.obs, color = TextMain, fontSize = 12.sp)
+                }
+                Text(
+                    text = "✓ = tem na sua lista. " + (if (bg.confirmed) "Confirmado" else "Ainda não confirmado") +
+                        (if (bg.src.isNotEmpty()) " em " + bg.src else "") + " · tabela de " + info.tableDate + ".",
+                    color = Muted,
+                    fontSize = 11.sp,
+                )
             } else if (comp != null) {
-                Text("Costuma passar em", color = Muted, fontSize = 12.sp)
+                Text("Costuma passar em (" + info.country + ")", color = Muted, fontSize = 12.sp)
                 Spacer(Modifier.height(2.dp))
                 Text(
                     text = Broadcasts.line(comp.options, info.inList),
@@ -468,7 +495,8 @@ fun GameDialog(vm: MainViewModel, g: Game) {
                     Text(comp.note, color = Muted, fontSize = 12.sp)
                 }
                 Text(
-                    text = "✓ = tem na sua lista. Pode variar por jogo e por região (tabela de " + info.tableDate + ").",
+                    text = "✓ = tem na sua lista. Este jogo ainda não foi confirmado na tabela de " + info.tableDate +
+                        ": pode variar por jogo e por região.",
                     color = Muted,
                     fontSize = 11.sp,
                 )
@@ -477,10 +505,29 @@ fun GameDialog(vm: MainViewModel, g: Game) {
                 }
             } else {
                 Text(
-                    "Ainda não tenho o registro de onde esse campeonato passa no Brasil. Veja os canais de esporte da sua lista.",
+                    "Ainda não tenho o registro de onde esse campeonato passa em " + info.country + ". Veja os canais de esporte da sua lista.",
                     color = Muted,
                     fontSize = 13.sp,
                 )
+            }
+            if (!finished) {
+                Spacer(Modifier.height(6.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    ChipItem(text = if (checking) "Conferindo..." else "Conferir de novo", selected = false) {
+                        if (!checking) {
+                            checking = true
+                            checkMsg = null
+                            vm.recheckBroadcasts { m ->
+                                checking = false
+                                checkMsg = m
+                            }
+                        }
+                    }
+                    val cm = checkMsg
+                    if (cm != null) {
+                        Text(cm, color = Muted, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                    }
+                }
             }
             if (!finished && info.matched.isNotEmpty()) {
                 Spacer(Modifier.height(8.dp))
@@ -1114,7 +1161,7 @@ fun FavTeamsSettings(vm: MainViewModel) {
         }
         Spacer(Modifier.height(4.dp))
         Text(
-            "Onde costuma passar: tabela de " + BroadcastStore.table.updatedPretty() + " (atualizada todo mês).",
+            "Onde passa: tabela " + BroadcastStore.countryName() + " de " + BroadcastStore.table.updatedPretty() + " (atualizada toda semana).",
             color = Muted,
             fontSize = 12.sp,
         )

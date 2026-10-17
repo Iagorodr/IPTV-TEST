@@ -72,6 +72,10 @@ class UserData(ctx: Context) {
     var tzId: String = ""
         private set
 
+    /** País da tabela "onde passa" escolhido nos Ajustes (BR = Brasil, PT = Portugal). */
+    var bcCountry: String = "BR"
+        private set
+
     init {
         load()
     }
@@ -83,6 +87,7 @@ class UserData(ctx: Context) {
             stabilityFirst = sp.getBoolean("stab", true)
             autoSwitch = sp.getBoolean("auto", true)
             tzId = sp.getString("tz", "") ?: ""
+            bcCountry = sp.getString("bc", "BR") ?: "BR"
             readStrings("mylist", myList)
             readStrings("favch", favChannels)
             readFavTeams()
@@ -364,6 +369,11 @@ class UserData(ctx: Context) {
     fun setAutoSwitch(v: Boolean) {
         autoSwitch = v
         sp.edit().putBoolean("auto", v).apply()
+    }
+
+    fun setBcCountry(v: String) {
+        bcCountry = v
+        sp.edit().putString("bc", v).apply()
     }
 
     fun setTzId(v: String) {

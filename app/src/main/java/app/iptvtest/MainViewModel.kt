@@ -160,7 +160,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         favTeams = user.favTeams.toList()
         favLeagues = user.favLeagues.toList()
         reminders = user.reminders.toList()
-        BroadcastStore.load(appCtx)
+        BroadcastStore.load(appCtx, user.bcCountry)
         viewModelScope.launch { BroadcastStore.refresh(appCtx) }
         store.load()?.let { saved ->
             startSession(saved)
@@ -1004,9 +1004,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     class GameInfo(
         val matched: List<Channel>,
         val comp: BroadcastComp?,
+        /** O registro deste jogo na tabela (onde passa, confirmado ou provável), se houver. */
+        val bgame: BroadcastGame?,
         val inList: Set<String>,
         val tableDate: String,
-    )
+        val country: String,
+    ) {
+        /** Emissoras para mostrar/procurar: as do jogo, se a tabela tem o jogo; senão as da competição. */
+        val options: List<String> get() = bgame?.tv ?: comp?.options ?: emptyList()
+    }
 
     fun showGame(g: Game) {
         gameDialog = g
@@ -1022,8 +1028,39 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val matched = SportsChannels.displayMerged(SportsChannels.matchGame(g, eventIdx), now, tz)
         val table = BroadcastStore.table
         val comp = table.forKey(g.leagueSlug)
-        val inList = if (comp == null) emptySet() else Broadcasts.inList(comp.options, channelCards)
-        return GameInfo(matched, comp, inList, table.updatedPretty())
+        val bg = Broadcasts.gameFor(table, g)
+        val options = bg?.tv ?: comp?.options ?: emptyList()
+        val inList = if (options.isEmpty()) emptySet() else Broadcasts.inList(options, channelCards)
+        return GameInfo(matched, comp, bg, inList, table.updatedPretty(), BroadcastStore.countryName(table.country))
+    }
+
+    /** Troca o país da tabela "onde passa" (Ajustes) e já tenta baixar a tabela dele. */
+    fun setBroadcastCountry(cc: String) {
+        if (cc == user.bcCountry) return
+        user.setBcCountry(cc)
+        BroadcastStore.load(appCtx, cc)
+        dataRev++
+        viewModelScope.launch {
+            BroadcastStore.refresh(appCtx, force = true)
+            dataRev++
+        }
+    }
+
+    /** Botão "Conferir de novo": baixa a tabela agora (sem esperar o dia seguinte) e diz o resultado. */
+    fun recheckBroadcasts(onDone: (String) -> Unit) {
+        viewModelScope.launch {
+            val before = BroadcastStore.table.updated
+            val ok = BroadcastStore.refresh(appCtx, force = true)
+            dataRev++
+            val t = BroadcastStore.table
+            onDone(
+                when {
+                    !ok -> "Não consegui baixar agora (sem internet?). Segue a tabela de " + t.updatedPretty() + "."
+                    t.updated != before -> "Tabela nova carregada: " + t.updatedPretty() + "."
+                    else -> "Já é a tabela mais nova: " + t.updatedPretty() + "."
+                },
+            )
+        }
     }
 
     /** "Assistir agora": um canal só na lista → toca; vários → abre a lista deles. */
@@ -1038,8 +1075,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         gameDialog = null
         val info = gameInfo(g)
         val now = System.currentTimeMillis()
-        val comp = info.comp
-        val extra = if (comp != null) Broadcasts.channelsFor(comp.options, channelCards) else emptyList()
+        val opts = info.options
+        val extra = if (opts.isNotEmpty()) Broadcasts.channelsFor(opts, channelCards) else emptyList()
         val when0 = SportsTime.dayLabel(g.startMs, now, tz) + " " + SportsTime.clock(g.startMs, tz)
         val hint = if (info.matched.isNotEmpty()) {
             "Achei na sua lista. Se travar, volte e escolha outra fonte."
@@ -1054,7 +1091,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             highlight = info.matched,
             searchQuery = g.home.short,
             extra = extra,
-            extraTitle = if (comp != null) "Costuma passar em: " + comp.options.take(4).joinToString(" · ") else "",
+            extraTitle = if (opts.isEmpty()) "" else (if (info.bgame != null) "Passa em: " else "Costuma passar em: ") + opts.take(4).joinToString(" · "),
         )
     }
 

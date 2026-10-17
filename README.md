@@ -24,6 +24,13 @@ Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e
 
 O GitHub Actions compila o app a cada alteração na branch `main` e publica o APK no link acima (ver `.github/workflows/build.yml`).
 
+## Novidades da v0.7.0
+
+- **Onde passa, jogo a jogo**: o pop-up do jogo agora mostra **"Passa em"** (confirmado por uma fonte do próprio jogo) ou **"Provavelmente passa em"** (inferência), com observações (ex.: "Globo só em SP e RJ"), a fonte e a data da tabela. Os canais marcados com ✓ existem na sua lista. Se o jogo ainda não está na tabela, continua o "Costuma passar em" da competição, dizendo que não foi confirmado.
+- **País da busca** nos Ajustes: **Brasil** ou **Portugal**. Cada país tem a sua tabela (emissoras e nomes de canais do país); para uma lista de Portugal, escolha Portugal. O idioma acompanha o país (português do Brasil / de Portugal) e o fuso continua separado, logo acima.
+- **Conferir de novo**: botão no pop-up do jogo e nos Ajustes baixa a tabela agora, sem esperar o dia seguinte.
+- **Tabela atualizada toda semana** (quinta de manhã, hora de Bruxelas), pesquisada na internet para os próximos 14 dias; o app baixa a versão nova sozinho, sem instalar nada. Arquivos em `data/`: `broadcasts.json` (Brasil) e `broadcasts-pt.json` (Portugal), com `comps` (quem costuma passar cada competição) e `games` (jogo a jogo).
+
 ## Novidades da v0.6.1
 
 - **Canais, mini tela**: ao apertar OK num canal, ela abre direto na **fonte fixada**; sem fixada, na **última que tocou** naquele canal; se nunca tocou, numa das 3 melhores **sorteada**. Não varre mais todas as fontes: se a fonte não abrir, avisa e você escolhe outra em FONTES (ou abre em tela cheia, que troca sozinha). A tela cheia também começa pela última fonte que funcionou.

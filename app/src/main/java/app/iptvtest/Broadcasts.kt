@@ -1,14 +1,38 @@
 package app.iptvtest
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
+
 /*
- * "Onde costuma passar": tabela (competição → emissoras do Brasil) pesquisada à mão e atualizada todo mês.
- * Pode estar desatualizada, por isso sempre mostramos mais de uma opção e chamamos de "costuma".
+ * "Onde passa": tabelas de transmissão pesquisadas na internet e atualizadas toda semana, uma por país (BR, PT).
+ * Duas camadas: [BroadcastComp] diz quem costuma passar cada competição ("costuma"); [BroadcastGame] diz onde passa
+ * cada jogo dos próximos dias, marcado como confirmado (fonte específica) ou provável.
  * Aqui só as regras puras; ler o arquivo e baixar a versão nova está em BroadcastStore.kt.
  */
 
 class BroadcastComp(val label: String, val options: List<String>, val note: String)
 
-class BroadcastTable(val updated: String, val comps: Map<String, BroadcastComp>) {
+/** Um jogo da tabela: [date] é a data local no fuso da tabela; [tv] em ordem de probabilidade. */
+class BroadcastGame(
+    val date: String,
+    val comp: String,
+    val home: String,
+    val away: String,
+    val tv: List<String>,
+    val confirmed: Boolean,
+    val obs: String,
+    val src: String,
+)
+
+class BroadcastTable(
+    val updated: String,
+    val comps: Map<String, BroadcastComp>,
+    val games: List<BroadcastGame> = emptyList(),
+    val country: String = "BR",
+    val tz: String = "America/Sao_Paulo",
+) {
     fun forKey(key: String): BroadcastComp? = comps[key]
 
     /** "16/10/2026" a partir de "2026-10-16". */
@@ -46,6 +70,18 @@ object Broadcasts {
         "F1 TV" to listOf("f1 tv"),
         "Globoplay" to listOf("globoplay"),
         "OneFootball" to listOf("onefootball"),
+        // Portugal
+        "Sport TV" to listOf("sport tv"),
+        "DAZN" to listOf("dazn"),
+        "Eleven Sports" to listOf("eleven sports", "eleven"),
+        "Canal 11" to listOf("canal 11"),
+        "Benfica TV" to listOf("benfica tv", "sl benfica tv"),
+        "Sporting TV" to listOf("sporting tv"),
+        "FC Porto Canal" to listOf("porto canal", "fc porto tv"),
+        "RTP1" to listOf("rtp 1", "rtp1"),
+        "SIC" to listOf("sic"),
+        "TVI" to listOf("tvi"),
+        "Eurosport" to listOf("eurosport"),
     )
 
     private fun hasWords(hay: String, words: String): Boolean = (" $hay ").contains(" $words ")
@@ -94,6 +130,61 @@ object Broadcasts {
             if (out.size >= max) break
         }
         return out
+    }
+
+    private const val DAY_MS = 86_400_000L
+
+    /** Quão bem o nome da tabela casa com o lado do jogo: 2 = igual ou contido (por palavras), 1 = divide uma palavra forte, 0 = não. */
+    private fun teamLevel(want: String, side: Side): Int {
+        val w = Organizer.fold(want)
+        if (w.length < 3) return 0
+        var best = 0
+        for (n in side.names) {
+            if (n == w) return 2
+            if (n.length >= 3 && (hasWords(n, w) || hasWords(w, n))) best = 2
+        }
+        if (best == 0) {
+            val wt = w.split(' ').filter { it.length >= 5 }
+            for (n in side.names) {
+                val nt = n.split(' ')
+                if (wt.any { nt.contains(it) }) {
+                    best = 1
+                    break
+                }
+            }
+        }
+        return best
+    }
+
+    /**
+     * O registro do jogo na tabela, se houver: mesma data (ou um dia de diferença, por causa do fuso) e os dois times
+     * casando. Prefere data igual e mesma competição.
+     */
+    fun gameFor(table: BroadcastTable, g: Game): BroadcastGame? {
+        if (table.games.isEmpty()) return null
+        val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        fmt.timeZone = try {
+            TimeZone.getTimeZone(table.tz)
+        } catch (e: Exception) {
+            TimeZone.getDefault()
+        }
+        val exact = fmt.format(Date(g.startMs))
+        val near = setOf(exact, fmt.format(Date(g.startMs - DAY_MS)), fmt.format(Date(g.startMs + DAY_MS)))
+        var best: BroadcastGame? = null
+        var bestScore = 0
+        for (bg in table.games) {
+            if (bg.date !in near) continue
+            val h = teamLevel(bg.home, g.home)
+            if (h == 0) continue
+            val a = teamLevel(bg.away, g.away)
+            if (a == 0) continue
+            val score = h + a + (if (bg.date == exact) 4 else 0) + (if (bg.comp == g.leagueSlug) 2 else 0)
+            if (score > bestScore) {
+                best = bg
+                bestScore = score
+            }
+        }
+        return best
     }
 
     /** "Globo · SporTV · Premiere" para mostrar na tela. */
