@@ -2,7 +2,7 @@
 
 Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e **links M3U** e mostra filmes, séries e canais por categoria.
 
-> Versão **0.4** — o Início virou uma visão geral: jogos dos seus times favoritos no topo (buscados na internet, sem depender da aba "jogos do dia" da lista), Fórmula 1 / UFC / Tênis, destaque com filmes **e** séries. Mantém tudo da 0.2: organização por gênero/plataforma, dublado+legendado juntos e a fonte mais estável de cada canal.
+> Versão **0.6** — visual novo ("noite carmim"): fundo em degradê azul-noite → vinho, destaque salmão e botões vermelhos. Canais agora é uma lista com mini tela ao lado. Mantém tudo das versões anteriores: jogos dos seus times favoritos, organização por gênero/plataforma, dublado+legendado juntos e a fonte mais estável de cada canal.
 
 ## Instalar na TV (Downloader)
 
@@ -23,6 +23,16 @@ Player IPTV para Android TV / Google TV / Fire TV. Lê listas **Xtream Codes** e
 ## Como é compilado
 
 O GitHub Actions compila o app a cada alteração na branch `main` e publica o APK no link acima (ver `.github/workflows/build.yml`).
+
+## Novidades da v0.6.0
+
+- **Visual novo, "noite carmim"**: fundo em degradê azul-noite → vinho, texto creme, destaque salmão (#FFA586) e botões principais vermelhos. O menu do topo ficou solto sobre o fundo (sem faixa), com a aba atual num salmão translúcido.
+- **Início**: o destaque agora ocupa o fundo com a capa do título (some em degradê), com ficha rápida (tipo, ano, 4K, dublado/legendado, nota, gêneros, sinopse) e botões **Ver detalhes**, **+** (favoritos), ‹ e ›. Abaixo, uma **faixa mínima de jogos**: só "Time × Time" e dia/horário (ou "Ao vivo"), com ★ nos seus times; Fórmula 1, UFC e tênis entram no fim; **Ver todos** abre a lista completa. Os cartões com liga e canais continuam na aba **Jogos** (com os emblemas dos times).
+- **Filtros de gênero/plataforma** em Início, Filmes e Séries: uma fileira de chips (Lançamentos, Ação, Netflix...) mostra só aquele grupo; o botão de setas cruzadas **sorteia tudo de novo**. Pôsteres um pouco menores para caber mais por fileira.
+- **Canais em lista com mini tela**: lista vertical à esquerda (logo, nome, "N fontes · estável", 4K/HD) e mini tela à direita. A mini tela **só toca quando você aperta OK** num canal; andar pela lista **não troca** o que está passando. **OK de novo no canal que está tocando abre em tela cheia.** Abaixo da mini tela: **Tela cheia**, **Favoritar**, escolha da **fonte** (Auto ou Fonte 1, 2...) e, nas marcas de TV, a **praça**. A mini tela é liberada ao abrir a tela cheia (a conta só permite 2 telas ao mesmo tempo) e pausa quando o app vai para segundo plano.
+- **Ficha do título**: capa grande ao fundo, nome em destaque, botão vermelho (Assistir / Continuar T2 E3), **+** para favoritos, idioma ao lado e episódios em **cartões na horizontal** (o episódio onde você parou fica em salmão, com a barra de progresso).
+- **Login e abertura**: sol e montanhas da marca à esquerda, formulário num cartão à direita (Xtream, Link M3U e QR do celular continuam). **Capa da TV (banner)** e **ícone** novos, e o fundo da janela já abre no degradê (sem piscada preta).
+- Player e pop-ups com os mesmos tons (painéis azul-noite, botões vermelhos).
 
 ## Novidades da v0.5.0
 

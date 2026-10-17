@@ -126,7 +126,7 @@ fun App(vm: MainViewModel = viewModel()) {
         }
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = Bg) {
+    Surface(modifier = Modifier.fillMaxSize().background(AppBackground), color = Color.Transparent, contentColor = TextMain) {
         when {
             account == null -> LoginScreen(vm)
             // key(): ao trocar de praça (Globo SP → Globo Rio) o player é recriado com o novo canal
@@ -200,7 +200,7 @@ private fun DueReminderDialog(vm: MainViewModel, r: Reminder) {
             modifier = Modifier
                 .width(560.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF151416))
+                .background(Panel)
                 .border(1.dp, PanelAlt, RoundedCornerShape(16.dp))
                 .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -240,7 +240,7 @@ private fun DueReminderStrip(vm: MainViewModel, r: Reminder) {
             modifier = Modifier
                 .padding(top = 18.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xDD000000))
+                .background(Color(0xDD0B1020))
                 .border(1.5.dp, Accent, RoundedCornerShape(20.dp))
                 .padding(horizontal = 20.dp, vertical = 10.dp),
         )

@@ -114,14 +114,14 @@ fun TvButton(
         Box(
             modifier = Modifier
                 .background(
-                    if (primary) Accent else if (focused) PanelAlt else if (selected) PanelAlt else Panel,
+                    if (primary) Red else if (focused) PanelAlt else if (selected) PanelAlt else Panel,
                 )
                 .padding(horizontal = 20.dp, vertical = 10.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = text,
-                color = if (primary) Color.Black else TextMain,
+                color = if (primary) Color.White else TextMain,
                 fontSize = 15.sp,
                 fontWeight = if (primary || selected || focused) FontWeight.Bold else FontWeight.Normal,
                 maxLines = 1,
@@ -171,6 +171,39 @@ fun GearIcon(color: Color, modifier: Modifier = Modifier, size: Int = 18) {
     }
 }
 
+/** Duas setas que se cruzam (sortear de novo). */
+@Composable
+fun ShuffleIcon(color: Color, modifier: Modifier = Modifier, size: Int = 18) {
+    Canvas(modifier = modifier.size(size.dp)) {
+        val w = this.size.minDimension
+        val sw = w * 0.1f
+        fun line(x1: Float, y1: Float, x2: Float, y2: Float) =
+            drawLine(color = color, start = Offset(w * x1, w * y1), end = Offset(w * x2, w * y2), strokeWidth = sw, cap = StrokeCap.Round)
+        line(0.08f, 0.26f, 0.92f, 0.74f)
+        line(0.08f, 0.74f, 0.92f, 0.26f)
+        // pontas das setas, à direita
+        line(0.92f, 0.74f, 0.70f, 0.74f)
+        line(0.92f, 0.74f, 0.92f, 0.52f)
+        line(0.92f, 0.26f, 0.70f, 0.26f)
+        line(0.92f, 0.26f, 0.92f, 0.48f)
+    }
+}
+
+/** Botão redondo só com ícone (sortear de novo, etc.). */
+@Composable
+fun RoundIconButton(onClick: () -> Unit, modifier: Modifier = Modifier, icon: @Composable (Color) -> Unit) {
+    FocusBox(modifier = modifier, shape = CircleShape, focusScale = 1.06f, onClick = onClick) { focused ->
+        Box(
+            modifier = Modifier
+                .size(34.dp)
+                .background(if (focused) PanelAlt else Color(0x33FFF3EC)),
+            contentAlignment = Alignment.Center,
+        ) {
+            icon(TextMain)
+        }
+    }
+}
+
 /**
  * Opção redonda (idioma, qualidade, tela, categoria, dia...). A escolhida fica com um laranja escuro e translúcido
  * (não chapado) e contorno fino; as outras ficam num cinza escuro.
@@ -199,7 +232,7 @@ fun ChipItem(
         ) {
             Text(
                 text = text,
-                color = if (selected) Color(0xFFFFD9C7) else TextMain,
+                color = if (selected) Color(0xFFFFE3D8) else TextMain,
                 fontSize = 14.sp,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 maxLines = 1,
@@ -268,7 +301,7 @@ fun TitlePoster(
                             .align(Alignment.TopEnd)
                             .padding(6.dp)
                             .clip(RoundedCornerShape(6.dp))
-                            .background(Color(0xCC0D0D0F))
+                            .background(Color(0xCC161E2F))
                             .padding(horizontal = 6.dp, vertical = 2.dp),
                     ) {
                         Text("4K", color = Accent, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
@@ -346,18 +379,18 @@ fun ShelfRow(
             color = TextMain,
             fontSize = 20.sp,
             fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.padding(horizontal = 48.dp),
+            modifier = Modifier.padding(horizontal = 40.dp),
         )
         Spacer(Modifier.height(6.dp))
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             items(shelf.row, key = { it.key }) { t ->
                 TitlePoster(
                     title = t,
                     focusId = shelf.name + "|" + t.key,
-                    modifier = Modifier.width(128.dp),
+                    modifier = Modifier.width(112.dp),
                     onClick = { onOpen(t) },
                 )
             }
@@ -366,8 +399,8 @@ fun ShelfRow(
                     SeeAllTile(
                         total = shelf.all.size,
                         modifier = Modifier
-                            .width(128.dp)
-                            .height(190.dp),
+                            .width(112.dp)
+                            .height(168.dp),
                         onClick = onSeeAll,
                     )
                 }
@@ -388,11 +421,11 @@ fun ContinueRow(
             color = TextMain,
             fontSize = 20.sp,
             fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.padding(horizontal = 48.dp),
+            modifier = Modifier.padding(horizontal = 40.dp),
         )
         Spacer(Modifier.height(6.dp))
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             items(entries, key = { it.first.key }) { pair ->
@@ -402,7 +435,7 @@ fun ContinueRow(
                 TitlePoster(
                     title = t,
                     focusId = "cont|" + t.key,
-                    modifier = Modifier.width(128.dp),
+                    modifier = Modifier.width(112.dp),
                     progress = frac,
                     subtitle = if (e.label.isEmpty()) null else e.label,
                     onClick = { onResume(e) },
@@ -472,7 +505,7 @@ fun ChannelTile(
                         .align(Alignment.TopEnd)
                         .padding(6.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Color(0xCC0D0D0F))
+                        .background(Color(0xCC161E2F))
                         .padding(horizontal = 8.dp, vertical = 3.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -525,7 +558,14 @@ fun channelInitials(name: String): String {
 }
 
 @Composable
-fun ChannelLogo(name: String, icon: String?, modifier: Modifier = Modifier, pad: Int = 14) {
+fun ChannelLogo(
+    name: String,
+    icon: String?,
+    modifier: Modifier = Modifier,
+    pad: Int = 14,
+    padPlaceholder: Int = 10,
+    textSp: Int = 30,
+) {
     var failed by remember(icon) { mutableStateOf(false) }
     if (icon != null && !failed) {
         AsyncImage(
@@ -539,7 +579,7 @@ fun ChannelLogo(name: String, icon: String?, modifier: Modifier = Modifier, pad:
         val color = PLACEHOLDER_COLORS[Math.floorMod(name.hashCode(), PLACEHOLDER_COLORS.size)]
         Box(
             modifier = modifier
-                .padding(10.dp)
+                .padding(padPlaceholder.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(color),
             contentAlignment = Alignment.Center,
@@ -547,7 +587,7 @@ fun ChannelLogo(name: String, icon: String?, modifier: Modifier = Modifier, pad:
             Text(
                 text = channelInitials(name),
                 color = Color.White,
-                fontSize = 30.sp,
+                fontSize = textSp.sp,
                 fontWeight = FontWeight.ExtraBold,
             )
         }

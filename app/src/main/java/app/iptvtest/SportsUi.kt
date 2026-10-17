@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -71,17 +73,6 @@ private fun restoringRequester(focusId: String): FocusRequester {
 }
 
 @Composable
-private fun SectionTitle(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        color = TextMain,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.ExtraBold,
-        modifier = modifier.padding(horizontal = 48.dp),
-    )
-}
-
-@Composable
 private fun TeamLogo(url: String?, dp: Int) {
     Box(modifier = Modifier.size(dp.dp), contentAlignment = Alignment.Center) {
         if (url != null) {
@@ -108,8 +99,8 @@ private fun StatusPill(game: Game, now: Long) {
     when (game.state) {
         1 -> {
             text = if (game.detail.isEmpty()) "AO VIVO" else "AO VIVO · " + game.detail
-            bg = Good
-            fg = Color.Black
+            bg = Red
+            fg = Color.White
         }
         2 -> {
             text = "ENCERRADO"
@@ -171,6 +162,7 @@ fun GameCard(
     val fr = restoringRequester(focusId)
     FocusBox(
         modifier = modifier,
+        shape = RoundedCornerShape(14.dp),
         focusRequester = fr,
         onClick = {
             FocusMemory.last = focusId
@@ -179,8 +171,8 @@ fun GameCard(
     ) { focused ->
         Column(
             modifier = Modifier
-                .background(if (focused) PanelAlt else if (fav) Color(0xFF2B1A10) else Panel)
-                .then(if (fav) Modifier.border(2.5.dp, Accent, RoundedCornerShape(10.dp)) else Modifier)
+                .background(if (focused) PanelAlt else if (fav) Color(0xFF30263F) else Panel)
+                .then(if (fav) Modifier.border(2.dp, Accent, RoundedCornerShape(14.dp)) else Modifier)
                 .padding(horizontal = 12.dp, vertical = 9.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -189,9 +181,9 @@ fun GameCard(
                 }
                 Text(
                     text = game.leagueName,
-                    color = if (fav) Accent else Muted,
+                    color = Accent,
                     fontSize = 11.sp,
-                    fontWeight = if (fav) FontWeight.Bold else FontWeight.Normal,
+                    fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
@@ -221,95 +213,170 @@ fun GameCard(
     }
 }
 
+private val LiveRed = Color(0xFFFF4D5E)
+
+/** Um jogo na faixa do Início: só "Time × Time" e o dia/hora (ou "Ao vivo"). Sem cartão, sem moldura. */
 @Composable
-private fun EditTeamsTile(label: String, sub: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    FocusBox(modifier = modifier, onClick = onClick) { focused ->
-        Box(
+private fun StripGameItem(sg: StripGame, now: Long, tz: TimeZone, onClick: () -> Unit) {
+    val g = sg.game
+    val focusId = "game|" + g.key
+    val fr = restoringRequester(focusId)
+    FocusBox(
+        modifier = Modifier.padding(end = 4.dp),
+        shape = RoundedCornerShape(10.dp),
+        focusRequester = fr,
+        focusScale = 1f,
+        onClick = {
+            FocusMemory.last = focusId
+            onClick()
+        },
+    ) { focused ->
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(if (focused) PanelAlt else Panel),
-            contentAlignment = Alignment.Center,
+                .background(if (focused) PanelAlt else Color.Transparent)
+                .padding(horizontal = 12.dp, vertical = 5.dp),
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(label, color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(4.dp))
-                Text(sub, color = Muted, fontSize = 12.sp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (sg.fav) Text("★ ", color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold)
+                Text(
+                    text = g.home.short + " × " + g.away.short,
+                    color = TextMain,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.widthIn(max = 230.dp),
+                )
+            }
+            Spacer(Modifier.height(1.dp))
+            StripWhen(live = g.state == 1, done = g.state == 2, detail = g.detail, startMs = g.startMs, now = now, tz = tz)
+        }
+    }
+}
+
+@Composable
+private fun StripWhen(live: Boolean, done: Boolean, detail: String, startMs: Long, now: Long, tz: TimeZone) {
+    if (live) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = Modifier.size(7.dp).clip(CircleShape).background(LiveRed))
+            Spacer(Modifier.width(6.dp))
+            Text(
+                text = if (detail.isEmpty()) "Ao vivo" else "Ao vivo · $detail",
+                color = Accent,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+            )
+        }
+    } else {
+        Text(
+            text = if (done) "Encerrado" else SportsTime.dayLabel(startMs, now, tz) + " · " + SportsTime.clock(startMs, tz),
+            color = Muted,
+            fontSize = 12.sp,
+            maxLines = 1,
+        )
+    }
+}
+
+/** Fórmula 1, UFC, tênis: entram no fim da faixa. Sem evento marcado, só o nome e "ver canais". */
+@Composable
+private fun StripSportItem(kind: SportKind, ev: SportEvent?, now: Long, tz: TimeZone, onClick: () -> Unit) {
+    val focusId = "sport|" + kind.name
+    val fr = restoringRequester(focusId)
+    FocusBox(
+        modifier = Modifier.padding(end = 4.dp),
+        shape = RoundedCornerShape(10.dp),
+        focusRequester = fr,
+        focusScale = 1f,
+        onClick = {
+            FocusMemory.last = focusId
+            onClick()
+        },
+    ) { focused ->
+        Column(
+            modifier = Modifier
+                .background(if (focused) PanelAlt else Color.Transparent)
+                .padding(horizontal = 12.dp, vertical = 5.dp),
+        ) {
+            Text(kind.label, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+            Spacer(Modifier.height(1.dp))
+            if (ev == null) {
+                Text("ver canais", color = Muted, fontSize = 12.sp, maxLines = 1)
+            } else {
+                StripWhen(live = ev.state == 1, done = false, detail = "", startMs = ev.startMs, now = now, tz = tz)
             }
         }
     }
 }
 
-/** Faixa do topo do Início: jogos dos meus times (★) e das ligas escolhidas (ou o convite para escolher). */
 @Composable
-fun GamesSection(vm: MainViewModel, now: Long) {
-    val teams = vm.favTeams
-    val leagues = vm.favLeagues
-    Column {
-        SectionTitle(if (leagues.isEmpty()) "Jogos dos seus times" else "Jogos dos seus times e ligas")
-        Spacer(Modifier.height(6.dp))
-        if (teams.isEmpty() && leagues.isEmpty()) {
-            Row(
-                modifier = Modifier.padding(horizontal = 48.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text(
-                    "Escolha até 5 times e 5 ligas e os jogos deles aparecem aqui todo dia.",
-                    color = Muted,
-                    fontSize = 14.sp,
-                )
-                TvButton(text = "Escolher times e ligas", primary = true) { vm.openPicker() }
-            }
-            return@Column
-        }
-        val shown = vm.stripGames(now)
-        if (shown.isEmpty()) {
-            Row(
-                modifier = Modifier.padding(horizontal = 48.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                val err = vm.gamesError
-                Text(
-                    text = when {
-                        vm.gamesLoading -> "Buscando os jogos..."
-                        err != null -> err
-                        else -> "Nenhum jogo dos seus times e ligas hoje ou amanhã."
-                    },
-                    color = Muted,
-                    fontSize = 14.sp,
-                )
-                if (!vm.gamesLoading && err != null) {
-                    TvButton(text = "Tentar de novo") { vm.refreshSports(force = true) }
-                }
-                TvButton(text = "Ver todos") { vm.openAllGames() }
-                TvButton(text = "Meus times e ligas") { vm.openPicker() }
-            }
-            return@Column
-        }
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
+private fun StripTextItem(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    FocusBox(modifier = modifier.padding(end = 4.dp), shape = RoundedCornerShape(10.dp), focusScale = 1f, onClick = onClick) { focused ->
+        Box(
+            modifier = Modifier
+                .background(if (focused) PanelAlt else Color.Transparent)
+                .padding(horizontal = 12.dp, vertical = 9.dp),
         ) {
-            items(shown, key = { it.game.key }) { sg ->
-                GameCard(
-                    game = sg.game,
-                    now = now,
-                    channelCount = vm.gameChannelCount(sg.game),
-                    focusId = "game|" + sg.game.key,
-                    modifier = Modifier.width(262.dp),
-                    fav = sg.fav,
-                    reminded = vm.isReminded(sg.game),
-                    onClick = { vm.showGame(sg.game) },
-                )
-            }
-            item(key = "__all") {
-                EditTeamsTile("Ver todos", "próximos dias", onClick = { vm.openAllGames() }, modifier = Modifier.width(140.dp).height(112.dp))
-            }
-            item(key = "__teams") {
-                EditTeamsTile("Meus times e ligas", "escolher ou trocar", onClick = { vm.openPicker() }, modifier = Modifier.width(150.dp).height(112.dp))
-            }
+            Text(text, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
         }
+    }
+}
+
+/**
+ * Faixa mínima de jogos do Início (combinado com o Iago: só nome, dia e horário). Jogos dos meus times (★) e das ligas
+ * escolhidas, depois F1/UFC/tênis; "Ver todos" abre a lista completa. Os cartões com liga e canais ficam na aba Jogos.
+ */
+@Composable
+fun GamesStrip(vm: MainViewModel, now: Long) {
+    val tz = remember(AppTz.rev) { TimeZone.getDefault() }
+    val noPicks = vm.favTeams.isEmpty() && vm.favLeagues.isEmpty()
+    val shown = if (noPicks) emptyList() else vm.stripGames(now)
+    val events = vm.sportEvents
+    val lineColor = Color(0x22FFF3EC)
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 40.dp)) {
+        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(lineColor))
+        Row(modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                "JOGOS",
+                color = Accent,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = 2.sp,
+                modifier = Modifier.padding(end = 12.dp),
+            )
+            Box(modifier = Modifier.width(1.dp).height(26.dp).background(lineColor))
+            LazyRow(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(horizontal = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (noPicks) {
+                    item(key = "__pick") { StripTextItem("Escolher meus times e ligas", onClick = { vm.openPicker() }) }
+                } else if (shown.isEmpty()) {
+                    item(key = "__none") {
+                        val err = vm.gamesError
+                        if (!vm.gamesLoading && err != null) {
+                            StripTextItem("Não foi possível buscar. Tentar de novo", onClick = { vm.refreshSports(force = true) })
+                        } else {
+                            Text(
+                                text = if (vm.gamesLoading) "Buscando os jogos..." else "Nenhum jogo dos seus times hoje ou amanhã",
+                                color = Muted,
+                                fontSize = 13.sp,
+                                modifier = Modifier.padding(horizontal = 12.dp),
+                            )
+                        }
+                    }
+                }
+                items(shown, key = { it.game.key }) { sg ->
+                    StripGameItem(sg, now, tz, onClick = { vm.showGame(sg.game) })
+                }
+                items(SportKind.values().toList(), key = { "sp|" + it.name }) { k ->
+                    StripSportItem(k, events[k], now, tz, onClick = { vm.openSport(k) })
+                }
+            }
+            StripTextItem("Ver todos ›", onClick = { vm.openAllGames() })
+        }
+        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(lineColor))
     }
 }
 
@@ -342,7 +409,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             modifier = Modifier
                 .width(640.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF151416))
+                .background(Panel)
                 .border(1.dp, PanelAlt, RoundedCornerShape(16.dp))
                 .padding(22.dp),
         ) {
@@ -608,86 +675,6 @@ fun GamesTab(vm: MainViewModel) {
                     fav = sg.fav,
                     reminded = vm.isReminded(sg.game),
                     onClick = { vm.showGame(sg.game) },
-                )
-            }
-        }
-    }
-}
-
-// =========================================================================
-// Início: Fórmula 1, UFC e tênis (só eventos)
-// =========================================================================
-
-@Composable
-private fun SportCard(
-    kind: SportKind,
-    ev: SportEvent?,
-    now: Long,
-    focusId: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    val tz = remember(AppTz.rev) { TimeZone.getDefault() }
-    val fr = restoringRequester(focusId)
-    FocusBox(
-        modifier = modifier,
-        focusRequester = fr,
-        onClick = {
-            FocusMemory.last = focusId
-            onClick()
-        },
-    ) { focused ->
-        Column(
-            modifier = Modifier
-                .background(if (focused) PanelAlt else Panel)
-                .padding(14.dp),
-        ) {
-            Text(kind.label.uppercase(), color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold)
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = ev?.name ?: "Toque para ver os canais",
-                color = TextMain,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 2,
-                minLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(Modifier.height(6.dp))
-            val line = when {
-                ev == null -> "Sem data confirmada"
-                ev.state == 1 -> "AO VIVO · até " + SportsTime.shortDate(ev.endMs, tz)
-                else -> SportsTime.dayLabel(ev.startMs, now, tz) + " " + SportsTime.clock(ev.startMs, tz)
-            }
-            Text(
-                text = line,
-                color = if (ev != null && ev.state == 1) Good else Muted,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-            )
-        }
-    }
-}
-
-@Composable
-fun SportEventsRow(vm: MainViewModel, now: Long) {
-    val events = vm.sportEvents
-    Column {
-        SectionTitle("Outros esportes")
-        Spacer(Modifier.height(6.dp))
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-        ) {
-            items(SportKind.values().toList(), key = { it.name }) { k ->
-                SportCard(
-                    kind = k,
-                    ev = events[k],
-                    now = now,
-                    focusId = "sport|" + k.name,
-                    modifier = Modifier.width(236.dp),
-                    onClick = { vm.openSport(k) },
                 )
             }
         }

@@ -1,22 +1,25 @@
 package app.iptvtest
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -60,23 +63,9 @@ private fun durationText(secs: Int): String {
 
 private fun epCode(ep: Episode): String = String.format(Locale.US, "T%d E%d", ep.season, ep.number)
 
-@Composable
-private fun OptionRow(label: String, content: @Composable () -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
-        Text(
-            text = label,
-            color = Muted,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.width(86.dp),
-        )
-        content()
-    }
-}
-
 /**
- * Cartão do título (layout A): dublado, legendado e 4K ficam todos neste mesmo cartão;
- * a pessoa só escolhe o idioma/qualidade e aperta Assistir.
+ * Ficha do título: dublado, legendado e 4K ficam todos neste mesmo cartão; a pessoa só escolhe o idioma/qualidade e
+ * aperta Assistir. Séries mostram os episódios em cartões na horizontal.
  */
 @Composable
 fun TitleScreen(vm: MainViewModel, title: Title) {
@@ -185,172 +174,175 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
         }
     }
 
+    val img = title.image
     Box(modifier = Modifier.fillMaxSize()) {
-        // fundo suave com a própria capa
-        val img = title.image
+        // a capa do título ocupa o fundo, à direita, e se dissolve no degradê (sem capa: o sol da marca)
         if (img != null) {
             AsyncImage(
                 model = img,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                alpha = 0.18f,
-                modifier = Modifier.fillMaxSize(),
+                alpha = 0.8f,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .fillMaxHeight(0.82f)
+                    .fillMaxWidth(0.58f)
+                    .fadeEdges(left = 0.55f, bottom = 0.4f),
             )
+        } else {
+            SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.8f, sunY = 0.3f, sunR = 0.22f, mountains = false)
         }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Brush.horizontalGradient(listOf(Color(0xF00D0D0F), Color(0xB30D0D0F)))),
-        )
 
         LazyColumn(
             state = rememberLazyListState(),
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 48.dp),
+            contentPadding = PaddingValues(bottom = 40.dp),
         ) {
             item(key = "head") {
-                Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 12.dp)) {
-                    TvButton(text = "Voltar") { vm.back() }
-                    Spacer(Modifier.height(10.dp))
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Box(
-                            modifier = Modifier
-                                .width(170.dp)
-                                .aspectRatio(2f / 3f)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(PanelAlt),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            if (img != null) {
-                                AsyncImage(
-                                    model = img,
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier.fillMaxSize(),
-                                )
-                            } else {
-                                Text(title.name.take(1).uppercase(), color = Muted, fontSize = 40.sp, fontWeight = FontWeight.Bold)
-                            }
-                        }
-                        Spacer(Modifier.width(28.dp))
-                        Column(modifier = Modifier.weight(1f)) {
+                Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 10.dp)) {
+                    TvButton(text = "‹ Voltar") { vm.back() }
+                    Spacer(Modifier.height(14.dp))
+                    Column(modifier = Modifier.width(520.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = title.name,
-                                color = TextMain,
-                                fontSize = 32.sp,
+                                if (title.series) "SÉRIE" else "FILME",
+                                color = Accent,
+                                fontSize = 12.sp,
                                 fontWeight = FontWeight.ExtraBold,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
+                                letterSpacing = 1.5.sp,
                             )
-                            Spacer(Modifier.height(4.dp))
-                            val meta = ArrayList<String>()
-                            meta.add(if (title.series) "Série" else "Filme")
-                            if (title.year.isNotEmpty()) meta.add(title.year)
+                            if (title.year.isNotEmpty()) {
+                                Spacer(Modifier.width(10.dp))
+                                Text(title.year, color = TextMain, fontSize = 13.sp)
+                            }
+                            if (title.series && seasons.isNotEmpty()) {
+                                Spacer(Modifier.width(10.dp))
+                                Text(if (seasons.size == 1) "1 temporada" else "${seasons.size} temporadas", color = TextMain, fontSize = 13.sp)
+                            }
                             val dur = durationText(info?.durationSecs ?: 0)
-                            if (dur.isNotEmpty()) meta.add(dur)
-                            val rate = if ((info?.rating ?: 0f) > 0f) info?.rating ?: 0f else title.rating
-                            if (rate > 0f) meta.add("★ " + String.format(Locale.US, "%.1f", rate))
-                            if (title.genres.isNotEmpty()) meta.add(title.genres.take(3).joinToString(", "))
-                            Text(meta.joinToString(" · "), color = Muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
-                            if (title.platforms.isNotEmpty()) {
-                                Spacer(Modifier.height(2.dp))
-                                Text(title.platforms.take(3).joinToString(" · "), color = Accent, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            if (dur.isNotEmpty()) {
+                                Spacer(Modifier.width(10.dp))
+                                Text(dur, color = TextMain, fontSize = 13.sp)
                             }
-                            if (plot.isNotEmpty()) {
-                                Spacer(Modifier.height(8.dp))
-                                Text(plot, color = TextMain, fontSize = 14.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
-                            } else if (!title.series && info == null) {
-                                Spacer(Modifier.height(8.dp))
-                                Text("Carregando sinopse...", color = Muted, fontSize = 13.sp)
-                            }
-                            if (info != null && (info.cast.isNotEmpty() || info.director.isNotEmpty())) {
-                                Spacer(Modifier.height(4.dp))
-                                val extra = ArrayList<String>()
-                                if (info.director.isNotEmpty()) extra.add("Direção: " + info.director)
-                                if (info.cast.isNotEmpty()) extra.add("Elenco: " + info.cast.take(110))
-                                Text(extra.joinToString("   "), color = Muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                            }
-
-                            Spacer(Modifier.height(10.dp))
-                            if (hasDub && hasLeg) {
-                                OptionRow("Idioma") {
-                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                        ChipItem(
-                                            text = if (title.national) "Original" else "Dublado",
-                                            selected = !legEff,
-                                        ) {
-                                            leg = false
-                                            copyIdx = 0
-                                        }
-                                        ChipItem(text = "Legendado", selected = legEff) {
-                                            leg = true
-                                            copyIdx = 0
-                                        }
-                                    }
-                                }
-                            } else if (hasLeg && !hasDub) {
-                                OptionRow("Idioma") { Text("Só legendado", color = TextMain, fontSize = 14.sp) }
-                            }
-                            if (has4kHere && hasStdHere) {
-                                OptionRow("Qualidade") {
-                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                        ChipItem(text = "Padrão", selected = !k4Eff) {
-                                            k4 = false
-                                            copyIdx = 0
-                                        }
-                                        ChipItem(text = "4K", selected = k4Eff) {
-                                            k4 = true
-                                            copyIdx = 0
-                                        }
-                                    }
-                                }
-                            } else if (has4kHere) {
-                                OptionRow("Qualidade") { Text("4K", color = TextMain, fontSize = 14.sp) }
-                            }
-                            if (copies.size > 1) {
-                                OptionRow("Cópia") {
-                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                        for ((i, v) in copies.withIndex()) {
-                                            ChipItem(
-                                                text = "Cópia ${i + 1}" + (if (v.cam) " (cinema)" else ""),
-                                                selected = copyIdx.coerceIn(0, copies.lastIndex) == i,
-                                            ) { copyIdx = i }
-                                        }
-                                    }
-                                }
-                            }
-                            if (chosen != null && chosen.cam) {
-                                Spacer(Modifier.height(4.dp))
+                            if (title.has4k) {
+                                Spacer(Modifier.width(10.dp))
                                 Text(
-                                    "Gravação de cinema: a imagem e o som podem ter qualidade menor.",
-                                    color = Warn,
-                                    fontSize = 12.sp,
+                                    "4K",
+                                    color = Accent,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    modifier = Modifier
+                                        .border(1.dp, Accent, RoundedCornerShape(5.dp))
+                                        .padding(horizontal = 5.dp, vertical = 1.dp),
                                 )
                             }
-                            OptionRow("Tela") {
-                                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                    ChipItem(text = "Ajustar", selected = !zoom) { zoom = false }
-                                    ChipItem(text = "Preencher", selected = zoom) { zoom = true }
-                                }
-                            }
+                        }
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            text = title.name.uppercase(),
+                            color = TextMain,
+                            fontSize = 32.sp,
+                            lineHeight = 35.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Spacer(Modifier.height(5.dp))
+                        val rate = if ((info?.rating ?: 0f) > 0f) info?.rating ?: 0f else title.rating
+                        val ratingText = if (rate > 0f) "★ " + String.format(Locale.US, "%.1f", rate).replace('.', ',') else ""
+                        val meta = listOf(ratingText, title.genres.take(3).joinToString(" · ")).filter { it.isNotEmpty() }.joinToString("   ")
+                        if (meta.isNotEmpty()) {
+                            Text(meta, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                        if (title.platforms.isNotEmpty()) {
+                            Spacer(Modifier.height(2.dp))
+                            Text(title.platforms.take(3).joinToString(" · "), color = Accent, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                        }
+                        if (plot.isNotEmpty()) {
+                            Spacer(Modifier.height(6.dp))
+                            Text(plot, color = TextMain.copy(alpha = 0.88f), fontSize = 13.sp, lineHeight = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                        } else if (!title.series && info == null) {
+                            Spacer(Modifier.height(6.dp))
+                            Text("Carregando sinopse...", color = Muted, fontSize = 13.sp)
+                        }
+                        if (info != null && (info.cast.isNotEmpty() || info.director.isNotEmpty())) {
+                            Spacer(Modifier.height(4.dp))
+                            val extra = ArrayList<String>()
+                            if (info.director.isNotEmpty()) extra.add("Direção: " + info.director)
+                            if (info.cast.isNotEmpty()) extra.add("Elenco: " + info.cast.take(110))
+                            Text(extra.joinToString("   "), color = Muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
 
-                            Spacer(Modifier.height(14.dp))
-                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                                TvButton(text = watchLabel, primary = true, focusRequester = firstPlay) { play() }
-                                TvButton(text = if (vm.inMyList(title.key)) "✓ Favoritos" else "+ Favoritos") {
-                                    vm.toggleMyList(title.key)
-                                }
+                    Spacer(Modifier.height(12.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        TvButton(text = "▶ " + watchLabel, primary = true, focusRequester = firstPlay) { play() }
+                        FocusBox(shape = CircleShape, focusScale = 1.06f, onClick = { vm.toggleMyList(title.key) }) { focused ->
+                            Box(
+                                modifier = Modifier
+                                    .size(42.dp)
+                                    .background(if (focused) PanelAlt else Color(0x33FFF3EC)),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(
+                                    if (vm.inMyList(title.key)) "✓" else "+",
+                                    color = TextMain,
+                                    fontSize = 21.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
                             }
                         }
+                        if (hasDub && hasLeg) {
+                            Spacer(Modifier.width(6.dp))
+                            ChipItem(text = if (title.national) "Original" else "Dublado", selected = !legEff) {
+                                leg = false
+                                copyIdx = 0
+                            }
+                            ChipItem(text = "Legendado", selected = legEff) {
+                                leg = true
+                                copyIdx = 0
+                            }
+                        } else if (hasLeg && !hasDub) {
+                            Spacer(Modifier.width(6.dp))
+                            Text("Só legendado", color = Muted, fontSize = 14.sp)
+                        }
+                    }
+
+                    // qualidade, cópia e tela: só aparecem as que fazem sentido para este título
+                    Spacer(Modifier.height(8.dp))
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 2.dp)) {
+                        if (has4kHere && hasStdHere) {
+                            item(key = "q-std") { ChipItem(text = "Padrão", selected = !k4Eff) { k4 = false; copyIdx = 0 } }
+                            item(key = "q-4k") { ChipItem(text = "4K", selected = k4Eff) { k4 = true; copyIdx = 0 } }
+                        } else if (has4kHere) {
+                            item(key = "q-only") { Text("Só 4K", color = Muted, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 6.dp, vertical = 7.dp)) }
+                        }
+                        if (copies.size > 1) {
+                            items(copies.size, key = { "c|$it" }) { i ->
+                                val v = copies[i]
+                                ChipItem(
+                                    text = "Cópia ${i + 1}" + (if (v.cam) " (cinema)" else ""),
+                                    selected = copyIdx.coerceIn(0, copies.lastIndex) == i,
+                                ) { copyIdx = i }
+                            }
+                        }
+                        item(key = "t-fit") { ChipItem(text = "Tela: ajustar", selected = !zoom) { zoom = false } }
+                        item(key = "t-fill") { ChipItem(text = "Tela: preencher", selected = zoom) { zoom = true } }
+                    }
+                    if (chosen != null && chosen.cam) {
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "Gravação de cinema: a imagem e o som podem ter qualidade menor.",
+                            color = Warn,
+                            fontSize = 12.sp,
+                        )
                     }
                 }
             }
 
             if (title.series) {
                 item(key = "eps-head") {
-                    Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 6.dp)) {
-                        Text("Episódios", color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-                        Spacer(Modifier.height(8.dp))
+                    Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 4.dp)) {
                         if (seasons.size > 1) {
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 4.dp)) {
                                 items(seasons, key = { it }) { s ->
@@ -373,40 +365,19 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                         }
                     }
                 }
-                items(seasonEps, key = { "ep|" + it.id }) { ep ->
-                    val v = chosen
-                    FocusBox(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 40.dp, vertical = 3.dp),
-                        focusScale = 1.01f,
-                        onClick = { if (v != null) vm.playEpisode(title, v, ep, zoom) },
-                    ) { focused ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(if (focused) PanelAlt else Panel)
-                                .padding(horizontal = 16.dp, vertical = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically,
+                if (seasonEps.isNotEmpty()) {
+                    item(key = "eps") {
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
-                            Text(
-                                text = "E" + ep.number,
-                                color = Accent,
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.ExtraBold,
-                                modifier = Modifier.width(56.dp),
-                            )
-                            Text(
-                                text = ep.title.ifEmpty { "Episódio " + ep.number },
-                                color = TextMain,
-                                fontSize = 15.sp,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.weight(1f),
-                            )
-                            if (resEp != null && resEp.id == ep.id) {
-                                Spacer(Modifier.width(12.dp))
-                                Text("parou aqui", color = Muted, fontSize = 12.sp)
+                            items(seasonEps, key = { "ep|" + it.id }) { ep ->
+                                val here = resEp != null && resEp.id == ep.id
+                                val frac = if (here && resume != null && resume.durMs > 0L) resume.posMs.toFloat() / resume.durMs.toFloat() else null
+                                EpisodeCard(ep = ep, resumeHere = here, progress = frac) {
+                                    val v = chosen
+                                    if (v != null) vm.playEpisode(title, v, ep, zoom)
+                                }
                             }
                         }
                     }
@@ -415,7 +386,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
 
             if (similar.isNotEmpty()) {
                 item(key = "similar") {
-                    Column(modifier = Modifier.padding(top = 14.dp)) {
+                    Column(modifier = Modifier.padding(top = 12.dp)) {
                         ShelfRow(
                             shelf = Shelf("Parecidos", similar),
                             onOpen = { vm.open(it) },
@@ -425,6 +396,74 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                 }
             }
         }
+    }
+}
+
+private val EP_GRADIENTS = listOf(
+    listOf(Color(0xFF34415F), Color(0xFF1F2A44)),
+    listOf(Color(0xFF541A2E), Color(0xFF2A1626)),
+    listOf(Color(0xFF3A3558), Color(0xFF5A2038)),
+)
+
+/** Cartão de episódio: faixa colorida com o número, e o título embaixo. O episódio onde parou fica em salmão com a barra de progresso. */
+@Composable
+private fun EpisodeCard(ep: Episode, resumeHere: Boolean, progress: Float?, onClick: () -> Unit) {
+    Column(modifier = Modifier.width(172.dp)) {
+        FocusBox(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), focusScale = 1.04f, onClick = onClick) { _ ->
+            val colors = if (resumeHere) listOf(Accent, Red) else EP_GRADIENTS[Math.floorMod(ep.number, EP_GRADIENTS.size)]
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(96.dp)
+                    .background(Brush.linearGradient(colors)),
+            ) {
+                Text(
+                    text = "E" + ep.number,
+                    color = TextMain,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0x99161E2F))
+                        .padding(horizontal = 8.dp, vertical = 2.dp),
+                )
+                if (progress != null) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                            .fillMaxWidth()
+                            .height(4.dp)
+                            .clip(RoundedCornerShape(2.dp))
+                            .background(Color(0x66FFFFFF)),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(progress.coerceIn(0.03f, 1f))
+                                .fillMaxHeight()
+                                .background(Accent),
+                        )
+                    }
+                }
+            }
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = ep.title.ifEmpty { "Episódio " + ep.number },
+            color = TextMain,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(
+            text = if (resumeHere) "parou aqui" else "Episódio " + ep.number,
+            color = if (resumeHere) Accent else Muted,
+            fontSize = 12.sp,
+            maxLines = 1,
+        )
     }
 }
 

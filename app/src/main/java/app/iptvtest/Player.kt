@@ -645,7 +645,7 @@ fun PlayerScreen(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xE6101018))
+                    .background(Color(0xE6161E2F))
                     .padding(28.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -666,7 +666,7 @@ fun PlayerScreen(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xE6101018))
+                    .background(Color(0xE6161E2F))
                     .padding(horizontal = 28.dp, vertical = 18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -698,7 +698,7 @@ fun PlayerScreen(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .fillMaxWidth()
-                    .background(Brush.verticalGradient(listOf(Color(0xCC000000), Color.Transparent)))
+                    .background(Brush.verticalGradient(listOf(Color(0xCC0B1020), Color.Transparent)))
                     .padding(horizontal = 32.dp, vertical = 20.dp),
             ) {
                 Text(req.title, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -723,7 +723,7 @@ fun PlayerScreen(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xDD000000))))
+                    .background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xDD0B1020))))
                     .padding(horizontal = 32.dp, vertical = 20.dp),
             ) {
                 ProgressRow(position, duration, isLive)
@@ -828,7 +828,7 @@ fun PlayerScreen(
                     .padding(24.dp)
                     .width(380.dp)
                     .clip(RoundedCornerShape(14.dp))
-                    .background(Color(0xF0101018))
+                    .background(Color(0xF0161E2F))
                     .padding(14.dp),
             ) {
                 Text(
@@ -914,7 +914,7 @@ private fun SourcesPanel(
         modifier = modifier
             .fillMaxHeight()
             .clip(RoundedCornerShape(14.dp))
-            .background(Color(0xF0101018))
+            .background(Color(0xF0161E2F))
             .padding(14.dp),
     ) {
         Text("Fontes · " + channelName, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -1056,7 +1056,7 @@ private fun VariantsPanel(
         modifier = modifier
             .fillMaxHeight()
             .clip(RoundedCornerShape(14.dp))
-            .background(Color(0xF0101018))
+            .background(Color(0xF0161E2F))
             .padding(14.dp),
     ) {
         Text("Praça · " + brand.name, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)

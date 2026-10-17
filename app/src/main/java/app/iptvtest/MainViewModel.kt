@@ -706,6 +706,43 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         )
     }
 
+    /**
+     * O que a mini tela da aba Canais toca: o próprio canal ou, numa marca (Globo...), a praça atual dela.
+     * Lê [dataRev] para se atualizar quando a praça muda.
+     */
+    fun previewLive(ch: Channel): LiveInfo? {
+        if (dataRev < 0) return null
+        val a = api ?: return null
+        val urlOf: (Source) -> String = { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }
+        if (ch.isBrand) {
+            val v = Brands.variantFor(ch, user.lastVariantOf(ch.key))
+            return LiveInfo(v.channel, urlOf, ch)
+        }
+        return LiveInfo(ch, urlOf)
+    }
+
+    /** Escolhe a praça de uma marca na aba Canais (vale também quando abrir em tela cheia). */
+    fun chooseVariant(brand: Channel, v: Variant) {
+        user.setLastVariant(brand.key, v.channel.key)
+        dataRev++
+    }
+
+    /** Fixa uma fonte do canal (ou volta ao automático com null). */
+    fun pinSource(channelKey: String, sourceId: String?) {
+        user.setPinned(channelKey, sourceId)
+        dataRev++
+    }
+
+    fun isFavChannel(key: String): Boolean {
+        if (dataRev < 0) return false
+        return user.favChannels.contains(key)
+    }
+
+    fun toggleFavChannel(key: String) {
+        user.toggleFavChannel(key)
+        dataRev++
+    }
+
     /** A praça que está tocando agora numa marca (para marcar na lista). */
     fun currentVariantKey(brand: Channel): String = Brands.variantFor(brand, user.lastVariantOf(brand.key)).channel.key
 

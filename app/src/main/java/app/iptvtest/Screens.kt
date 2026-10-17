@@ -3,6 +3,7 @@ package app.iptvtest
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,17 +20,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -85,21 +90,42 @@ fun LoginScreen(vm: MainViewModel) {
         onDispose { vm.stopPhoneLogin() }
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        // o sol e as montanhas da marca ficam à esquerda, com o nome embaixo; o formulário vai num cartão à direita
+        SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.23f, sunY = 0.36f, sunR = 0.19f)
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 40.dp, vertical = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(0.42f)
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom,
+            ) {
+                Text("IAGO IPTV", color = Accent, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    "Entre com a sua lista.\nOs dados ficam guardados só nesta TV.",
+                    color = TextMain,
+                    fontSize = 14.sp,
+                    lineHeight = 19.sp,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(Modifier.height(34.dp))
+            }
+            Spacer(Modifier.width(28.dp))
         Column(
-            modifier = Modifier.width(620.dp),
+            modifier = Modifier
+                .weight(0.58f)
+                .clip(RoundedCornerShape(22.dp))
+                .background(Color(0xE6161E2F))
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("IAGO IPTV", color = Accent, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
-            Spacer(Modifier.height(4.dp))
-            Text(
-                "Entre com a sua lista. Os dados ficam guardados só nesta TV.",
-                color = Muted,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(Modifier.height(16.dp))
-
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                 ChipItem(text = "Xtream", selected = mode == 0) { mode = 0; vm.clearLoginError() }
                 ChipItem(text = "Link M3U", selected = mode == 1) { mode = 1; vm.clearLoginError() }
@@ -114,6 +140,7 @@ fun LoginScreen(vm: MainViewModel) {
                         onValueChange = { server = it },
                         label = { Text("Servidor (ex.: http://exemplo.com:8080)") },
                         singleLine = true,
+                        colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
@@ -124,6 +151,7 @@ fun LoginScreen(vm: MainViewModel) {
                         onValueChange = { user = it },
                         label = { Text("Usuário") },
                         singleLine = true,
+                        colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
@@ -134,6 +162,7 @@ fun LoginScreen(vm: MainViewModel) {
                         onValueChange = { pass = it },
                         label = { Text("Senha") },
                         singleLine = true,
+                        colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
                         visualTransformation = if (showPass) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Done),
@@ -157,6 +186,7 @@ fun LoginScreen(vm: MainViewModel) {
                         onValueChange = { link = it },
                         label = { Text("Link da lista (ex.: http://exemplo.com/lista.m3u)") },
                         singleLine = true,
+                        colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = {
@@ -181,17 +211,17 @@ fun LoginScreen(vm: MainViewModel) {
                 else -> {
                     val url = vm.phoneUrl
                     if (url != null) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(22.dp)) {
-                            QrCode(text = url, modifier = Modifier.size(210.dp))
-                            Column(modifier = Modifier.width(360.dp)) {
-                                Text("1. Conecte o celular no mesmo Wi-Fi da TV.", color = Color.White, fontSize = 14.sp)
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                            QrCode(text = url, modifier = Modifier.size(170.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("1. Conecte o celular no mesmo Wi-Fi da TV.", color = TextMain, fontSize = 13.sp)
                                 Spacer(Modifier.height(6.dp))
-                                Text("2. Aponte a câmera para o QR code.", color = Color.White, fontSize = 14.sp)
+                                Text("2. Aponte a câmera para o QR code.", color = TextMain, fontSize = 13.sp)
                                 Spacer(Modifier.height(6.dp))
-                                Text("3. Digite os dados no celular e toque em Enviar.", color = Color.White, fontSize = 14.sp)
+                                Text("3. Digite os dados no celular e toque em Enviar.", color = TextMain, fontSize = 13.sp)
                                 Spacer(Modifier.height(10.dp))
                                 Text("Ou abra no navegador do celular:", color = Muted, fontSize = 12.sp)
-                                Text(url, color = Accent, fontSize = 12.sp)
+                                Text(url, color = Accent, fontSize = 11.sp)
                             }
                         }
                     } else {
@@ -220,8 +250,20 @@ fun LoginScreen(vm: MainViewModel) {
                 CircularProgressIndicator(color = Accent)
             }
         }
+        }
     }
 }
+
+@Composable
+private fun fieldColors() = OutlinedTextFieldDefaults.colors(
+    focusedTextColor = TextMain,
+    unfocusedTextColor = TextMain,
+    cursorColor = Accent,
+    focusedBorderColor = Accent,
+    unfocusedBorderColor = Muted.copy(alpha = 0.55f),
+    focusedLabelColor = Accent,
+    unfocusedLabelColor = Muted,
+)
 
 // =========================================================================
 // Carregando o catálogo (primeira vez)
@@ -230,11 +272,13 @@ fun LoginScreen(vm: MainViewModel) {
 @Composable
 fun LoadingScreen(vm: MainViewModel) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.5f, sunY = 0.3f, sunR = 0.17f)
         Column(
             modifier = Modifier.width(560.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("IAGO IPTV", color = Accent, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(150.dp))
+            Text("IAGO IPTV", color = Accent, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(18.dp))
             val err = vm.loadError
             if (err != null) {
@@ -266,26 +310,23 @@ fun LoadingScreen(vm: MainViewModel) {
 // Menu do topo
 // =========================================================================
 
-private val NavBg = Color(0xFF060607)
-private val NavLine = Color(0x2EFFFFFF)
-
-/** Aba do menu: só texto. A aba atual ganha um fundo laranja escuro e translúcido (nada de cor chapada). */
+/** Aba do menu: só texto. A aba atual ganha um fundo salmão bem translúcido (nada de cor chapada). */
 @Composable
 private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
     FocusBox(
         modifier = Modifier.padding(end = 2.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         focusScale = 1f,
         onClick = onClick,
     ) { focused ->
         Box(
             modifier = Modifier
-                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.22f) else Color.Transparent)
-                .padding(horizontal = 13.dp, vertical = 7.dp),
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.20f) else Color.Transparent)
+                .padding(horizontal = 14.dp, vertical = 7.dp),
         ) {
             Text(
                 text = text,
-                color = if (selected) TextMain else if (focused) TextMain else Muted,
+                color = if (selected || focused) TextMain else Muted,
                 fontSize = 16.sp,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                 maxLines = 1,
@@ -298,13 +339,13 @@ private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
 @Composable
 private fun NavIcon(selected: Boolean, onClick: () -> Unit, icon: @Composable (Color) -> Unit) {
     FocusBox(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         focusScale = 1f,
         onClick = onClick,
     ) { focused ->
         Box(
             modifier = Modifier
-                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.22f) else Color.Transparent)
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.20f) else Color.Transparent)
                 .padding(horizontal = 13.dp, vertical = 8.dp),
         ) {
             icon(if (selected || focused) TextMain else Muted)
@@ -316,13 +357,13 @@ private fun NavIcon(selected: Boolean, onClick: () -> Unit, icon: @Composable (C
 @Composable
 private fun BrandButton(selected: Boolean, onClick: () -> Unit) {
     FocusBox(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         focusScale = 1f,
         onClick = onClick,
     ) { focused ->
         Row(
             modifier = Modifier
-                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.22f) else Color.Transparent)
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.20f) else Color.Transparent)
                 .padding(horizontal = 12.dp, vertical = 7.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -333,35 +374,29 @@ private fun BrandButton(selected: Boolean, onClick: () -> Unit) {
     }
 }
 
+/** Menu do topo: sem faixa nem linha, solto sobre o fundo em degradê. */
 @Composable
 fun TopNav(vm: MainViewModel) {
-    Column {
-        // faixa escura com uma linha fina embaixo: separa o menu do conteúdo
-        Column(modifier = Modifier.fillMaxWidth().background(NavBg)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 34.dp, vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                BrandButton(vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
-                Spacer(Modifier.width(16.dp))
-                NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
-                NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
-                NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
-                NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
-                NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
-                NavItem("Favoritos", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
-                Spacer(Modifier.weight(1f))
-                if (vm.refreshing) {
-                    CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(12.dp))
-                }
-                NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
-            }
-            Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(NavLine))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 34.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        BrandButton(vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
+        Spacer(Modifier.width(16.dp))
+        NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
+        NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
+        NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
+        NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
+        NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
+        NavItem("Favoritos", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
+        Spacer(Modifier.weight(1f))
+        if (vm.refreshing) {
+            CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
+            Spacer(Modifier.width(12.dp))
         }
-        Spacer(Modifier.height(8.dp))
+        NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
     }
 }
 
@@ -389,54 +424,111 @@ private fun HeroContent(t: Title) {
     Box(modifier = Modifier.fillMaxSize()) {
         val img = t.image
         if (img != null) {
+            // a capa do título ocupa o fundo, à direita, e se dissolve no degradê da tela
             AsyncImage(
                 model = img,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
+                alpha = 0.85f,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .padding(end = 72.dp, top = 8.dp)
-                    .height(200.dp)
-                    .aspectRatio(2f / 3f)
-                    .clip(RoundedCornerShape(12.dp)),
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.62f)
+                    .fadeEdges(left = 0.55f, bottom = 0.3f),
             )
+        } else {
+            SunBackdrop(modifier = Modifier.fillMaxSize())
         }
         Column(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(start = 48.dp, top = 14.dp)
-                .width(560.dp),
+                .padding(start = 40.dp, top = 12.dp)
+                .width(470.dp),
         ) {
-            Text("EM DESTAQUE", color = Accent, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    if (t.series) "SÉRIE" else "FILME",
+                    color = Accent,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = 1.5.sp,
+                )
+                if (t.year.isNotEmpty()) {
+                    Spacer(Modifier.width(10.dp))
+                    Text(t.year, color = TextMain, fontSize = 13.sp)
+                }
+                if (t.has4k) {
+                    Spacer(Modifier.width(10.dp))
+                    Text(
+                        "4K",
+                        color = Accent,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier
+                            .border(1.dp, Accent, RoundedCornerShape(5.dp))
+                            .padding(horizontal = 5.dp, vertical = 1.dp),
+                    )
+                }
+                val langs = listOfNotNull(
+                    if (t.versions.any { !it.leg && !it.cam }) "Dublado" else null,
+                    if (t.versions.any { it.leg }) "Legendado" else null,
+                ).joinToString(" · ")
+                if (langs.isNotEmpty()) {
+                    Spacer(Modifier.width(10.dp))
+                    Text(langs, color = Muted, fontSize = 13.sp)
+                }
+            }
             Spacer(Modifier.height(4.dp))
             Text(
-                t.name,
+                t.name.uppercase(),
                 color = TextMain,
                 fontSize = 30.sp,
-                lineHeight = 36.sp,
+                lineHeight = 33.sp,
                 fontWeight = FontWeight.ExtraBold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(Modifier.height(5.dp))
-            val meta = listOf(
-                if (t.series) "Série" else "Filme",
-                t.year,
-                t.genres.take(2).joinToString(", "),
-            ).filter { it.isNotEmpty() }.joinToString(" · ")
-            Text(meta, color = Muted, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
-            if (t.plot.isNotEmpty()) {
-                Spacer(Modifier.height(5.dp))
-                Text(t.plot, color = TextMain, fontSize = 13.sp, lineHeight = 17.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            val rating = if (t.rating > 0f) "★ " + String.format(java.util.Locale.US, "%.1f", t.rating).replace('.', ',') else ""
+            val meta = listOf(rating, t.genres.take(2).joinToString(" · ")).filter { it.isNotEmpty() }.joinToString("   ")
+            if (meta.isNotEmpty()) {
+                Text(meta, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
+            if (t.plot.isNotEmpty()) {
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    t.plot,
+                    color = TextMain.copy(alpha = 0.85f),
+                    fontSize = 13.sp,
+                    lineHeight = 17.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.width(420.dp),
+                )
+            }
+        }
+    }
+}
+
+/** Botão redondo com um símbolo (+, ✓, ‹, ›). */
+@Composable
+private fun CircleAction(symbol: String, onClick: () -> Unit) {
+    FocusBox(shape = CircleShape, focusScale = 1.06f, onClick = onClick) { focused ->
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(if (focused) PanelAlt else Color(0x33FFF3EC)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(symbol, color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
 
 /**
  * Destaques que trocam sozinhos (ordem aleatória, a cada 7 s) com um esmaecer. Dá para andar de um para o outro
- * com "Anterior" / "Próximo". Quando o cursor está nos botões a troca pausa, para o botão sempre abrir o título que a
- * pessoa está vendo, e a lista rola de volta para mostrar o destaque inteiro (aparece 100% mesmo depois de descer e subir).
+ * com ‹ e ›. Quando o cursor está nos botões a troca pausa, para o botão sempre abrir o título que a pessoa está
+ * vendo, e a lista rola de volta para mostrar o destaque inteiro (aparece 100% mesmo depois de descer e subir).
  */
 @Composable
 private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: LazyListState, anchor: Int) {
@@ -455,8 +547,7 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(235.dp)
-            .background(Brush.horizontalGradient(listOf(AccentDark, Bg))),
+            .height(232.dp),
     ) {
         Crossfade(targetState = t, animationSpec = tween(700), label = "hero") { cur ->
             HeroContent(cur)
@@ -464,7 +555,7 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
         Row(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(start = 48.dp, bottom = 12.dp)
+                .padding(start = 40.dp, bottom = 10.dp)
                 .onFocusChanged {
                     val f = it.hasFocus
                     if (f && !paused) {
@@ -479,26 +570,72 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
                     paused = f
                 },
             horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (n > 1) {
-                TvButton(text = "◀ Anterior") { idx = (idx - 1 + n) % n }
-            }
             TvButton(text = "Ver detalhes", primary = true) { vm.open(t) }
-            TvButton(text = if (vm.inMyList(t.key)) "✓ Favoritos" else "+ Favoritos") { vm.toggleMyList(t.key) }
+            CircleAction(if (vm.inMyList(t.key)) "✓" else "+") { vm.toggleMyList(t.key) }
             if (n > 1) {
-                TvButton(text = "Próximo ▶") { idx = (idx + 1) % n }
+                CircleAction("‹") { idx = (idx - 1 + n) % n }
+                CircleAction("›") { idx = (idx + 1) % n }
+                Text(
+                    text = "${idx + 1} / $n",
+                    color = Muted,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
             }
         }
-        if (n > 1) {
-            Text(
-                text = "${idx + 1} / $n",
-                color = Muted,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 72.dp, bottom = 14.dp),
-            )
+    }
+}
+
+/** Fileira de filtros: sortear de novo, "Todos" e um chip por gênero/plataforma. Escolher um mostra só aquele grupo. */
+@Composable
+private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: String?, onSelect: (String?) -> Unit) {
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        item(key = "__shuffle") {
+            RoundIconButton(onClick = { vm.reshuffle() }) { c -> ShuffleIcon(color = c) }
+        }
+        item(key = "__todos") {
+            ChipItem(text = "Todos", selected = selected == null) { onSelect(null) }
+        }
+        items(shelves.take(16), key = { "chip|" + it.name }) { sh ->
+            ChipItem(text = sh.name, selected = selected == sh.name) { onSelect(sh.name) }
+        }
+    }
+}
+
+/** Todos os títulos de um gênero/plataforma, em fileiras (aparece quando um chip está escolhido). */
+private fun LazyListScope.filteredShelf(shelf: Shelf, onOpen: (Title) -> Unit) {
+    val rows = shelf.all.take(112).chunked(7)
+    itemsIndexed(rows, key = { i, _ -> "flt|$i" }) { i, row ->
+        Column {
+            if (i == 0) {
+                Text(
+                    text = shelf.name + "  ·  " + shelf.all.size + " títulos",
+                    color = TextMain,
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(horizontal = 40.dp),
+                )
+                Spacer(Modifier.height(4.dp))
+            }
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(row, key = { it.key }) { t ->
+                    TitlePoster(
+                        title = t,
+                        focusId = "flt|" + shelf.name + "|" + t.key,
+                        modifier = Modifier.width(112.dp),
+                        onClick = { onOpen(t) },
+                    )
+                }
+            }
         }
     }
 }
@@ -510,6 +647,9 @@ fun HomeTab(vm: MainViewModel) {
     val mineShelf = remember(mine) { Shelf("Favoritos", mine) }
     val favs = vm.favoriteChannels()
     val hero = vm.heroAll
+    val shelves = vm.homeShelves
+    var sel by rememberSaveable { mutableStateOf<String?>(null) }
+    val picked = if (sel == null) null else shelves.firstOrNull { it.name == sel }
 
     // "agora" para os horários dos jogos; também puxa jogos novos ao entrar e a cada meio minuto
     var now by remember { mutableStateOf(System.currentTimeMillis()) }
@@ -528,52 +668,56 @@ fun HomeTab(vm: MainViewModel) {
             state = listState,
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 40.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            item(key = "games") { GamesSection(vm, now) }
             if (hero.isNotEmpty()) {
-                // âncora 0: ao voltar para o destaque a lista sobe até o topo e mostra jogos + destaque inteiros
+                // âncora 0: ao voltar para o destaque a lista sobe até o topo e mostra o destaque inteiro
                 item(key = "hero") { HeroCarousel(vm, hero, listState, 0) }
             }
-            item(key = "sports") { SportEventsRow(vm, now) }
-            if (cont.isNotEmpty()) {
-                item(key = "cont") { ContinueRow(cont, onResume = { vm.resumeEntry(it) }) }
-            }
-            if (favs.isNotEmpty()) {
-                item(key = "favch") {
-                    Column {
-                        Text(
-                            "Seus canais",
-                            color = TextMain,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            modifier = Modifier.padding(horizontal = 48.dp),
-                        )
-                        Spacer(Modifier.height(6.dp))
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(14.dp),
-                        ) {
-                            items(favs, key = { it.key }) { c ->
-                                ChannelTile(
-                                    ch = c,
-                                    stability = vm.channelStability(c),
-                                    focusId = "homefav|" + c.key,
-                                    modifier = Modifier.width(190.dp),
-                                    onClick = { vm.playChannel(c) },
-                                )
+            item(key = "games") { GamesStrip(vm, now) }
+            item(key = "chips") { FilterChips(vm, shelves, sel) { sel = it } }
+            if (picked != null) {
+                filteredShelf(picked) { vm.open(it) }
+            } else {
+                if (cont.isNotEmpty()) {
+                    item(key = "cont") { ContinueRow(cont, onResume = { vm.resumeEntry(it) }) }
+                }
+                if (favs.isNotEmpty()) {
+                    item(key = "favch") {
+                        Column {
+                            Text(
+                                "Seus canais",
+                                color = TextMain,
+                                fontSize = 19.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                modifier = Modifier.padding(horizontal = 40.dp),
+                            )
+                            Spacer(Modifier.height(4.dp))
+                            LazyRow(
+                                contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            ) {
+                                items(favs, key = { it.key }) { c ->
+                                    ChannelTile(
+                                        ch = c,
+                                        stability = vm.channelStability(c),
+                                        focusId = "homefav|" + c.key,
+                                        modifier = Modifier.width(176.dp),
+                                        onClick = { vm.playChannel(c) },
+                                    )
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (mine.isNotEmpty()) {
-                item(key = "mine") {
-                    ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
+                if (mine.isNotEmpty()) {
+                    item(key = "mine") {
+                        ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
+                    }
                 }
-            }
-            items(vm.homeShelves, key = { it.name }) { s ->
-                ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
+                items(shelves, key = { it.name }) { s ->
+                    ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
+                }
             }
         }
     }
@@ -582,6 +726,8 @@ fun HomeTab(vm: MainViewModel) {
 @Composable
 fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
     val listState = rememberLazyListState()
+    var sel by rememberSaveable { mutableStateOf<String?>(null) }
+    val picked = if (sel == null) null else shelves.firstOrNull { it.name == sel }
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         if (shelves.isEmpty()) {
@@ -593,13 +739,18 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
                 state = listState,
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(top = 0.dp, bottom = 40.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 if (hero.isNotEmpty()) {
                     item(key = "hero") { HeroCarousel(vm, hero, listState, 0) }
                 }
-                items(shelves, key = { it.name }) { s ->
-                    ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
+                item(key = "chips") { FilterChips(vm, shelves, sel) { sel = it } }
+                if (picked != null) {
+                    filteredShelf(picked) { vm.open(it) }
+                } else {
+                    items(shelves, key = { it.name }) { s ->
+                        ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
+                    }
                 }
             }
         }
