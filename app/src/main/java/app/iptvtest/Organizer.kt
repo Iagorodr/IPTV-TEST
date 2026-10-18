@@ -248,6 +248,7 @@ object Organizer {
         var plot: String,
         var launch: Boolean,
         val versions: ArrayList<Version>,
+        var nameCc: String = "",
     )
 
     private fun buildTitles(cats: List<Category>, items: List<RawItem>, series: Boolean): List<Title> {
@@ -259,6 +260,8 @@ object Organizer {
             if (t != null) ccOf[c.id] = t
         }
         val map = LinkedHashMap<String, Acc>()
+        // mesmo código TMDB = mesmo filme/série, mesmo que o nome venha em outra língua
+        val byTmdb = HashMap<String, String>()
         for (raw in items) {
             var adult = false
             var cc = ""
@@ -297,8 +300,14 @@ object Organizer {
             val ext = if (raw.ext.isEmpty() && !series) "mp4" else raw.ext
             val ver = Version(raw.id, ext, leg, parsed.k4 || cat4k, parsed.cam, cc)
 
-            val acc = map[key]
+            val tm = raw.tmdb
+            var acc = map[key]
+            if (acc == null && tm.isNotEmpty()) {
+                val k2 = byTmdb[tm]
+                if (k2 != null) acc = map[k2]
+            }
             if (acc == null) {
+                if (tm.isNotEmpty()) byTmdb.putIfAbsent(tm, key)
                 map[key] = Acc(
                     key = key,
                     series = series,
@@ -313,8 +322,17 @@ object Organizer {
                     plot = raw.plot,
                     launch = launch,
                     versions = arrayListOf(ver),
+                    nameCc = cc,
                 )
             } else {
+                if (tm.isNotEmpty()) byTmdb.putIfAbsent(tm, acc.key)
+                // o nome mostrado vem, de preferência, de uma versão em português
+                if (acc.nameCc != "BR" && acc.nameCc != "PT" && (cc == "BR" || cc == "PT")) {
+                    acc.name = parsed.base
+                    acc.nameCc = cc
+                    if (raw.image != null) acc.image = raw.image
+                    acc.nameFromLeg = leg
+                }
                 if (acc.nameFromLeg && !leg) {
                     acc.name = parsed.base
                     acc.nameFromLeg = false

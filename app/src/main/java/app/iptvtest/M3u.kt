@@ -27,6 +27,8 @@ class M3uEntry(
     val seriesName: String,
     val season: Int,
     val episode: Int,
+    /** Código TMDB, se a lista trouxer (tvg-id="tmdb:123"): junta o mesmo título em línguas diferentes. */
+    val tmdb: String = "",
 )
 
 /** Leitor de lista M3U. Entende #EXTINF com tvg-logo / group-title, separa canais, filmes e séries. */
@@ -62,7 +64,7 @@ object M3uParser {
             groupFolded.contains("season") || groupFolded.contains("tv show")
 
     /** Monta a entrada a partir de uma linha #EXTINF e a linha do link. */
-    fun make(rawName: String, group: String, logo: String?, url: String): M3uEntry {
+    fun make(rawName: String, group: String, logo: String?, url: String, tmdb: String = ""): M3uEntry {
         var name = rawName.trim()
         val ext = extOf(url)
         val lowUrl = url.lowercase(Locale.ROOT)
@@ -71,7 +73,7 @@ object M3uParser {
         val id = hash(url)
 
         if (!isVodFile) {
-            return M3uEntry(id, Kind.LIVE, name, group, logo, url, "", ext, "", "", 0, 0)
+            return M3uEntry(id, Kind.LIVE, name, group, logo, url, "", ext, "", "", 0, 0, tmdb)
         }
 
         var series: String? = null
@@ -94,7 +96,7 @@ object M3uParser {
         if (series != null && series.isNotBlank()) {
             val sid = "s" + hash(Organizer.fold(series))
             val title = "T" + season + " E" + ep
-            return M3uEntry(id, Kind.SERIES, title, group, logo, url, "", ext, sid, series, season, ep)
+            return M3uEntry(id, Kind.SERIES, title, group, logo, url, "", ext, sid, series, season, ep, tmdb)
         }
 
         var year = ""
@@ -103,7 +105,7 @@ object M3uParser {
             year = ym.groupValues[1]
             name = name.substring(0, ym.range.first).trim()
         }
-        return M3uEntry(id, Kind.MOVIES, name, group, logo, url, year, ext, "", "", 0, 0)
+        return M3uEntry(id, Kind.MOVIES, name, group, logo, url, year, ext, "", "", 0, 0, tmdb)
     }
 
     /** Lê a lista inteira, linha a linha. Devolve só links http/https. */
@@ -111,6 +113,7 @@ object M3uParser {
         var name: String? = null
         var group = ""
         var logo: String? = null
+        var tmdbCur = ""
         while (true) {
             val raw = reader.readLine() ?: break
             val line = raw.trim()
@@ -128,6 +131,7 @@ object M3uParser {
                 val head = if (comma >= 0) line.substring(0, comma) else line
                 val title = if (comma >= 0) line.substring(comma + 1).trim() else ""
                 var tvgName = ""
+                tmdbCur = ""
                 group = ""
                 logo = null
                 for (m in ATTR.findAll(head)) {
@@ -135,6 +139,8 @@ object M3uParser {
                         "group-title" -> group = m.groupValues[2].trim()
                         "tvg-logo" -> logo = m.groupValues[2].trim().ifEmpty { null }
                         "tvg-name" -> tvgName = m.groupValues[2].trim()
+                        "tmdb", "tmdb-id", "tmdb_id" -> tmdbCur = m.groupValues[2].trim()
+                        "tvg-id" -> if (m.groupValues[2].trim().startsWith("tmdb:", ignoreCase = true)) tmdbCur = m.groupValues[2].trim().substring(5)
                     }
                 }
                 name = title.ifEmpty { tvgName }
@@ -145,11 +151,12 @@ object M3uParser {
             } else {
                 val n = name
                 if (n != null && n.isNotEmpty() && (line.startsWith("http://", true) || line.startsWith("https://", true))) {
-                    sink(make(n, group, logo, line))
+                    sink(make(n, group, logo, line, tmdbCur))
                 }
                 name = null
                 group = ""
                 logo = null
+                tmdbCur = ""
             }
         }
     }
@@ -319,7 +326,13 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
         for (e in entries) {
             if (e.kind != kind) continue
             val id = catId(e.group)
-            if (!seen.containsKey(id)) seen[id] = Category(id, cleanGroup(e.group).ifEmpty { "Sem categoria" })
+            if (!seen.containsKey(id)) {
+                val cleaned = cleanGroup(e.group).ifEmpty { "Sem categoria" }
+                // o prefixo de país ("PT |") some na limpeza: devolve, para o app saber de onde é a categoria
+                val tag = Countries.tagOf(e.group)
+                val name = if (tag != null && Countries.tagOf(cleaned) == null) "$tag | $cleaned" else cleaned
+                seen[id] = Category(id, name)
+            }
         }
         return seen.values.toList()
     }
@@ -334,7 +347,7 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
                 out.add(
                     RawItem(
                         id = e.seriesId, name = e.seriesName, image = e.logo, year = "", rating = 0f, added = 0L,
-                        ext = "", cats = listOf(catId(e.group)), plot = "", genre = "",
+                        ext = "", cats = listOf(catId(e.group)), plot = "", genre = "", tmdb = e.tmdb,
                     ),
                 )
             } else {
@@ -342,7 +355,7 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
                     RawItem(
                         id = e.id, name = e.name, image = e.logo, year = e.year, rating = 0f, added = 0L,
                         ext = if (kind == Kind.MOVIES) e.ext.ifEmpty { "mp4" } else "", cats = listOf(catId(e.group)),
-                        plot = "", genre = "",
+                        plot = "", genre = "", tmdb = e.tmdb,
                     ),
                 )
             }

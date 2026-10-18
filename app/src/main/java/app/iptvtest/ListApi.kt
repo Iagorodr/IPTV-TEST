@@ -126,7 +126,7 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
                         out.add(
                             RawItem(
                                 id = tag(i, r.id), name = r.name, image = r.image, year = r.year, rating = r.rating,
-                                added = r.added, ext = r.ext, cats = r.cats.map { tag(i, it) }, plot = r.plot, genre = r.genre, arch = r.arch,
+                                added = r.added, ext = r.ext, cats = r.cats.map { tag(i, it) }, plot = r.plot, genre = r.genre, arch = r.arch, tmdb = r.tmdb,
                             ),
                         )
                     }

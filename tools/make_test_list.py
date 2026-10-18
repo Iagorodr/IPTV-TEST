@@ -83,8 +83,10 @@ def esc(s):
     return s.replace('"', "'")
 
 
-def extinf(name, group, logo=None):
+def extinf(name, group, logo=None, tmdb=None):
     lg = ' tvg-logo="%s"' % logo if logo else ""
+    if tmdb:
+        lg += ' tvg-id="tmdb:%s"' % tmdb
     return '#EXTINF:-1%s group-title="%s",%s' % (lg, esc(group), name)
 
 
@@ -100,22 +102,22 @@ def small():
                 out.append(extinf(nm + q, group))
                 out.append(LIVE + "?c=%d" % n)
     # filmes, cada um em vários idiomas
-    for f in FILMES_LOOP():
+    for fi, f in enumerate(FILMES_LOOP()):
         y, names = f[0], f[1:]
         for lg, (gm, gs, suf) in LANGS.items():
             nm = names[IDX[lg] - 1]
             tag = " MULTI" if random.random() < 0.15 else ""
             for ver in ("", " 4K") if random.random() < 0.3 else ("",):
                 n += 1
-                out.append(extinf("%s (%d)%s%s%s" % (nm, y, suf, tag, ver), gm))
+                out.append(extinf("%s (%d)%s%s%s" % (nm, y, suf, tag, ver), gm, None, 1000 + fi))
                 out.append(VOD + "?m=%d" % n)
     # séries
     for lg, (gm, gs, suf) in LANGS.items():
-        for sname in SERIES[lg]:
+        for si, sname in enumerate(SERIES[lg]):
             for season in (1, 2):
                 for ep in (1, 2, 3):
                     n += 1
-                    out.append(extinf("%s S%02dE%02d" % (sname, season, ep), gs))
+                    out.append(extinf("%s S%02dE%02d" % (sname, season, ep), gs, None, 5000 + si))
                     out.append(VOD + "?s=%d" % n)
     return out
 

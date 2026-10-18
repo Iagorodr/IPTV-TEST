@@ -41,6 +41,8 @@ class RawItem(
     val genre: String,
     /** Dias de catch-up do canal (só canais ao vivo de servidores Xtream). */
     val arch: Int = 0,
+    /** Código do filme/série no TMDB (quando o provedor manda): é o que junta o mesmo título em línguas diferentes. */
+    val tmdb: String = "",
 )
 
 /** Leitura em fluxo (sem montar a árvore inteira na memória): o catálogo de filmes passa de 13 MB. */
@@ -123,9 +125,11 @@ private object RawParser {
         var genre = ""
         var archOn = false
         var archDays = 0
+        var tmdb = ""
         r.beginObject()
         while (r.hasNext()) {
             when (r.nextName()) {
+                "tmdb", "tmdb_id" -> tmdb = (r.loose() ?: "").trim().let { if (it == "0" || it == "null") "" else it }
                 "tv_archive" -> archOn = (r.loose() ?: "") == "1"
                 "tv_archive_duration" -> archDays = (r.loose() ?: "").toIntOrNull() ?: 0
                 "stream_id", "series_id" -> id = r.loose()
@@ -158,6 +162,7 @@ private object RawParser {
             plot = plot,
             genre = genre,
             arch = if (archOn) (if (archDays > 0) archDays else 1) else 0,
+            tmdb = tmdb,
         )
     }
 }
