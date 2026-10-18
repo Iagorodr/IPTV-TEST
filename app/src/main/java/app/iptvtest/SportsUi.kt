@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -471,7 +472,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
                 if (replayList.isNotEmpty()) {
                     Spacer(Modifier.height(8.dp))
                     androidx.compose.foundation.lazy.LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        androidx.compose.foundation.lazy.itemsIndexed(replayList.take(12), key = { _, c -> c.key }) { i, c ->
+                        itemsIndexed(replayList.take(12), key = { _, c -> c.key }) { i, c ->
                             ChipItem(
                                 text = "⏪ " + c.name,
                                 selected = false,
