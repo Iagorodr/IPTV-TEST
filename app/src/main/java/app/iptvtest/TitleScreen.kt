@@ -182,6 +182,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                 model = img,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
+                alignment = Alignment.TopCenter,
                 alpha = 0.8f,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -199,7 +200,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
             contentPadding = PaddingValues(bottom = 40.dp),
         ) {
             item(key = "head") {
-                Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 10.dp)) {
+                Column(modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 26.dp, bottom = 10.dp)) {
                     TvButton(text = "‹ Voltar") { vm.back() }
                     Spacer(Modifier.height(14.dp))
                     Column(modifier = Modifier.width(520.dp)) {

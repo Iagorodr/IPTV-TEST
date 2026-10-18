@@ -73,7 +73,7 @@ fun FocusBox(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(10.dp),
     focusRequester: FocusRequester? = null,
-    focusScale: Float = 1.05f,
+    focusScale: Float = 1.03f,
     onClick: () -> Unit,
     content: @Composable BoxScope.(Boolean) -> Unit,
 ) {

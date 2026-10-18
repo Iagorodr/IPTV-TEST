@@ -431,6 +431,7 @@ private fun HeroContent(t: Title) {
                 model = img,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
+                alignment = Alignment.TopCenter,
                 alpha = 0.85f,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)

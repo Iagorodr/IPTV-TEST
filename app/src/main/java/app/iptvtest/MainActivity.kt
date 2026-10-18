@@ -155,7 +155,7 @@ fun App(vm: MainViewModel = viewModel()) {
             grid != null -> holder.SaveableStateProvider("grid|" + grid.name + "|" + System.identityHashCode(grid)) {
                 GridScreen(vm, grid)
             }
-            else -> holder.SaveableStateProvider("tab|" + vm.tab.name) {
+            else -> holder.SaveableStateProvider("tab|" + vm.tab.name + "|" + vm.tabEpoch) {
                 TabScreen(vm)
             }
         }

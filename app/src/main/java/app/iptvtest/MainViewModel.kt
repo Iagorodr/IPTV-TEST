@@ -542,7 +542,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return false
     }
 
+    /** Sobe a cada toque no menu: a aba abre de novo no topo (e tocar na aba atual volta ao topo dela). */
+    var tabEpoch by mutableIntStateOf(0)
+        private set
+
     fun selectTab(t: Tab) {
+        tabEpoch++
         tab = t
         grid = null
         openTitle = null
