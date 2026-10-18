@@ -129,6 +129,7 @@ fun App(vm: MainViewModel = viewModel()) {
     Surface(modifier = Modifier.fillMaxSize().background(AppBackground), color = Color.Transparent, contentColor = TextMain) {
         when {
             account == null -> LoginScreen(vm)
+            vm.addingList -> LoginScreen(vm)
             // key(): ao trocar de praça (Globo SP → Globo Rio) o player é recriado com o novo canal
             playing != null -> key(playing.live?.channel?.key ?: playing.title) {
                 PlayerScreen(

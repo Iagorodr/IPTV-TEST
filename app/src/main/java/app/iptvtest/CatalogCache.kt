@@ -23,12 +23,19 @@ object CatalogCache {
             Integer.toHexString(("m3u|" + acc.m3u).hashCode())
         }
 
+    /** Chave do catálogo de várias listas juntas. */
+    fun mergedKey(accs: List<Account>): String =
+        Integer.toHexString(("merge|" + accs.joinToString("|") { accKey(it) }).hashCode())
+
     private fun file(ctx: Context, key: String): File = File(ctx.filesDir, "catalog_$key.json")
 
-    fun deleteOthers(ctx: Context, keep: String) {
+    fun deleteOthers(ctx: Context, keep: String) = deleteOthers(ctx, setOf(keep))
+
+    fun deleteOthers(ctx: Context, keep: Set<String>) {
         val files = ctx.filesDir.listFiles() ?: return
+        val names = keep.map { "catalog_$it.json" }.toSet()
         for (f in files) {
-            if (f.name.startsWith("catalog_") && f.name != "catalog_$keep.json") f.delete()
+            if (f.name.startsWith("catalog_") && f.name !in names) f.delete()
         }
     }
 

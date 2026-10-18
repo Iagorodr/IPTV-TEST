@@ -110,12 +110,16 @@ fun LoginScreen(vm: MainViewModel) {
                 Text(stringResource(R.string.app_name), color = Accent, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    "Entre com a sua lista.\nOs dados ficam guardados só nesta TV.",
+                    if (vm.addingList) "Adicionar outra lista.\nElas ficam guardadas só nesta TV." else "Entre com a sua lista.\nOs dados ficam guardados só nesta TV.",
                     color = TextMain,
                     fontSize = 14.sp,
                     lineHeight = 19.sp,
                     textAlign = TextAlign.Center,
                 )
+                if (vm.addingList) {
+                    Spacer(Modifier.height(14.dp))
+                    TvButton(text = "Cancelar") { vm.cancelAddList() }
+                }
                 Spacer(Modifier.height(34.dp))
             }
             Spacer(Modifier.width(28.dp))
@@ -1050,75 +1054,215 @@ private fun BroadcastSettings(vm: MainViewModel) {
     }
 }
 
+private fun listLabel(a: Account, i: Int): String {
+    val link = if (a.m3u.isNotEmpty()) a.m3u else a.server
+    val host = try {
+        java.net.URI(link).host ?: ""
+    } catch (e: Exception) {
+        ""
+    }
+    val kind = if (a.m3u.isNotEmpty()) "M3U" else "Xtream"
+    return "Lista ${i + 1}  ·  $kind" + (if (host.isNotEmpty()) "  ·  $host" else "") +
+        (if (a.m3u.isEmpty() && a.user.isNotEmpty()) "  ·  ${a.user}" else "")
+}
+
+@Composable
+private fun SectionTitle(text: String, sub: String? = null) {
+    Text(text, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    if (sub != null) {
+        Spacer(Modifier.height(3.dp))
+        Text(sub, color = Muted, fontSize = 13.sp)
+    }
+}
+
+/** Ajustes > Listas: as listas guardadas, qual usar (ou juntar todas num só conteúdo), adicionar e remover. */
+@Composable
+private fun ListsSection(vm: MainViewModel) {
+    var confirmRemove by remember { mutableStateOf(-1) }
+    var confirmLogout by remember { mutableStateOf(false) }
+    val lists = vm.lists
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(end = 40.dp, top = 6.dp, bottom = 30.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        item {
+            Column {
+                SectionTitle(
+                    "Suas listas",
+                    "Guarde quantas listas quiser. Use uma por vez ou junte todas num só conteúdo.",
+                )
+            }
+        }
+        itemsIndexed(lists, key = { i, a -> "list|$i|" + CatalogCache.accKey(a) }) { i, a ->
+            val inUse = if (vm.mergeLists) true else i == vm.activeList
+            Column {
+                Text(
+                    listLabel(a, i),
+                    color = TextMain,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    if (!inUse) "Guardada" else if (vm.mergeLists) "Incluída no conteúdo junto" else "Em uso",
+                    color = if (inUse) Accent else Muted,
+                    fontSize = 12.sp,
+                )
+                if (inUse && !vm.mergeLists && vm.accountInfo.isNotEmpty()) {
+                    Text(vm.accountInfo, color = Muted, fontSize = 12.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                }
+                Spacer(Modifier.height(6.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    if (!vm.mergeLists && i != vm.activeList) {
+                        TvButton(text = "Usar esta") { vm.selectList(i) }
+                    }
+                    TvButton(text = if (confirmRemove == i) "Confirmar remover?" else "Remover") {
+                        if (confirmRemove == i) {
+                            confirmRemove = -1
+                            vm.removeList(i)
+                        } else {
+                            confirmRemove = i
+                        }
+                    }
+                }
+            }
+        }
+        item {
+            TvButton(text = if (lists.isEmpty()) "Adicionar lista" else "+ Adicionar outra lista") { vm.startAddList() }
+        }
+        if (lists.size > 1) {
+            item {
+                Column {
+                    SectionTitle(
+                        "Juntar listas",
+                        "Junta os filmes, séries e canais de todas as listas num só conteúdo. Os mesmos títulos viram um cartão " +
+                            "só, e os canais ganham as fontes de todas as listas.",
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        ChipItem(text = "Juntar todas", selected = vm.mergeLists) { vm.setMerge(true) }
+                        ChipItem(text = "Uma por vez", selected = !vm.mergeLists) { vm.setMerge(false) }
+                    }
+                    if (vm.mergeLists && vm.accountInfo.isNotEmpty()) {
+                        Spacer(Modifier.height(6.dp))
+                        Text(vm.accountInfo, color = Muted, fontSize = 12.sp)
+                    }
+                }
+            }
+        }
+        item {
+            Column {
+                SectionTitle("Sair")
+                Spacer(Modifier.height(6.dp))
+                TvButton(text = if (confirmLogout) "Confirmar? Remove todas as listas" else "Sair e remover as listas") {
+                    if (confirmLogout) vm.logout() else confirmLogout = true
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CatalogSection(vm: MainViewModel) {
+    val cat = vm.catalog
+    Column(modifier = Modifier.padding(top = 6.dp, end = 40.dp)) {
+        SectionTitle("Catálogo")
+        Spacer(Modifier.height(4.dp))
+        val resumo = if (cat == null) {
+            "Ainda não carregado."
+        } else {
+            "${cat.movies.size} filmes · ${cat.series.size} séries · ${cat.channels.size} canais · atualizado ${vm.catalogAgeText()}"
+        }
+        Text(resumo, color = Muted, fontSize = 13.sp)
+        Spacer(Modifier.height(10.dp))
+        TvButton(text = if (vm.refreshing) "Atualizando..." else "Atualizar catálogo agora") {
+            if (!vm.refreshing) vm.loadCatalog(force = true)
+        }
+    }
+}
+
+@Composable
+private fun SportsSection(vm: MainViewModel) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(end = 40.dp, top = 6.dp, bottom = 30.dp),
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+    ) {
+        item { FavTeamsSettings(vm) }
+        item { TimeZoneSettings(vm) }
+        item { BroadcastSettings(vm) }
+    }
+}
+
+@Composable
+private fun LiveSection(vm: MainViewModel) {
+    Column(modifier = Modifier.padding(top = 6.dp, end = 40.dp)) {
+        SectionTitle("Canais ao vivo", "Quando um canal tem várias fontes, o app escolhe a melhor para você.")
+        Spacer(Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("Priorizar", color = Muted, fontSize = 14.sp)
+            ChipItem(text = "Estabilidade", selected = vm.user.stabilityFirst) { vm.setStabilityFirst(true) }
+            ChipItem(text = "Qualidade máxima", selected = !vm.user.stabilityFirst) { vm.setStabilityFirst(false) }
+        }
+        Spacer(Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("Trocar de fonte sozinho se travar", color = Muted, fontSize = 14.sp)
+            ChipItem(text = "Sim", selected = vm.user.autoSwitch) { vm.setAutoSwitch(true) }
+            ChipItem(text = "Não", selected = !vm.user.autoSwitch) { vm.setAutoSwitch(false) }
+        }
+        Spacer(Modifier.height(10.dp))
+        TvButton(text = "Apagar notas de estabilidade") { vm.clearStats() }
+    }
+}
+
+/** Um item do menu lateral dos Ajustes: o conteúdo ao lado muda assim que o cursor chega nele. */
+@Composable
+private fun SideItem(text: String, selected: Boolean, onFocus: () -> Unit) {
+    Box(modifier = Modifier.onFocusChanged { if (it.hasFocus) onFocus() }) {
+        FocusBox(
+            shape = RoundedCornerShape(10.dp),
+            focusScale = 1f,
+            onClick = onFocus,
+        ) { focused ->
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.20f) else Color.Transparent)
+                    .padding(horizontal = 14.dp, vertical = 9.dp),
+            ) {
+                Text(
+                    text,
+                    color = if (selected || focused) TextMain else Muted,
+                    fontSize = 15.sp,
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                    maxLines = 1,
+                )
+            }
+        }
+    }
+}
+
 @Composable
 fun SettingsTab(vm: MainViewModel) {
-    var confirmLogout by remember { mutableStateOf(false) }
-    val cat = vm.catalog
+    var section by rememberSaveable { mutableIntStateOf(0) }
+    val names = listOf("Listas", "Catálogo", "Esportes", "Canais ao vivo")
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-        ) {
-            item {
-                Column {
-                    Text("Conta", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                    Spacer(Modifier.height(4.dp))
-                    Text(vm.accountInfo.ifEmpty { "..." }, color = Muted, fontSize = 14.sp)
-                }
+        Row(modifier = Modifier.fillMaxSize().padding(start = 40.dp, top = 8.dp)) {
+            Column(
+                modifier = Modifier.width(190.dp).padding(end = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                names.forEachIndexed { i, n -> SideItem(n, section == i) { section = i } }
             }
-            item {
-                Column {
-                    Text("Catálogo", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                    Spacer(Modifier.height(4.dp))
-                    val resumo = if (cat == null) {
-                        "Ainda não carregado."
-                    } else {
-                        "${cat.movies.size} filmes · ${cat.series.size} séries · ${cat.channels.size} canais · atualizado ${vm.catalogAgeText()}"
-                    }
-                    Text(resumo, color = Muted, fontSize = 14.sp)
-                    Spacer(Modifier.height(8.dp))
-                    TvButton(text = if (vm.refreshing) "Atualizando..." else "Atualizar catálogo agora") {
-                        if (!vm.refreshing) vm.loadCatalog(force = true)
-                    }
-                }
-            }
-            item { FavTeamsSettings(vm) }
-            item { TimeZoneSettings(vm) }
-            item { BroadcastSettings(vm) }
-            item {
-                Column {
-                    Text("Canais ao vivo", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                    Spacer(Modifier.height(4.dp))
-                    Text(
-                        "Quando um canal tem várias fontes, o app escolhe a melhor para você.",
-                        color = Muted,
-                        fontSize = 14.sp,
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text("Priorizar", color = Muted, fontSize = 15.sp)
-                        ChipItem(text = "Estabilidade", selected = vm.user.stabilityFirst) { vm.setStabilityFirst(true) }
-                        ChipItem(text = "Qualidade máxima", selected = !vm.user.stabilityFirst) { vm.setStabilityFirst(false) }
-                    }
-                    Spacer(Modifier.height(8.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text("Trocar de fonte sozinho se travar", color = Muted, fontSize = 15.sp)
-                        ChipItem(text = "Sim", selected = vm.user.autoSwitch) { vm.setAutoSwitch(true) }
-                        ChipItem(text = "Não", selected = !vm.user.autoSwitch) { vm.setAutoSwitch(false) }
-                    }
-                    Spacer(Modifier.height(8.dp))
-                    TvButton(text = "Apagar notas de estabilidade") { vm.clearStats() }
-                }
-            }
-            item {
-                Column {
-                    Text("Sair", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                    Spacer(Modifier.height(8.dp))
-                    TvButton(text = if (confirmLogout) "Confirmar saída?" else "Sair da conta") {
-                        if (confirmLogout) vm.logout() else confirmLogout = true
-                    }
+            Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
+                when (section) {
+                    0 -> ListsSection(vm)
+                    1 -> CatalogSection(vm)
+                    2 -> SportsSection(vm)
+                    else -> LiveSection(vm)
                 }
             }
         }

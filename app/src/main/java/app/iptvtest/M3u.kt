@@ -158,7 +158,7 @@ object M3uParser {
 /** Lista M3U (um link). Baixa o arquivo, separa canais/filmes/séries e guarda um índice no aparelho para montar os links. */
 class M3uApi(ctx: Context, private val link: String) : ListApi {
 
-    private val indexFile = File(ctx.applicationContext.filesDir, "m3u_index.tsv")
+    private val indexFile = File(ctx.applicationContext.filesDir, "m3u_index_" + Integer.toHexString(link.hashCode()) + ".tsv")
 
     @Volatile private var entries: List<M3uEntry> = emptyList()
     @Volatile private var urls: Map<String, String> = emptyMap()

@@ -45,6 +45,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var accountInfo by mutableStateOf("")
         private set
+
+    /** As listas guardadas, qual está ativa e se estão todas juntas num só conteúdo. */
+    var lists by mutableStateOf<List<Account>>(emptyList())
+        private set
+    var activeList by mutableIntStateOf(0)
+        private set
+    var mergeLists by mutableStateOf(false)
+        private set
+
+    /** Aberta a tela de "adicionar lista" (por cima do app, a partir dos Ajustes). */
+    var addingList by mutableStateOf(false)
+        private set
     var loginBusy by mutableStateOf(false)
         private set
     var loginError by mutableStateOf<String?>(null)
@@ -162,8 +174,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         reminders = user.reminders.toList()
         BroadcastStore.load(appCtx, user.bcCountry)
         viewModelScope.launch { BroadcastStore.refresh(appCtx) }
-        store.load()?.let { saved ->
-            startSession(saved)
+        val saved = store.lists()
+        if (saved.isNotEmpty()) {
+            lists = saved
+            activeList = store.active.coerceIn(saved.indices)
+            mergeLists = store.merge && saved.size > 1
+            startSession()
             refreshAccountInfo()
             refreshSports(force = true)
         }
@@ -189,9 +205,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 val acc = Account(server, u, p)
                 val x = XtreamApi(acc)
                 val info = x.login()
-                store.save(acc)
-                accountInfo = info
-                startSession(acc, x)
+                finishLogin(acc, x, info)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -227,9 +241,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     try {
                         val x = XtreamApi(xt)
                         val info = x.login()
-                        store.save(xt)
-                        accountInfo = info
-                        startSession(xt, x)
+                        finishLogin(xt, x, info)
                         started = true
                     } catch (e: CancellationException) {
                         throw e
@@ -241,9 +253,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     val acc = Account("", "", "", link)
                     val m = M3uApi(appCtx, link)
                     val info = m.login()
-                    store.save(acc)
-                    accountInfo = info
-                    startSession(acc, m)
+                    finishLogin(acc, m, info)
                 }
             } catch (e: CancellationException) {
                 throw e
@@ -322,10 +332,40 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun startSession(acc: Account, ready: ListApi? = null) {
+    /** As listas que formam o conteúdo de agora: todas (juntas) ou só a ativa. */
+    private fun effectiveLists(): List<Account> {
+        if (lists.isEmpty()) return emptyList()
+        return if (mergeLists && lists.size > 1) lists else listOf(lists[activeList.coerceIn(lists.indices)])
+    }
+
+    private fun cacheKey(): String {
+        val e = effectiveLists()
+        return if (e.size > 1) CatalogCache.mergedKey(e) else CatalogCache.accKey(e[0])
+    }
+
+    private fun buildApi(accs: List<Account>): ListApi {
+        val apis = accs.map { if (it.m3u.isNotEmpty()) M3uApi(appCtx, it.m3u) else XtreamApi(it) }
+        return if (apis.size == 1) apis[0] else MergedApi(apis)
+    }
+
+    private fun finishLogin(acc: Account, ready: ListApi, info: String) {
+        val idx = store.add(acc)
+        lists = store.lists()
+        if (!mergeLists) {
+            activeList = idx
+            store.active = idx
+        }
+        addingList = false
+        accountInfo = info
+        startSession(if (effectiveLists().size == 1) ready else null)
+    }
+
+    private fun startSession(ready: ListApi? = null) {
         stopPhoneLogin()
-        api = ready ?: (if (acc.m3u.isNotEmpty()) M3uApi(appCtx, acc.m3u) else XtreamApi(acc))
-        account = acc
+        val eff = effectiveLists()
+        if (eff.isEmpty()) return
+        api = ready ?: buildApi(eff)
+        account = eff[0]
         tab = Tab.HOME
         openTitle = null
         grid = null
@@ -336,17 +376,83 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         allGamesOpen = false
         gameDialog = null
         titleStack.clear()
-        CatalogCache.deleteOthers(appCtx, CatalogCache.accKey(acc))
+        val keep = HashSet<String>()
+        for (l in lists) keep.add(CatalogCache.accKey(l))
+        if (lists.size > 1) keep.add(CatalogCache.mergedKey(lists))
+        CatalogCache.deleteOthers(appCtx, keep)
         loadCatalog(force = false)
     }
 
+    // ---- várias listas
+
+    fun startAddList() {
+        loginError = null
+        addingList = true
+    }
+
+    fun cancelAddList() {
+        addingList = false
+        stopPhoneLogin()
+    }
+
+    /** Muda o que está em uso (outra lista ou todas juntas): esvazia a tela e carrega o catálogo certo (do cache, se tiver). */
+    private fun restartSession() {
+        wipeCatalogState()
+        accountInfo = ""
+        startSession()
+        refreshAccountInfo()
+    }
+
+    fun selectList(i: Int) {
+        if (i !in lists.indices) return
+        if (i == activeList && !mergeLists) return
+        activeList = i
+        store.active = i
+        mergeLists = false
+        store.merge = false
+        restartSession()
+    }
+
+    fun setMerge(on: Boolean) {
+        if (on == mergeLists) return
+        if (on && lists.size < 2) return
+        mergeLists = on
+        store.merge = on
+        restartSession()
+    }
+
+    fun removeList(i: Int) {
+        if (i !in lists.indices) return
+        store.removeAt(i)
+        val rest = store.lists()
+        if (rest.isEmpty()) {
+            logout()
+            return
+        }
+        lists = rest
+        activeList = store.active.coerceIn(rest.indices)
+        if (rest.size < 2) {
+            mergeLists = false
+            store.merge = false
+        }
+        restartSession()
+    }
+
     fun logout() {
-        loadJob?.cancel()
         store.clear()
         CatalogCache.clear(appCtx)
+        lists = emptyList()
+        activeList = 0
+        mergeLists = false
+        addingList = false
         api = null
         account = null
         accountInfo = ""
+        wipeCatalogState()
+    }
+
+    private fun wipeCatalogState() {
+        loadJob?.cancel()
         catalog = null
         homeShelves = emptyList()
         movieShelves = emptyList()
@@ -383,11 +489,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun loadCatalog(force: Boolean) {
         val a = api ?: return
-        val acc = account ?: return
+        if (account == null) return
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
             loadError = null
-            val key = CatalogCache.accKey(acc)
+            val key = cacheKey()
             if (!force && catalog == null) {
                 val cached = withContext(Dispatchers.IO) { CatalogCache.load(appCtx, key) }
                 if (cached != null) {
@@ -499,9 +605,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // =====================================================================
 
     val canGoBack: Boolean
-        get() = gameDialog != null || allGamesOpen || channelList != null || pickerOpen || openTitle != null || grid != null || tab != Tab.HOME
+        get() = addingList || gameDialog != null || allGamesOpen || channelList != null || pickerOpen || openTitle != null || grid != null || tab != Tab.HOME
 
     fun back(): Boolean {
+        if (addingList) {
+            cancelAddList()
+            return true
+        }
         if (gameDialog != null) {
             gameDialog = null
             return true
