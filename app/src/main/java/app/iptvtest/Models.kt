@@ -22,6 +22,8 @@ data class Version(
     val leg: Boolean,
     val is4k: Boolean,
     val cam: Boolean,
+    /** País/idioma indicado pela categoria do provedor ("" = sem indicação). */
+    val cc: String = "",
 )
 
 /** Um filme ou série já agrupado: dublado, legendado e 4K ficam todos dentro do mesmo card. */
@@ -44,6 +46,9 @@ class Title(
     val onlyCam: Boolean get() = versions.isNotEmpty() && versions.all { it.cam }
     val has4k: Boolean get() = versions.any { it.is4k }
 
+    fun withVersions(v: List<Version>): Title =
+        Title(key, series, name, year, image, rating, added, genres, platforms, plot, launch, v)
+
     /** Pontuação simples para ordenar prateleiras: nota + um bônus para títulos recentes. */
     fun score(): Float {
         val y = year.toIntOrNull() ?: 0
@@ -61,6 +66,8 @@ data class Source(
     val label: String,
     /** Dias de "voltar no tempo" (catch-up) que o provedor guarda deste canal; 0 = não guarda. */
     val arch: Int = 0,
+    /** País/idioma indicado pela categoria do provedor ("" = sem indicação). */
+    val cc: String = "",
 )
 
 /** Uma "praça" (versão regional) de uma marca de TV, como Globo São Paulo ou SBT Rio. */
@@ -77,6 +84,8 @@ class Channel(
 ) {
     val fold: String by lazy(LazyThreadSafetyMode.NONE) { Organizer.fold(name) }
     val isBrand: Boolean get() = variants.isNotEmpty()
+
+    fun withSources(s: List<Source>): Channel = Channel(key, name, icon, category, s, variants)
 
     /** O provedor guarda a programação passada deste canal (ou de alguma praça dele)? */
     val hasArchive: Boolean get() = sources.any { it.arch > 0 } || variants.any { v -> v.channel.sources.any { it.arch > 0 } }

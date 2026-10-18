@@ -549,7 +549,27 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
     }
 
-    private suspend fun applyCatalog(c: Catalog) {
+    /** Escolhe os países/idiomas que aparecem (vazio = todos) e refaz as telas. */
+    fun setCountryFilter(sel: Set<String>) {
+        user.setCountryFilter(sel)
+        catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
+    }
+
+    private var statsFor: Catalog? = null
+    private var statsCache: LinkedHashMap<String, Pair<Int, Int>> = LinkedHashMap()
+
+    /** Países/idiomas achados na lista em uso, com quantos títulos e canais cada um tem. */
+    fun countryStats(): LinkedHashMap<String, Pair<Int, Int>> {
+        val c = catalog ?: return LinkedHashMap()
+        if (statsFor !== c) {
+            statsCache = Countries.stats(c)
+            statsFor = c
+        }
+        return statsCache
+    }
+
+    private suspend fun applyCatalog(full: Catalog) {
+        val c = withContext(Dispatchers.Default) { Countries.filter(full, user.countryFilter) }
         val seed = mixSeed
         val built = withContext(Dispatchers.Default) { Shelves.buildAll(c, seed) }
         val chIdx = HashMap<String, Channel>(c.channels.size * 2)
@@ -585,7 +605,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         homeShelves = built.home
         movieShelves = built.movies
         seriesShelves = built.series
-        catalog = c
+        catalog = full
         dataRev++
     }
 

@@ -1164,6 +1164,69 @@ private fun ListsSection(vm: MainViewModel) {
     }
 }
 
+/** Ajustes > País e idioma: para listas com conteúdo de vários países, escolhe o que aparece. */
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+private fun CountrySection(vm: MainViewModel) {
+    val stats = remember(vm.catalog) { vm.countryStats() }
+    val picked = vm.user.countryFilter.toSet()
+    // lê a versão dos dados para a tela se refazer quando a escolha muda
+    @Suppress("UNUSED_VARIABLE") val rev = vm.dataRev
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(end = 40.dp, top = 6.dp, bottom = 30.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        item {
+            Column {
+                SectionTitle(
+                    "País e idioma",
+                    "Para listas com conteúdo de vários países. Escolha o que quer ver: o resto fica escondido. " +
+                        "O que não tem país indicado na lista aparece sempre.",
+                )
+            }
+        }
+        if (stats.isEmpty()) {
+            item {
+                Text(
+                    if (vm.catalog == null) "Catálogo ainda não carregado." else "Esta lista não indica país nas categorias: nada para filtrar.",
+                    color = Muted,
+                    fontSize = 13.sp,
+                )
+            }
+        } else {
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    ChipItem(text = "Mostrar tudo", selected = picked.isEmpty()) { vm.setCountryFilter(emptySet()) }
+                    Text(
+                        if (picked.isEmpty()) "Nenhum filtro" else "Mostrando: " + picked.joinToString(", ") { Countries.label(it) },
+                        color = Muted,
+                        fontSize = 12.sp,
+                    )
+                }
+            }
+            item {
+                androidx.compose.foundation.layout.FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    for ((code, n) in stats) {
+                        val on = picked.contains(code)
+                        ChipItem(
+                            text = Countries.label(code) + "  ·  " + n.first + " títulos, " + n.second + " canais",
+                            selected = on,
+                        ) {
+                            val next = picked.toMutableSet()
+                            if (on) next.remove(code) else next.add(code)
+                            vm.setCountryFilter(next)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun CatalogSection(vm: MainViewModel) {
     val cat = vm.catalog
@@ -1251,7 +1314,7 @@ private fun SideItem(text: String, selected: Boolean, onFocus: () -> Unit) {
 @Composable
 fun SettingsTab(vm: MainViewModel) {
     var section by rememberSaveable { mutableIntStateOf(0) }
-    val names = listOf("Listas", "Catálogo", "Esportes", "Canais ao vivo")
+    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo")
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         Row(modifier = Modifier.fillMaxSize().padding(start = 40.dp, top = 8.dp)) {
@@ -1264,8 +1327,9 @@ fun SettingsTab(vm: MainViewModel) {
             Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
                 when (section) {
                     0 -> ListsSection(vm)
-                    1 -> CatalogSection(vm)
-                    2 -> SportsSection(vm)
+                    1 -> CountrySection(vm)
+                    2 -> CatalogSection(vm)
+                    3 -> SportsSection(vm)
                     else -> LiveSection(vm)
                 }
             }

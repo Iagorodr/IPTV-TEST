@@ -17,7 +17,7 @@ import java.util.Locale
 const val USER_AGENT = "Mozilla/5.0 (Linux; Android 12; Android TV) IPTV-TEST/0.7.0"
 
 /** Categoria adulta é detectada só pelo NOME DA CATEGORIA do provedor. */
-private val ADULT_CATEGORY = Regex("""\+\s?18|18\s?\+|adult|xxx|er[oó]tic""")
+private val ADULT_CATEGORY = Regex("""\+\s?18|18\s?\+|18\s?plus|adult|xxx|er[oó]tic|porn|erwachsen|nsfw|hardcore""")
 
 fun isAdultCategory(name: String): Boolean = ADULT_CATEGORY.containsMatchIn(name.lowercase())
 

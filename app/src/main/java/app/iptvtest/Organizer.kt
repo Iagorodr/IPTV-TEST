@@ -113,7 +113,39 @@ object Organizer {
         "shows" to "Shows",
         "tokusatsu" to "Tokusatsu",
         "turcas" to "Turcas",
+        // outras línguas (listas de vários países)
+        "accion" to "Ação", "aktion" to "Ação", "azione" to "Ação",
+        "aventuras" to "Aventura", "abenteuer" to "Aventura", "avventura" to "Aventura",
+        "animacion" to "Animação", "animazione" to "Animação", "dessin anime" to "Animação", "dessins animes" to "Animação", "trickfilm" to "Animação",
+        "comedie" to "Comédia", "comedias" to "Comédia", "commedia" to "Comédia", "komodie" to "Comédia",
+        "documentales" to "Documentários", "documentaires" to "Documentários", "documentaire" to "Documentários", "dokumentation" to "Documentários", "dokumentationen" to "Documentários", "documentari" to "Documentários",
+        "drame" to "Drama", "drammatico" to "Drama", "dramma" to "Drama",
+        "terreur" to "Terror", "horreur" to "Terror", "epouvante" to "Terror", "miedo" to "Terror", "paura" to "Terror", "grusel" to "Terror",
+        "ciencia ficcion" to "Ficção Científica", "fantascienza" to "Ficção Científica", "science fiction" to "Ficção Científica",
+        "fantastique" to "Fantasia", "fantastico" to "Fantasia",
+        "romantique" to "Romance", "romantico" to "Romance", "romantik" to "Romance", "romantica" to "Romance",
+        "krimi" to "Crime", "policier" to "Policial", "policiaco" to "Policial",
+        "guerre" to "Guerra", "krieg" to "Guerra", "guerra" to "Guerra",
+        "familial" to "Família", "familie" to "Família", "famiglia" to "Família", "familiar" to "Família",
+        "enfants" to "Infantil", "ninos" to "Infantil", "kinder" to "Infantil", "bambini" to "Infantil", "jeunesse" to "Infantil",
+        "mysterio" to "Mistério", "misterio" to "Mistério", "mystere" to "Mistério",
+        "biography" to "Biografia", "biographie" to "Biografia", "biografia" to "Biografia",
+        "historique" to "História", "geschichte" to "História", "storia" to "História",
     )
+
+    private val GENERIC_PREFIX = listOf("filmes ", "filme ", "movies ", "movie ", "films ", "film ", "peliculas ", "pelicula ", "series ", "serie ", "serien ", "tv shows ", "shows ", "vod ")
+
+    /** O gênero que o nome de uma categoria indica, mesmo com prefixo de país ("BR | FILMES | AÇÃO") ou palavra genérica. */
+    private fun genreOfName(cleaned: String): String? {
+        for (seg in cleaned.split('|', '/', '·', ':', '-', '–', '—', '(', ')', '[', ']')) {
+            var f = fold(seg)
+            if (f.isEmpty()) continue
+            for (p in GENERIC_PREFIX) if (f.startsWith(p)) { f = f.removePrefix(p).trim(); break }
+            val g = GENRES[f]
+            if (g != null) return g
+        }
+        return null
+    }
 
     private val GENRE_EXTRA: Map<String, List<String>> = mapOf(
         "acao e aventura" to listOf("Ação", "Aventura"),
@@ -179,7 +211,7 @@ object Organizer {
         val leg = low.startsWith("(l)") || f == "legendados"
         if (leg && f.startsWith("l ")) f = f.substring(2)
         val core = f.removePrefix("series ").removePrefix("serie ").trim()
-        var genre: String? = GENRES[core]
+        var genre: String? = GENRES[core] ?: genreOfName(cleaned)
         if (genre == null && core.startsWith("novelas")) genre = "Novelas"
         var platform: String? = null
         for (p in PLATFORMS) {
@@ -220,10 +252,23 @@ object Organizer {
 
     private fun buildTitles(cats: List<Category>, items: List<RawItem>, series: Boolean): List<Title> {
         val info = HashMap<String, CatInfo>()
-        for (c in cats) info[c.id] = classify(c.name)
+        val ccOf = HashMap<String, String>()
+        for (c in cats) {
+            info[c.id] = classify(c.name)
+            val t = Countries.tagOf(c.name)
+            if (t != null) ccOf[c.id] = t
+        }
         val map = LinkedHashMap<String, Acc>()
         for (raw in items) {
             var adult = false
+            var cc = ""
+            for (cid in raw.cats) {
+                val t = ccOf[cid]
+                if (t != null) {
+                    cc = t
+                    break
+                }
+            }
             var catLeg = false
             var cat4k = false
             var launch = false
@@ -250,7 +295,7 @@ object Organizer {
             if (series && raw.genre.isNotEmpty()) genres.addAll(genreFromText(raw.genre))
             val leg = parsed.leg || catLeg
             val ext = if (raw.ext.isEmpty() && !series) "mp4" else raw.ext
-            val ver = Version(raw.id, ext, leg, parsed.k4 || cat4k, parsed.cam)
+            val ver = Version(raw.id, ext, leg, parsed.k4 || cat4k, parsed.cam, cc)
 
             val acc = map[key]
             if (acc == null) {
@@ -368,6 +413,11 @@ object Organizer {
     private fun buildChannels(cats: List<Category>, items: List<RawItem>): Pair<List<Channel>, List<String>> {
         val catName = HashMap<String, String>()
         for (c in cats) catName[c.id] = c.name.replace("*", "").trim()
+        val catCc = HashMap<String, String>()
+        for (c in cats) {
+            val t = Countries.tagOf(c.name)
+            if (t != null) catCc[c.id] = t
+        }
 
         val groups = LinkedHashMap<String, ArrayList<RawItem>>()
         for (raw in items) {
@@ -403,7 +453,7 @@ object Organizer {
                 val idx = IDX.find(raw.name)?.groupValues?.get(1)?.toIntOrNull() ?: 1
                 val grp = if (raw.name.contains("**")) "B" else "A"
                 val label = q + (if (idx > 1) " $idx" else "") + " · Fonte " + grp
-                sources.add(Source(raw.id, q, rankOf(q), grp, label, raw.arch))
+                sources.add(Source(raw.id, q, rankOf(q), grp, label, raw.arch, raw.cats.firstNotNullOfOrNull { catCc[it] } ?: ""))
             }
             val seen = HashMap<String, Int>()
             val fixed = ArrayList<Source>()

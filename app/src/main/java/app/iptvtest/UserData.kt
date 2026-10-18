@@ -74,6 +74,9 @@ class UserData(ctx: Context) {
 
     /** País da tabela "onde passa" escolhido nos Ajustes (BR = Brasil, PT = Portugal). */
     var bcCountry: String = "BR"
+
+    /** Países/idiomas que a pessoa quer ver (vazio = todos). */
+    val countryFilter = HashSet<String>()
         private set
 
     init {
@@ -88,6 +91,8 @@ class UserData(ctx: Context) {
             autoSwitch = sp.getBoolean("auto", true)
             tzId = sp.getString("tz", "") ?: ""
             bcCountry = sp.getString("bc", "BR") ?: "BR"
+            countryFilter.clear()
+            countryFilter.addAll(sp.getStringSet("cfilter", emptySet()) ?: emptySet())
             readStrings("mylist", myList)
             readStrings("favch", favChannels)
             readFavTeams()
@@ -369,6 +374,12 @@ class UserData(ctx: Context) {
     fun setAutoSwitch(v: Boolean) {
         autoSwitch = v
         sp.edit().putBoolean("auto", v).apply()
+    }
+
+    fun setCountryFilter(v: Set<String>) {
+        countryFilter.clear()
+        countryFilter.addAll(v)
+        sp.edit().putStringSet("cfilter", HashSet(v)).apply()
     }
 
     fun setBcCountry(v: String) {

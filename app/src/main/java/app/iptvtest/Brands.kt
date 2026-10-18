@@ -148,12 +148,12 @@ object ChannelGroups {
         PROVIDER,
     )
 
-    private val ESPORTES = listOf("jogo", "evento", "f1", "premiere", "sportv", "espn", "esporte", "copa", "campeonato", "ppv", "tnt", "combate", "ufc")
-    private val ABERTA = listOf("globo", "record", "sbt", "band", "aberto")
-    private val FILMES = listOf("disney", "paramount", "prime video", "filme", "serie", "telecine", "hbo", "hallo", "runtime", "cine", "dorama", "novela")
-    private val INFANTIL = listOf("infantil", "anime", "kids")
+    private val ESPORTES = listOf("jogo", "evento", "f1", "premiere", "sportv", "espn", "esporte", "copa", "campeonato", "ppv", "tnt", "combate", "ufc", "sport", "deporte", "desporto", "futebol", "football", "soccer", "calcio", "fussball", "futbol")
+    private val ABERTA = listOf("globo", "record", "sbt", "band", "aberto", "geral", "general", "generalist", "allgemein", "ulusal", "entertainment")
+    private val FILMES = listOf("disney", "paramount", "prime video", "film", "serie", "telecine", "hbo", "hallo", "runtime", "cine", "dorama", "novela", "movie", "pelicula", "kino")
+    private val INFANTIL = listOf("infantil", "anime", "kids", "kinder", "enfants", "bambini", "ninos", "cartoon", "jeunesse")
     private val VARIEDADES = listOf("variedade", "entretenimento", "fazenda", "comedia", "reality", "lives", "youtube channels", "shows")
-    private val MUSICA = listOf("radio", "urban", "music", "musica")
+    private val MUSICA = listOf("radio", "urban", "music", "musica", "musik", "musique")
     private val MUSICA_NOME = listOf("zapping music", "mtv", "music box", "trace ", "radio")
 
     private fun has(f: String, keys: List<String>): Boolean {
@@ -180,9 +180,9 @@ object ChannelGroups {
         }
         if (has(c, ESPORTES)) return "Esportes"
         if (has(c, ABERTA)) return "TV aberta"
-        if (has(c, listOf("noticia"))) return "Notícias"
+        if (has(c, listOf("noticia", "news", "nachrichten", "actualite", "notizie", "haber", "informacion"))) return "Notícias"
         if (has(c, INFANTIL)) return "Infantil e anime"
-        if (has(c, listOf("document"))) return "Documentários"
+        if (has(c, listOf("document", "dokument"))) return "Documentários"
         if (has(c, listOf("religios"))) return "Religiosos"
         if (has(c, MUSICA)) return "Música e rádios"
         if (has(c, VARIEDADES) || has(c, listOf("variedades"))) {
