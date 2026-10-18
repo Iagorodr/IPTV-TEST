@@ -74,10 +74,10 @@ class UserData(ctx: Context) {
 
     /** País da tabela "onde passa" escolhido nos Ajustes (BR = Brasil, PT = Portugal). */
     var bcCountry: String = "BR"
+        private set
 
     /** Países/idiomas que a pessoa quer ver (vazio = todos). */
     val countryFilter = HashSet<String>()
-        private set
 
     init {
         load()
