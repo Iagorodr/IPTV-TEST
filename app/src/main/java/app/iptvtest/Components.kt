@@ -88,7 +88,7 @@ fun FocusBox(
             }
             .then(requesterModifier)
             .onFocusChanged { focused = it.isFocused }
-            .border(width = 3.dp, color = if (focused) FocusRing else Color.Transparent, shape = shape)
+            .border(width = 2.dp, color = if (focused) FocusRing else Color.Transparent, shape = shape)
             .clip(shape)
             .clickable(onClick = onClick),
     ) {
@@ -225,15 +225,15 @@ fun ChipItem(
     ) { focused ->
         Box(
             modifier = Modifier
-                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.26f) else Panel)
+                .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.22f) else Panel.copy(alpha = 0.45f))
                 .then(if (selected) Modifier.border(1.5.dp, Accent.copy(alpha = 0.75f), RoundedCornerShape(20.dp)) else Modifier)
-                .padding(horizontal = 16.dp, vertical = 7.dp),
+                .padding(horizontal = 13.dp, vertical = 5.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = text,
-                color = if (selected) Color(0xFFFFE3D8) else TextMain,
-                fontSize = 14.sp,
+                color = if (selected) Color(0xFFFFE3D8) else Muted.copy(alpha = 0.95f),
+                fontSize = 13.sp,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                 maxLines = 1,
             )
@@ -242,6 +242,9 @@ fun ChipItem(
 }
 
 /** Cartão de filme/série: capa, nome e, se houver, barra de progresso ("continuar assistindo"). */
+@Composable
+val PosterW = 98.dp
+
 @Composable
 fun TitlePoster(
     title: Title,
@@ -271,7 +274,7 @@ fun TitlePoster(
             onClick()
         },
     ) { focused ->
-        Column(modifier = Modifier.background(if (focused) PanelAlt else Panel)) {
+        Column(modifier = Modifier.background(if (focused) PanelAlt else Color.Transparent)) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -327,12 +330,12 @@ fun TitlePoster(
             Text(
                 text = title.name,
                 color = if (focused) Color.White else TextMain,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
                 maxLines = 2,
-                minLines = 2,
+                minLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
             )
             if (subtitle != null) {
                 Text(
@@ -377,20 +380,20 @@ fun ShelfRow(
         Text(
             text = shelf.name,
             color = TextMain,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.ExtraBold,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 40.dp),
         )
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(2.dp))
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             items(shelf.row, key = { it.key }) { t ->
                 TitlePoster(
                     title = t,
                     focusId = shelf.name + "|" + t.key,
-                    modifier = Modifier.width(112.dp),
+                    modifier = Modifier.width(PosterW),
                     onClick = { onOpen(t) },
                 )
             }
@@ -399,8 +402,8 @@ fun ShelfRow(
                     SeeAllTile(
                         total = shelf.all.size,
                         modifier = Modifier
-                            .width(112.dp)
-                            .height(168.dp),
+                            .width(PosterW)
+                            .height(PosterW * 3 / 2),
                         onClick = onSeeAll,
                     )
                 }
@@ -419,14 +422,14 @@ fun ContinueRow(
         Text(
             text = "Continuar assistindo",
             color = TextMain,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.ExtraBold,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 40.dp),
         )
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(2.dp))
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             items(entries, key = { it.first.key }) { pair ->
                 val t = pair.first
@@ -435,7 +438,7 @@ fun ContinueRow(
                 TitlePoster(
                     title = t,
                     focusId = "cont|" + t.key,
-                    modifier = Modifier.width(112.dp),
+                    modifier = Modifier.width(PosterW),
                     progress = frac,
                     subtitle = if (e.label.isEmpty()) null else e.label,
                     onClick = { onResume(e) },
@@ -491,7 +494,7 @@ fun ChannelTile(
             onClick()
         },
     ) { focused ->
-        Column(modifier = Modifier.background(if (focused) PanelAlt else Panel)) {
+        Column(modifier = Modifier.background(if (focused) PanelAlt else Color.Transparent)) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

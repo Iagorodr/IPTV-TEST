@@ -323,12 +323,12 @@ private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .background(if (focused) PanelAlt else if (selected) Accent.copy(alpha = 0.20f) else Color.Transparent)
-                .padding(horizontal = 14.dp, vertical = 7.dp),
+                .padding(horizontal = 12.dp, vertical = 6.dp),
         ) {
             Text(
                 text = text,
                 color = if (selected || focused) TextMain else Muted,
-                fontSize = 16.sp,
+                fontSize = 15.sp,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                 maxLines = 1,
             )
@@ -446,7 +446,7 @@ private fun HeroContent(t: Title) {
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(start = 40.dp, top = 12.dp)
-                .width(470.dp),
+                .width(440.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -485,9 +485,9 @@ private fun HeroContent(t: Title) {
             Text(
                 t.name.uppercase(),
                 color = TextMain,
-                fontSize = 30.sp,
-                lineHeight = 33.sp,
-                fontWeight = FontWeight.ExtraBold,
+                fontSize = 26.sp,
+                lineHeight = 29.sp,
+                fontWeight = FontWeight.Bold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -506,7 +506,7 @@ private fun HeroContent(t: Title) {
                     lineHeight = 17.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.width(420.dp),
+                    modifier = Modifier.width(400.dp),
                 )
             }
         }
@@ -541,11 +541,11 @@ private fun CircleAction(symbol: String, onClick: () -> Unit) {
     FocusBox(shape = CircleShape, focusScale = 1.06f, onClick = onClick) { focused ->
         Box(
             modifier = Modifier
-                .size(40.dp)
-                .background(if (focused) PanelAlt else Color(0x33FFF3EC)),
+                .size(34.dp)
+                .background(if (focused) PanelAlt else Color(0x22FFF3EC)),
             contentAlignment = Alignment.Center,
         ) {
-            Text(symbol, color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(symbol, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -572,7 +572,7 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(232.dp),
+            .height(214.dp),
     ) {
         Crossfade(targetState = t, animationSpec = tween(700), label = "hero") { cur ->
             HeroContent(cur)
@@ -644,8 +644,8 @@ private fun LazyListScope.filteredShelf(shelf: Shelf, onOpen: (Title) -> Unit) {
                 Text(
                     text = shelf.name + "  ·  " + shelf.all.size + " títulos",
                     color = TextMain,
-                    fontSize = 19.sp,
-                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 40.dp),
                 )
                 Spacer(Modifier.height(4.dp))
@@ -658,7 +658,7 @@ private fun LazyListScope.filteredShelf(shelf: Shelf, onOpen: (Title) -> Unit) {
                     TitlePoster(
                         title = t,
                         focusId = "flt|" + shelf.name + "|" + t.key,
-                        modifier = Modifier.width(112.dp),
+                        modifier = Modifier.width(PosterW),
                         onClick = { onOpen(t) },
                     )
                 }
@@ -717,8 +717,8 @@ fun HomeTab(vm: MainViewModel) {
                             Text(
                                 "Seus canais",
                                 color = TextMain,
-                                fontSize = 19.sp,
-                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(horizontal = 40.dp),
                             )
                             Spacer(Modifier.height(4.dp))
@@ -731,7 +731,7 @@ fun HomeTab(vm: MainViewModel) {
                                         ch = c,
                                         stability = vm.channelStability(c),
                                         focusId = "homefav|" + c.key,
-                                        modifier = Modifier.width(176.dp),
+                                        modifier = Modifier.width(150.dp),
                                         onClick = { vm.playChannel(c) },
                                     )
                                 }
@@ -808,7 +808,7 @@ fun GridScreen(vm: MainViewModel, shelf: Shelf) {
             Text("${shelf.all.size} títulos", color = Muted, fontSize = 14.sp)
         }
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(130.dp),
+            columns = GridCells.Adaptive(108.dp),
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
@@ -880,7 +880,7 @@ fun SearchTab(vm: MainViewModel) {
                         ch = c,
                         stability = vm.channelStability(c),
                         focusId = "search|" + c.key,
-                        modifier = Modifier.width(170.dp),
+                        modifier = Modifier.width(150.dp),
                         onClick = { vm.playChannel(c) },
                     )
                 }
@@ -895,7 +895,7 @@ fun SearchTab(vm: MainViewModel) {
             }
         } else {
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(130.dp),
+                columns = GridCells.Adaptive(108.dp),
                 contentPadding = PaddingValues(horizontal = 48.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
@@ -968,7 +968,7 @@ fun FavoritesTab(vm: MainViewModel) {
                                     ch = c,
                                     stability = vm.channelStability(c),
                                     focusId = "fav|" + c.key,
-                                    modifier = Modifier.width(190.dp),
+                                    modifier = Modifier.width(160.dp),
                                     onClick = { vm.playChannel(c) },
                                 )
                             }

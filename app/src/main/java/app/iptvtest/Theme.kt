@@ -30,6 +30,11 @@ val AppBackground: Brush = Brush.linearGradient(
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
+    // visual minimalista: todo o texto do app um pouco menor
+    val d = androidx.compose.ui.platform.LocalDensity.current
+    androidx.compose.runtime.CompositionLocalProvider(
+        androidx.compose.ui.platform.LocalDensity provides androidx.compose.ui.unit.Density(d.density, d.fontScale * 0.9f),
+    ) {
     MaterialTheme(
         colorScheme = darkColorScheme(
             primary = Accent,
@@ -40,4 +45,5 @@ fun AppTheme(content: @Composable () -> Unit) {
         ),
         content = content,
     )
+    }
 }
