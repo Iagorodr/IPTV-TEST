@@ -241,10 +241,10 @@ fun ChipItem(
     }
 }
 
-/** Cartão de filme/série: capa, nome e, se houver, barra de progresso ("continuar assistindo"). */
-@Composable
+/** Largura do cartão de filme/série nas prateleiras. */
 val PosterW = 98.dp
 
+/** Cartão de filme/série: capa, nome e, se houver, barra de progresso ("continuar assistindo"). */
 @Composable
 fun TitlePoster(
     title: Title,
