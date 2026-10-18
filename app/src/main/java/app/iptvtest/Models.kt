@@ -59,6 +59,8 @@ data class Source(
     val rank: Int,
     val group: String,
     val label: String,
+    /** Dias de "voltar no tempo" (catch-up) que o provedor guarda deste canal; 0 = não guarda. */
+    val arch: Int = 0,
 )
 
 /** Uma "praça" (versão regional) de uma marca de TV, como Globo São Paulo ou SBT Rio. */
@@ -75,6 +77,9 @@ class Channel(
 ) {
     val fold: String by lazy(LazyThreadSafetyMode.NONE) { Organizer.fold(name) }
     val isBrand: Boolean get() = variants.isNotEmpty()
+
+    /** O provedor guarda a programação passada deste canal (ou de alguma praça dele)? */
+    val hasArchive: Boolean get() = sources.any { it.arch > 0 } || variants.any { v -> v.channel.sources.any { it.arch > 0 } }
 
     /** Nome do cartão + nome de cada praça, para a busca achar "Anhanguera" dentro da Globo. */
     val searchFold: String by lazy(LazyThreadSafetyMode.NONE) {
@@ -138,6 +143,8 @@ data class ResumeEntry(
 class LiveInfo(
     val channel: Channel,
     val urlOf: (Source) -> String,
+    /** Links para tocar o canal num horário do passado: (fonte, início, minutos). Vazio se o provedor não tem. */
+    val timeshift: ((Source, Long, Int) -> List<String>)? = null,
     /** Se for uma praça de uma marca (Globo São Paulo...), o cartão da marca, para trocar de praça dentro do player. */
     val brand: Channel? = null,
 )
@@ -155,4 +162,6 @@ class PlaybackRequest(
     val onProgress: ((Long, Long) -> Unit)? = null,
     /** Só em séries. Devolve null enquanto a lista de episódios carrega ou quando este é o último. */
     val next: (() -> NextEp?)? = null,
+    /** Se for maior que zero, abre o canal ao vivo já voltando para este horário (rever um jogo). */
+    val catchupStartMs: Long = 0L,
 )

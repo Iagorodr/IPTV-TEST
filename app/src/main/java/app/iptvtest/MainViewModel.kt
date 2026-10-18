@@ -805,8 +805,64 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             title = ch.name,
             url = "",
             isLive = true,
-            live = LiveInfo(ch, { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }),
+            live = LiveInfo(ch, { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }, { s, st, m -> a.timeshiftUrls(s.id, st, m) }),
         )
+    }
+
+    // ---- rever jogos que já acabaram (catch-up do provedor)
+
+    /** Até quanto tempo depois do jogo dá para rever (o catch-up de muitos provedores guarda 1 dia). */
+    private val replayWindowMs = 24L * 3_600_000L
+
+    /** O jogo acabou há menos de 24 h? Então dá para tentar rever. */
+    fun canReplay(g: Game): Boolean {
+        val now = System.currentTimeMillis()
+        return g.state == 2 && g.startMs <= now && now - g.startMs <= replayWindowMs
+    }
+
+    /** Canais que passam esse jogo (ou costumam passar) e que guardam a programação passada no provedor. */
+    fun replayChannels(g: Game): List<Channel> {
+        val info = gameInfo(g)
+        val out = LinkedHashMap<String, Channel>()
+        for (c in info.matched) out[c.key] = c
+        if (info.options.isNotEmpty()) for (c in Broadcasts.channelsFor(info.options, channelCards)) out[c.key] = c
+        val sports = channelGroups.firstOrNull { it.first == "Esportes" }?.second ?: emptyList()
+        for (c in sports) if (out.size < 14) out.putIfAbsent(c.key, c)
+        return out.values.filter { it.hasArchive }
+    }
+
+    /** Abre o canal já no começo do jogo (5 min antes). */
+    fun replayGame(g: Game, ch: Channel) {
+        val a = api ?: return
+        val real = if (ch.isBrand) Brands.variantFor(ch, user.lastVariantOf(ch.key)).channel else ch
+        val brand = if (ch.isBrand) ch else null
+        gameDialog = null
+        playing = PlaybackRequest(
+            title = g.home.short + " x " + g.away.short + " · " + real.name,
+            url = "",
+            isLive = true,
+            live = LiveInfo(real, { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }, { s, st, m -> a.timeshiftUrls(s.id, st, m) }, brand),
+            catchupStartMs = g.startMs - 5L * 60_000L,
+        )
+    }
+
+    /** Resumo do "voltar no tempo" da lista em uso (para os Ajustes). */
+    fun catchupSummary(): String {
+        val c = catalog ?: return "Catálogo ainda não carregado."
+        var n = 0
+        var days = 0
+        for (ch in c.channels) {
+            val d = ch.sources.maxOfOrNull { it.arch } ?: 0
+            if (d > 0) {
+                n++
+                if (d > days) days = d
+            }
+        }
+        return if (n == 0) {
+            "Esta lista não oferece catch-up (voltar no tempo)."
+        } else {
+            "$n canais guardam a programação passada (até $days dia(s))."
+        }
     }
 
     /** Toca uma praça de uma marca (Globo São Paulo...) e guarda a escolha para a próxima vez. */
@@ -817,7 +873,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             title = brand.name + " · " + v.label,
             url = "",
             isLive = true,
-            live = LiveInfo(v.channel, { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }, brand),
+            live = LiveInfo(v.channel, { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }, { s, st, m -> a.timeshiftUrls(s.id, st, m) }, brand),
         )
     }
 
@@ -831,7 +887,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val urlOf: (Source) -> String = { s -> a.streamUrl(Kind.LIVE, s.id, "m3u8") }
         if (ch.isBrand) {
             val v = Brands.variantFor(ch, user.lastVariantOf(ch.key))
-            return LiveInfo(v.channel, urlOf, ch)
+            return LiveInfo(v.channel, urlOf, null, ch)
         }
         return LiveInfo(ch, urlOf)
     }

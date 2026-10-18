@@ -1214,6 +1214,10 @@ private fun LiveSection(vm: MainViewModel) {
         }
         Spacer(Modifier.height(10.dp))
         TvButton(text = "Apagar notas de estabilidade") { vm.clearStats() }
+        Spacer(Modifier.height(18.dp))
+        SectionTitle("Voltar no tempo (catch-up)", "Com isso você volta lances no ao vivo e revê jogos de até 24 h.")
+        Spacer(Modifier.height(4.dp))
+        Text(vm.catchupSummary(), color = Muted, fontSize = 13.sp)
     }
 }
 

@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter
  */
 object CatalogCache {
 
-    private const val FORMAT = 1
+    private const val FORMAT = 2
 
     fun accKey(acc: Account): String =
         if (acc.m3u.isEmpty()) {
@@ -116,6 +116,7 @@ object CatalogCache {
             w.value(s.rank.toLong())
             w.value(s.group)
             w.value(s.label)
+            w.value(s.arch.toLong())
             w.endArray()
         }
         w.endArray()
@@ -247,8 +248,9 @@ object CatalogCache {
                             val rank = r.nextInt()
                             val group = r.nextString()
                             val label = r.nextString()
+                            val arch = if (r.hasNext()) r.nextInt() else 0
                             r.endArray()
-                            sources.add(Source(id, q, rank, group, label))
+                            sources.add(Source(id, q, rank, group, label, arch))
                         }
                         r.endArray()
                     }

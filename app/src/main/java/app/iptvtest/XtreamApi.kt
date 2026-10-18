@@ -39,6 +39,8 @@ class RawItem(
     val cats: List<String>,
     val plot: String,
     val genre: String,
+    /** Dias de catch-up do canal (só canais ao vivo de servidores Xtream). */
+    val arch: Int = 0,
 )
 
 /** Leitura em fluxo (sem montar a árvore inteira na memória): o catálogo de filmes passa de 13 MB. */
@@ -119,9 +121,13 @@ private object RawParser {
         var cats: List<String> = emptyList()
         var plot = ""
         var genre = ""
+        var archOn = false
+        var archDays = 0
         r.beginObject()
         while (r.hasNext()) {
             when (r.nextName()) {
+                "tv_archive" -> archOn = (r.loose() ?: "") == "1"
+                "tv_archive_duration" -> archDays = (r.loose() ?: "").toIntOrNull() ?: 0
                 "stream_id", "series_id" -> id = r.loose()
                 "name" -> name = r.loose()
                 "title" -> title = r.loose()
@@ -151,6 +157,7 @@ private object RawParser {
             cats = allCats,
             plot = plot,
             genre = genre,
+            arch = if (archOn) (if (archDays > 0) archDays else 1) else 0,
         )
     }
 }
@@ -178,6 +185,56 @@ class XtreamApi(private val account: Account) : ListApi {
         return "$base/$folder/${Uri.encode(account.user)}/${Uri.encode(account.pass)}/$id.$ext"
     }
 
+    // ---- voltar no tempo (catch-up): o horário do link é o do servidor do provedor
+    @Volatile private var serverOffsetMs: Long? = null
+
+    private fun readServerClock(root: JSONObject) {
+        val si = root.optJSONObject("server_info") ?: return
+        try {
+            val ts = si.str("timestamp_now")?.toLongOrNull()
+            val tn = si.str("time_now")
+            if (ts != null && tn != null) {
+                val f = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                f.timeZone = java.util.TimeZone.getTimeZone("UTC")
+                val naive = f.parse(tn)?.time
+                if (naive != null) {
+                    val raw = naive - ts * 1000L
+                    // arredonda para 15 min (o relógio do servidor anda alguns segundos de diferença)
+                    serverOffsetMs = Math.round(raw / 900_000.0) * 900_000L
+                    return
+                }
+            }
+            val name = si.str("timezone")
+            if (name != null) serverOffsetMs = java.util.TimeZone.getTimeZone(name).getOffset(System.currentTimeMillis()).toLong()
+        } catch (e: Exception) {
+            // sem o fuso do servidor, usa o do aparelho
+        }
+    }
+
+    override suspend fun prepare() {
+        if (serverOffsetMs != null) return
+        try {
+            readServerClock(JSONObject(getText(apiUrl())))
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            // vale o fuso do aparelho
+        }
+    }
+
+    override fun timeshiftUrls(id: String, startMs: Long, minutes: Int): List<String> {
+        val off = serverOffsetMs ?: java.util.TimeZone.getDefault().getOffset(startMs).toLong()
+        val f = SimpleDateFormat("yyyy-MM-dd:HH-mm", Locale.US)
+        f.timeZone = java.util.SimpleTimeZone(off.toInt(), "srv")
+        val stamp = f.format(Date(startMs))
+        val u = Uri.encode(account.user)
+        val p = Uri.encode(account.pass)
+        return listOf(
+            "$base/timeshift/$u/$p/$minutes/$stamp/$id.ts",
+            "$base/streaming/timeshift.php?username=$u&password=$p&stream=$id&start=$stamp&duration=$minutes",
+        )
+    }
+
     private suspend fun getText(url: String): String = withContext(Dispatchers.IO) {
         val conn = Net.open(url, readTimeoutMs = 60_000, accept = "application/json")
         try {
@@ -197,6 +254,7 @@ class XtreamApi(private val account: Account) : ListApi {
     /** Valida usuário/senha e devolve um resumo da conta (sem dados sensíveis). */
     override suspend fun login(): String {
         val root = JSONObject(getText(apiUrl()))
+        readServerClock(root)
         val ui = root.optJSONObject("user_info") ?: throw IOException("Resposta inesperada do servidor.")
         if (ui.optInt("auth", 0) != 1) throw IOException("Usuário ou senha inválidos.")
         val status = ui.str("status") ?: "?"

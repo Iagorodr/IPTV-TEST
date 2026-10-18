@@ -395,6 +395,8 @@ fun GameDialog(vm: MainViewModel, g: Game) {
     val reminded = vm.isReminded(g)
     val finished = g.state == 2
     val first = remember { FocusRequester() }
+    val canReplay = finished && vm.canReplay(g)
+    val replayList = remember(g.key, vm.catalog) { if (canReplay) vm.replayChannels(g) else emptyList() }
     LaunchedEffect(g.key) {
         delay(80)
         try {
@@ -457,7 +459,27 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             val comp = if (finished) null else info.comp
             val bg = if (finished) null else info.bgame
             if (finished) {
-                Text("Jogo encerrado: não há mais o que assistir ao vivo.", color = Muted, fontSize = 13.sp)
+                Text(
+                    text = when {
+                        replayList.isNotEmpty() -> "Jogo encerrado. Você pode rever: escolha o canal e o app abre no começo do jogo."
+                        canReplay -> "Jogo encerrado. Nenhum canal da sua lista guarda a programação passada para rever agora."
+                        else -> "Jogo encerrado há mais de 24 horas: não dá mais para rever."
+                    },
+                    color = Muted,
+                    fontSize = 13.sp,
+                )
+                if (replayList.isNotEmpty()) {
+                    Spacer(Modifier.height(8.dp))
+                    androidx.compose.foundation.lazy.LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        androidx.compose.foundation.lazy.itemsIndexed(replayList.take(12), key = { _, c -> c.key }) { i, c ->
+                            ChipItem(
+                                text = "⏪ " + c.name,
+                                selected = false,
+                                focusRequester = if (i == 0) first else null,
+                            ) { vm.replayGame(g, c) }
+                        }
+                    }
+                }
             } else if (bg != null) {
                 // o jogo está na tabela: mostra onde passa, e se foi confirmado por uma fonte do próprio jogo
                 Text(
@@ -542,7 +564,11 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             Spacer(Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                 if (finished) {
-                    TvButton(text = "Fechar", primary = true, focusRequester = first) { vm.closeGame() }
+                    if (replayList.isNotEmpty()) {
+                        TvButton(text = "Fechar") { vm.closeGame() }
+                    } else {
+                        TvButton(text = "Fechar", primary = true, focusRequester = first) { vm.closeGame() }
+                    }
                 } else {
                     if (info.matched.isNotEmpty()) {
                         TvButton(text = "Assistir agora", primary = true, focusRequester = first) { vm.watchNow(g) }

@@ -31,6 +31,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -200,6 +201,12 @@ fun PlayerScreen(
     var testJob by remember { mutableStateOf<Job?>(null) }
     var testPrev by remember { mutableStateOf<Source?>(null) }
 
+    // ---- voltar no tempo (catch-up). tsStart = horário (relógio real) do ponto em que o vídeo começou; 0 = ao vivo
+    var tsStart by remember { mutableLongStateOf(0L) }
+    var tsVariant by remember { mutableIntStateOf(0) }
+    var tsSrc by remember { mutableStateOf<Source?>(null) }
+    val tsTried = remember { mutableStateListOf<String>() }
+
     val rootFocus = remember { FocusRequester() }
     val playFocus = remember { FocusRequester() }
     val panelFocus = remember { FocusRequester() }
@@ -227,12 +234,61 @@ fun PlayerScreen(
         val info = liveInfo ?: return
         session.reset(s.id)
         current = s
+        tsStart = 0L
         note = why
         error = null
         buffering = true
         exo.setMediaItem(liveItem(info.urlOf(s)))
         exo.prepare()
         exo.playWhenReady = true
+    }
+
+    /** Toca o canal a partir de [startMs] (no passado), com a fonte [src]. [variant] escolhe qual formato de link tentar. */
+    fun playTimeshift(startMs: Long, src: Source?, variant: Int = 0): Boolean {
+        val info = liveInfo ?: return false
+        val ts = info.timeshift ?: return false
+        val s = src ?: current?.takeIf { it.arch > 0 } ?: ranked.firstOrNull { it.arch > 0 } ?: return false
+        val nowMs = System.currentTimeMillis()
+        val mins = (((nowMs - startMs) / 60_000L).toInt() + 20).coerceIn(10, 24 * 60)
+        val urls = ts(s, startMs, mins)
+        if (variant >= urls.size) return false
+        tsStart = startMs
+        tsVariant = variant
+        tsSrc = s
+        error = null
+        buffering = true
+        exo.setMediaItem(MediaItem.fromUri(urls[variant]))
+        exo.prepare()
+        exo.playWhenReady = true
+        return true
+    }
+
+    /** Anda [deltaMin] minutos para trás (negativo) ou para a frente. Chegando perto do agora, volta ao vivo. */
+    fun shift(deltaMin: Int) {
+        val nowMs = System.currentTimeMillis()
+        val base = if (tsStart > 0L) tsStart + exo.currentPosition else nowMs
+        val target = base + deltaMin * 60_000L
+        if (target >= nowMs - 45_000L) {
+            val c = current ?: ranked.firstOrNull() ?: return
+            playSource(c, "Ao vivo.")
+            return
+        }
+        val src = tsSrc ?: current?.takeIf { it.arch > 0 } ?: ranked.firstOrNull { it.arch > 0 }
+        if (src == null) {
+            note = "Este canal não guarda a programação passada."
+            return
+        }
+        if (nowMs - target > src.arch * 24L * 3_600_000L) {
+            note = "O provedor guarda só ${src.arch} dia(s) deste canal."
+            return
+        }
+        tsTried.clear()
+        tsTried.add(src.id)
+        if (playTimeshift(target, src)) {
+            note = "Voltando para " + SportsTime.clock(target, java.util.TimeZone.getDefault()) + "."
+        } else {
+            note = "Não consegui voltar no tempo neste canal."
+        }
     }
 
     /** Troca para a próxima fonte ainda não tentada. Devolve false se não deu para trocar. */
@@ -251,6 +307,20 @@ fun PlayerScreen(
 
     fun pickSource(s: Source) {
         val ch = channel ?: return
+        if (tsStart > 0L) {
+            // vendo uma reprise: troca a fonte no mesmo horário
+            if (s.arch > 0) {
+                val at = tsStart + exo.currentPosition
+                tsTried.clear()
+                tsTried.add(s.id)
+                playTimeshift(at, s)
+                note = "Fonte: " + s.label + " (mesmo horário)."
+            } else {
+                note = "Esta fonte não guarda a programação passada."
+            }
+            panel = null
+            return
+        }
         recordSession(0)
         user.setPinned(ch.key, s.id)
         pinnedId = s.id
@@ -387,6 +457,17 @@ fun PlayerScreen(
             }
 
             override fun onPlayerError(e: PlaybackException) {
+                if (tsStart > 0L) {
+                    // reprise que não abriu: outro formato de link, depois outra fonte que guarde o passado
+                    if (playTimeshift(tsStart, tsSrc, tsVariant + 1)) return
+                    val other = ranked.firstOrNull { it.arch > 0 && !tsTried.contains(it.id) }
+                    if (other != null) {
+                        tsTried.add(other.id)
+                        if (playTimeshift(tsStart, other, 0)) return
+                    }
+                    error = "Não consegui abrir esse horário neste canal. Tente outro canal ou volte ao vivo."
+                    return
+                }
                 if (e.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
                     exo.seekToDefaultPosition()
                     exo.prepare()
@@ -435,6 +516,17 @@ fun PlayerScreen(
                 ?: order.firstOrNull()
             if (start == null) {
                 error = "Este canal não tem fontes disponíveis."
+            } else if (req.catchupStartMs > 0L) {
+                // rever um jogo: já abre voltando para o horário dele (se a fonte não guardar o passado, tenta outra)
+                val arch = order.firstOrNull { it.id == start.id && it.arch > 0 } ?: order.firstOrNull { it.arch > 0 }
+                tsTried.clear()
+                if (arch != null) tsTried.add(arch.id)
+                current = arch ?: start
+                if (arch == null || !playTimeshift(req.catchupStartMs, arch)) {
+                    session.tried.clear()
+                    session.tried.add(start.id)
+                    playSource(start, "Este canal não guarda a programação passada: abrindo ao vivo.")
+                }
             } else {
                 session.tried.clear()
                 session.tried.add(start.id)
@@ -460,7 +552,7 @@ fun PlayerScreen(
             val d = exo.duration
             duration = if (d == C.TIME_UNSET) 0L else d
 
-            if (isLive && !testing && error == null && session.sourceId != null) {
+            if (isLive && !testing && error == null && session.sourceId != null && tsStart == 0L) {
                 val now = SystemClock.elapsedRealtime()
                 val stalledNow = session.ready && exo.playWhenReady && exo.playbackState == Player.STATE_BUFFERING
                 if (stalledNow) {
@@ -719,6 +811,14 @@ fun PlayerScreen(
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
+                if (tsStart > 0L) {
+                    Text(
+                        text = "⏪ Reprise · " + SportsTime.clock(tsStart + position, java.util.TimeZone.getDefault()),
+                        color = Warn,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
                 Spacer(Modifier.height(4.dp))
                 Text(trackSummary(tracks), color = Color(0xFFC9C9D8), fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
@@ -734,6 +834,25 @@ fun PlayerScreen(
             ) {
                 ProgressRow(position, duration, isLive)
                 Spacer(Modifier.height(12.dp))
+                if (isLive && channel != null && liveInfo?.timeshift != null && channel.sources.any { it.arch > 0 }) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 10.dp),
+                    ) {
+                        TvButton(text = "⏪ 10 min") { touch++; shift(-10) }
+                        TvButton(text = "⏪ 2 min") { touch++; shift(-2) }
+                        if (tsStart > 0L) {
+                            TvButton(text = "2 min ⏩") { touch++; shift(2) }
+                            TvButton(text = "10 min ⏩") { touch++; shift(10) }
+                            TvButton(text = "AO VIVO", primary = true) {
+                                touch++
+                                val c = current ?: ranked.firstOrNull()
+                                if (c != null) playSource(c, "Ao vivo.")
+                            }
+                        }
+                    }
+                }
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                     TvButton(text = if (isPlaying) "Pausar" else "Reproduzir", focusRequester = playFocus) { togglePlay() }
                     if (isLive) {

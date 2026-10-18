@@ -23,6 +23,9 @@ interface ListApi {
 
     fun streamUrl(kind: Kind, id: String, ext: String): String
 
+    /** Links (o primeiro é o mais provável) para tocar um canal a partir de [startMs] no passado. Vazio = sem catch-up. */
+    fun timeshiftUrls(id: String, startMs: Long, minutes: Int): List<String> = emptyList()
+
     suspend fun vodInfo(vodId: String): VodInfo
 
     suspend fun seriesEpisodes(seriesId: String): List<Episode>
@@ -123,7 +126,7 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
                         out.add(
                             RawItem(
                                 id = tag(i, r.id), name = r.name, image = r.image, year = r.year, rating = r.rating,
-                                added = r.added, ext = r.ext, cats = r.cats.map { tag(i, it) }, plot = r.plot, genre = r.genre,
+                                added = r.added, ext = r.ext, cats = r.cats.map { tag(i, it) }, plot = r.plot, genre = r.genre, arch = r.arch,
                             ),
                         )
                     }
@@ -141,6 +144,11 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
     override fun streamUrl(kind: Kind, id: String, ext: String): String {
         val (i, raw) = split(id)
         return apis[i].streamUrl(kind, raw, ext)
+    }
+
+    override fun timeshiftUrls(id: String, startMs: Long, minutes: Int): List<String> {
+        val (i, raw) = split(id)
+        return apis[i].timeshiftUrls(raw, startMs, minutes)
     }
 
     override suspend fun vodInfo(vodId: String): VodInfo {

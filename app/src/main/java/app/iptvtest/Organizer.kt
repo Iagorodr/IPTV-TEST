@@ -403,7 +403,7 @@ object Organizer {
                 val idx = IDX.find(raw.name)?.groupValues?.get(1)?.toIntOrNull() ?: 1
                 val grp = if (raw.name.contains("**")) "B" else "A"
                 val label = q + (if (idx > 1) " $idx" else "") + " · Fonte " + grp
-                sources.add(Source(raw.id, q, rankOf(q), grp, label))
+                sources.add(Source(raw.id, q, rankOf(q), grp, label, raw.arch))
             }
             val seen = HashMap<String, Int>()
             val fixed = ArrayList<Source>()
