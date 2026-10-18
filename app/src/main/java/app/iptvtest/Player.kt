@@ -247,7 +247,7 @@ fun PlayerScreen(
     fun playTimeshift(startMs: Long, src: Source?, variant: Int = 0): Boolean {
         val info = liveInfo ?: return false
         val ts = info.timeshift ?: return false
-        val s = src ?: current?.takeIf { it.arch > 0 } ?: ranked.firstOrNull { it.arch > 0 } ?: current ?: ranked.firstOrNull() ?: return false
+        val s = src ?: current?.takeIf { it.arch > 0 } ?: ranked.firstOrNull { it.arch > 0 } ?: return false
         val nowMs = System.currentTimeMillis()
         val mins = (((nowMs - startMs) / 60_000L).toInt() + 20).coerceIn(10, 24 * 60)
         val urls = ts(s, startMs, mins)
@@ -273,14 +273,13 @@ fun PlayerScreen(
             playSource(c, "Ao vivo.")
             return
         }
-        val src = tsSrc ?: current?.takeIf { it.arch > 0 } ?: ranked.firstOrNull { it.arch > 0 } ?: current ?: ranked.firstOrNull()
+        val src = tsSrc ?: current?.takeIf { it.arch > 0 } ?: ranked.firstOrNull { it.arch > 0 }
         if (src == null) {
             note = "Este canal não guarda a programação passada."
             return
         }
-        val days = if (src.arch > 0) src.arch else 1
-        if (nowMs - target > days * 24L * 3_600_000L) {
-            note = "O provedor guarda só $days dia(s) deste canal."
+        if (nowMs - target > src.arch * 24L * 3_600_000L) {
+            note = "O provedor guarda só ${src.arch} dia(s) deste canal."
             return
         }
         tsTried.clear()
@@ -461,15 +460,12 @@ fun PlayerScreen(
                 if (tsStart > 0L) {
                     // reprise que não abriu: outro formato de link, depois outra fonte que guarde o passado
                     if (playTimeshift(tsStart, tsSrc, tsVariant + 1)) return
-                    val other = if (tsTried.size >= 3) null else (ranked.firstOrNull { it.arch > 0 && !tsTried.contains(it.id) } ?: ranked.firstOrNull { !tsTried.contains(it.id) })
+                    val other = ranked.firstOrNull { it.arch > 0 && !tsTried.contains(it.id) }
                     if (other != null) {
                         tsTried.add(other.id)
                         if (playTimeshift(tsStart, other, 0)) return
                     }
-                    // não abriu em nenhuma fonte: volta ao vivo e avisa
-                    val c = current ?: ranked.firstOrNull()
-                    if (c != null) playSource(c, "Este provedor não deixou voltar no tempo neste canal. Voltei ao vivo.")
-                    else error = "Não consegui abrir esse horário neste canal. Tente outro canal ou volte ao vivo."
+                    error = "Não consegui abrir esse horário neste canal. Tente outro canal ou volte ao vivo."
                     return
                 }
                 if (e.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
@@ -522,7 +518,7 @@ fun PlayerScreen(
                 error = "Este canal não tem fontes disponíveis."
             } else if (req.catchupStartMs > 0L) {
                 // rever um jogo: já abre voltando para o horário dele (se a fonte não guardar o passado, tenta outra)
-                val arch = order.firstOrNull { it.id == start.id && it.arch > 0 } ?: order.firstOrNull { it.arch > 0 } ?: start
+                val arch = order.firstOrNull { it.id == start.id && it.arch > 0 } ?: order.firstOrNull { it.arch > 0 }
                 tsTried.clear()
                 if (arch != null) tsTried.add(arch.id)
                 current = arch ?: start
@@ -838,7 +834,7 @@ fun PlayerScreen(
             ) {
                 ProgressRow(position, duration, isLive)
                 Spacer(Modifier.height(12.dp))
-                if (isLive && channel != null && liveInfo?.timeshift != null) {
+                if (isLive && channel != null && liveInfo?.timeshift != null && channel.sources.any { it.arch > 0 }) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                         verticalAlignment = Alignment.CenterVertically,
