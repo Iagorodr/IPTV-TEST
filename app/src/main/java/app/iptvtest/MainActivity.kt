@@ -97,8 +97,39 @@ fun App(vm: MainViewModel = viewModel()) {
     val due = vm.dueReminder
     val ctx = LocalContext.current
 
-    BackHandler(enabled = account != null && playing == null && vm.canGoBack) {
-        vm.back()
+    // Voltar no Início, sem nenhuma outra tela aberta, pergunta se quer sair do app
+    var askExit by remember { mutableStateOf(false) }
+    BackHandler(enabled = account != null && playing == null) {
+        if (vm.canGoBack) vm.back() else askExit = true
+    }
+    if (askExit && account != null && playing == null) {
+        val stay = remember { androidx.compose.ui.focus.FocusRequester() }
+        LaunchedEffect(Unit) {
+            try {
+                stay.requestFocus()
+            } catch (e: Exception) {
+                // o botão ainda não estava na tela
+            }
+        }
+        Dialog(onDismissRequest = { askExit = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+            Column(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(Panel)
+                    .padding(horizontal = 36.dp, vertical = 26.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text("Fechar o app?", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(16.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    TvButton(text = "Ficar", primary = true, focusRequester = stay) { askExit = false }
+                    TvButton(text = "Sair") {
+                        askExit = false
+                        (ctx as? android.app.Activity)?.finish()
+                    }
+                }
+            }
+        }
     }
 
     // Android 13+ pede licença para notificações; só pedimos quando a pessoa já tem algum lembrete
