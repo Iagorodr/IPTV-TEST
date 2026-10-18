@@ -6,6 +6,8 @@ on:
     paths-ignore:
       - "README.md"
       - "data/**"
+      - "testlists/**"
+      - "tools/**"
   workflow_dispatch:
 
 permissions:
