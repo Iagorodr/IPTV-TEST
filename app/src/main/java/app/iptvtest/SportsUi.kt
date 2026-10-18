@@ -462,8 +462,8 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             if (finished) {
                 Text(
                     text = when {
-                        replayList.isNotEmpty() -> "Jogo encerrado. Você pode rever: escolha o canal e o app abre no começo do jogo."
-                        canReplay -> "Jogo encerrado. Nenhum canal da sua lista guarda a programação passada para rever agora."
+                        replayList.isNotEmpty() -> "Jogo encerrado. Escolha o canal: o app tenta abrir no começo do jogo (se o provedor não guardar, abre ao vivo)."
+                        canReplay -> "Jogo encerrado. Não achei canal de esporte na sua lista para tentar rever."
                         else -> "Jogo encerrado há mais de 24 horas: não dá mais para rever."
                     },
                     color = Muted,

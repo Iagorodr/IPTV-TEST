@@ -848,7 +848,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (info.options.isNotEmpty()) for (c in Broadcasts.channelsFor(info.options, channelCards)) out[c.key] = c
         val sports = channelGroups.firstOrNull { it.first == "Esportes" }?.second ?: emptyList()
         for (c in sports) if (out.size < 14) out.putIfAbsent(c.key, c)
-        return out.values.filter { it.hasArchive }
+        return out.values.sortedByDescending { it.hasArchive }
     }
 
     /** Abre o canal já no começo do jogo (5 min antes). */
@@ -879,7 +879,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             }
         }
         return if (n == 0) {
-            "Esta lista não oferece catch-up (voltar no tempo)."
+            "O provedor não avisa que guarda o passado. Os botões ⏪ no ao vivo tentam mesmo assim."
         } else {
             "$n canais guardam a programação passada (até $days dia(s))."
         }
