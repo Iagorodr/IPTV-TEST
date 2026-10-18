@@ -45,7 +45,14 @@ jobs:
           gradle-version: "8.10.2"
 
       - name: Compilar (release)
-        run: gradle :app:assembleRelease --no-daemon --stacktrace
+        run: |
+          set -o pipefail
+          gradle :app:assembleRelease --no-daemon --stacktrace 2>&1 | tee build.log
+        # em caso de erro, mostra as linhas "e: ..." como anotações (fáceis de ler)
+      - name: Mostrar erros de compilação
+        if: failure()
+        run: |
+          grep -E "^e: " build.log | sed 's/^e: //' | head -30 | while read -r l; do echo "::error::$l"; done || true
 
       - name: Guardar APK como artefato
         uses: actions/upload-artifact@v4
