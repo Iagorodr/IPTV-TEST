@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel IAGO IPTV</title>
+<style>
+:root{--bg:#0e0f14;--panel:#171922;--line:#262a37;--fg:#ece8e4;--mut:#8f97ab;--acc:#e8465a;--ok:#3ddc84;--warn:#f2b84b;--bad:#ff8a8a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:20px max(16px,env(safe-area-inset-left,0px))}
+main{max-width:1100px;margin:0 auto}
+h1{font-size:20px;font-weight:300;letter-spacing:.3em;text-transform:uppercase;margin:0 0 18px}
+h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:26px 0 10px;font-weight:600}
+input,select,button,textarea{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+button{cursor:pointer}button:hover{border-color:var(--mut)}
+button.p{background:var(--acc);border-color:var(--acc);color:#fff}
+button.s{padding:4px 9px;font-size:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.t{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+.t b{display:block;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+.t span{color:var(--mut);font-size:12px}
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:860px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+th{color:var(--mut);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--panel)}
+tr:last-child td{border-bottom:0}
+.pill{padding:2px 8px;border-radius:99px;font-size:11px;border:1px solid}
+.active{color:var(--ok)}.blocked{color:var(--bad)}.pending{color:var(--warn)}
+.mut{color:var(--mut)}
+#err{color:var(--bad);min-height:20px}
+#login{max-width:340px;margin:12vh auto}
+#login input{width:100%;margin-bottom:10px}
+</style>
+</head>
+<body>
+<main>
+<h1>Painel IAGO IPTV</h1>
+<section id="login">
+  <input id="pw" type="password" placeholder="Senha do painel" autocomplete="current-password">
+  <button class="p" id="go" style="width:100%">Entrar</button>
+  <p id="err"></p>
+</section>
+<section id="app" hidden>
+  <div class="row" style="justify-content:space-between"><span class="mut" id="stamp"></span><span class="row"><button id="refresh">Atualizar</button><button id="out">Sair</button></span></div>
+  <h2>Resumo</h2>
+  <div class="tiles" id="tiles"></div>
+  <h2>Pedidos de liberação</h2>
+  <div class="wrap"><table id="reqs"></table></div>
+  <h2>Aviso na tela</h2>
+  <div class="row"><input id="msg" placeholder="Texto do aviso" style="flex:1;min-width:220px"><button id="sendAll" class="p">Enviar para todos</button><button id="clearAll">Limpar avisos</button></div>
+  <h2>Aparelhos</h2>
+  <div class="wrap"><table id="devs"></table></div>
+  <p class="mut" style="font-size:12px">Ativos: usaram nos últimos 7 dias. Frequentes: usaram em 4 ou mais dias dos últimos 14. Os números não são em tempo real: o app avisa a cada 10 minutos.</p>
+</section>
+</main>
+<script>
+const BASE='https://zjbajnhnexsxthigokhg.supabase.co/rest/v1/rpc/';
+const KEY='sb_publishable_REBiG8eo1E96bSyY1ih1aQ_QxbXS2Li';
+let pw='';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function rpc(fn,body){
+  const r=await fetch(BASE+fn,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(Object.assign({p_secret:pw},body||{}))});
+  if(!r.ok)throw new Error('HTTP '+r.status);return r.json();
+}
+const fmt=d=>d?new Date(d).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'-';
+const label={active:'liberado',blocked:'bloqueado',pending:'pendente'};
+let data=null;
+async function load(){
+  const d=await rpc('admin_overview');
+  if(!d.ok)throw new Error('Senha incorreta');
+  data=d;render();
+}
+function render(){
+  const d=data;
+  $('stamp').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR');
+  $('tiles').innerHTML=[['Baixados',d.baixados],['Ativos (7 dias)',d.ativos],['Frequentes',d.frequentes],['Bloqueados',d.bloqueados],['Pedidos em análise',d.pedidos]].map(([a,b])=>`<div class="t"><b>${b}</b><span>${a}</span></div>`).join('');
+  $('reqs').innerHTML='<tr><th>Código</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Status</th><th>Data</th><th></th></tr>'+
+    (d.solicitacoes.length?d.solicitacoes.map(q=>`<tr><td>${esc(q.codigo)}</td><td>${esc(q.nome)}</td><td>${esc(q.email)}</td><td>${esc(q.telefone)}</td><td>${esc(q.status)}</td><td>${fmt(q.created_at)}</td><td>${q.status==='em análise'?`<button class="s" data-a="ok" data-d="${q.device_id}" data-r="${q.id}">Liberar</button> <button class="s" data-a="no" data-r="${q.id}">Recusar</button>`:''}</td></tr>`).join(''):'<tr><td colspan="7" class="mut">Nenhum pedido.</td></tr>');
+  $('devs').innerHTML='<tr><th>Código</th><th>Nome</th><th>Status</th><th>Aparelho</th><th>País</th><th>Idioma</th><th>Fuso</th><th>Versão</th><th>Desde</th><th>Último acesso</th><th>Aberturas</th><th>Min</th><th>Dias/14</th><th>Infantil</th><th>Ações</th></tr>'+
+    (d.aparelhos.length?d.aparelhos.map(a=>`<tr><td>${esc(a.codigo)}</td><td>${esc(a.nome)||'<span class="mut">sem nome</span>'}</td><td><span class="pill ${esc(a.status)}">${label[a.status]||esc(a.status)}</span></td><td>${esc(a.aparelho)}</td><td>${esc(a.pais)}</td><td>${esc(a.idioma)}</td><td>${esc(a.fuso)}</td><td>${esc(a.versao)}</td><td>${fmt(a.desde)}</td><td>${fmt(a.ultimo_acesso)}</td><td>${a.aberturas}</td><td>${a.minutos}</td><td>${a.dias_14}</td><td>${a.usa_infantil?'sim':'-'}</td><td>${a.status==='blocked'?`<button class="s" data-a="st" data-v="active" data-d="${a.id}">Liberar</button>`:`<button class="s" data-a="st" data-v="blocked" data-d="${a.id}">Bloquear</button>`} <button class="s" data-a="nm" data-d="${a.id}">Nome</button> <button class="s" data-a="nt" data-d="${a.id}">Aviso</button></td></tr>`).join(''):'<tr><td colspan="15" class="mut">Nenhum aparelho ainda.</td></tr>');
+}
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('button[data-a]');if(!b)return;
+  const a=b.dataset.a,id=b.dataset.d;
+  try{
+    if(a==='st')await rpc('admin_set_status',{p_id:id,p_status:b.dataset.v});
+    else if(a==='ok'){await rpc('admin_set_status',{p_id:id,p_status:'active'});}
+    else if(a==='no')await rpc('admin_decline',{p_request:Number(b.dataset.r)});
+    else if(a==='nm'){const n=window.prompt?prompt('Nome:'):null;if(n==null)return;await rpc('admin_set_name',{p_id:id,p_name:n});}
+    else if(a==='nt'){const n=window.prompt?prompt('Aviso para este aparelho:'):null;if(n==null)return;await rpc('admin_notice',{p_id:id,p_text:n});}
+    await load();
+  }catch(x){alert('Erro: '+x.message)}
+});
+$('sendAll').onclick=async()=>{const t=$('msg').value.trim();if(!t)return;try{await rpc('admin_notice',{p_id:null,p_text:t});$('msg').value='';alert('Aviso enviado. Aparece no próximo contato de cada aparelho.')}catch(x){alert(x.message)}};
+$('clearAll').onclick=async()=>{try{await rpc('admin_notice',{p_id:null,p_text:''});alert('Avisos limpos.')}catch(x){alert(x.message)}};
+$('refresh').onclick=()=>load().catch(x=>alert(x.message));
+$('out').onclick=()=>{pw='';try{sessionStorage.removeItem('pw')}catch(_){}$('app').hidden=true;$('login').hidden=false;$('pw').value=''};
+async function enter(){
+  $('err').textContent='';pw=$('pw').value;
+  try{await load();try{sessionStorage.setItem('pw',pw)}catch(_){}$('login').hidden=true;$('app').hidden=false}
+  catch(x){$('err').textContent=x.message==='Senha incorreta'?x.message:'Não consegui conectar. Tente de novo.';pw=''}
+}
+$('go').onclick=enter;$('pw').addEventListener('keydown',e=>{if(e.key==='Enter')enter()});
+try{const s=sessionStorage.getItem('pw');if(s){$('pw').value=s;enter()}}catch(_){}
+</script>
+</body>
+</html>
