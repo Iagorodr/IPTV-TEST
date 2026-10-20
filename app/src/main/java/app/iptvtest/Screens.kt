@@ -1352,7 +1352,7 @@ private fun ProfileSection(vm: MainViewModel) {
             Spacer(Modifier.height(12.dp))
             Text("Idioma", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(6.dp))
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            androidx.compose.foundation.layout.FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 for ((tag, label) in APP_LANGS) ChipItem(text = label, selected = lang == tag) {
                     lang = tag
                     saved = false
