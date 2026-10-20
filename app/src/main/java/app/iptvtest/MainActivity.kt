@@ -313,10 +313,19 @@ private fun BlockedScreen(vm: MainViewModel) {
         Column(modifier = Modifier.width(520.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(stringResource(R.string.app_name), color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.Light, letterSpacing = 6.sp)
             Spacer(Modifier.height(24.dp))
-            Text("Acesso suspenso", color = Accent, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(
+                if (vm.pendingApproval) "Aguardando liberação" else "Acesso suspenso",
+                color = Accent,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+            )
             Spacer(Modifier.height(8.dp))
             Text(
-                "O acesso deste aparelho ao app foi pausado. Fale com quem te passou o app e informe o código abaixo.",
+                if (vm.pendingApproval) {
+                    "Este aparelho ainda não foi liberado. Passe o código abaixo a quem te enviou o app e depois toque em Tentar de novo."
+                } else {
+                    "O acesso deste aparelho ao app foi pausado. Fale com quem te passou o app e informe o código abaixo."
+                },
                 color = TextMain,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,

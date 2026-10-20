@@ -66,8 +66,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
 
     // ---- controle de quem desenvolve: acesso liberado/bloqueado e aviso na tela
-    var blocked by mutableStateOf(false)
+    var accessStatus by mutableStateOf("active")
         private set
+    val blocked: Boolean get() = accessStatus != "active"
+    val pendingApproval: Boolean get() = accessStatus == "pending"
     var notice by mutableStateOf<Pair<Int, String>?>(null)
         private set
     @Volatile private var foreground = true
@@ -81,8 +83,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private fun checkControl(newSession: Boolean) {
         viewModelScope.launch {
             val r = Control.ping(appCtx, newSession) ?: return@launch
-            blocked = r.blocked
-            if (r.blocked) {
+            accessStatus = r.status
+            if (r.status != "active") {
                 playing = null
             }
             val n = r.notice
@@ -213,7 +215,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         BroadcastStore.load(appCtx, user.bcCountry)
         viewModelScope.launch { BroadcastStore.refresh(appCtx) }
         if (store.agent.isNotEmpty()) USER_AGENT = store.agent
-        blocked = Control.cachedBlocked(appCtx)
+        accessStatus = Control.cachedStatus(appCtx)
         checkControl(true)
         controlJob = viewModelScope.launch {
             while (true) {

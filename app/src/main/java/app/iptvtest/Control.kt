@@ -21,7 +21,8 @@ object Control {
     // chave pública (publishable) do projeto: só deixa chamar a função "ping", não lê nem altera tabelas
     private const val KEY = "sb_publishable_REBiG8eo1E96bSyY1ih1aQ_QxbXS2Li"
 
-    class Reply(val blocked: Boolean, val notice: String?, val noticeId: Int)
+    /** [status]: "active" (liberado), "pending" (esperando liberação) ou "blocked" (suspenso). */
+    class Reply(val status: String, val notice: String?, val noticeId: Int)
 
     private fun prefs(ctx: Context) = ctx.getSharedPreferences("iptv_control", Context.MODE_PRIVATE)
 
@@ -38,7 +39,8 @@ object Control {
     /** Os 6 primeiros caracteres do código: é o que a pessoa lê para o desenvolvedor. */
     fun shortCode(ctx: Context): String = installId(ctx).take(6).uppercase(Locale.ROOT)
 
-    fun cachedBlocked(ctx: Context): Boolean = prefs(ctx).getBoolean("blocked", false)
+    /** Último estado conhecido. Aparelho que nunca falou com o servidor começa como "pending": só vale depois da liberação. */
+    fun cachedStatus(ctx: Context): String = prefs(ctx).getString("status", "pending") ?: "pending"
 
     fun lastSeenNotice(ctx: Context): Int = prefs(ctx).getInt("notice_seen", 0)
 
@@ -75,10 +77,10 @@ object Control {
                 if (conn.responseCode !in 200..299) return@withContext null
                 val txt = conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
                 val o = JSONObject(txt)
-                val blocked = o.optString("status") == "blocked"
+                val status = o.optString("status").ifEmpty { "pending" }
                 val notice = if (o.isNull("notice")) null else o.optString("notice").trim().ifEmpty { null }
-                prefs(ctx).edit().putBoolean("blocked", blocked).apply()
-                Reply(blocked, notice, o.optInt("notice_id", 0))
+                prefs(ctx).edit().putString("status", status).apply()
+                Reply(status, notice, o.optInt("notice_id", 0))
             } finally {
                 conn.disconnect()
             }
