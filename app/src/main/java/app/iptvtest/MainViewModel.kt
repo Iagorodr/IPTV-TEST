@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -63,6 +64,41 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var loginStatus by mutableStateOf<String?>(null)
         private set
+
+    // ---- controle de quem desenvolve: acesso liberado/bloqueado e aviso na tela
+    var blocked by mutableStateOf(false)
+        private set
+    var notice by mutableStateOf<Pair<Int, String>?>(null)
+        private set
+    @Volatile private var foreground = true
+    private var controlJob: Job? = null
+
+    fun onForeground(on: Boolean) {
+        foreground = on
+        if (on) checkControl(false)
+    }
+
+    private fun checkControl(newSession: Boolean) {
+        viewModelScope.launch {
+            val r = Control.ping(appCtx, newSession) ?: return@launch
+            blocked = r.blocked
+            if (r.blocked) {
+                playing = null
+            }
+            val n = r.notice
+            notice = if (n != null && r.noticeId > Control.lastSeenNotice(appCtx)) r.noticeId to n else null
+        }
+    }
+
+    fun dismissNotice() {
+        val n = notice ?: return
+        Control.markNoticeSeen(appCtx, n.first)
+        notice = null
+    }
+
+    fun retryControl() = checkControl(false)
+
+    fun deviceCode(): String = Control.shortCode(appCtx)
 
     // ---- catálogo
     var catalog by mutableStateOf<Catalog?>(null)
@@ -177,6 +213,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         BroadcastStore.load(appCtx, user.bcCountry)
         viewModelScope.launch { BroadcastStore.refresh(appCtx) }
         if (store.agent.isNotEmpty()) USER_AGENT = store.agent
+        blocked = Control.cachedBlocked(appCtx)
+        checkControl(true)
+        controlJob = viewModelScope.launch {
+            while (true) {
+                delay(10 * 60_000L)
+                if (foreground) checkControl(false)
+            }
+        }
         val saved = store.lists()
         if (saved.isNotEmpty()) {
             lists = saved

@@ -1329,9 +1329,27 @@ private fun SideItem(text: String, selected: Boolean, onFocus: () -> Unit) {
 }
 
 @Composable
+private fun AboutSection(vm: MainViewModel) {
+    Column(modifier = Modifier.fillMaxSize().padding(end = 40.dp, top = 6.dp)) {
+        SectionTitle("Sobre", "Informações deste aparelho.")
+        Spacer(Modifier.height(16.dp))
+        Text("Código deste aparelho", color = Muted, fontSize = 13.sp)
+        Spacer(Modifier.height(4.dp))
+        Text(vm.deviceCode(), color = TextMain, fontSize = 24.sp, fontWeight = FontWeight.Light, letterSpacing = 4.sp)
+        Spacer(Modifier.height(10.dp))
+        Text(
+            "Se precisar de ajuda, passe este código a quem te deu o app. Ele serve só para contar quantos aparelhos usam o app: " +
+                "não envia o link da sua lista, senha nem o que você assiste.",
+            color = Muted,
+            fontSize = 12.sp,
+        )
+    }
+}
+
+@Composable
 fun SettingsTab(vm: MainViewModel) {
     var section by rememberSaveable { mutableIntStateOf(0) }
-    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo")
+    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo", "Sobre")
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         Row(modifier = Modifier.fillMaxSize().padding(start = 40.dp, top = 8.dp)) {
@@ -1347,7 +1365,8 @@ fun SettingsTab(vm: MainViewModel) {
                     1 -> CountrySection(vm)
                     2 -> CatalogSection(vm)
                     3 -> SportsSection(vm)
-                    else -> LiveSection(vm)
+                    4 -> LiveSection(vm)
+                    else -> AboutSection(vm)
                 }
             }
         }
