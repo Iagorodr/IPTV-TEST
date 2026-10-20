@@ -265,7 +265,7 @@ fun LoginScreen(vm: MainViewModel) {
 }
 
 @Composable
-private fun fieldColors() = OutlinedTextFieldDefaults.colors(
+internal fun fieldColors() = OutlinedTextFieldDefaults.colors(
     focusedTextColor = TextMain,
     unfocusedTextColor = TextMain,
     cursorColor = Accent,
@@ -1328,6 +1328,58 @@ private fun SideItem(text: String, selected: Boolean, onFocus: () -> Unit) {
     }
 }
 
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+private fun ProfileSection(vm: MainViewModel) {
+    var name by rememberSaveable { mutableStateOf(vm.user.profileName) }
+    var lang by rememberSaveable { mutableStateOf(vm.user.profileLang.ifEmpty { detectLang(vm.deviceLang()) }) }
+    var saved by remember { mutableStateOf(false) }
+    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(end = 40.dp, top = 6.dp, bottom = 30.dp)) {
+        item {
+            SectionTitle("Perfil", "Seu nome, idioma e gêneros preferidos.")
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(
+                value = name,
+                onValueChange = {
+                    name = it
+                    saved = false
+                },
+                label = { Text("Seu nome") },
+                singleLine = true,
+                colors = fieldColors(),
+                modifier = Modifier.width(360.dp),
+            )
+            Spacer(Modifier.height(12.dp))
+            Text("Idioma", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.height(6.dp))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                for ((tag, label) in APP_LANGS) ChipItem(text = label, selected = lang == tag) {
+                    lang = tag
+                    saved = false
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                TvButton(text = "Salvar", primary = true) {
+                    if (name.isNotBlank()) {
+                        vm.updateProfile(name, lang)
+                        saved = true
+                    }
+                }
+                if (saved) Text("Salvo.", color = Good, fontSize = 13.sp)
+            }
+            Spacer(Modifier.height(20.dp))
+            Text("Gêneros preferidos (até 3)", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.height(6.dp))
+            GenreChips(vm)
+            Spacer(Modifier.height(20.dp))
+            Text("Times e ligas favoritos", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.height(6.dp))
+            TvButton(text = "Escolher times") { vm.openPicker() }
+        }
+    }
+}
+
 @Composable
 private fun AboutSection(vm: MainViewModel) {
     Column(modifier = Modifier.fillMaxSize().padding(end = 40.dp, top = 6.dp)) {
@@ -1349,7 +1401,7 @@ private fun AboutSection(vm: MainViewModel) {
 @Composable
 fun SettingsTab(vm: MainViewModel) {
     var section by rememberSaveable { mutableIntStateOf(0) }
-    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo", "Sobre")
+    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo", "Perfil", "Sobre")
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         Row(modifier = Modifier.fillMaxSize().padding(start = 40.dp, top = 8.dp)) {
@@ -1366,6 +1418,7 @@ fun SettingsTab(vm: MainViewModel) {
                     2 -> CatalogSection(vm)
                     3 -> SportsSection(vm)
                     4 -> LiveSection(vm)
+                    5 -> ProfileSection(vm)
                     else -> AboutSection(vm)
                 }
             }

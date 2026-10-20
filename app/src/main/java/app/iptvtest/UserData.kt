@@ -79,6 +79,17 @@ class UserData(ctx: Context) {
     /** Países/idiomas que a pessoa quer ver (vazio = todos). */
     val countryFilter = HashSet<String>()
 
+    /** Perfil da primeira abertura: nome, idioma (ex.: "pt-BR") e se já passou pelas perguntas. */
+    var profileName: String = ""
+        private set
+    var profileLang: String = ""
+        private set
+    var onboarded: Boolean = false
+        private set
+
+    /** Até 3 gêneros preferidos de filmes e séries: aparecem primeiro nos destaques e nas prateleiras. */
+    val favGenres = ArrayList<String>()
+
     init {
         load()
     }
@@ -91,6 +102,11 @@ class UserData(ctx: Context) {
             autoSwitch = sp.getBoolean("auto", true)
             tzId = sp.getString("tz", "") ?: ""
             bcCountry = sp.getString("bc", "BR") ?: "BR"
+            profileName = sp.getString("pname", "") ?: ""
+            profileLang = sp.getString("plang", "") ?: ""
+            onboarded = sp.getBoolean("onboarded", false)
+            favGenres.clear()
+            readStrings("favgen", favGenres)
             countryFilter.clear()
             countryFilter.addAll(sp.getStringSet("cfilter", emptySet()) ?: emptySet())
             readStrings("mylist", myList)
@@ -385,6 +401,25 @@ class UserData(ctx: Context) {
     fun setBcCountry(v: String) {
         bcCountry = v
         sp.edit().putString("bc", v).apply()
+    }
+
+    fun setProfile(name: String, lang: String) {
+        profileName = name.trim()
+        profileLang = lang
+        sp.edit().putString("pname", profileName).putString("plang", lang).apply()
+    }
+
+    fun setOnboarded() {
+        onboarded = true
+        sp.edit().putBoolean("onboarded", true).apply()
+    }
+
+    fun saveFavGenres(list: List<String>) {
+        favGenres.clear()
+        favGenres.addAll(list.take(3))
+        val a = JSONArray()
+        for (g in favGenres) a.put(g)
+        sp.edit().putString("favgen", a.toString()).apply()
     }
 
     fun setTzId(v: String) {

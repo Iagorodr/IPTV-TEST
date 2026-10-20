@@ -19,8 +19,12 @@ import kotlin.concurrent.thread
 class PhoneLoginServer(
     private val token: String,
     private val appName: String,
+    private val page: Page = Page.LOGIN,
     private val onSubmit: (mode: String, fields: Map<String, String>) -> Unit,
 ) {
+    /** LOGIN: dados da lista. ACCESS: pedido de liberação (nome, e-mail e telefone). */
+    enum class Page { LOGIN, ACCESS }
+
     private var server: ServerSocket? = null
 
     @Volatile
@@ -97,13 +101,13 @@ class PhoneLoginServer(
                     return
                 }
                 onSubmit(f["modo"] ?: "", f)
-                send(sock, 200, simplePage("Pronto! Olhe a TV. Se der algum erro, a TV mostra o motivo e você pode enviar de novo.", backLink = true))
+                send(sock, 200, simplePage(if (page == Page.ACCESS) "Pedido enviado! Olhe a TV." else "Pronto! Olhe a TV. Se der algum erro, a TV mostra o motivo e você pode enviar de novo.", backLink = page != Page.ACCESS))
             } else if (method == "GET" && path == "/") {
                 if (query["k"] != token) {
                     send(sock, 403, simplePage("Aponte a câmera do celular para o QR code que aparece na TV."))
                     return
                 }
-                send(sock, 200, formPage())
+                send(sock, 200, if (page == Page.ACCESS) accessPage() else formPage())
             } else {
                 send(sock, 404, simplePage("Página não encontrada."))
             }
@@ -202,6 +206,16 @@ class PhoneLoginServer(
     private fun simplePage(msg: String, backLink: Boolean = false): String =
         head() + "<p>" + msg + "</p>" +
             (if (backLink) "<p><a href=\"/?k=$token\">Enviar outra lista</a></p>" else "") + "</body></html>"
+
+    private fun accessPage(): String =
+        head() +
+            "<p>Peça a liberação do app. Seus dados vão para quem desenvolve o app, só para ele entrar em contato com você.</p>" +
+            "<form class=\"card\" method=\"post\" action=\"/enviar\"><h2>Pedir liberação</h2>" +
+            "<input type=\"hidden\" name=\"k\" value=\"$token\"><input type=\"hidden\" name=\"modo\" value=\"access\">" +
+            "<label>Nome</label><input name=\"nome\" autocomplete=\"name\">" +
+            "<label>E-mail</label><input name=\"email\" type=\"email\" inputmode=\"email\" autocapitalize=\"off\" autocomplete=\"email\">" +
+            "<label>Telefone</label><input name=\"tel\" type=\"tel\" inputmode=\"tel\" autocomplete=\"tel\">" +
+            "<button type=\"submit\">Enviar pedido</button></form></body></html>"
 
     private fun formPage(): String =
         head() +

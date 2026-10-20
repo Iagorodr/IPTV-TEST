@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -110,7 +111,7 @@ fun App(vm: MainViewModel = viewModel()) {
 
     // Voltar no Início, sem nenhuma outra tela aberta, pergunta se quer sair do app
     var askExit by remember { mutableStateOf(false) }
-    BackHandler(enabled = account != null && playing == null) {
+    BackHandler(enabled = (account != null && playing == null && !vm.showWelcome) || vm.pickerOpen) {
         if (vm.canGoBack) vm.back() else askExit = true
     }
     if (askExit && account != null && playing == null) {
@@ -171,6 +172,10 @@ fun App(vm: MainViewModel = viewModel()) {
     Surface(modifier = Modifier.fillMaxSize().background(AppBackground), color = Color.Transparent, contentColor = TextMain) {
         when {
             vm.blocked -> BlockedScreen(vm)
+            vm.showWelcome && vm.pickerOpen -> holder.SaveableStateProvider("picker") {
+                TeamPickerScreen(vm)
+            }
+            vm.showWelcome -> WelcomeScreen(vm)
             account == null -> LoginScreen(vm)
             vm.addingList -> LoginScreen(vm)
             // key(): ao trocar de praça (Globo SP → Globo Rio) o player é recriado com o novo canal
@@ -299,7 +304,12 @@ private fun DueReminderStrip(vm: MainViewModel, r: Reminder) {
 private fun BlockedScreen(vm: MainViewModel) {
     val first = remember { FocusRequester() }
     val ctx = LocalContext.current
-    LaunchedEffect(Unit) {
+    var form by rememberSaveable { mutableStateOf(false) }
+    var name by rememberSaveable { mutableStateOf(vm.user.profileName) }
+    var email by rememberSaveable { mutableStateOf("") }
+    var phone by rememberSaveable { mutableStateOf("") }
+    val focus = androidx.compose.ui.platform.LocalFocusManager.current
+    LaunchedEffect(form) {
         delay(80)
         try {
             first.requestFocus()
@@ -307,12 +317,21 @@ private fun BlockedScreen(vm: MainViewModel) {
             // o botão ainda não estava na tela
         }
     }
-    BackHandler(enabled = true) { (ctx as? android.app.Activity)?.finish() }
+    // o QR code do pedido só fica ligado com o formulário aberto
+    LaunchedEffect(form) {
+        if (form) vm.startPhoneLogin(PhoneLoginServer.Page.ACCESS) else vm.stopPhoneLogin()
+    }
+    androidx.compose.runtime.DisposableEffect(Unit) {
+        onDispose { vm.stopPhoneLogin() }
+    }
+    BackHandler(enabled = true) {
+        if (form) form = false else (ctx as? android.app.Activity)?.finish()
+    }
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.5f, sunY = 0.3f, sunR = 0.17f)
-        Column(modifier = Modifier.width(520.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = Modifier.width(if (form) 760.dp else 520.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(stringResource(R.string.app_name), color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.Light, letterSpacing = 6.sp)
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(22.dp))
             Text(
                 if (vm.pendingApproval) "Aguardando liberação" else "Acesso suspenso",
                 color = Accent,
@@ -320,22 +339,94 @@ private fun BlockedScreen(vm: MainViewModel) {
                 fontWeight = FontWeight.Bold,
             )
             Spacer(Modifier.height(8.dp))
-            Text(
-                if (vm.pendingApproval) {
-                    "Este aparelho ainda não foi liberado. Passe o código abaixo a quem te enviou o app e depois toque em Tentar de novo."
-                } else {
-                    "O acesso deste aparelho ao app foi pausado. Fale com quem te passou o app e informe o código abaixo."
-                },
-                color = TextMain,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(Modifier.height(14.dp))
-            Text("Código: " + vm.deviceCode(), color = Muted, fontSize = 14.sp, letterSpacing = 2.sp)
-            Spacer(Modifier.height(22.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                TvButton(text = "Tentar de novo", primary = true, focusRequester = first) { vm.retryControl() }
-                TvButton(text = "Sair") { (ctx as? android.app.Activity)?.finish() }
+            if (!form) {
+                Text(
+                    if (vm.requestState == 2) {
+                        "Recebemos o seu pedido. Ele está em análise e a gente entra em contato."
+                    } else if (vm.pendingApproval) {
+                        "Este aparelho ainda não foi liberado. Você pode pedir a liberação."
+                    } else {
+                        "O acesso deste aparelho ao app foi pausado. Você pode pedir a liberação."
+                    },
+                    color = TextMain,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(Modifier.height(12.dp))
+                Text("Código: " + vm.deviceCode(), color = Muted, fontSize = 14.sp, letterSpacing = 2.sp)
+                Spacer(Modifier.height(22.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    if (vm.requestState != 2) {
+                        TvButton(text = "Pedir liberação", primary = true, focusRequester = first) { form = true }
+                        TvButton(text = "Tentar de novo") { vm.retryControl() }
+                    } else {
+                        TvButton(text = "Tentar de novo", primary = true, focusRequester = first) { vm.retryControl() }
+                    }
+                    TvButton(text = "Sair") { (ctx as? android.app.Activity)?.finish() }
+                }
+            } else if (vm.requestState == 2) {
+                Text("Pedido enviado! Ele está em análise e a gente entra em contato.", color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
+                Spacer(Modifier.height(18.dp))
+                TvButton(text = "Voltar", primary = true, focusRequester = first) { form = false }
+            } else {
+                Text(
+                    "Seus dados vão só para quem desenvolve o app, para ele entrar em contato. Preencha aqui ou pelo celular.",
+                    color = Muted,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(Modifier.height(12.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(24.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        androidx.compose.material3.OutlinedTextField(
+                            value = name, onValueChange = { name = it }, label = { Text("Nome") }, singleLine = true,
+                            colors = fieldColors(), modifier = Modifier.fillMaxWidth(),
+                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Next),
+                            keyboardActions = androidx.compose.foundation.text.KeyboardActions(onNext = { focus.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }),
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        androidx.compose.material3.OutlinedTextField(
+                            value = email, onValueChange = { email = it }, label = { Text("E-mail") }, singleLine = true,
+                            colors = fieldColors(), modifier = Modifier.fillMaxWidth(),
+                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                                keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
+                                imeAction = androidx.compose.ui.text.input.ImeAction.Next,
+                            ),
+                            keyboardActions = androidx.compose.foundation.text.KeyboardActions(onNext = { focus.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }),
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        androidx.compose.material3.OutlinedTextField(
+                            value = phone, onValueChange = { phone = it }, label = { Text("Telefone") }, singleLine = true,
+                            colors = fieldColors(), modifier = Modifier.fillMaxWidth(),
+                            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                                keyboardType = androidx.compose.ui.text.input.KeyboardType.Phone,
+                                imeAction = androidx.compose.ui.text.input.ImeAction.Done,
+                            ),
+                            keyboardActions = androidx.compose.foundation.text.KeyboardActions(onDone = { focus.clearFocus() }),
+                        )
+                    }
+                    val url = vm.phoneUrl
+                    if (url != null) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            QrCode(text = url, modifier = Modifier.size(140.dp))
+                            Spacer(Modifier.height(6.dp))
+                            Text("Ou aponte a câmera do celular", color = Muted, fontSize = 11.sp)
+                        }
+                    }
+                }
+                Spacer(Modifier.height(14.dp))
+                if (vm.requestState == 3) {
+                    Text("Não consegui enviar. Preencha tudo e confira a internet.", color = ErrorColor, fontSize = 13.sp)
+                    Spacer(Modifier.height(8.dp))
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    TvButton(
+                        text = if (vm.requestState == 1) "Enviando..." else "Enviar pedido",
+                        primary = true,
+                        focusRequester = first,
+                    ) { vm.sendAccessRequest(name, email, phone) }
+                    TvButton(text = "Voltar") { form = false }
+                }
             }
         }
     }

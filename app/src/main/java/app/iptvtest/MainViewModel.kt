@@ -82,13 +82,69 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun checkControl(newSession: Boolean) {
         viewModelScope.launch {
-            val r = Control.ping(appCtx, newSession) ?: return@launch
+            val r = Control.ping(
+                appCtx,
+                newSession,
+                name = user.profileName,
+                lang = user.profileLang,
+                tz = user.tzId.ifEmpty { java.util.TimeZone.getDefault().id },
+                kids = false,
+            ) ?: return@launch
             accessStatus = r.status
+            if (r.status == "active") Control.clearRequest(appCtx)
             if (r.status != "active") {
                 playing = null
             }
             val n = r.notice
             notice = if (n != null && r.noticeId > Control.lastSeenNotice(appCtx)) r.noticeId to n else null
+        }
+    }
+
+    // ---- primeira abertura: 1 = perguntas obrigatórias (nome, idioma, fuso), 2 = opcionais (times e gêneros)
+    var welcomeStage by mutableIntStateOf(0)
+        private set
+    val showWelcome: Boolean get() = welcomeStage != 0
+
+    fun deviceLang(): String = java.util.Locale.getDefault().toLanguageTag()
+
+    /** Guarda nome, idioma e fuso (as respostas obrigatórias) e avisa o servidor. */
+    fun saveProfile(name: String, lang: String, tzId: String) {
+        user.setProfile(name, lang)
+        val deviceTz = java.util.TimeZone.getDefault().id
+        setTimeZone(if (tzId == deviceTz) "" else tzId)
+        user.setOnboarded()
+        welcomeStage = 2
+        checkControl(false)
+    }
+
+    /** Troca nome e idioma depois (Ajustes → Perfil). */
+    fun updateProfile(name: String, lang: String) {
+        user.setProfile(name, lang)
+        checkControl(false)
+    }
+
+    fun finishWelcome() {
+        welcomeStage = 0
+    }
+
+    fun setFavGenres(list: List<String>) {
+        user.saveFavGenres(list)
+        catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
+        dataRev++
+    }
+
+    // ---- pedido de liberação (quem foi bloqueado): 0 = nada, 1 = enviando, 2 = em análise, 3 = não deu
+    var requestState by mutableIntStateOf(if (Control.requestedAt(app) > 0L) 2 else 0)
+        private set
+
+    fun sendAccessRequest(name: String, email: String, phone: String) {
+        if (name.isBlank() || email.isBlank() || phone.isBlank()) {
+            requestState = 3
+            return
+        }
+        requestState = 1
+        viewModelScope.launch {
+            requestState = if (Control.requestAccess(appCtx, name, email, phone)) 2 else 3
         }
     }
 
@@ -216,6 +272,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch { BroadcastStore.refresh(appCtx) }
         if (store.agent.isNotEmpty()) USER_AGENT = store.agent
         accessStatus = Control.cachedStatus(appCtx)
+        welcomeStage = if (user.onboarded) 0 else 1
         checkControl(true)
         controlJob = viewModelScope.launch {
             while (true) {
@@ -307,7 +364,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // ---- login pelo celular (QR code)
 
     /** Abre o servidorzinho da rede local e mostra o QR code. Chamado quando a pessoa abre a aba "Pelo celular". */
-    fun startPhoneLogin() {
+    fun startPhoneLogin(page: PhoneLoginServer.Page = PhoneLoginServer.Page.LOGIN) {
         if (phoneServer != null) return
         phoneMsg = null
         val ip = PhoneLoginServer.localIp()
@@ -317,7 +374,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         val token = PhoneLoginServer.newToken()
-        val srv = PhoneLoginServer(token, getApplication<Application>().getString(R.string.app_name)) { mode, f ->
+        val srv = PhoneLoginServer(token, getApplication<Application>().getString(R.string.app_name), page) { mode, f ->
             viewModelScope.launch { onPhoneSubmit(mode, f) }
         }
         if (!srv.start()) {
@@ -337,6 +394,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun onPhoneSubmit(mode: String, f: Map<String, String>) {
+        if (mode == "access") {
+            sendAccessRequest(f["nome"] ?: "", f["email"] ?: "", f["tel"] ?: "")
+            return
+        }
         phoneMsg = "Recebido do celular. Entrando..."
         if (mode == "m3u") {
             loginM3u(f["link"] ?: "")
@@ -632,12 +693,21 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         titleIndex = built.index
         channelIndex = chIdx
         allTitles = built.all
-        heroAll = built.featured.shuffled(java.util.Random(seed))
-        heroMovies = built.featuredMovies.shuffled(java.util.Random(seed + 1))
-        heroSeries = built.featuredSeries.shuffled(java.util.Random(seed + 2))
-        homeShelves = built.home
-        movieShelves = built.movies
-        seriesShelves = built.series
+        val fg = user.favGenres.toList()
+        fun favFirst(l: List<Title>): List<Title> =
+            if (fg.isEmpty()) l else l.sortedByDescending { t -> t.genres.count { it in fg } }
+        fun favShelves(l: List<Shelf>): List<Shelf> {
+            if (fg.isEmpty()) return l
+            val head = l.filter { it.name == "Lançamentos" || it.name == "Adicionados recentemente" }
+            val fav = l.filter { it.name in fg }
+            return head + fav + l.filter { it !in head && it !in fav }
+        }
+        heroAll = favFirst(built.featured.shuffled(java.util.Random(seed)))
+        heroMovies = favFirst(built.featuredMovies.shuffled(java.util.Random(seed + 1)))
+        heroSeries = favFirst(built.featuredSeries.shuffled(java.util.Random(seed + 2)))
+        homeShelves = favShelves(built.home)
+        movieShelves = favShelves(built.movies)
+        seriesShelves = favShelves(built.series)
         catalog = full
         dataRev++
     }
