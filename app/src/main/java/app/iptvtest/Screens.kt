@@ -357,6 +357,57 @@ private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
     }
 }
 
+/** Troca rápida Normal/Infantil: cápsula colorida com carinha, diferente das abas de texto. */
+@Composable
+private fun KidsSwitch(on: Boolean, onClick: () -> Unit) {
+    val kidA = Color(0xFFFFB02E)
+    val kidB = Color(0xFFFF6B8B)
+    FocusBox(
+        shape = RoundedCornerShape(20.dp),
+        focusScale = 1f,
+        onClick = onClick,
+    ) { focused ->
+        Row(
+            modifier = Modifier
+                .background(
+                    if (on) androidx.compose.ui.graphics.Brush.horizontalGradient(listOf(kidA, kidB))
+                    else androidx.compose.ui.graphics.Brush.horizontalGradient(
+                        listOf(if (focused) kidA.copy(alpha = 0.28f) else kidA.copy(alpha = 0.14f), if (focused) kidB.copy(alpha = 0.28f) else kidB.copy(alpha = 0.14f)),
+                    ),
+                )
+                .border(1.5.dp, if (on) Color.Transparent else kidA.copy(alpha = if (focused) 0.95f else 0.65f), RoundedCornerShape(20.dp))
+                .padding(horizontal = 14.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val face = if (on) Color(0xFF3A1A00) else kidA
+            androidx.compose.foundation.Canvas(modifier = Modifier.size(16.dp)) {
+                val w = size.minDimension
+                val st = w * 0.1f
+                drawCircle(color = face, radius = w * 0.45f, style = androidx.compose.ui.graphics.drawscope.Stroke(width = st))
+                drawCircle(color = face, radius = w * 0.06f, center = androidx.compose.ui.geometry.Offset(w * 0.36f, w * 0.40f))
+                drawCircle(color = face, radius = w * 0.06f, center = androidx.compose.ui.geometry.Offset(w * 0.64f, w * 0.40f))
+                drawArc(
+                    color = face,
+                    startAngle = 20f,
+                    sweepAngle = 140f,
+                    useCenter = false,
+                    topLeft = androidx.compose.ui.geometry.Offset(w * 0.30f, w * 0.38f),
+                    size = androidx.compose.ui.geometry.Size(w * 0.40f, w * 0.30f),
+                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = st, cap = androidx.compose.ui.graphics.StrokeCap.Round),
+                )
+            }
+            Spacer(Modifier.width(7.dp))
+            Text(
+                text = if (on) "Sair do infantil" else "Infantil",
+                color = if (on) Color(0xFF3A1A00) else kidA,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+            )
+        }
+    }
+}
+
 /** Botão só com ícone (lupa). */
 @Composable
 private fun NavIcon(selected: Boolean, onClick: () -> Unit, icon: @Composable (Color) -> Unit) {
@@ -421,7 +472,7 @@ fun TopNav(vm: MainViewModel) {
             CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(12.dp))
         }
-        NavItem(if (vm.user.kidsMode) "Sair do infantil" else "Infantil", vm.user.kidsMode) { vm.setKids(!vm.user.kidsMode) }
+        KidsSwitch(vm.user.kidsMode) { vm.setKids(!vm.user.kidsMode) }
         Spacer(Modifier.width(8.dp))
         NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
     }
