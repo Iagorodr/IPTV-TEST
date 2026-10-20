@@ -282,9 +282,17 @@ fun LoadingScreen(vm: MainViewModel) {
             modifier = Modifier.width(560.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(Modifier.height(150.dp))
-            Text(stringResource(R.string.app_name), color = Accent, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(120.dp))
+            Text(
+                stringResource(R.string.app_name),
+                color = TextMain,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Light,
+                letterSpacing = 8.sp,
+            )
+            Spacer(Modifier.height(10.dp))
+            Box(Modifier.width(36.dp).height(2.dp).background(Accent))
+            Spacer(Modifier.height(36.dp))
             val err = vm.loadError
             if (err != null) {
                 Text("Não foi possível carregar o catálogo", color = ErrorColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -296,9 +304,13 @@ fun LoadingScreen(vm: MainViewModel) {
                     TvButton(text = "Sair da conta") { vm.logout() }
                 }
             } else {
-                CircularProgressIndicator(color = Accent)
-                Spacer(Modifier.height(16.dp))
-                Text(vm.loadMsg ?: "Preparando...", color = TextMain, fontSize = 16.sp, textAlign = TextAlign.Center)
+                androidx.compose.material3.LinearProgressIndicator(
+                    modifier = Modifier.width(200.dp).height(2.dp),
+                    color = Accent,
+                    trackColor = Color(0x22FFF3EC),
+                )
+                Spacer(Modifier.height(18.dp))
+                Text(vm.loadMsg ?: "Preparando...", color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(6.dp))
                 Text(
                     "Isso só acontece na primeira vez: depois o catálogo fica guardado na TV e abre na hora.",

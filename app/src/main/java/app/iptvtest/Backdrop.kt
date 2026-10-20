@@ -10,15 +10,14 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 
 /**
- * A cena da marca: um sol salmão com brilho atrás de duas camadas de montanhas, desenhada só com formas
- * (não depende de imagem). Aparece no login, na abertura e quando um destaque não tem capa.
+ * Fundo da marca: dois brilhos suaves (salmão e vinho) sobre o azul-noite, sem formas duras.
+ * Aparece no login, na abertura e quando um destaque não tem capa.
  *
- * [sunX] e [sunY] são frações da tela (0 a 1) para o centro do sol; [sunR] é o raio como fração da altura.
+ * [sunX] e [sunY] são frações da tela (0 a 1) para o centro do brilho principal; [sunR] é o raio como fração da altura.
+ * [mountains] ficou só por compatibilidade e não faz nada.
  */
 @Composable
 fun SunBackdrop(
@@ -26,50 +25,34 @@ fun SunBackdrop(
     sunX: Float = 0.76f,
     sunY: Float = 0.36f,
     sunR: Float = 0.2f,
-    mountains: Boolean = true,
+    @Suppress("UNUSED_PARAMETER") mountains: Boolean = true,
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
         val w = size.width
         val h = size.height
         val c = Offset(w * sunX, h * sunY)
-        val r = h * sunR
-        // brilho
+        val r = h * (sunR * 4.2f + 0.25f)
         drawCircle(
             brush = Brush.radialGradient(
-                colors = listOf(Accent.copy(alpha = 0.55f), Accent.copy(alpha = 0.2f), Color.Transparent),
+                colors = listOf(Accent.copy(alpha = 0.20f), Accent.copy(alpha = 0.07f), Color.Transparent),
                 center = c,
-                radius = r * 2.6f,
-            ),
-            radius = r * 2.6f,
-            center = c,
-        )
-        // sol
-        drawCircle(
-            brush = Brush.verticalGradient(
-                colors = listOf(Accent, Red),
-                startY = c.y - r,
-                endY = c.y + r,
+                radius = r,
             ),
             radius = r,
             center = c,
         )
-        if (mountains) {
-            drawRidge(w, h, 0.42f, Color(0xFF1F2A44), listOf(0f to 0.62f, 0.12f to 0.48f, 0.24f to 0.58f, 0.38f to 0.36f, 0.52f to 0.55f, 0.66f to 0.40f, 0.8f to 0.58f, 0.92f to 0.46f, 1f to 0.56f))
-            drawRidge(w, h, 0.42f, Bg, listOf(0f to 0.78f, 0.18f to 0.66f, 0.34f to 0.76f, 0.55f to 0.60f, 0.74f to 0.74f, 0.9f to 0.64f, 1f to 0.72f))
-        }
+        val c2 = Offset(w * (1f - sunX * 0.6f), h * 1.02f)
+        val r2 = h * 0.9f
+        drawCircle(
+            brush = Brush.radialGradient(
+                colors = listOf(Red.copy(alpha = 0.22f), Color.Transparent),
+                center = c2,
+                radius = r2,
+            ),
+            radius = r2,
+            center = c2,
+        )
     }
-}
-
-/** Uma serra: [top] é a fração da altura onde a faixa começa; os pontos são (x em fração, y em fração da faixa). */
-private fun DrawScope.drawRidge(w: Float, h: Float, top: Float, color: Color, pts: List<Pair<Float, Float>>) {
-    val y0 = h * top
-    val bandH = h - y0
-    val path = Path()
-    path.moveTo(0f, h)
-    for ((fx, fy) in pts) path.lineTo(w * fx, y0 + bandH * fy)
-    path.lineTo(w, h)
-    path.close()
-    drawPath(path, color)
 }
 
 /**

@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shape
@@ -78,7 +79,8 @@ fun FocusBox(
     content: @Composable BoxScope.(Boolean) -> Unit,
 ) {
     var focused by remember { mutableStateOf(false) }
-    val scale by animateFloatAsState(targetValue = if (focused) focusScale else 1f, label = "focusScale")
+    val scale by animateFloatAsState(targetValue = if (focused) focusScale.coerceAtMost(1.012f) else 1f, label = "focusScale")
+    val ring by androidx.compose.animation.animateColorAsState(if (focused) FocusRing else Color.Transparent, androidx.compose.animation.core.tween(140), label = "ring")
     val requesterModifier = if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier
     Box(
         modifier = modifier
@@ -88,7 +90,7 @@ fun FocusBox(
             }
             .then(requesterModifier)
             .onFocusChanged { focused = it.isFocused }
-            .border(width = 2.dp, color = if (focused) FocusRing else Color.Transparent, shape = shape)
+            .border(width = 2.dp, color = ring, shape = shape)
             .clip(shape)
             .clickable(onClick = onClick),
     ) {
@@ -114,16 +116,21 @@ fun TvButton(
         Box(
             modifier = Modifier
                 .background(
-                    if (primary) Red else if (focused) PanelAlt else if (selected) PanelAlt else Panel,
+                    if (primary) Brush.horizontalGradient(listOf(Color(0xFFD02338), Color(0xFF9E1626)))
+                    else Brush.horizontalGradient(
+                        listOf(if (focused || selected) PanelAlt else Panel, if (focused || selected) PanelAlt else Panel.copy(alpha = 0.8f)),
+                    ),
                 )
-                .padding(horizontal = 20.dp, vertical = 10.dp),
+                .then(if (!primary) Modifier.border(1.dp, Color(0x1FFFF3EC), RoundedCornerShape(24.dp)) else Modifier)
+                .padding(horizontal = 22.dp, vertical = 10.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = text,
                 color = if (primary) Color.White else TextMain,
                 fontSize = 15.sp,
-                fontWeight = if (primary || selected || focused) FontWeight.Bold else FontWeight.Normal,
+                fontWeight = FontWeight.SemiBold,
+                letterSpacing = 0.3.sp,
                 maxLines = 1,
             )
         }
