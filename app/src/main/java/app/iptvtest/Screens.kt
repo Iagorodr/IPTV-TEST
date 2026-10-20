@@ -399,6 +399,8 @@ private fun BrandButton(selected: Boolean, onClick: () -> Unit) {
 /** Menu do topo: sem faixa nem linha, solto sobre o fundo em degradê. */
 @Composable
 fun TopNav(vm: MainViewModel) {
+    // lê a versão dos dados para o menu se refazer quando o modo infantil muda
+    @Suppress("UNUSED_VARIABLE") val rev = vm.dataRev
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -409,7 +411,7 @@ fun TopNav(vm: MainViewModel) {
         BrandButton(vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
         Spacer(Modifier.width(16.dp))
         NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
-        NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
+        if (!vm.user.kidsMode) NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
         NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
         NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
         NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
@@ -419,6 +421,8 @@ fun TopNav(vm: MainViewModel) {
             CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(12.dp))
         }
+        NavItem(if (vm.user.kidsMode) "Sair do infantil" else "Infantil", vm.user.kidsMode) { vm.setKids(!vm.user.kidsMode) }
+        Spacer(Modifier.width(8.dp))
         NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
     }
 }

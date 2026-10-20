@@ -90,6 +90,10 @@ class UserData(ctx: Context) {
     /** Até 3 gêneros preferidos de filmes e séries: aparecem primeiro nos destaques e nas prateleiras. */
     val favGenres = ArrayList<String>()
 
+    /** Modo infantil ligado: só conteúdo para crianças. */
+    var kidsMode: Boolean = false
+        private set
+
     init {
         load()
     }
@@ -105,6 +109,7 @@ class UserData(ctx: Context) {
             profileName = sp.getString("pname", "") ?: ""
             profileLang = sp.getString("plang", "") ?: ""
             onboarded = sp.getBoolean("onboarded", false)
+            kidsMode = sp.getBoolean("kids", false)
             favGenres.clear()
             readStrings("favgen", favGenres)
             countryFilter.clear()
@@ -412,6 +417,11 @@ class UserData(ctx: Context) {
     fun setOnboarded() {
         onboarded = true
         sp.edit().putBoolean("onboarded", true).apply()
+    }
+
+    fun setKids(on: Boolean) {
+        kidsMode = on
+        sp.edit().putBoolean("kids", on).apply()
     }
 
     fun saveFavGenres(list: List<String>) {

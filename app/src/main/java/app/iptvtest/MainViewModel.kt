@@ -88,7 +88,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 name = user.profileName,
                 lang = user.profileLang,
                 tz = user.tzId.ifEmpty { java.util.TimeZone.getDefault().id },
-                kids = false,
+                kids = user.kidsMode,
             ) ?: return@launch
             accessStatus = r.status
             if (r.status == "active") Control.clearRequest(appCtx)
@@ -643,6 +643,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
     }
 
+    /** Liga ou desliga o modo infantil (troca rápida no menu do topo; sem PIN). */
+    fun setKids(on: Boolean) {
+        if (user.kidsMode == on) return
+        user.setKids(on)
+        if (on && tab == Tab.GAMES) tab = Tab.HOME
+        catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
+        dataRev++
+        checkControl(false)
+    }
+
     /** Escolhe os países/idiomas que aparecem (vazio = todos) e refaz as telas. */
     fun setCountryFilter(sel: Set<String>) {
         user.setCountryFilter(sel)
@@ -663,7 +673,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private suspend fun applyCatalog(full: Catalog) {
-        val c = withContext(Dispatchers.Default) { Countries.filter(full, user.countryFilter) }
+        val c = withContext(Dispatchers.Default) {
+            val f = Countries.filter(full, user.countryFilter)
+            if (user.kidsMode) Kids.filter(f) else f
+        }
         val seed = mixSeed
         val built = withContext(Dispatchers.Default) { Shelves.buildAll(c, seed) }
         val chIdx = HashMap<String, Channel>(c.channels.size * 2)
