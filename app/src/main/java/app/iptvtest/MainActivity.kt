@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -116,7 +117,9 @@ fun App(vm: MainViewModel = viewModel()) {
     }
     if (askExit && account != null && playing == null) {
         val stay = remember { androidx.compose.ui.focus.FocusRequester() }
+        val leave = remember { androidx.compose.ui.focus.FocusRequester() }
         LaunchedEffect(Unit) {
+            delay(60)
             try {
                 stay.requestFocus()
             } catch (e: Exception) {
@@ -128,14 +131,34 @@ fun App(vm: MainViewModel = viewModel()) {
                 modifier = Modifier
                     .clip(RoundedCornerShape(18.dp))
                     .background(Panel)
-                    .padding(horizontal = 36.dp, vertical = 26.dp),
+                    .padding(horizontal = 40.dp, vertical = 28.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text("Fechar o app?", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(16.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    TvButton(text = "Ficar", primary = true, focusRequester = stay) { askExit = false }
-                    TvButton(text = "Sair") {
+                Spacer(Modifier.height(18.dp))
+                // esquerda/direita levam direto de um botão ao outro (a navegação automática falhava dentro do pop-up)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    modifier = Modifier.onPreviewKeyEvent { ev ->
+                        if (ev.type != androidx.compose.ui.input.key.KeyEventType.KeyDown) {
+                            false
+                        } else {
+                            when (ev.key) {
+                                androidx.compose.ui.input.key.Key.DirectionLeft -> {
+                                    try { stay.requestFocus() } catch (e: Exception) { }
+                                    true
+                                }
+                                androidx.compose.ui.input.key.Key.DirectionRight -> {
+                                    try { leave.requestFocus() } catch (e: Exception) { }
+                                    true
+                                }
+                                else -> false
+                            }
+                        }
+                    },
+                ) {
+                    TvButton(text = "Ficar", primary = true, focusRequester = stay, modifier = Modifier.width(120.dp)) { askExit = false }
+                    TvButton(text = "Sair", focusRequester = leave, modifier = Modifier.width(120.dp)) {
                         askExit = false
                         (ctx as? android.app.Activity)?.finish()
                     }

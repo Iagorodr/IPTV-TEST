@@ -430,6 +430,40 @@ fun PlayerScreen(
         panel = null
     }
 
+    // sai do app (Home, YouTube...): pausa o som; ao voltar, retoma (no ao vivo, pulando para o agora)
+    val hostCtx = LocalContext.current
+    DisposableEffect(exo) {
+        var owner: androidx.lifecycle.LifecycleOwner? = null
+        var c: android.content.Context? = hostCtx
+        while (c != null) {
+            if (c is androidx.lifecycle.LifecycleOwner) {
+                owner = c
+                break
+            }
+            c = (c as? android.content.ContextWrapper)?.baseContext
+        }
+        var pausedByUs = false
+        val obs = androidx.lifecycle.LifecycleEventObserver { _, ev ->
+            try {
+                if (ev == androidx.lifecycle.Lifecycle.Event.ON_STOP) {
+                    pausedByUs = exo.playWhenReady
+                    exo.pause()
+                } else if (ev == androidx.lifecycle.Lifecycle.Event.ON_START && pausedByUs) {
+                    pausedByUs = false
+                    if (isLive) {
+                        exo.seekToDefaultPosition()
+                        exo.prepare()
+                    }
+                    exo.play()
+                }
+            } catch (e: Exception) {
+                // player já fechado
+            }
+        }
+        owner?.lifecycle?.addObserver(obs)
+        onDispose { owner?.lifecycle?.removeObserver(obs) }
+    }
+
     // ------------------------------------------------------------------ ciclo de vida do player
 
     DisposableEffect(exo) {
