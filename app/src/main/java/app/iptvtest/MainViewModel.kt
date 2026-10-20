@@ -238,7 +238,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         loginError = null
         viewModelScope.launch {
             try {
-                val r = Connector.m3u(appCtx, link) { loginStatus = it }
+                val r = Connector.m3u(appCtx, link, status = { loginStatus = it })
                 store.agent = if (r.agent == DEFAULT_USER_AGENT) "" else r.agent
                 finishLogin(r.acc, r.api, r.info)
             } catch (e: CancellationException) {
