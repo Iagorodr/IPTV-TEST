@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -105,6 +106,7 @@ fun TvButton(
     selected: Boolean = false,
     primary: Boolean = false,
     focusRequester: FocusRequester? = null,
+    minWidth: androidx.compose.ui.unit.Dp? = null,
     onClick: () -> Unit,
 ) {
     FocusBox(
@@ -115,6 +117,7 @@ fun TvButton(
     ) { focused ->
         Box(
             modifier = Modifier
+                .then(if (minWidth != null) Modifier.widthIn(min = minWidth) else Modifier)
                 .background(
                     if (primary) Brush.horizontalGradient(listOf(Color(0xFFD02338), Color(0xFF9E1626)))
                     else Brush.horizontalGradient(

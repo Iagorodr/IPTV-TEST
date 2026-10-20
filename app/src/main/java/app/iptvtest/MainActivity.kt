@@ -159,8 +159,8 @@ fun App(vm: MainViewModel = viewModel()) {
                         }
                     },
                 ) {
-                    TvButton(text = "Ficar", primary = true, focusRequester = stay, modifier = Modifier.width(120.dp)) { askExit = false }
-                    TvButton(text = "Sair", focusRequester = leave, modifier = Modifier.width(120.dp)) {
+                    TvButton(text = "Ficar", primary = true, focusRequester = stay, minWidth = 120.dp) { askExit = false }
+                    TvButton(text = "Sair", focusRequester = leave, minWidth = 120.dp) {
                         askExit = false
                         (ctx as? android.app.Activity)?.finish()
                     }
