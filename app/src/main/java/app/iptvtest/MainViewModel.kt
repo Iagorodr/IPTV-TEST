@@ -60,6 +60,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var loginBusy by mutableStateOf(false)
         private set
     var loginError by mutableStateOf<String?>(null)
+        private set
     var loginStatus by mutableStateOf<String?>(null)
         private set
 
@@ -240,18 +241,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 val r = Connector.m3u(appCtx, link) { loginStatus = it }
                 store.agent = if (r.agent == DEFAULT_USER_AGENT) "" else r.agent
                 finishLogin(r.acc, r.api, r.info)
-            } catch (e: CancellationException) {
-                        throw e
-                    } catch (e: Exception) {
-                        // não era um servidor Xtream de verdade: segue como lista M3U
-                    }
-                }
-                if (!started) {
-                    val acc = Account("", "", "", link)
-                    val m = M3uApi(appCtx, link)
-                    val info = m.login()
-                    finishLogin(acc, m, info)
-                }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
