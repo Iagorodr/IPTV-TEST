@@ -1162,6 +1162,7 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
 // Ajustes: seção dos times favoritos
 // =========================================================================
 
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun FavTeamsSettings(vm: MainViewModel) {
     Column {
@@ -1177,13 +1178,17 @@ fun FavTeamsSettings(vm: MainViewModel) {
             fontSize = 14.sp,
         )
         Spacer(Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+        androidx.compose.foundation.layout.FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            itemVerticalAlignment = Alignment.CenterVertically,
+        ) {
             TvButton(text = if (vm.favTeams.isEmpty() && vm.favLeagues.isEmpty()) "Escolher times e ligas" else "Trocar times e ligas") { vm.openPicker() }
             for (t in vm.favTeams) {
-                Text("★ " + t.short, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text("★ " + t.short, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, softWrap = false)
             }
             for (l in vm.favLeagues) {
-                Text(SportsData.leagueLabel(l, l), color = Muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(SportsData.leagueLabel(l, l), color = Muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, softWrap = false)
             }
         }
         Spacer(Modifier.height(4.dp))
