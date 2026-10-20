@@ -253,6 +253,11 @@ fun LoginScreen(vm: MainViewModel) {
             if (vm.loginBusy) {
                 Spacer(Modifier.height(14.dp))
                 CircularProgressIndicator(color = Accent)
+                val st = vm.loginStatus
+                if (st != null) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(st, color = Muted, fontSize = 12.sp, textAlign = TextAlign.Center)
+                }
             }
         }
         }

@@ -51,6 +51,13 @@ class AccountStore(context: Context) {
         prefs.edit().putString("lists", arr.toString()).apply()
     }
 
+    /** Identificação (User-Agent) que o provedor aceitou no login. Vazio = a padrão. */
+    var agent: String
+        get() = prefs.getString("agent", "") ?: ""
+        set(v) {
+            prefs.edit().putString("agent", v).apply()
+        }
+
     var active: Int
         get() = prefs.getInt("active", 0)
         set(v) {

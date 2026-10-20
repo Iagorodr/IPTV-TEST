@@ -60,6 +60,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var loginBusy by mutableStateOf(false)
         private set
     var loginError by mutableStateOf<String?>(null)
+    var loginStatus by mutableStateOf<String?>(null)
         private set
 
     // ---- catálogo
@@ -174,6 +175,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         reminders = user.reminders.toList()
         BroadcastStore.load(appCtx, user.bcCountry)
         viewModelScope.launch { BroadcastStore.refresh(appCtx) }
+        if (store.agent.isNotEmpty()) USER_AGENT = store.agent
         val saved = store.lists()
         if (saved.isNotEmpty()) {
             lists = saved
@@ -202,16 +204,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         loginError = null
         viewModelScope.launch {
             try {
-                val acc = Account(server, u, p)
-                val x = XtreamApi(acc)
-                val info = x.login()
-                finishLogin(acc, x, info)
+                val r = Connector.xtream(appCtx, server, u, p) { loginStatus = it }
+                store.agent = if (r.agent == DEFAULT_USER_AGENT) "" else r.agent
+                finishLogin(r.acc, r.api, r.info)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 loginError = friendly(e)
             } finally {
                 loginBusy = false
+                loginStatus = null
             }
         }
     }
@@ -235,15 +237,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         loginError = null
         viewModelScope.launch {
             try {
-                var started = false
-                val xt = ListLink.xtreamFrom(link)
-                if (xt != null) {
-                    try {
-                        val x = XtreamApi(xt)
-                        val info = x.login()
-                        finishLogin(xt, x, info)
-                        started = true
-                    } catch (e: CancellationException) {
+                val r = Connector.m3u(appCtx, link) { loginStatus = it }
+                store.agent = if (r.agent == DEFAULT_USER_AGENT) "" else r.agent
+                finishLogin(r.acc, r.api, r.info)
+            } catch (e: CancellationException) {
                         throw e
                     } catch (e: Exception) {
                         // não era um servidor Xtream de verdade: segue como lista M3U
@@ -263,6 +260,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 loginError = friendly(e)
             } finally {
                 loginBusy = false
+                loginStatus = null
             }
         }
     }
