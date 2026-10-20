@@ -22,7 +22,7 @@ object Control {
     private const val KEY = "sb_publishable_REBiG8eo1E96bSyY1ih1aQ_QxbXS2Li"
 
     /** [status]: "active" (liberado), "pending" (esperando liberação) ou "blocked" (suspenso). */
-    class Reply(val status: String, val notice: String?, val noticeId: Int)
+    class Reply(val status: String, val notice: String?, val noticeId: Int, val noticeSecs: Int = 0)
 
     private fun prefs(ctx: Context) = ctx.getSharedPreferences("iptv_control", Context.MODE_PRIVATE)
 
@@ -129,7 +129,35 @@ object Control {
                 val status = o.optString("status").ifEmpty { "pending" }
                 val notice = if (o.isNull("notice")) null else o.optString("notice").trim().ifEmpty { null }
                 prefs(ctx).edit().putString("status", status).apply()
-                Reply(status, notice, o.optInt("notice_id", 0))
+                Reply(status, notice, o.optInt("notice_id", 0), o.optInt("notice_secs", 0))
+            } finally {
+                conn.disconnect()
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /** Pergunta só o estado e o aviso (leve, sem contar uso): é o que faz o aviso chegar em segundos. */
+    suspend fun poll(ctx: Context): Reply? = withContext(Dispatchers.IO) {
+        try {
+            val body = JSONObject().put("p_id", installId(ctx))
+            val conn = URL(BASE + "poll_notice").openConnection() as HttpURLConnection
+            try {
+                conn.connectTimeout = 6_000
+                conn.readTimeout = 8_000
+                conn.requestMethod = "POST"
+                conn.doOutput = true
+                conn.setRequestProperty("apikey", KEY)
+                conn.setRequestProperty("Content-Type", "application/json")
+                conn.outputStream.use { it.write(body.toString().toByteArray(Charsets.UTF_8)) }
+                if (conn.responseCode !in 200..299) return@withContext null
+                val o = JSONObject(conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() })
+                if (o.isNull("status")) return@withContext null // aparelho ainda não registrado
+                val status = o.optString("status").ifEmpty { "pending" }
+                val notice = if (o.isNull("notice")) null else o.optString("notice").trim().ifEmpty { null }
+                prefs(ctx).edit().putString("status", status).apply()
+                Reply(status, notice, o.optInt("notice_id", 0), o.optInt("notice_secs", 0))
             } finally {
                 conn.disconnect()
             }

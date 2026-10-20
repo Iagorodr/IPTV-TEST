@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -236,7 +237,9 @@ fun App(vm: MainViewModel = viewModel()) {
 
         // aviso de quem desenvolve o app (aparece uma vez por aviso)
         val note = vm.notice
-        if (note != null && !vm.blocked) NoticeDialog(vm, note.second)
+        if (note != null && !vm.blocked) {
+            if (vm.noticeSecs > 0) NoticeBanner(vm, note.first, note.second, vm.noticeSecs) else NoticeDialog(vm, note.second)
+        }
 
         // pop-up do jogo (por cima de qualquer tela, menos do player)
         if (game != null && playing == null && catalog != null) {
@@ -483,6 +486,31 @@ private fun NoticeDialog(vm: MainViewModel, text: String) {
             Text(text, color = TextMain, fontSize = 16.sp, textAlign = TextAlign.Center)
             Spacer(Modifier.height(20.dp))
             TvButton(text = "OK", primary = true, focusRequester = ok) { vm.dismissNotice() }
+        }
+    }
+}
+
+/** Aviso com tempo: faixa no topo, sem tirar o controle do filme ou canal; some sozinho. */
+@Composable
+private fun NoticeBanner(vm: MainViewModel, id: Int, text: String, secs: Int) {
+    LaunchedEffect(id) {
+        delay(secs * 1000L)
+        vm.dismissNotice()
+    }
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+        Column(
+            modifier = Modifier
+                .padding(top = 28.dp)
+                .widthIn(max = 640.dp)
+                .clip(RoundedCornerShape(14.dp))
+                .background(Panel.copy(alpha = 0.96f))
+                .border(1.dp, Accent.copy(alpha = 0.7f), RoundedCornerShape(14.dp))
+                .padding(horizontal = 24.dp, vertical = 14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text("Aviso", color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+            Spacer(Modifier.height(4.dp))
+            Text(text, color = TextMain, fontSize = 16.sp, textAlign = TextAlign.Center)
         }
     }
 }

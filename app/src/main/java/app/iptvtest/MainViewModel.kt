@@ -72,6 +72,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val pendingApproval: Boolean get() = accessStatus == "pending"
     var notice by mutableStateOf<Pair<Int, String>?>(null)
         private set
+
+    /** 0 = fica na tela até a pessoa fechar; maior que 0 = some sozinho depois desses segundos. */
+    var noticeSecs by mutableIntStateOf(0)
+        private set
     @Volatile private var foreground = true
     private var controlJob: Job? = null
 
@@ -90,13 +94,24 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 tz = user.tzId.ifEmpty { java.util.TimeZone.getDefault().id },
                 kids = user.kidsMode,
             ) ?: return@launch
-            accessStatus = r.status
-            if (r.status == "active") Control.clearRequest(appCtx)
-            if (r.status != "active") {
-                playing = null
+            applyReply(r)
+        }
+    }
+
+    private fun applyReply(r: Control.Reply) {
+        accessStatus = r.status
+        if (r.status == "active") Control.clearRequest(appCtx)
+        if (r.status != "active") {
+            playing = null
+        }
+        val n = r.notice
+        if (n != null && r.noticeId > Control.lastSeenNotice(appCtx)) {
+            if (notice?.first != r.noticeId) {
+                notice = r.noticeId to n
+                noticeSecs = r.noticeSecs
             }
-            val n = r.notice
-            notice = if (n != null && r.noticeId > Control.lastSeenNotice(appCtx)) r.noticeId to n else null
+        } else if (notice != null && n == null) {
+            notice = null
         }
     }
 
@@ -278,6 +293,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             while (true) {
                 delay(10 * 60_000L)
                 if (foreground) checkControl(false)
+            }
+        }
+        // a cada 20 s, com o app aberto, vê se chegou aviso (ou bloqueio) novo
+        viewModelScope.launch {
+            while (true) {
+                delay(20_000L)
+                if (foreground) Control.poll(appCtx)?.let { applyReply(it) }
             }
         }
         val saved = store.lists()

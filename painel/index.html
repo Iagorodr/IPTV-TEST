@@ -49,7 +49,12 @@ tr:last-child td{border-bottom:0}
   <h2>Pedidos de liberação</h2>
   <div class="wrap"><table id="reqs"></table></div>
   <h2>Aviso na tela</h2>
-  <div class="row"><input id="msg" placeholder="Texto do aviso" style="flex:1;min-width:220px"><button id="sendAll" class="p">Enviar para todos</button><button id="clearAll">Limpar avisos</button></div>
+  <div class="row">
+    <select id="to"></select>
+    <select id="secs"><option value="5">Some em 5 segundos</option><option value="10">Some em 10 segundos</option><option value="0">Fica até a pessoa fechar</option></select>
+  </div>
+  <div class="row" style="margin-top:8px"><input id="msg" placeholder="Texto do aviso" style="flex:1;min-width:220px"><button id="send" class="p">Enviar agora</button><button id="clearAll">Limpar avisos</button></div>
+  <p class="mut" id="sent" style="font-size:12px;min-height:18px"></p>
   <h2>Aparelhos</h2>
   <div class="wrap"><table id="devs"></table></div>
   <p class="mut" style="font-size:12px">Ativos: usaram nos últimos 7 dias. Frequentes: usaram em 4 ou mais dias dos últimos 14. Os números não são em tempo real: o app avisa a cada 10 minutos.</p>
@@ -75,6 +80,9 @@ async function load(){
 }
 function render(){
   const d=data;
+  const cur=$('to').value;
+  $('to').innerHTML='<option value="">Para todos</option>'+d.aparelhos.map(a=>`<option value="${a.id}">${esc(a.nome||'sem nome')} (${esc(a.codigo)})</option>`).join('');
+  $('to').value=cur;
   $('stamp').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR');
   $('tiles').innerHTML=[['Baixados',d.baixados],['Ativos (7 dias)',d.ativos],['Frequentes',d.frequentes],['Bloqueados',d.bloqueados],['Pedidos em análise',d.pedidos]].map(([a,b])=>`<div class="t"><b>${b}</b><span>${a}</span></div>`).join('');
   $('reqs').innerHTML='<tr><th>Código</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Status</th><th>Data</th><th></th></tr>'+
@@ -90,12 +98,17 @@ document.addEventListener('click',async e=>{
     else if(a==='ok'){await rpc('admin_set_status',{p_id:id,p_status:'active'});}
     else if(a==='no')await rpc('admin_decline',{p_request:Number(b.dataset.r)});
     else if(a==='nm'){const n=window.prompt?prompt('Nome:'):null;if(n==null)return;await rpc('admin_set_name',{p_id:id,p_name:n});}
-    else if(a==='nt'){const n=window.prompt?prompt('Aviso para este aparelho:'):null;if(n==null)return;await rpc('admin_notice',{p_id:id,p_text:n});}
+    else if(a==='nt'){$('to').value=id;$('msg').focus();window.scrollTo({top:$('msg').getBoundingClientRect().top+scrollY-120,behavior:'smooth'});return;}
     await load();
   }catch(x){alert('Erro: '+x.message)}
 });
-$('sendAll').onclick=async()=>{const t=$('msg').value.trim();if(!t)return;try{await rpc('admin_notice',{p_id:null,p_text:t});$('msg').value='';alert('Aviso enviado. Aparece no próximo contato de cada aparelho.')}catch(x){alert(x.message)}};
-$('clearAll').onclick=async()=>{try{await rpc('admin_notice',{p_id:null,p_text:''});alert('Avisos limpos.')}catch(x){alert(x.message)}};
+$('send').onclick=async()=>{
+  const t=$('msg').value.trim();if(!t)return;
+  const to=$('to').value||null;
+  try{await rpc('admin_notice2',{p_id:to,p_text:t,p_secs:Number($('secs').value)});$('msg').value='';
+    $('sent').textContent='Enviado '+new Date().toLocaleTimeString('pt-BR')+'. Chega em até 20 segundos, com o app aberto.'}catch(x){$('sent').textContent='Erro: '+x.message}
+};
+$('clearAll').onclick=async()=>{try{await rpc('admin_notice2',{p_id:null,p_text:'',p_secs:0});$('sent').textContent='Avisos limpos.'}catch(x){$('sent').textContent='Erro: '+x.message}};
 $('refresh').onclick=()=>load().catch(x=>alert(x.message));
 $('out').onclick=()=>{pw='';try{sessionStorage.removeItem('pw')}catch(_){}$('app').hidden=true;$('login').hidden=false;$('pw').value=''};
 async function enter(){
