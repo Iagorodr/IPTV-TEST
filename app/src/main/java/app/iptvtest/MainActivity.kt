@@ -93,8 +93,37 @@ class MainActivity : ComponentActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContent {
             AppTheme {
-                App()
+                androidx.compose.runtime.CompositionLocalProvider(
+                    androidx.compose.foundation.gestures.LocalBringIntoViewSpec provides TvScrollSpec,
+                ) {
+                    App()
+                }
             }
+        }
+    }
+}
+
+/**
+ * Rolagem do foco (listas e fileiras): começa a rolar um pouco antes de o cursor chegar na borda e usa uma mola
+ * firme e sem quique, que acompanha bem quando a pessoa segura o botão. O padrão do Compose só rola quando o
+ * item já está cortado e com uma animação lenta, o que dava a sensação de travadinhas.
+ */
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+private object TvScrollSpec : androidx.compose.foundation.gestures.BringIntoViewSpec {
+    override val scrollAnimationSpec: androidx.compose.animation.core.AnimationSpec<Float> =
+        androidx.compose.animation.core.spring(
+            dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy,
+            stiffness = 900f,
+        )
+
+    override fun calculateScrollDistance(offset: Float, size: Float, containerSize: Float): Float {
+        val margin = containerSize * 0.07f
+        val end = offset + size
+        return when {
+            size > containerSize - 2 * margin -> offset - margin
+            offset < margin -> offset - margin
+            end > containerSize - margin -> end - (containerSize - margin)
+            else -> 0f
         }
     }
 }

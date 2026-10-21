@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -350,7 +351,8 @@ private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
                 text = text,
                 color = if (selected || focused) TextMain else Muted,
                 fontSize = 15.sp,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                // mesmo peso nas duas situações: com peso diferente a largura muda e o menu andava de lado
+                fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
             )
         }
@@ -376,7 +378,9 @@ private fun KidsSwitch(on: Boolean, onClick: () -> Unit) {
                     ),
                 )
                 .border(1.5.dp, if (on) Color.Transparent else kidA.copy(alpha = if (focused) 0.95f else 0.65f), RoundedCornerShape(20.dp))
+                .widthIn(min = 150.dp)
                 .padding(horizontal = 14.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val face = if (on) Color(0xFF3A1A00) else kidA
