@@ -1,6 +1,24 @@
 package app.iptvtest
 
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -66,148 +84,220 @@ fun detectLang(device: String): String =
         ?: APP_LANGS.firstOrNull { device.startsWith(it.first.substringBefore('-'), true) }?.first
         ?: "pt-BR"
 
-/** Primeira abertura. Parte 1 (nome, idioma e fuso) é obrigatória; a parte 2 (times e gêneros) pode ser pulada. */
-@Composable
-fun WelcomeScreen(vm: MainViewModel) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.5f, sunY = 0.25f, sunR = 0.17f)
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 40.dp, vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(stringResource(R.string.app_name), color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.Light, letterSpacing = 6.sp)
-            Spacer(Modifier.height(4.dp))
-            Box(Modifier.width(30.dp).height(2.dp).background(Accent))
-            Spacer(Modifier.height(18.dp))
-            Column(modifier = Modifier.width(640.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                if (vm.welcomeStage == 1) StepOne(vm) else StepTwo(vm)
-            }
-        }
-    }
-}
-
+/** Primeira abertura: uma pergunta por tela (nome, idioma, fuso são obrigatórias; times e gêneros podem ser pulados). */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun StepOne(vm: MainViewModel) {
+fun WelcomeScreen(vm: MainViewModel) {
+    // 0 nome, 1 idioma, 2 fuso | 3 times, 4 gêneros
+    var step by remember { mutableIntStateOf(if (vm.welcomeStage == 2) 3 else 0) }
     var name by rememberSaveable { mutableStateOf(vm.user.profileName) }
     var lang by rememberSaveable { mutableStateOf(vm.user.profileLang.ifEmpty { detectLang(vm.deviceLang()) }) }
     val deviceTz = remember { java.util.TimeZone.getDefault().id }
     var tz by rememberSaveable { mutableStateOf(vm.user.tzId.ifEmpty { deviceTz }) }
-    var tzOpen by remember { mutableStateOf(false) }
     var warn by remember { mutableStateOf(false) }
     val focus = LocalFocusManager.current
+    val primary = remember { FocusRequester() }
+    val nameField = remember { FocusRequester() }
 
-    Text("Bem-vindo!", color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-    Spacer(Modifier.height(4.dp))
-    Text("Três perguntas rápidas para começar.", color = Muted, fontSize = 13.sp)
-    Spacer(Modifier.height(16.dp))
+    BackHandler(enabled = step in 1..2 || step == 4) { step -= 1 }
 
-    OutlinedTextField(
-        value = name,
-        onValueChange = {
-            name = it
-            warn = false
-        },
-        label = { Text("Seu nome") },
-        singleLine = true,
-        colors = fieldColors(),
-        modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { focus.moveFocus(FocusDirection.Down) }),
-    )
-    Text(
-        "O nome é enviado a quem desenvolve o app, só para saber quem usa.",
-        color = Muted,
-        fontSize = 11.sp,
-        modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-    )
-    Spacer(Modifier.height(14.dp))
-
-    Text("Idioma", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth())
-    Spacer(Modifier.height(6.dp))
-    FlowRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        for ((tag, label) in APP_LANGS) ChipItem(text = label, selected = lang == tag) { lang = tag }
+    LaunchedEffect(step) {
+        delay(160)
+        try {
+            if (step == 0) nameField.requestFocus() else primary.requestFocus()
+        } catch (e: Exception) {
+            // a tela ainda não estava pronta
+        }
     }
-    Text(
-        "Os menus por enquanto estão só em português; sua escolha fica guardada para as traduções.",
-        color = Muted,
-        fontSize = 11.sp,
-        modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-    )
-    Spacer(Modifier.height(14.dp))
 
-    Text("Fuso horário", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth())
-    Spacer(Modifier.height(6.dp))
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-        Text(tz.replace('_', ' ') + if (tz == deviceTz) " (da TV)" else "", color = Accent, fontSize = 14.sp)
-        ChipItem(text = if (tzOpen) "Fechar" else "Alterar", selected = false) { tzOpen = !tzOpen }
-    }
-    if (tzOpen) {
-        Spacer(Modifier.height(6.dp))
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+    Box(modifier = Modifier.fillMaxSize()) {
+        SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.5f, sunY = 0.18f, sunR = 0.2f)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 40.dp, vertical = 22.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            for (z in (listOf(deviceTz) + COMMON_ZONES).distinct()) {
-                ChipItem(text = z.substringAfter('/').replace('_', ' '), selected = tz == z) { tz = z }
+            Text(stringResource(R.string.app_name), color = TextMain, fontSize = 24.sp, fontWeight = FontWeight.Light, letterSpacing = 8.sp)
+            Spacer(Modifier.height(14.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                for (i in 0..4) {
+                    val w by animateDpAsState(if (i == step) 26.dp else 8.dp, label = "dot")
+                    Box(
+                        Modifier
+                            .width(w)
+                            .height(4.dp)
+                            .clip(RoundedCornerShape(2.dp))
+                            .background(if (i <= step) Accent else Muted.copy(alpha = 0.3f)),
+                    )
+                }
+            }
+            Spacer(Modifier.height(22.dp))
+            AnimatedContent(
+                targetState = step,
+                transitionSpec = {
+                    (fadeIn(tween(260)) + slideInHorizontally(tween(260)) { it / 14 }) togetherWith fadeOut(tween(110))
+                },
+                label = "welcome-step",
+            ) { st ->
+                Column(modifier = Modifier.width(700.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    when (st) {
+                        0 -> {
+                            StepHeader("Como podemos te chamar?", "Só para quem desenvolve o app saber quem usa. Nada além disso é enviado.")
+                            OutlinedTextField(
+                                value = name,
+                                onValueChange = {
+                                    name = it
+                                    warn = false
+                                },
+                                placeholder = { Text("Seu nome", color = Muted) },
+                                singleLine = true,
+                                textStyle = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Medium),
+                                colors = fieldColors(),
+                                shape = RoundedCornerShape(14.dp),
+                                modifier = Modifier.width(420.dp).focusRequester(nameField),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+                                keyboardActions = KeyboardActions(onDone = { focus.moveFocus(FocusDirection.Down) }),
+                            )
+                            if (warn) {
+                                Spacer(Modifier.height(8.dp))
+                                Text("Digite seu nome para continuar.", color = ErrorColor, fontSize = 13.sp)
+                            }
+                            Spacer(Modifier.height(20.dp))
+                            TvButton(text = "Continuar", primary = true, minWidth = 160.dp, focusRequester = primary) {
+                                if (name.isBlank()) warn = true else step = 1
+                            }
+                        }
+                        1 -> {
+                            StepHeader("Qual idioma você prefere?", "Os menus ainda estão em português. Sua escolha fica guardada para as traduções.")
+                            CardGrid {
+                                for ((tag, label) in APP_LANGS) ChoiceCard(label, lang == tag) { lang = tag }
+                            }
+                            Spacer(Modifier.height(20.dp))
+                            NavButtons(primary, onBack = { step = 0 }) { step = 2 }
+                        }
+                        2 -> {
+                            val now = remember { System.currentTimeMillis() }
+                            val clock = remember(tz) { SportsTime.clock(now, java.util.TimeZone.getTimeZone(tz)) }
+                            StepHeader("Qual é o seu fuso horário?", "Os jogos aparecem na sua hora. Agora, nesse fuso, são $clock.")
+                            CardGrid {
+                                for (z in (listOf(deviceTz) + COMMON_ZONES).distinct()) {
+                                    ChoiceCard(
+                                        text = z.substringAfter('/').replace('_', ' '),
+                                        selected = tz == z,
+                                        tag = if (z == deviceTz) "da TV" else null,
+                                    ) { tz = z }
+                                }
+                            }
+                            Spacer(Modifier.height(20.dp))
+                            NavButtons(primary, label = "Concluir", onBack = { step = 1 }) {
+                                vm.saveProfile(name, lang, tz)
+                                step = 3
+                            }
+                        }
+                        3 -> {
+                            StepHeader("Seus times do coração", "Opcional. Os jogos deles aparecem no topo do início.")
+                            val n = vm.favTeams.size + vm.favLeagues.size
+                            TvButton(text = if (n == 0) "Escolher times e ligas" else "Trocar times e ligas", minWidth = 220.dp, focusRequester = primary) { vm.openPicker() }
+                            if (n > 0) {
+                                Spacer(Modifier.height(10.dp))
+                                Text(
+                                    vm.favTeams.joinToString("   ") { "★ " + it.short },
+                                    color = Accent, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center,
+                                )
+                            }
+                            Spacer(Modifier.height(22.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                TvButton(text = if (n == 0) "Pular" else "Continuar", primary = n > 0, minWidth = 140.dp) { step = 4 }
+                            }
+                        }
+                        else -> {
+                            StepHeader("O que você mais curte?", "Opcional. Escolha até 3 gêneros. Eles aparecem primeiro nos destaques.")
+                            GenreChips(vm, centered = true)
+                            Spacer(Modifier.height(22.dp))
+                            val any = vm.user.favGenres.isNotEmpty()
+                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                TvButton(text = "Voltar", minWidth = 120.dp) { step = 3 }
+                                TvButton(text = if (any) "Começar" else "Pular", primary = true, minWidth = 140.dp, focusRequester = primary) { vm.finishWelcome() }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+}
+
+@Composable
+private fun StepHeader(title: String, sub: String) {
+    Text(title, color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+    Spacer(Modifier.height(6.dp))
+    Text(sub, color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center, modifier = Modifier.width(560.dp))
     Spacer(Modifier.height(20.dp))
-    if (warn) {
-        Text("Digite seu nome para continuar.", color = ErrorColor, fontSize = 13.sp)
-        Spacer(Modifier.height(8.dp))
-    }
-    TvButton(text = "Continuar", primary = true) {
-        if (name.isBlank()) warn = true else vm.saveProfile(name, lang, tz)
-    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun StepTwo(vm: MainViewModel) {
-    Text("Personalize o seu início", color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-    Spacer(Modifier.height(4.dp))
-    Text("Opcional: dá para pular e escolher depois em Ajustes.", color = Muted, fontSize = 13.sp)
-    Spacer(Modifier.height(18.dp))
+private fun CardGrid(content: @Composable () -> Unit) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        maxItemsInEachRow = 3,
+        modifier = Modifier.fillMaxWidth(),
+    ) { content() }
+}
 
-    Text("Times favoritos (esportes)", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth())
-    Spacer(Modifier.height(6.dp))
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
-        TvButton(text = "Escolher times") { vm.openPicker() }
-        val n = vm.favTeams.size
-        if (n > 0) Text("$n escolhido" + (if (n > 1) "s" else ""), color = Accent, fontSize = 13.sp)
-    }
-    Spacer(Modifier.height(18.dp))
-
-    Text("3 gêneros de filmes e séries", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth())
-    Spacer(Modifier.height(6.dp))
-    GenreChips(vm)
-    Spacer(Modifier.height(22.dp))
+@Composable
+private fun NavButtons(primary: FocusRequester, label: String = "Continuar", onBack: () -> Unit, onNext: () -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        TvButton(text = "Concluir", primary = true) { vm.finishWelcome() }
-        TvButton(text = "Pular") { vm.finishWelcome() }
+        TvButton(text = "Voltar", minWidth = 120.dp, onClick = onBack)
+        TvButton(text = label, primary = true, minWidth = 160.dp, focusRequester = primary, onClick = onNext)
+    }
+}
+
+/** Cartão grande de escolha: o escolhido ganha contorno e marca; fica fixo no tamanho, sem pular de lugar. */
+@Composable
+private fun ChoiceCard(text: String, selected: Boolean, tag: String? = null, onClick: () -> Unit) {
+    FocusBox(
+        modifier = Modifier.width(212.dp),
+        shape = RoundedCornerShape(14.dp),
+        focusScale = 1f,
+        onClick = onClick,
+    ) { focused ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    when {
+                        selected -> Accent.copy(alpha = 0.20f)
+                        focused -> PanelAlt
+                        else -> Panel.copy(alpha = 0.55f)
+                    },
+                )
+                .border(1.5.dp, if (selected) Accent.copy(alpha = 0.85f) else Color(0x1FFFF3EC), RoundedCornerShape(14.dp))
+                .padding(horizontal = 14.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text, color = if (selected) TextMain else Muted.copy(alpha = 0.95f), fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+                if (tag != null) Text(tag, color = Accent, fontSize = 11.sp, maxLines = 1)
+            }
+            if (selected) Text("✓", color = Accent, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        }
     }
 }
 
 /** Até 3 gêneros preferidos; quem escolhe um quarto troca o mais antigo. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun GenreChips(vm: MainViewModel) {
+fun GenreChips(vm: MainViewModel, centered: Boolean = false) {
     val chosen = vm.user.favGenres.toList()
     // lê o contador de dados para recompor quando a escolha muda
     @Suppress("UNUSED_VARIABLE") val rev = vm.dataRev
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp, if (centered) Alignment.CenterHorizontally else Alignment.Start),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         for (g in PICK_GENRES) {
@@ -221,7 +311,7 @@ fun GenreChips(vm: MainViewModel) {
         if (chosen.isEmpty()) "Nenhum escolhido." else chosen.size.toString() + " de 3: " + chosen.joinToString(", "),
         color = Muted,
         fontSize = 11.sp,
-        textAlign = TextAlign.Start,
+        textAlign = if (centered) TextAlign.Center else TextAlign.Start,
         modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
     )
 }
