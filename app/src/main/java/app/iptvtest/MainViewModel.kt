@@ -763,9 +763,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // =====================================================================
 
     val canGoBack: Boolean
-        get() = addingList || gameDialog != null || allGamesOpen || channelList != null || pickerOpen || openTitle != null || grid != null || tab != Tab.HOME
+        get() = pickCb != null || addingList || gameDialog != null || allGamesOpen || channelList != null || pickerOpen || openTitle != null || grid != null || tab != Tab.HOME
 
     fun back(): Boolean {
+        if (pickCb != null) {
+            cancelPick()
+            if (tab != Tab.REC) tab = Tab.REC
+            FocusMemory.arm()
+            return true
+        }
+        if (schedInit != null) {
+            schedInit = null
+            return true
+        }
         if (addingList) {
             cancelAddList()
             return true
@@ -953,6 +963,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun playChannel(ch: Channel) {
+        val pick = pickCb
+        if (pick != null) {
+            pick(ch)
+            return
+        }
         if (ch.isBrand) {
             val v = Brands.variantFor(ch, user.lastVariantOf(ch.key))
             playVariant(ch, v)
@@ -1128,6 +1143,95 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     /** Gravação onde o foco estava na lista; ao voltar para a aba o foco retorna para ela. */
     var recFocusId by mutableStateOf<String?>(null)
+
+    // ---- gravações agendadas
+    var scheds by mutableStateOf<List<Sched>>(emptyList())
+        private set
+    var schedInit by mutableStateOf<SchedInit?>(null)
+    /** Enquanto não for nulo, o próximo canal tocado/escolhido em qualquer tela vai para o agendamento (em vez de abrir o player). */
+    var pickCb by mutableStateOf<((Channel) -> Unit)?>(null)
+        private set
+    var pickLabel by mutableStateOf("")
+        private set
+
+    fun refreshScheds() {
+        scheds = SchedStore.all(appCtx)
+    }
+
+    fun cancelSched(id: String) {
+        SchedStore.remove(appCtx, id)
+        refreshScheds()
+    }
+
+    /** Endereços das melhores fontes do canal, prontos para o serviço gravar. */
+    private fun urlsFor(ch: Channel): List<String> {
+        val a = api ?: return emptyList()
+        return user.rank(ch).take(3).map { a.streamUrl(Kind.LIVE, it.id, "m3u8") }
+    }
+
+    private fun beginPick(label: String, make: (Channel, Channel) -> SchedInit) {
+        pickLabel = label
+        pickCb = { chosen ->
+            val real = if (chosen.isBrand) Brands.variantFor(chosen, user.lastVariantOf(chosen.key)).channel else chosen
+            pickCb = null
+            channelList = null
+            tab = Tab.REC
+            schedInit = make(chosen, real)
+        }
+    }
+
+    /** "Gravar este jogo": escolher o canal e depois confirmar o horário. */
+    fun recordGame(g: Game) {
+        gameDialog = null
+        val title = g.home.short + " x " + g.away.short
+        beginPick("Escolha o canal que vai gravar " + title) { _, real ->
+            SchedInit(
+                title = title + " · " + real.name,
+                channelKey = real.key,
+                channelName = real.name,
+                urls = urlsFor(real),
+                startMs = maxOf(g.startMs - 5L * 60_000L, System.currentTimeMillis() + 60_000L),
+                endMs = g.startMs + 135L * 60_000L,
+                fromGame = true,
+            )
+        }
+        openGameChannels(g, pick = true)
+    }
+
+    /** Agendamento manual: a pessoa abre qualquer canal e depois escolhe o horário. */
+    fun recordManual() {
+        beginPick("Escolha o canal que quer gravar") { _, real ->
+            val q = 15L * 60_000L
+            val t = ((System.currentTimeMillis() + 3L * 60_000L) / q + 1) * q
+            SchedInit(
+                title = real.name,
+                channelKey = real.key,
+                channelName = real.name,
+                urls = urlsFor(real),
+                startMs = t,
+                endMs = t + 2L * 3_600_000L,
+                fromGame = false,
+            )
+        }
+        selectTab(Tab.CHANNELS)
+    }
+
+    fun cancelPick() {
+        pickCb = null
+        channelList = null
+    }
+
+    fun addSchedule(init: SchedInit, startMs: Long, endMs: Long, quality: Int): String? {
+        if (init.urls.isEmpty() || init.urls.all { it.isBlank() }) return "Esse canal não tem endereço para gravar."
+        if (SchedStore.all(appCtx).any { it.state == "pending" && it.channelKey == init.channelKey && it.startMs < endMs && startMs < it.endMs }) {
+            return "Você já tem uma gravação agendada nesse canal nesse horário."
+        }
+        val id = System.currentTimeMillis().toString() + "-" + (Math.random() * 1000).toInt()
+        SchedStore.add(appCtx, Sched(id, init.channelKey, init.channelName, init.title, init.urls, startMs, endMs, quality))
+        Recorder.watch(appCtx)
+        refreshScheds()
+        return null
+    }
 
     fun enterRecMode(id: String) {
         // fecha o player para liberar a conexão do provedor; a gravação segue no serviço
@@ -1464,14 +1568,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /** Mostra os canais da lista para o jogo (os achados, os das emissoras que costumam passar e os de esporte). */
-    fun openGameChannels(g: Game) {
+    fun openGameChannels(g: Game, pick: Boolean = false) {
         gameDialog = null
         val info = gameInfo(g)
         val now = System.currentTimeMillis()
         val opts = info.options
         val extra = if (opts.isNotEmpty()) Broadcasts.channelsFor(opts, channelCards) else emptyList()
         val when0 = SportsTime.dayLabel(g.startMs, now, tz) + " " + SportsTime.clock(g.startMs, tz)
-        val hint = if (info.matched.isNotEmpty()) {
+        val hint = if (pick) {
+            "Escolha o canal para gravar. Confira se o jogo realmente passa nele: o app pode errar."
+        } else if (info.matched.isNotEmpty()) {
             "Achei na sua lista. Se travar, volte e escolha outra fonte."
         } else {
             "Este jogo ainda não está em \"Jogos em Destaque\" da sua lista. Veja abaixo os canais de quem costuma passar, " +

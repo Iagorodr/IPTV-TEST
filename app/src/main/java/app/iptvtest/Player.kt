@@ -195,6 +195,7 @@ fun PlayerScreen(
     var current by remember { mutableStateOf<Source?>(null) }
     var pinnedId by remember { mutableStateOf<String?>(if (channel != null) user.pinnedSource(channel.key) else null) }
     var note by remember { mutableStateOf<String?>(null) }
+    var recQ by remember { mutableIntStateOf(Recorder.quality(context)) }
     var recAskStop by remember { mutableStateOf(false) }
     var recActive by remember { mutableStateOf(channel != null && recordingId(channel.key) != null) }
     var testing by remember { mutableStateOf(false) }
@@ -1067,6 +1068,27 @@ fun PlayerScreen(
                             }
                         }
                     }
+                    FocusBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            recQ = (recQ + 1) % 3
+                            Recorder.setQuality(context, recQ)
+                        },
+                    ) { focused ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(if (focused) PanelAlt else Panel.copy(alpha = 0.6f))
+                                .padding(horizontal = 14.dp, vertical = 10.dp),
+                        ) {
+                            Text("Qualidade: " + Recorder.qualityLabel(recQ), color = Accent, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                    Text(
+                        "Média e Baixa só valem para canais com mais de uma versão da imagem.",
+                        color = Muted,
+                        fontSize = 11.sp,
+                    )
                 }
             }
         } else if (which == "audio" || which == "text") {

@@ -578,6 +578,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
                         TvButton(text = "Ver canais", primary = true, focusRequester = first) { vm.openGameChannels(g) }
                     }
                     if (g.state == 0) {
+                        TvButton(text = "● Gravar") { vm.recordGame(g) }
                         TvButton(text = if (reminded) "⏰ Lembrete ligado" else "⏰ Lembrar") {
                             notice = vm.toggleReminder(g)
                         }

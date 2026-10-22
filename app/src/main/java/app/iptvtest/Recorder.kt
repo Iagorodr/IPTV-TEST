@@ -96,30 +96,67 @@ object RecStore {
 }
 
 object Recorder {
-    /** Começa a gravar. Devolve null se deu certo, ou o texto do problema. */
+    /** Qualidade preferida: 0 = a do canal, 1 = média, 2 = baixa (só vale para canais que oferecem mais de uma versão). */
+    fun quality(ctx: Context): Int = ctx.getSharedPreferences("iptv_rec", Context.MODE_PRIVATE).getInt("quality", 0)
+
+    fun setQuality(ctx: Context, q: Int) {
+        ctx.getSharedPreferences("iptv_rec", Context.MODE_PRIVATE).edit().putInt("quality", q.coerceIn(0, 2)).apply()
+    }
+
+    fun qualityLabel(q: Int) = when (q) {
+        1 -> "Média"
+        2 -> "Baixa"
+        else -> "Original"
+    }
+
+    /** Começa a gravar agora. Devolve null se deu certo, ou o texto do problema. */
     fun start(ctx: Context, key: String, title: String, url: String, minutes: Int): String? {
-        if (url.isBlank()) return "Esse canal não tem endereço para gravar."
+        val end = System.currentTimeMillis() + minutes.coerceIn(1, 360) * 60_000L
+        return launch(ctx, key, title, listOf(url), end, quality(ctx))
+    }
+
+    /** Confere espaço e canal livre e cria o registro da gravação. Devolve (gravação, problema). */
+    fun prepare(ctx: Context, key: String, title: String, endsAt: Long): Pair<Rec?, String?> {
         val dir = RecStore.dir(ctx)
         val free = try { dir.usableSpace } catch (e: Exception) { Long.MAX_VALUE }
-        if (free < 1_000_000_000L) return "Pouco espaço no aparelho (menos de 1 GB livre)."
-        if (RecStore.all(ctx).any { it.key == key && it.recording }) return "Esse canal já está sendo gravado."
+        if (free < 1_000_000_000L) return Pair(null, "Pouco espaço no aparelho (menos de 1 GB livre).")
+        if (RecStore.all(ctx).any { it.key == key && it.recording }) return Pair(null, "Esse canal já está sendo gravado.")
         val now = System.currentTimeMillis()
         val id = now.toString() + "-" + (Math.random() * 1000).toInt()
         val safe = title.replace(Regex("[^A-Za-z0-9]+"), "_").trim('_').take(40).ifEmpty { "gravacao" }
         val file = File(dir, safe + "_" + id + ".ts")
-        val rec = Rec(id, key, title, file.absolutePath, now, now + minutes.coerceIn(1, 360) * 60_000L, "recording")
+        val rec = Rec(id, key, title, file.absolutePath, now, endsAt, "recording")
         RecStore.upsert(ctx, rec)
+        return Pair(rec, null)
+    }
+
+    fun launch(ctx: Context, key: String, title: String, urls: List<String>, endsAt: Long, quality: Int): String? {
+        if (urls.isEmpty() || urls.all { it.isBlank() }) return "Esse canal não tem endereço para gravar."
+        val (rec, problem) = prepare(ctx, key, title, endsAt)
+        if (rec == null) return problem
         val i = Intent(ctx, RecordService::class.java)
             .setAction(RecordService.ACTION_START)
-            .putExtra("id", id)
-            .putExtra("url", url)
+            .putExtra("id", rec.id)
+            .putExtra("urls", urls.toTypedArray())
+            .putExtra("q", quality)
         try {
             if (Build.VERSION.SDK_INT >= 26) ctx.startForegroundService(i) else ctx.startService(i)
         } catch (e: Exception) {
-            RecStore.remove(ctx, id)
+            RecStore.remove(ctx, rec.id)
             return "O Android não deixou iniciar a gravação em segundo plano."
         }
         return null
+    }
+
+    /** Liga o vigia das gravações agendadas (se houver alguma pendente). */
+    fun watch(ctx: Context) {
+        if (SchedStore.all(ctx).none { it.state == "pending" }) return
+        val i = Intent(ctx, RecordService::class.java).setAction(RecordService.ACTION_WATCH)
+        try {
+            if (Build.VERSION.SDK_INT >= 26) ctx.startForegroundService(i) else ctx.startService(i)
+        } catch (e: Exception) {
+            // sem permissão para iniciar agora; o app tenta de novo na próxima abertura
+        }
     }
 
     fun stop(ctx: Context, id: String) {
@@ -140,6 +177,7 @@ class RecordService : Service() {
     companion object {
         const val ACTION_START = "app.iptvtest.REC_START"
         const val ACTION_STOP = "app.iptvtest.REC_STOP"
+        const val ACTION_WATCH = "app.iptvtest.REC_WATCH"
         private const val CHANNEL = "rec"
         private const val NOTE_ID = 4711
         private val jobs = ConcurrentHashMap<String, Job>()
@@ -155,24 +193,68 @@ class RecordService : Service() {
         when (intent?.action) {
             ACTION_START -> {
                 val id = intent.getStringExtra("id")
-                val url = intent.getStringExtra("url")
+                val urls = intent.getStringArrayExtra("urls")?.toList() ?: emptyList()
                 val rec = RecStore.all(this).firstOrNull { it.id == id }
-                if (id != null && url != null && rec != null && !jobs.containsKey(id)) {
-                    acquireWake()
-                    val j = Job(applicationContext, rec, url) { finished(id) }
-                    jobs[id] = j
-                    j.start()
-                }
+                if (id != null && urls.isNotEmpty() && rec != null) startJob(rec, urls, intent.getIntExtra("q", 0))
             }
             ACTION_STOP -> intent.getStringExtra("id")?.let { jobs[it]?.cancel() }
         }
-        if (jobs.isEmpty()) endService() else refreshNote()
-        return START_NOT_STICKY
+        ensureTicker()
+        refreshNote()
+        return if (SchedStore.all(this).any { it.state == "pending" }) START_STICKY else START_NOT_STICKY
     }
+
+    private fun startJob(rec: Rec, urls: List<String>, q: Int) {
+        if (jobs.containsKey(rec.id)) return
+        acquireWake()
+        val j = Job(applicationContext, rec, urls, q) { finished(rec.id) }
+        jobs[rec.id] = j
+        j.start()
+    }
+
+    private fun pendingCount() = SchedStore.all(this).count { it.state == "pending" }
 
     private fun finished(id: String) {
         jobs.remove(id)
-        if (jobs.isEmpty()) endService() else refreshNote()
+        refreshNote()
+    }
+
+    private var ticker: Thread? = null
+
+    /** Vigia: a cada 10 s inicia as gravações agendadas que chegaram na hora e encerra o serviço quando não há mais nada. */
+    private fun ensureTicker() {
+        if (ticker?.isAlive == true) return
+        ticker = Thread({
+            try {
+                while (true) {
+                    val all = SchedStore.all(this)
+                    val pend = all.filter { it.state == "pending" }
+                    if (pend.isEmpty() && jobs.isEmpty()) break
+                    acquireWake()
+                    val now = System.currentTimeMillis()
+                    for (s in pend) {
+                        if (now >= s.endMs) {
+                            SchedStore.update(this, s.id) { it.state = "missed" }
+                        } else if (now >= s.startMs) {
+                            val (rec, problem) = Recorder.prepare(this, s.channelKey, s.title, s.endMs)
+                            if (rec != null) {
+                                startJob(rec, s.urls, s.quality)
+                                SchedStore.update(this, s.id) { it.state = "started"; it.recId = rec.id }
+                            } else if (problem != null && problem.startsWith("Pouco espaço")) {
+                                SchedStore.update(this, s.id) { it.state = "missed"; it.error = problem }
+                            } else {
+                                SchedStore.update(this, s.id) { it.state = "started" }
+                            }
+                        }
+                    }
+                    refreshNote()
+                    Thread.sleep(10_000L)
+                }
+            } catch (e: InterruptedException) {
+                return@Thread
+            }
+            android.os.Handler(android.os.Looper.getMainLooper()).post { if (jobs.isEmpty() && pendingCount() == 0) endService() }
+        }, "rec-watch").apply { isDaemon = true; start() }
     }
 
     private fun endService() {
@@ -192,13 +274,13 @@ class RecordService : Service() {
     }
 
     private fun acquireWake() {
-        if (wake?.isHeld == true) return
         try {
             val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-            wake = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "iptv:rec").apply {
-                setReferenceCounted(false)
-                acquire(7 * 60 * 60_000L)
+            val w = wake ?: pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "iptv:rec").also {
+                it.setReferenceCounted(false)
+                wake = it
             }
+            w.acquire(30 * 60_000L) // renovado a cada 10 s pelo vigia
         } catch (e: Exception) {
             // segue sem o bloqueio de energia
         }
@@ -231,10 +313,17 @@ class RecordService : Service() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
         val n = jobs.size
+        val pend = SchedStore.all(this).filter { it.state == "pending" }.minByOrNull { it.startMs }
         val b = if (Build.VERSION.SDK_INT >= 26) Notification.Builder(this, CHANNEL) else Notification.Builder(this)
         return b.setSmallIcon(android.R.drawable.ic_media_play)
-            .setContentTitle(if (n <= 1) "Gravando" else "Gravando $n canais")
-            .setContentText("Toque para abrir o app e ver as gravações")
+            .setContentTitle(if (n == 0) "Gravação agendada" else if (n == 1) "Gravando" else "Gravando $n canais")
+            .setContentText(
+                if (n == 0 && pend != null) {
+                    pend.title + " · " + java.text.SimpleDateFormat("dd/MM HH:mm", java.util.Locale.getDefault()).format(java.util.Date(pend.startMs))
+                } else {
+                    "Toque para abrir o app e ver as gravações"
+                },
+            )
             .setContentIntent(open)
             .setOngoing(true)
             .build()
@@ -244,9 +333,12 @@ class RecordService : Service() {
     private class Job(
         val ctx: Context,
         val rec: Rec,
-        val url: String,
+        val urls: List<String>,
+        val quality: Int,
         val onEnd: () -> Unit,
     ) {
+        private var ui = 0
+        private val url: String get() = urls[ui % urls.size]
         @Volatile private var cancelled = false
         private var thread: Thread? = null
 
@@ -336,12 +428,14 @@ class RecordService : Service() {
                     }
                     if (over()) break
                     fails++
+                    if (fails % 3 == 0) ui++
                 } catch (e: InterruptedException) {
                     break
                 } catch (e: Exception) {
                     if (cancelled) break
                     lastError = "Falha de conexão: " + (e.message ?: "desconhecida")
                     fails++
+                    if (fails % 3 == 0) ui++
                     try {
                         Thread.sleep(2_000L)
                     } catch (x: InterruptedException) {
@@ -381,18 +475,20 @@ class RecordService : Service() {
                 val lines = text.lines().map { it.trim() }.filter { it.isNotEmpty() }
                 if (lines.any { it.startsWith("#EXT-X-STREAM-INF") }) {
                     // lista mestre: escolhe a versão de maior qualidade
-                    var best = -1L
-                    var bestUrl: String? = null
+                    val vs = ArrayList<Pair<Long, String>>()
                     for (i in lines.indices) {
                         if (!lines[i].startsWith("#EXT-X-STREAM-INF")) continue
                         val bw = Regex("BANDWIDTH=(\\d+)").find(lines[i])?.groupValues?.get(1)?.toLongOrNull() ?: 0L
                         val next = lines.drop(i + 1).firstOrNull { !it.startsWith("#") } ?: continue
-                        if (bw > best) {
-                            best = bw
-                            bestUrl = resolve(plUrl, next)
-                        }
+                        vs.add(Pair(bw, resolve(plUrl, next)))
                     }
-                    plUrl = bestUrl ?: throw java.io.IOException("lista sem versões")
+                    if (vs.isEmpty()) throw java.io.IOException("lista sem versões")
+                    vs.sortBy { it.first }
+                    plUrl = when (quality) {
+                        2 -> vs.first().second
+                        1 -> vs[(vs.size - 1) / 2].second
+                        else -> vs.last().second
+                    }
                     text = fetchText(plUrl)
                     continue
                 }

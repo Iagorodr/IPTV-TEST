@@ -225,6 +225,14 @@ fun App(vm: MainViewModel = viewModel()) {
         }
     }
 
+    // religa o vigia das gravações agendadas (ele some se o app foi fechado à força ou a TV reiniciou)
+    LaunchedEffect(account != null) {
+        if (account != null) {
+            vm.refreshScheds()
+            Recorder.watch(ctx.applicationContext)
+        }
+    }
+
     // a cada 30 s vê se algum jogo lembrado começa em 10 min (cobre alarmes perdidos, ex.: TV desligada)
     LaunchedEffect(account != null) {
         while (account != null) {
@@ -283,6 +291,11 @@ fun App(vm: MainViewModel = viewModel()) {
         if (note != null && !vm.blocked) {
             if (vm.noticeSecs > 0) NoticeBanner(vm, note.first, note.second, vm.noticeSecs) else NoticeDialog(vm, note.second)
         }
+
+        // agendar gravação: faixa enquanto escolhe o canal, e a tela de horário depois
+        if (vm.pickCb != null && playing == null) PickBanner(vm.pickLabel)
+        val si = vm.schedInit
+        if (si != null && playing == null) ScheduleDialog(vm, si)
 
         // pop-up do jogo (por cima de qualquer tela, menos do player)
         if (game != null && playing == null && catalog != null) {

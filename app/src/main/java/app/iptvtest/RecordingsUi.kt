@@ -72,10 +72,12 @@ fun RecordingsTab(vm: MainViewModel) {
     LaunchedEffect(Unit) {
         while (true) {
             vm.refreshRecs()
+            vm.refreshScheds()
             delay(2_000L)
         }
     }
     val fmt = remember { SimpleDateFormat("dd/MM HH:mm", Locale.getDefault()) }
+    var confirmSched by remember { mutableStateOf<String?>(null) }
     var confirmDelete by remember { mutableStateOf<String?>(null) }
     val rowFocus = remember { FocusRequester() }
     // ao entrar na aba, o foco vai para a gravação em que você estava (ou a primeira)
@@ -104,22 +106,72 @@ fun RecordingsTab(vm: MainViewModel) {
     }
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
-        if (vm.recs.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    "Nenhuma gravação ainda.\nAbra um canal ao vivo e escolha \"Gravar\".\nA gravação continua com a tela apagada.",
-                    color = Muted,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-            return@Column
-        }
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(start = 40.dp, end = 44.dp, top = 8.dp, bottom = 40.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            item(key = "__new") {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    TvButton(text = "+ Agendar gravação", primary = vm.recs.isEmpty() && vm.scheds.isEmpty()) { vm.recordManual() }
+                    Text(
+                        "Dica: para um jogo, abra o jogo e toque em \"● Gravar\".",
+                        color = Muted,
+                        fontSize = 12.sp,
+                    )
+                }
+            }
+            if (vm.recs.isEmpty() && vm.scheds.isEmpty()) {
+                item(key = "__empty") {
+                    Text(
+                        "Nenhuma gravação ainda.\nAbra um canal ao vivo e escolha \"Gravar\", ou agende uma acima.\nA gravação continua com a tela apagada.",
+                        color = Muted,
+                        fontSize = 15.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
+                    )
+                }
+            }
+            items(vm.scheds.filter { it.state != "started" }, key = { "s" + it.id }) { sc ->
+                val missed = sc.state == "missed"
+                val asking = confirmSched == sc.id
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(Panel.copy(alpha = 0.55f))
+                        .padding(horizontal = 18.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("⏰ " + sc.title, color = TextMain, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Spacer(Modifier.height(2.dp))
+                        Text(
+                            if (missed) {
+                                whenText(sc.startMs) + " · não gravou: " + sc.error.ifEmpty { "a TV estava desligada ou o app fechado." }
+                            } else {
+                                "Agendada · " + whenText(sc.startMs) + " até " + SportsTime.clock(sc.endMs, java.util.TimeZone.getDefault()) +
+                                    " · " + Recorder.qualityLabel(sc.quality)
+                            },
+                            color = if (missed) ErrorColor else Warn,
+                            fontSize = 13.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                    TvButton(
+                        text = if (asking) "Confirmar" else if (missed) "Remover" else "Cancelar agendamento",
+                    ) {
+                        if (!asking) {
+                            confirmSched = sc.id
+                        } else {
+                            confirmSched = null
+                            vm.cancelSched(sc.id)
+                        }
+                    }
+                }
+            }
             items(vm.recs, key = { it.id }) { r ->
                 Row(
                     modifier = Modifier
