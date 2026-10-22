@@ -669,7 +669,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun setKids(on: Boolean) {
         if (user.kidsMode == on) return
         user.setKids(on)
-        if (on && tab == Tab.GAMES) tab = Tab.HOME
+        if (on && (tab == Tab.GAMES || tab == Tab.REC)) tab = Tab.HOME
         catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
         dataRev++
         checkControl(false)
@@ -1091,6 +1091,49 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Canais de uma pasta do provedor (já com os jogos avulsos limpos). */
     fun channelsInCategory(cat: String): List<Channel> = cleanChannels.filter { it.category == cat }
+
+    // =====================================================================
+    // Gravações
+    // =====================================================================
+
+    var recs by mutableStateOf<List<Rec>>(emptyList())
+        private set
+
+    fun refreshRecs() {
+        recs = RecStore.all(appCtx)
+    }
+
+    /** Devolve null se começou, ou o texto do problema. */
+    fun startRecording(key: String, title: String, url: String, minutes: Int): String? {
+        val r = Recorder.start(appCtx, key, title, url, minutes)
+        refreshRecs()
+        return r
+    }
+
+    fun stopRecording(id: String) {
+        Recorder.stop(appCtx, id)
+        viewModelScope.launch {
+            delay(1_200L)
+            refreshRecs()
+        }
+    }
+
+    fun deleteRecording(id: String) {
+        RecStore.remove(appCtx, id)
+        refreshRecs()
+    }
+
+    fun isRecording(key: String): Boolean = RecStore.all(appCtx).any { it.key == key && it.recording }
+
+    fun recordingIdOf(key: String): String? = RecStore.all(appCtx).firstOrNull { it.key == key && it.recording }?.id
+
+    fun playRecording(r: Rec) {
+        playing = PlaybackRequest(
+            title = r.title,
+            url = android.net.Uri.fromFile(java.io.File(r.file)).toString(),
+            isLive = false,
+        )
+    }
 
     fun stopPlaying() {
         playing = null

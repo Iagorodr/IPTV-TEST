@@ -133,6 +133,9 @@ fun PlayerScreen(
     onExit: () -> Unit,
     onVariant: (Channel, Variant) -> Unit = { _, _ -> },
     currentVariantKey: (Channel) -> String = { "" },
+    onRecord: (String, String, String, Int) -> String? = { _, _, _, _ -> null },
+    recordingId: (String) -> String? = { null },
+    onStopRecord: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -191,6 +194,8 @@ fun PlayerScreen(
     var current by remember { mutableStateOf<Source?>(null) }
     var pinnedId by remember { mutableStateOf<String?>(if (channel != null) user.pinnedSource(channel.key) else null) }
     var note by remember { mutableStateOf<String?>(null) }
+    var recHours by remember { mutableIntStateOf(2) }
+    var recActive by remember { mutableStateOf(channel != null && recordingId(channel.key) != null) }
     var testing by remember { mutableStateOf(false) }
     var testingId by remember { mutableStateOf<String?>(null) }
     var autoSwitch by remember { mutableStateOf(user.autoSwitch) }
@@ -908,6 +913,33 @@ fun PlayerScreen(
                         TvButton(text = if (favorite) "✓ Favorito" else "Favoritar") {
                             touch++
                             if (favKey != null) favorite = user.toggleFavChannel(favKey)
+                        }
+                        if (channel != null) {
+                            if (recActive) {
+                                TvButton(text = "■ Parar gravação") {
+                                    touch++
+                                    recordingId(channel.key)?.let(onStopRecord)
+                                    recActive = false
+                                    note = "Gravação parada. Ela fica na aba Gravações."
+                                }
+                            } else {
+                                TvButton(text = "● Gravar") {
+                                    touch++
+                                    val c = current ?: ranked.firstOrNull()
+                                    val u = if (c != null) liveInfo?.urlOf?.invoke(c) ?: "" else ""
+                                    val msg = onRecord(channel.key, channel.name, u, recHours * 60)
+                                    if (msg == null) {
+                                        recActive = true
+                                        note = "Gravando por $recHours h. Veja na aba Gravações."
+                                    } else {
+                                        note = msg
+                                    }
+                                }
+                                TvButton(text = "$recHours h") {
+                                    touch++
+                                    recHours = if (recHours >= 4) 1 else recHours + 1
+                                }
+                            }
                         }
                     } else {
                         TvButton(text = "-10s") { seekBy(-10_000) }

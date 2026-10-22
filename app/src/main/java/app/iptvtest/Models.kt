@@ -6,7 +6,7 @@ enum class Kind(val label: String) {
     LIVE("Canais"),
 }
 
-enum class Tab { HOME, GAMES, MOVIES, SERIES, CHANNELS, LIST, SEARCH, SETTINGS }
+enum class Tab { HOME, GAMES, MOVIES, SERIES, CHANNELS, LIST, REC, SEARCH, SETTINGS }
 
 /**
  * A lista da pessoa. Xtream: [server], [user] e [pass]. Lista M3U (link que não é de servidor Xtream): só [m3u].

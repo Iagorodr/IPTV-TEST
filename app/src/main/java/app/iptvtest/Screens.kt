@@ -471,6 +471,7 @@ fun TopNav(vm: MainViewModel) {
         NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
         NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
         NavItem("Favoritos", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
+        if (!vm.user.kidsMode) NavItem("Gravações", vm.tab == Tab.REC) { vm.selectTab(Tab.REC) }
         Spacer(Modifier.weight(1f))
         if (vm.refreshing) {
             CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
@@ -491,6 +492,7 @@ fun TabScreen(vm: MainViewModel) {
         Tab.SERIES -> ShelfTab(vm, vm.seriesShelves, vm.heroSeries)
         Tab.CHANNELS -> ChannelsTab(vm)
         Tab.LIST -> FavoritesTab(vm)
+        Tab.REC -> RecordingsTab(vm)
         Tab.SEARCH -> SearchTab(vm)
         Tab.SETTINGS -> SettingsTab(vm)
     }

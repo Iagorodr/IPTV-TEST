@@ -242,6 +242,9 @@ fun App(vm: MainViewModel = viewModel()) {
                     onExit = { vm.stopPlaying() },
                     onVariant = { b, v -> vm.playVariant(b, v) },
                     currentVariantKey = { b -> vm.currentVariantKey(b) },
+                    onRecord = { k, t, u, m -> vm.startRecording(k, t, u, m) },
+                    recordingId = { k -> vm.recordingIdOf(k) },
+                    onStopRecord = { id -> vm.stopRecording(id) },
                 )
             }
             catalog == null -> LoadingScreen(vm)
