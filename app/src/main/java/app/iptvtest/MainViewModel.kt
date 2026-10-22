@@ -1125,9 +1125,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Modo gravação (tela preta): guarda qual gravação está sendo mostrada. */
     var recMode by mutableStateOf<String?>(null)
+        private set
     /** Gravação onde o foco estava na lista; ao voltar para a aba o foco retorna para ela. */
     var recFocusId by mutableStateOf<String?>(null)
-        private set
 
     fun enterRecMode(id: String) {
         // fecha o player para liberar a conexão do provedor; a gravação segue no serviço
