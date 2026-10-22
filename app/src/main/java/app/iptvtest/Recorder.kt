@@ -259,7 +259,19 @@ class RecordService : Service() {
             thread?.interrupt()
         }
 
-        private fun over() = cancelled || System.currentTimeMillis() >= rec.endsAt
+        private var lastSpaceCheck = 0L
+        private var lowSpace = false
+
+        /** Acabou o tempo, foi parada, ou o aparelho está ficando sem espaço (para antes de travar a TV). */
+        private fun over(): Boolean {
+            val now = System.currentTimeMillis()
+            if (now - lastSpaceCheck > 10_000L) {
+                lastSpaceCheck = now
+                val free = try { File(rec.file).parentFile?.usableSpace ?: Long.MAX_VALUE } catch (e: Exception) { Long.MAX_VALUE }
+                if (free < 300_000_000L) lowSpace = true
+            }
+            return cancelled || lowSpace || now >= rec.endsAt
+        }
 
         private fun run() {
             var failure = ""

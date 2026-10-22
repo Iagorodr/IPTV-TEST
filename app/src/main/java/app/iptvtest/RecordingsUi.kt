@@ -77,6 +77,31 @@ fun RecordingsTab(vm: MainViewModel) {
     }
     val fmt = remember { SimpleDateFormat("dd/MM HH:mm", Locale.getDefault()) }
     var confirmDelete by remember { mutableStateOf<String?>(null) }
+    val rowFocus = remember { FocusRequester() }
+    // ao entrar na aba, o foco vai para a gravação em que você estava (ou a primeira)
+    LaunchedEffect(Unit) {
+        delay(120)
+        if (vm.recs.isNotEmpty()) {
+            if (vm.recs.none { it.id == vm.recFocusId }) vm.recFocusId = vm.recs.first().id
+            delay(60)
+            try {
+                rowFocus.requestFocus()
+            } catch (e: Exception) {
+                // a lista ainda não estava na tela
+            }
+        }
+    }
+    // se a gravação em foco sumiu (apagada), passa o foco para a primeira
+    LaunchedEffect(vm.recs.size) {
+        if (vm.recs.isNotEmpty() && vm.recs.none { it.id == vm.recFocusId }) {
+            vm.recFocusId = vm.recs.first().id
+            delay(120)
+            try {
+                rowFocus.requestFocus()
+            } catch (e: Exception) {
+            }
+        }
+    }
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         if (vm.recs.isEmpty()) {
@@ -121,24 +146,37 @@ fun RecordingsTab(vm: MainViewModel) {
                             overflow = TextOverflow.Ellipsis,
                         )
                     }
-                    if (r.size > 0L) TvButton(text = "Assistir", primary = true) { vm.playRecording(r) }
+                    val askKey = r.id
+                    val asking = confirmDelete == askKey
+                    if (r.size > 0L) {
+                        TvButton(text = "Assistir", primary = true, focusRequester = if (vm.recFocusId == r.id) rowFocus else null) {
+                            vm.recFocusId = r.id
+                            vm.playRecording(r)
+                        }
+                    }
                     if (r.recording) {
-                        TvButton(text = "Tela preta") { vm.enterRecMode(r.id) }
-                        if (confirmDelete == r.id) {
-                            TvButton(text = "Confirmar parar") {
-                                confirmDelete = null
-                                vm.stopRecording(r.id)
-                            }
+                        TvButton(text = "Tela preta") {
+                            vm.recFocusId = r.id
+                            vm.enterRecMode(r.id)
+                        }
+                    }
+                    // um único botão que só troca o texto: assim o foco não se perde ao apertar
+                    TvButton(
+                        text = when {
+                            r.recording && asking -> "Confirmar parar"
+                            r.recording -> "Parar"
+                            asking -> "Confirmar"
+                            else -> "Apagar"
+                        },
+                        focusRequester = if (vm.recFocusId == r.id && r.size <= 0L) rowFocus else null,
+                    ) {
+                        vm.recFocusId = r.id
+                        if (!asking) {
+                            confirmDelete = askKey
                         } else {
-                            TvButton(text = "Parar") { confirmDelete = r.id }
-                        }
-                    } else if (confirmDelete == r.id) {
-                        TvButton(text = "Confirmar") {
                             confirmDelete = null
-                            vm.deleteRecording(r.id)
+                            if (r.recording) vm.stopRecording(r.id) else vm.deleteRecording(r.id)
                         }
-                    } else {
-                        TvButton(text = "Apagar") { confirmDelete = r.id }
                     }
                 }
             }

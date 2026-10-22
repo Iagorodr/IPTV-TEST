@@ -893,6 +893,20 @@ fun PlayerScreen(
                         }
                     }
                 }
+                if (!isLive && req.url.startsWith("file:")) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 10.dp),
+                    ) {
+                        TvButton(text = "⏪ 10 min", minWidth = 110.dp) { seekBy(-600_000) }
+                        TvButton(text = "⏪ 1 min", minWidth = 110.dp) { seekBy(-60_000) }
+                        TvButton(text = "⏪ 10 s", minWidth = 110.dp) { seekBy(-10_000) }
+                        TvButton(text = "10 s ⏩", minWidth = 110.dp) { seekBy(10_000) }
+                        TvButton(text = "1 min ⏩", minWidth = 110.dp) { seekBy(60_000) }
+                        TvButton(text = "10 min ⏩", minWidth = 110.dp) { seekBy(600_000) }
+                    }
+                }
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                     TvButton(text = if (isPlaying) "Pausar" else "Reproduzir", focusRequester = playFocus) { togglePlay() }
                     if (isLive) {
@@ -940,8 +954,10 @@ fun PlayerScreen(
                             }
                         }
                     } else {
-                        TvButton(text = "-10s") { seekBy(-10_000) }
-                        TvButton(text = "+10s") { seekBy(10_000) }
+                        if (!req.url.startsWith("file:")) {
+                            TvButton(text = "-10s") { seekBy(-10_000) }
+                            TvButton(text = "+10s") { seekBy(10_000) }
+                        }
                         if (nextEp != null) {
                             TvButton(text = "Próximo episódio", primary = true) { nextEp.go() }
                         }
