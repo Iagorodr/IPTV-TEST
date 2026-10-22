@@ -167,7 +167,7 @@ fun PlayerScreen(
                 .build()
         }
         val player = ExoPlayer.Builder(context, DefaultRenderersFactory(context).setEnableDecoderFallback(true))
-            .setMediaSourceFactory(DefaultMediaSourceFactory(context).setDataSourceFactory(http))
+            .setMediaSourceFactory(DefaultMediaSourceFactory(context).setDataSourceFactory(androidx.media3.datasource.DefaultDataSource.Factory(context, http)))
             .setLoadControl(load)
             .build()
         player.trackSelectionParameters = player.trackSelectionParameters
@@ -195,7 +195,6 @@ fun PlayerScreen(
     var current by remember { mutableStateOf<Source?>(null) }
     var pinnedId by remember { mutableStateOf<String?>(if (channel != null) user.pinnedSource(channel.key) else null) }
     var note by remember { mutableStateOf<String?>(null) }
-    var recHours by remember { mutableIntStateOf(2) }
     var recAskStop by remember { mutableStateOf(false) }
     var recActive by remember { mutableStateOf(channel != null && recordingId(channel.key) != null) }
     var testing by remember { mutableStateOf(false) }
@@ -936,19 +935,7 @@ fun PlayerScreen(
                             } else {
                                 TvButton(text = "● Gravar") {
                                     touch++
-                                    val c = current ?: ranked.firstOrNull()
-                                    val u = if (c != null) liveInfo?.urlOf?.invoke(c) ?: "" else ""
-                                    val msg = onRecord(channel.key, channel.name, u, recHours * 60)
-                                    if (msg == null) {
-                                        recActive = true
-                                        note = "Gravando por $recHours h. Veja na aba Gravações."
-                                    } else {
-                                        note = msg
-                                    }
-                                }
-                                TvButton(text = "$recHours h") {
-                                    touch++
-                                    recHours = if (recHours >= 4) 1 else recHours + 1
+                                    panel = "rec"
                                 }
                             }
                         }
@@ -1021,6 +1008,51 @@ fun PlayerScreen(
                     if (v.channel.key != channel.key) onVariant(brand, v)
                 },
             )
+        } else if (which == "rec" && isLive && channel != null) {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(24.dp)
+                    .width(340.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Color(0xF0161E2F))
+                    .padding(14.dp),
+            ) {
+                Text("Gravar por quanto tempo?", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(4.dp))
+                Text("Usa mais uma conexão da sua lista.", color = Muted, fontSize = 12.sp)
+                Spacer(Modifier.height(10.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    val opts = listOf(30 to "30 minutos", 60 to "1 hora", 120 to "2 horas", 180 to "3 horas", 240 to "4 horas")
+                    for ((i, o) in opts.withIndex()) {
+                        FocusBox(
+                            modifier = Modifier.fillMaxWidth(),
+                            focusRequester = if (i == 2) panelFocus else null,
+                            onClick = {
+                                panel = null
+                                val c = current ?: ranked.firstOrNull()
+                                val u = if (c != null) liveInfo?.urlOf?.invoke(c) ?: "" else ""
+                                val msg = onRecord(channel.key, channel.name, u, o.first)
+                                if (msg == null) {
+                                    recActive = true
+                                    note = "Gravando por " + o.second + ". Veja na aba Gravações."
+                                } else {
+                                    note = msg
+                                }
+                            },
+                        ) { focused ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(if (focused) PanelAlt else Panel.copy(alpha = 0.6f))
+                                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                            ) {
+                                Text(o.second, color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                            }
+                        }
+                    }
+                }
+            }
         } else if (which == "audio" || which == "text") {
             val type = if (which == "audio") C.TRACK_TYPE_AUDIO else C.TRACK_TYPE_TEXT
             val options = buildOptions(exo, tracks, type)

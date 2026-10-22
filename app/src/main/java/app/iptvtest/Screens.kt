@@ -697,19 +697,23 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
 }
 
 /** Fileira de filtros: sortear de novo, "Todos" e um chip por gênero/plataforma. Escolher um mostra só aquele grupo. */
+private const val CONTINUE_TAB = "Continuar assistindo"
+
 @Composable
-private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: String?, onSelect: (String?) -> Unit) {
+private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: String?, hasContinue: Boolean = false, onSelect: (String?) -> Unit) {
     LazyRow(
         modifier = Modifier.fadeRight(0.07f),
         contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        item(key = "__shuffle") {
-            RoundIconButton(onClick = { vm.reshuffle() }) { c -> ShuffleIcon(color = c) }
-        }
         item(key = "__todos") {
             ChipItem(text = "Todos", selected = selected == null) { onSelect(null) }
+        }
+        if (hasContinue) {
+            item(key = "__cont") {
+                ChipItem(text = CONTINUE_TAB, selected = selected == CONTINUE_TAB) { onSelect(CONTINUE_TAB) }
+            }
         }
         items(shelves.take(16), key = { "chip|" + it.name }) { sh ->
             ChipItem(text = sh.name, selected = selected == sh.name) { onSelect(sh.name) }
@@ -785,14 +789,13 @@ fun HomeTab(vm: MainViewModel) {
             }
             item(key = "games") { Box(modifier = Modifier.topOnFocus(listState)) { GamesStrip(vm, now) } }
             item(key = "chips") {
-                Box(modifier = Modifier.topOnFocus(listState)) { FilterChips(vm, shelves, sel) { sel = it } }
+                Box(modifier = Modifier.topOnFocus(listState)) { FilterChips(vm, shelves, sel, hasContinue = cont.isNotEmpty()) { sel = it } }
             }
-            if (picked != null) {
+            if (sel == CONTINUE_TAB && cont.isNotEmpty()) {
+                item(key = "cont") { ContinueRow(cont, onResume = { vm.resumeEntry(it) }) }
+            } else if (picked != null) {
                 filteredShelf(picked) { vm.open(it) }
             } else {
-                if (cont.isNotEmpty()) {
-                    item(key = "cont") { ContinueRow(cont, onResume = { vm.resumeEntry(it) }) }
-                }
                 if (favs.isNotEmpty()) {
                     item(key = "favch") {
                         Column {
