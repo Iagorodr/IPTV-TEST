@@ -136,6 +136,7 @@ fun PlayerScreen(
     onRecord: (String, String, String, Int) -> String? = { _, _, _, _ -> null },
     recordingId: (String) -> String? = { null },
     onStopRecord: (String) -> Unit = {},
+    onRecMode: (String) -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -195,6 +196,7 @@ fun PlayerScreen(
     var pinnedId by remember { mutableStateOf<String?>(if (channel != null) user.pinnedSource(channel.key) else null) }
     var note by remember { mutableStateOf<String?>(null) }
     var recHours by remember { mutableIntStateOf(2) }
+    var recAskStop by remember { mutableStateOf(false) }
     var recActive by remember { mutableStateOf(channel != null && recordingId(channel.key) != null) }
     var testing by remember { mutableStateOf(false) }
     var testingId by remember { mutableStateOf<String?>(null) }
@@ -916,11 +918,20 @@ fun PlayerScreen(
                         }
                         if (channel != null) {
                             if (recActive) {
-                                TvButton(text = "■ Parar gravação") {
+                                TvButton(text = "Tela preta") {
                                     touch++
-                                    recordingId(channel.key)?.let(onStopRecord)
-                                    recActive = false
-                                    note = "Gravação parada. Ela fica na aba Gravações."
+                                    recordingId(channel.key)?.let(onRecMode)
+                                }
+                                TvButton(text = if (recAskStop) "Confirmar parar" else "■ Parar gravação") {
+                                    touch++
+                                    if (!recAskStop) {
+                                        recAskStop = true
+                                    } else {
+                                        recAskStop = false
+                                        recordingId(channel.key)?.let(onStopRecord)
+                                        recActive = false
+                                        note = "Gravação parada. Ela fica na aba Gravações."
+                                    }
                                 }
                             } else {
                                 TvButton(text = "● Gravar") {

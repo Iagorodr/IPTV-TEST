@@ -168,6 +168,14 @@ fun App(vm: MainViewModel = viewModel()) {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text("Fechar o app?", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                if (vm.anyRecording()) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        "Há uma gravação em andamento. Ela continua, mas a TV precisa ficar ligada.",
+                        color = Accent, fontSize = 13.sp, textAlign = TextAlign.Center,
+                        modifier = Modifier.width(300.dp),
+                    )
+                }
                 Spacer(Modifier.height(18.dp))
                 // esquerda/direita levam direto de um botão ao outro (a navegação automática falhava dentro do pop-up)
                 Row(
@@ -228,6 +236,7 @@ fun App(vm: MainViewModel = viewModel()) {
     Surface(modifier = Modifier.fillMaxSize().background(AppBackground), color = Color.Transparent, contentColor = TextMain) {
         when {
             vm.blocked -> BlockedScreen(vm)
+            vm.recMode != null -> RecordingModeScreen(vm)
             vm.showWelcome && vm.pickerOpen -> holder.SaveableStateProvider("picker") {
                 TeamPickerScreen(vm)
             }
@@ -245,6 +254,7 @@ fun App(vm: MainViewModel = viewModel()) {
                     onRecord = { k, t, u, m -> vm.startRecording(k, t, u, m) },
                     recordingId = { k -> vm.recordingIdOf(k) },
                     onStopRecord = { id -> vm.stopRecording(id) },
+                    onRecMode = { id -> vm.enterRecMode(id) },
                 )
             }
             catalog == null -> LoadingScreen(vm)

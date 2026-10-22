@@ -1123,6 +1123,25 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         refreshRecs()
     }
 
+    /** Modo gravação (tela preta): guarda qual gravação está sendo mostrada. */
+    var recMode by mutableStateOf<String?>(null)
+        private set
+
+    fun enterRecMode(id: String) {
+        // fecha o player para liberar a conexão do provedor; a gravação segue no serviço
+        playing = null
+        recMode = id
+        refreshRecs()
+    }
+
+    fun exitRecMode() {
+        recMode = null
+        FocusMemory.arm()
+        dataRev++
+    }
+
+    fun anyRecording(): Boolean = RecStore.all(appCtx).any { it.recording }
+
     fun isRecording(key: String): Boolean = RecStore.all(appCtx).any { it.key == key && it.recording }
 
     fun recordingIdOf(key: String): String? = RecStore.all(appCtx).firstOrNull { it.key == key && it.recording }?.id

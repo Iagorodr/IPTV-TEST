@@ -1,6 +1,28 @@
 package app.iptvtest
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import android.provider.Settings
+import android.view.WindowManager
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -100,7 +123,15 @@ fun RecordingsTab(vm: MainViewModel) {
                     }
                     if (r.size > 0L) TvButton(text = "Assistir", primary = true) { vm.playRecording(r) }
                     if (r.recording) {
-                        TvButton(text = "Parar") { vm.stopRecording(r.id) }
+                        TvButton(text = "Tela preta") { vm.enterRecMode(r.id) }
+                        if (confirmDelete == r.id) {
+                            TvButton(text = "Confirmar parar") {
+                                confirmDelete = null
+                                vm.stopRecording(r.id)
+                            }
+                        } else {
+                            TvButton(text = "Parar") { confirmDelete = r.id }
+                        }
                     } else if (confirmDelete == r.id) {
                         TvButton(text = "Confirmar") {
                             confirmDelete = null
@@ -109,6 +140,185 @@ fun RecordingsTab(vm: MainViewModel) {
                     } else {
                         TvButton(text = "Apagar") { confirmDelete = r.id }
                     }
+                }
+            }
+        }
+    }
+}
+
+private fun Context.findActivity(): Activity? {
+    var c: Context? = this
+    while (c is ContextWrapper) {
+        if (c is Activity) return c
+        c = c.baseContext
+    }
+    return null
+}
+
+/**
+ * Modo gravação: tela preta com brilho no mínimo, só um texto discreto. Mantém a TV acordada (ela não entra em espera
+ * nem em protetor de tela), para a gravação não ser cortada. Qualquer botão mostra os comandos; Voltar também só os mostra.
+ */
+@Composable
+fun RecordingModeScreen(vm: MainViewModel) {
+    val ctx = LocalContext.current
+    val recId = vm.recMode ?: return
+    val scope = rememberCoroutineScope()
+    val focus = remember { FocusRequester() }
+    val first = remember { FocusRequester() }
+    var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    var controls by remember { mutableStateOf(false) }
+    var touch by remember { mutableIntStateOf(0) }
+    var askStop by remember { mutableStateOf(false) }
+    val rec = vm.recs.firstOrNull { it.id == recId }
+    val running = rec?.recording == true
+    val fmt = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
+
+    // brilho mínimo e tela sempre acesa enquanto este modo está aberto
+    DisposableEffect(Unit) {
+        val w = ctx.findActivity()?.window
+        val old = w?.attributes?.screenBrightness ?: -1f
+        w?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        w?.attributes = w?.attributes?.also { it.screenBrightness = 0.01f }
+        onDispose {
+            w?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            w?.attributes = w?.attributes?.also { it.screenBrightness = old }
+        }
+    }
+    LaunchedEffect(Unit) {
+        while (true) {
+            vm.refreshRecs()
+            now = System.currentTimeMillis()
+            delay(2_000L)
+        }
+    }
+    LaunchedEffect(Unit) {
+        delay(150)
+        try {
+            focus.requestFocus()
+        } catch (e: Exception) {
+            // ainda não estava na tela
+        }
+    }
+    // os comandos somem sozinhos depois de 10 s sem mexer
+    LaunchedEffect(touch, controls) {
+        if (controls) {
+            delay(10_000L)
+            controls = false
+            askStop = false
+        }
+    }
+    LaunchedEffect(controls) {
+        if (controls) {
+            delay(100)
+            try {
+                first.requestFocus()
+            } catch (e: Exception) {
+                // ainda não estava na tela
+            }
+        } else {
+            try {
+                focus.requestFocus()
+            } catch (e: Exception) {
+                // ainda não estava na tela
+            }
+        }
+    }
+    BackHandler(enabled = true) {
+        if (controls) controls = false else controls = true
+    }
+    // o texto anda um pouquinho a cada minuto, para não marcar a tela
+    val shift = ((now / 60_000L) % 5).toInt()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .focusRequester(focus)
+            .focusable()
+            .onPreviewKeyEvent { ev ->
+                if (!controls && ev.type == KeyEventType.KeyDown) {
+                    controls = true
+                    true
+                } else {
+                    if (ev.type == KeyEventType.KeyDown) touch++
+                    false
+                }
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier.offset(x = (shift * 14 - 28).dp, y = (shift * 8 - 16).dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            val dim = Color(0xFF6B6F7B)
+            if (rec == null) {
+                Text("Gravação não encontrada.", color = dim, fontSize = 16.sp)
+            } else if (running) {
+                Text("● Gravando", color = Color(0xFF8A2E3B), fontSize = 18.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 2.sp)
+                Spacer(Modifier.height(8.dp))
+                Text(rec.title, color = dim, fontSize = 22.sp, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    fmt.format(Date(rec.startedAt)) + " às " + fmt.format(Date(rec.endsAt)),
+                    color = dim, fontSize = 16.sp,
+                )
+                Spacer(Modifier.height(4.dp))
+                Text("Faltam " + lengthText(rec.endsAt - now) + " · " + sizeText(rec.size), color = dim, fontSize = 14.sp)
+            } else {
+                Text(
+                    if (rec.state == "error") "A gravação não deu certo." else "Gravação concluída",
+                    color = Color(0xFF9AA0AE), fontSize = 20.sp, fontWeight = FontWeight.Medium,
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    if (rec.state == "error") rec.error else rec.title + " · " + sizeText(rec.size),
+                    color = dim, fontSize = 14.sp, textAlign = TextAlign.Center,
+                )
+                if (!controls) {
+                    Spacer(Modifier.height(10.dp))
+                    Text("Aperte qualquer botão.", color = dim, fontSize = 13.sp)
+                }
+            }
+            if (controls || (rec != null && !running)) {
+                Spacer(Modifier.height(24.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    if (running) {
+                        TvButton(text = "Sair da tela preta", primary = true, focusRequester = first) { vm.exitRecMode() }
+                        if (askStop) {
+                            TvButton(text = "Confirmar parar") {
+                                askStop = false
+                                vm.stopRecording(recId)
+                            }
+                        } else {
+                            TvButton(text = "Parar gravação") {
+                                touch++
+                                askStop = true
+                            }
+                        }
+                        TvButton(text = "Desligar a TV depois") {
+                            touch++
+                            val i = Intent(Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            try {
+                                ctx.startActivity(i)
+                            } catch (e: Exception) {
+                                // esta TV não tem tela de ajustes aberta para apps
+                            }
+                        }
+                    } else {
+                        TvButton(text = "Ver gravações", primary = true, focusRequester = first) {
+                            vm.exitRecMode()
+                            vm.selectTab(Tab.REC)
+                        }
+                        TvButton(text = "Voltar ao início") { vm.exitRecMode() }
+                    }
+                }
+                if (running) {
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        "Para a TV desligar sozinha, ative o temporizador de desligamento nos ajustes dela.",
+                        color = dim, fontSize = 12.sp, textAlign = TextAlign.Center,
+                        modifier = Modifier.widthIn(max = 480.dp),
+                    )
                 }
             }
         }
