@@ -225,6 +225,17 @@ fun App(vm: MainViewModel = viewModel()) {
         }
     }
 
+    // procura versão nova ao abrir e a cada 6 horas
+    LaunchedEffect(account != null) {
+        if (account != null) {
+            delay(4_000L)
+            while (true) {
+                vm.checkUpdate()
+                delay(6L * 3_600_000L)
+            }
+        }
+    }
+
     // religa o vigia das gravações agendadas (ele some se o app foi fechado à força ou a TV reiniciou)
     LaunchedEffect(account != null) {
         if (account != null) {
@@ -290,6 +301,12 @@ fun App(vm: MainViewModel = viewModel()) {
         val note = vm.notice
         if (note != null && !vm.blocked) {
             if (vm.noticeSecs > 0) NoticeBanner(vm, note.first, note.second, vm.noticeSecs) else NoticeDialog(vm, note.second)
+        }
+
+        // versão nova: pergunta uma vez por abertura, e nunca por cima do player ou da tela preta
+        val upd = vm.update
+        if (upd != null && !vm.updateDismissed && playing == null && vm.recMode == null && !vm.blocked && account != null && catalog != null) {
+            UpdateDialog(vm, upd)
         }
 
         // agendar gravação: faixa enquanto escolhe o canal, e a tela de horário depois

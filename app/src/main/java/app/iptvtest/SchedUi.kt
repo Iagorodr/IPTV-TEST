@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -247,5 +249,85 @@ fun PickBanner(label: String) {
                 .border(1.dp, Accent, RoundedCornerShape(24.dp))
                 .padding(horizontal = 22.dp, vertical = 10.dp),
         )
+    }
+}
+
+/** "Há versão nova": atualizar agora (baixa e abre o instalador) ou depois. */
+@Composable
+fun UpdateDialog(vm: MainViewModel, u: UpdateInfo) {
+    val first = remember(u.code) { FocusRequester() }
+    LaunchedEffect(u.code, vm.updateState) {
+        delay(80)
+        try {
+            first.requestFocus()
+        } catch (e: Exception) {
+            // o botão ainda não estava na tela
+        }
+    }
+    Dialog(
+        onDismissRequest = { if (vm.updateState != "baixando") vm.updateDismissed = true },
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Column(
+            modifier = Modifier
+                .width(560.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Panel)
+                .border(1.dp, PanelAlt, RoundedCornerShape(16.dp))
+                .padding(26.dp),
+        ) {
+            Text("Versão nova disponível", color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text(
+                "Você tem o build " + vm.installedBuild() + " · novo: build " + u.code,
+                color = Muted,
+                fontSize = 13.sp,
+            )
+            if (u.notes.isNotBlank()) {
+                Spacer(Modifier.height(10.dp))
+                Text("O que mudou", color = Accent, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                Text(u.notes, color = TextMain, fontSize = 14.sp)
+            }
+            if (vm.anyRecording()) {
+                Spacer(Modifier.height(10.dp))
+                Text("Há uma gravação em andamento: ela seria cortada. Atualize depois que terminar.", color = Warn, fontSize = 13.sp)
+            }
+            val msg = vm.updateMsg
+            if (msg != null) {
+                Spacer(Modifier.height(10.dp))
+                Text(msg, color = ErrorColor, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+            }
+            Spacer(Modifier.height(16.dp))
+            if (vm.updateState == "baixando") {
+                Text("Baixando... " + vm.updateProgress + "%", color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(PanelAlt),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(vm.updateProgress / 100f)
+                            .fillMaxHeight()
+                            .background(Accent),
+                    )
+                }
+                Spacer(Modifier.height(14.dp))
+                TvButton(text = "Cancelar", focusRequester = first) { vm.cancelUpdate() }
+            } else {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    TvButton(text = "Atualizar agora", primary = true, focusRequester = first) { vm.startUpdate() }
+                    TvButton(text = "Depois") { vm.updateDismissed = true }
+                }
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    "Ao terminar de baixar, o Android pede para confirmar a instalação. O app fecha e você abre de novo.",
+                    color = Muted,
+                    fontSize = 11.sp,
+                )
+            }
+        }
     }
 }

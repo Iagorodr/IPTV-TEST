@@ -1,0 +1,3 @@
+Gravações agendadas (pelo jogo ou manual), com escolha de qualidade.
+Gravações tocam do arquivo e a lista não perde mais o foco.
+Atualização dentro do próprio app.

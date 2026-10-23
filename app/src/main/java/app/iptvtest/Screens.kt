@@ -1459,6 +1459,15 @@ private fun AboutSection(vm: MainViewModel) {
             color = Muted,
             fontSize = 12.sp,
         )
+        Spacer(Modifier.height(18.dp))
+        Text("Versão instalada: build " + vm.installedBuild(), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+        Spacer(Modifier.height(6.dp))
+        TvButton(text = "Procurar atualização") { vm.checkUpdate(manual = true) }
+        val um = vm.updateMsg
+        if (um != null) {
+            Spacer(Modifier.height(6.dp))
+            Text(um, color = Muted, fontSize = 12.sp)
+        }
     }
 }
 

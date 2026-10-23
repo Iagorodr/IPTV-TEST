@@ -1144,6 +1144,64 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     /** Gravação onde o foco estava na lista; ao voltar para a aba o foco retorna para ela. */
     var recFocusId by mutableStateOf<String?>(null)
 
+    // ---- atualização dentro do app
+    var update by mutableStateOf<UpdateInfo?>(null)
+        private set
+    var updateDismissed by mutableStateOf(false)
+    /** "" parado, "baixando", "erro" */
+    var updateState by mutableStateOf("")
+        private set
+    var updateProgress by mutableIntStateOf(0)
+        private set
+    var updateMsg by mutableStateOf<String?>(null)
+        private set
+    private var updateJob: kotlinx.coroutines.Job? = null
+
+    fun installedBuild(): Int = Updater.installedCode(appCtx)
+
+    /** Confere se há versão nova. [manual]: a pessoa pediu nos Ajustes, então responde sempre e reabre o aviso. */
+    fun checkUpdate(manual: Boolean = false) {
+        if (updateState == "baixando") return
+        viewModelScope.launch {
+            val u = Updater.check(appCtx)
+            update = u
+            if (u != null) {
+                if (manual) updateDismissed = false
+                updateMsg = null
+            } else if (manual) {
+                updateMsg = "Você já está na versão mais recente (build " + installedBuild() + ")."
+            }
+        }
+    }
+
+    fun startUpdate() {
+        if (updateState == "baixando") return
+        updateState = "baixando"
+        updateProgress = 0
+        updateMsg = null
+        updateJob = viewModelScope.launch {
+            val f = Updater.download(appCtx) { p -> updateProgress = p }
+            if (f == null) {
+                updateState = "erro"
+                updateMsg = "Não consegui baixar. Confira a internet e tente de novo."
+            } else {
+                updateState = ""
+                val problem = Updater.install(appCtx, f)
+                if (problem != null) {
+                    updateState = "erro"
+                    updateMsg = problem
+                } else {
+                    updateDismissed = true
+                }
+            }
+        }
+    }
+
+    fun cancelUpdate() {
+        updateJob?.cancel()
+        updateState = ""
+    }
+
     // ---- gravações agendadas
     var scheds by mutableStateOf<List<Sched>>(emptyList())
         private set

@@ -67,8 +67,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cp app/build/outputs/apk/release/app-release.apk iptv-test.apk
+          # version.json: o app lê este arquivo para saber se há versão nova e o que mudou (texto vem de NOVIDADES.txt)
+          RUN="${{ github.run_number }}" python3 - <<'PY'
+          import json, os
+          try:
+              notes = open("NOVIDADES.txt", encoding="utf-8").read().strip()
+          except Exception:
+              notes = ""
+          json.dump({"code": int(os.environ["RUN"]), "notes": notes}, open("version.json", "w"), ensure_ascii=False)
+          PY
           gh release delete latest --yes --cleanup-tag || true
-          gh release create latest iptv-test.apk \
+          gh release create latest iptv-test.apk version.json \
             --title "${{ steps.nome.outputs.app }} - build ${{ github.run_number }}" \
             --notes "APK mais recente (build ${{ github.run_number }}, commit ${GITHUB_SHA::7})." \
             --target "$GITHUB_SHA"
