@@ -505,8 +505,9 @@ fun TabScreen(vm: MainViewModel) {
 /** Texto e capa do destaque (a parte que troca com um esmaecer; os botões ficam fixos por cima). */
 @Composable
 private fun HeroContent(t: Title) {
+    val tm by rememberTmdb(t)
     Box(modifier = Modifier.fillMaxSize()) {
-        val img = t.image
+        val img = tm?.backdrop ?: t.image
         if (img != null) {
             // a capa do título ocupa o fundo, à direita, e se dissolve no degradê da tela
             AsyncImage(
@@ -579,10 +580,11 @@ private fun HeroContent(t: Title) {
             if (meta.isNotEmpty()) {
                 Text(meta, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            if (t.plot.isNotEmpty()) {
+            val heroPlot = t.plot.ifEmpty { tm?.overview ?: "" }
+            if (heroPlot.isNotEmpty()) {
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    t.plot,
+                    heroPlot,
                     color = TextMain.copy(alpha = 0.85f),
                     fontSize = 13.sp,
                     lineHeight = 17.sp,
@@ -1459,7 +1461,13 @@ private fun AboutSection(vm: MainViewModel) {
             color = Muted,
             fontSize = 12.sp,
         )
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(14.dp))
+        Text(
+            "Capas e sinopses extras: este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.",
+            color = Muted,
+            fontSize = 11.sp,
+        )
+        Spacer(Modifier.height(14.dp))
         Text("Versão instalada: build " + vm.installedBuild(), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(6.dp))
         TvButton(text = "Procurar atualização") { vm.checkUpdate(manual = true) }

@@ -47,6 +47,8 @@ jobs:
           gradle-version: "8.10.2"
 
       - name: Compilar (release)
+        env:
+          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
         run: |
           set -o pipefail
           gradle :app:assembleRelease --no-daemon --stacktrace 2>&1 | tee build.log

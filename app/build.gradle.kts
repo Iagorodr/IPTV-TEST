@@ -15,6 +15,8 @@ android {
         // versionCode sobe a cada build do GitHub Actions, assim o Android aceita atualizar por cima.
         versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
         versionName = "0.7.0"
+        // token de leitura do TMDB (vem do segredo TMDB_TOKEN do GitHub; vazio = recurso desligado)
+        buildConfigField("String", "TMDB_TOKEN", "\"" + (System.getenv("TMDB_TOKEN") ?: "") + "\"")
     }
 
     // a tabela "onde costuma passar" fica em data/ (o app também baixa a versão nova do GitHub todo dia)
@@ -57,6 +59,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     lint {

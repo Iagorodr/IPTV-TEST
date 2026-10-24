@@ -122,7 +122,8 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
     val info = if (!title.series && chosen != null) vm.vodInfos[chosen.id] else null
     val epState = if (title.series && chosen != null) vm.episodes[chosen.id] else null
     val eps = epState?.episodes ?: emptyList()
-    val plot = (info?.plot ?: "").ifEmpty { title.plot }
+    val tm by rememberTmdb(title)
+    val plot = (info?.plot ?: "").ifEmpty { title.plot }.ifEmpty { tm?.overview ?: "" }
 
     // ---- série: episódio onde parou / primeiro episódio
     val resumeSame = resume != null && chosen != null && resume.versionId == chosen.id && rev >= 0
@@ -174,7 +175,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
         }
     }
 
-    val img = title.image
+    val img = tm?.backdrop ?: title.image
     Box(modifier = Modifier.fillMaxSize()) {
         // a capa do título ocupa o fundo, à direita, e se dissolve no degradê (sem capa: o sol da marca)
         if (img != null) {

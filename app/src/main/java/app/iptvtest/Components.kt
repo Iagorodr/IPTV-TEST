@@ -292,7 +292,8 @@ fun TitlePoster(
                     .background(PanelAlt),
                 contentAlignment = Alignment.Center,
             ) {
-                val img = title.image
+                val tm by rememberTmdb(title, needed = title.image == null)
+                val img = title.image ?: tm?.poster
                 if (img != null) {
                     AsyncImage(
                         model = img,

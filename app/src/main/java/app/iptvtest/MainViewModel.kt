@@ -279,6 +279,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private var loadJob: Job? = null
 
     init {
+        Tmdb.init(app)
         AppTz.apply(user.tzId)
         favTeams = user.favTeams.toList()
         favLeagues = user.favLeagues.toList()
