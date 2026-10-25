@@ -1,3 +1,2 @@
-Player: a linha do tempo agora é selecionável; ◀ ▶ andam e aceleram (10 s, 30 s, 2 min, 10 min, 15 min). Sem a fileira de botões.
-Canais: linhas "##### País #####" somem e dão o país aos canais abaixo; aba Documentários reconhece Discovery, Nat Geo, History...
-Nomes com "P+ -", "D+ -" limpos.
+Filtro de País reescrito com a sua lista real: categorias "XX|" de qualquer país, letrinhas enfeitadas (ᴿᴬᵂ, ⁴ᴷ) limpas, canais sem país somem quando a lista é de vários países.
+Nomes de canais sem "US:", "VIP:", "RK:" na frente; avisos "NO Event Streaming" e vagas vazias escondidos.

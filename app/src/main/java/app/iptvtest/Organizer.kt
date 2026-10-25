@@ -32,11 +32,30 @@ object Organizer {
         return sb.toString().trim()
     }
 
+    /** Letra/número sobrescrito ou de modificador (ᴬ ᵇ ⁴ ³ ʰ ⱽ ...). */
+    fun isSuper(ch: Char): Boolean {
+        val c = ch.code
+        return (c in 0x1D2C..0x1D6A) || (c in 0x1D9B..0x1DBF) || (c in 0x2070..0x209F) || (c in 0x02B0..0x02FF) ||
+            c == 0x2C7D || c == 0x00B2 || c == 0x00B3 || c == 0x00B9 || c == 0x1D43 || c == 0x1D47
+    }
+
+    /** Converte letras enfeitadas em normais ("⁴ᴷ ᴴᴰᴿ" → "4K HDR"), para ler qualidade e país. */
+    fun plain(s: String): String {
+        var fancy = false
+        for (ch in s) if (ch.code > 0x2AF) { fancy = true; break }
+        return if (fancy) Normalizer.normalize(s, Normalizer.Form.NFKC) else s
+    }
+
     private fun cleanName(raw: String?): String {
         if (raw == null) return ""
         val sb = StringBuilder(raw.length)
         for (ch in raw) {
             if (ch == '‎' || ch == '‏' || ch == '​' || ch == '﻿') continue
+            // letrinhas sobrescritas que o provedor usa como enfeite ("ᴿᴬᵂ", "⁴ᴷ", "ⱽᴵᴾ"): somem do nome mostrado
+            if (isSuper(ch)) {
+                sb.append(' ')
+                continue
+            }
             if (ch.isWhitespace() || ch == ' ') sb.append(' ') else sb.append(ch)
         }
         return WS.replace(sb.toString(), " ").trim()
@@ -458,8 +477,25 @@ object Organizer {
     }
 
     private fun displayName(raw: String): String {
-        return WS.replace(TRAIL.replace(stripChannel(raw), ""), " ").trim()
+        var n = WS.replace(TRAIL.replace(stripChannel(raw), ""), " ").trim()
+        // "US: NBC", "VIP: Azteca 7", "RK: Hallmark": a sigla da frente não ajuda na tela (o país já está na fonte)
+        val m = NAME_TAG.find(n)
+        if (m != null) {
+            val t = m.groupValues[1].uppercase(Locale.ROOT)
+            val rest = n.substring(m.range.last + 1).trim()
+            if (rest.length >= 2 && (Countries.isCodeToken(t) || t in NAME_TAG_WORDS)) n = rest
+        }
+        return n.trimStart(':', ' ', '-', '|')
     }
+
+    private val NAME_TAG = Regex("^([A-Za-z0-9+/]{1,6})\\s*:\\s*")
+    private val NAME_TAG_WORDS = setOf(
+        "VIP", "RK", "MEO", "AMP", "JOYN", "PRIME", "GOLD", "PLAY", "PLAY+", "T2", "TUBI", "GO", "MC", "NM", "AV", "RC",
+        "M+", "SKY", "TV", "LIVE", "RAW", "HD", "FHD", "UHD", "4K", "8K", "PPV", "IPTV",
+    )
+
+    /** Linhas que não são canal: aviso de "sem evento agora" e vagas vazias com data impossível. */
+    private val PLACEHOLDER = Regex("no event streaming|\\(209\\d-|\\b2098\\b|^\\s*-+\\s*$", RegexOption.IGNORE_CASE)
 
     private fun prettyName(cands: List<String>): String {
         val mixed = cands.firstOrNull { c -> c.any { it.isLowerCase() } && c.any { it.isUpperCase() } }
@@ -505,6 +541,7 @@ object Organizer {
             if (++nDone % 500 == 0) LoadCounter.items = nDone
             val cn = raw.cats.firstOrNull()?.let { catName[it] } ?: ""
             if (isAdultCategory(cn)) continue
+            if (PLACEHOLDER.containsMatchIn(raw.name)) continue
             if (DIVIDER.containsMatchIn(raw.name)) {
                 curDiv[cn] = Countries.fromName(raw.name) ?: ""
                 continue
@@ -537,11 +574,11 @@ object Organizer {
 
             val sources = ArrayList<Source>()
             for (raw in list) {
-                val q = qualityOf(raw.name)
+                val q = qualityOf(plain(raw.name))
                 val idx = IDX.find(raw.name)?.groupValues?.get(1)?.toIntOrNull() ?: 1
                 val grp = if (raw.name.contains("**")) "B" else "A"
                 val label = q + (if (idx > 1) " $idx" else "") + " · Fonte " + grp
-                sources.add(Source(raw.id, q, rankOf(q), grp, label, raw.arch, raw.cats.firstNotNullOfOrNull { catCc[it] } ?: Countries.prefixTag(raw.name) ?: divCc[raw.id] ?: ""))
+                sources.add(Source(raw.id, q, rankOf(q), grp, label, raw.arch, raw.cats.firstNotNullOfOrNull { catCc[it] } ?: Countries.prefixTag(plain(raw.name)) ?: divCc[raw.id] ?: ""))
             }
             val seen = HashMap<String, Int>()
             val fixed = ArrayList<Source>()
@@ -592,6 +629,10 @@ object Organizer {
         ser: List<RawItem>,
         live: List<RawItem>,
     ): Catalog {
+        fun nk(l: List<Category>): List<Category> = l.map { Category(it.id, plain(it.name)) }
+        val vodCats = nk(vodCats)
+        val serCats = nk(serCats)
+        val liveCats = nk(liveCats)
         phase("Organizando filmes")
         val movies = buildTitles(vodCats, vod, series = false)
         phase("Organizando séries")

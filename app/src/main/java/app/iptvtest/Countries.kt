@@ -73,7 +73,7 @@ object Countries {
 
     fun label(code: String): String = NAMES[code] ?: EXTRA[code] ?: code
 
-    private val EXTRA = mapOf("AF" to "África", "ARG" to "Argentina", "EXYU" to "Ex-Iugoslávia", "AFR" to "África", "ASIA" to "Ásia", "LA" to "América Latina", "CAR" to "Caribe", "IR" to "Irã", "PK" to "Paquistão", "BD" to "Bangladesh", "SO" to "Somália", "ET" to "Etiópia", "NG" to "Nigéria", "MA" to "Marrocos", "DZ" to "Argélia", "TN" to "Tunísia", "EG" to "Egito", "SA" to "Arábia Saudita", "IL" to "Israel", "UA" to "Ucrânia", "BG" to "Bulgária", "HU" to "Hungria", "CZ" to "Tchéquia", "SK" to "Eslováquia", "SI" to "Eslovênia", "BA" to "Bósnia", "MK" to "Macedônia", "LT" to "Lituânia", "LV" to "Letônia", "EE" to "Estônia", "AT" to "Áustria", "IE" to "Irlanda", "AU" to "Austrália", "NZ" to "Nova Zelândia", "PH" to "Filipinas", "TH" to "Tailândia", "VN" to "Vietnã", "ID" to "Indonésia", "MY" to "Malásia", "CL" to "Chile", "CO" to "Colômbia", "PE" to "Peru", "VE" to "Venezuela", "UY" to "Uruguai", "PY" to "Paraguai", "BO" to "Bolívia", "EC" to "Equador", "DO" to "Rep. Dominicana", "PR" to "Porto Rico", "CU" to "Cuba", "KU" to "Curdistão", "AM" to "Armênia", "AZ" to "Azerbaijão", "GE" to "Geórgia", "KZ" to "Cazaquistão")
+    private val EXTRA = mapOf("AF" to "África", "IE" to "Irlanda", "CY" to "Chipre", "IS" to "Islândia", "BH" to "Bahrein", "CG" to "Montenegro", "SR" to "Suriname", "QC" to "Quebec", "NORDIC" to "Nórdicos", "KU" to "Curdistão", "AFG" to "Afeganistão", "ARG" to "Argentina", "EXYU" to "Ex-Iugoslávia", "AFR" to "África", "ASIA" to "Ásia", "LA" to "América Latina", "CAR" to "Caribe", "IR" to "Irã", "PK" to "Paquistão", "BD" to "Bangladesh", "SO" to "Somália", "ET" to "Etiópia", "NG" to "Nigéria", "MA" to "Marrocos", "DZ" to "Argélia", "TN" to "Tunísia", "EG" to "Egito", "SA" to "Arábia Saudita", "IL" to "Israel", "UA" to "Ucrânia", "BG" to "Bulgária", "HU" to "Hungria", "CZ" to "Tchéquia", "SK" to "Eslováquia", "SI" to "Eslovênia", "BA" to "Bósnia", "MK" to "Macedônia", "LT" to "Lituânia", "LV" to "Letônia", "EE" to "Estônia", "AT" to "Áustria", "IE" to "Irlanda", "AU" to "Austrália", "NZ" to "Nova Zelândia", "PH" to "Filipinas", "TH" to "Tailândia", "VN" to "Vietnã", "ID" to "Indonésia", "MY" to "Malásia", "CL" to "Chile", "CO" to "Colômbia", "PE" to "Peru", "VE" to "Venezuela", "UY" to "Uruguai", "PY" to "Paraguai", "BO" to "Bolívia", "EC" to "Equador", "DO" to "Rep. Dominicana", "PR" to "Porto Rico", "CU" to "Cuba", "KU" to "Curdistão", "AM" to "Armênia", "AZ" to "Azerbaijão", "GE" to "Geórgia", "KZ" to "Cazaquistão")
 
     /** A sigla é de um país/idioma conhecido (inclui apelidos como GB, USA, BRA)? */
     fun isCodeToken(t: String): Boolean {
@@ -93,10 +93,19 @@ object Countries {
         return if (canon.length in 2..4 && canon !in NOT_CODES) canon else null
     }
 
-    private val NOT_CODES = setOf("TV", "HD", "FHD", "UHD", "SD", "VIP", "PPV", "LIVE", "NEW", "THE", "BEIN", "ESPN", "SKY", "BBC", "CNN", "FOX", "NBC", "CBS", "RTP", "SIC", "TVI", "MAX", "HBO", "RAW", "BOX", "VOD", "SUB", "DUB")
+    private val NOT_CODES = setOf("NEXT", "END", "ENDED", "PLAY", "GOLD", "JOYN", "TUBI", "MEO", "AMP", "NBA", "NFL", "NHL", "MLB", "UFC", "WWE", "TV", "HD", "FHD", "UHD", "SD", "VIP", "PPV", "LIVE", "NEW", "THE", "BEIN", "ESPN", "SKY", "BBC", "CNN", "FOX", "NBC", "CBS", "RTP", "SIC", "TVI", "MAX", "HBO", "RAW", "BOX", "VOD", "SUB", "DUB")
 
     /** O país/idioma que o nome da categoria indica, ou null se não indicar nenhum. */
+    private val BAR_CODE = Regex("""^\s*([A-Z]{2,4})\s*\|""")
+    private val NOT_COUNTRY_CAT = setOf("4K", "8K", "TS", "VIP", "PPV", "UHD", "FHD", "HD", "SD", "VOD", "TV")
+
     fun tagOf(rawName: String): String? {
+        // "XX| ..." (padrão de muitas listas): qualquer sigla curta antes da barra vale como país/região
+        val b = BAR_CODE.find(rawName)
+        if (b != null) {
+            val u = b.groupValues[1]
+            if (u !in NOT_COUNTRY_CAT && !(u == "HR" && rawName.uppercase(Locale.ROOT).contains("HORSE"))) return ALIAS[u] ?: u
+        }
         val m = PREFIX.find(rawName)
         if (m != null) {
             val c = m.groupValues[1].uppercase(Locale.ROOT)
@@ -113,7 +122,13 @@ object Countries {
     /** O que o app deve mostrar com o filtro [sel]. null ou vazio = tudo. O que não tem marca de país sempre aparece. */
     fun filter(c: Catalog, sel: Set<String>?): Catalog {
         if (sel == null || sel.isEmpty()) return c
-        fun ok(cc: String) = cc.isEmpty() || sel.contains(cc)
+        // lista de vários países (quase tudo com país): o que não tem país some também; lista de um país só: fica
+        var tagged = 0
+        var total = 0
+        for (x in c.channels) for (s in x.sources) { total++; if (s.cc.isNotEmpty()) tagged++ }
+        for (t in c.movies) for (v in t.versions) { total++; if (v.cc.isNotEmpty()) tagged++ }
+        val strict = total > 0 && tagged * 10 >= total * 8
+        fun ok(cc: String) = if (cc.isEmpty()) !strict else sel.contains(cc)
         val movies = ArrayList<Title>(c.movies.size)
         for (t in c.movies) {
             val v = t.versions.filter { ok(it.cc) }
