@@ -178,6 +178,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var catalog by mutableStateOf<Catalog?>(null)
         private set
     var loadMsg by mutableStateOf<String?>(null)
+
+    /** Etapa atual (1..LOAD_STEPS) do carregamento do catálogo; 0 = parado. */
+    var loadStep by mutableIntStateOf(0)
+        private set
+    var loadStartMs by mutableLongStateOf(0L)
+        private set
+
+    /** Itens já lidos na etapa atual (atualizado pela tela a cada instante). */
+    fun loadCount(): Int = LoadCounter.items
+
+    /** Aviso curto quando a lista nova fica pronta em segundo plano. */
+    var listNotice by mutableStateOf<String?>(null)
         private set
     var loadError by mutableStateOf<String?>(null)
         private set
@@ -629,7 +641,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 a.prepare()
                 val fresh = downloadAndBuild(a)
                 withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
+                val wasShowing = catalog != null
                 applyCatalog(fresh)
+                if (wasShowing) {
+                    listNotice = "Lista atualizada: " + fresh.movies.size + " filmes · " + fresh.series.size + " séries · " + fresh.channels.size + " canais"
+                    launch {
+                        delay(9_000L)
+                        listNotice = null
+                    }
+                }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -645,20 +665,30 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private suspend fun downloadAndBuild(a: ListApi): Catalog {
         val show = catalog == null
-        if (show) loadMsg = "Baixando a lista..."
-        a.refresh()
-        if (show) loadMsg = "Baixando categorias..."
-        val vc = a.categories(Kind.MOVIES)
-        val sc = a.categories(Kind.SERIES)
-        val lc = a.categories(Kind.LIVE)
-        if (show) loadMsg = "Baixando filmes... (na primeira vez demora um pouco)"
-        val vod = a.fetchItems(Kind.MOVIES)
-        if (show) loadMsg = "Baixando séries..."
-        val ser = a.fetchItems(Kind.SERIES)
-        if (show) loadMsg = "Baixando canais..."
-        val live = a.fetchItems(Kind.LIVE)
-        if (show) loadMsg = "Organizando por gênero..."
-        return withContext(Dispatchers.Default) { Organizer.build(vc, sc, lc, vod, ser, live) }
+        loadStartMs = System.currentTimeMillis()
+        suspend fun step(n: Int, msg: String) {
+            loadStep = n
+            LoadCounter.items = 0
+            if (show) loadMsg = msg
+        }
+        try {
+            step(1, "Baixando a lista...")
+            a.refresh()
+            step(2, "Baixando categorias...")
+            val vc = a.categories(Kind.MOVIES)
+            val sc = a.categories(Kind.SERIES)
+            val lc = a.categories(Kind.LIVE)
+            step(3, "Baixando filmes")
+            val vod = a.fetchItems(Kind.MOVIES)
+            step(4, "Baixando séries")
+            val ser = a.fetchItems(Kind.SERIES)
+            step(5, "Baixando canais")
+            val live = a.fetchItems(Kind.LIVE)
+            step(6, "Organizando por gênero e país")
+            return withContext(Dispatchers.Default) { Organizer.build(vc, sc, lc, vod, ser, live) }
+        } finally {
+            loadStep = 0
+        }
     }
 
     /** Chamado quando a pessoa volta ao app depois de um tempo fora: sorteia as prateleiras de novo. */

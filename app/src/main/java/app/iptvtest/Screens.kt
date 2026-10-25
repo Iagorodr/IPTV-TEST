@@ -310,16 +310,41 @@ fun LoadingScreen(vm: MainViewModel) {
                     TvButton(text = "Sair da conta") { vm.logout() }
                 }
             } else {
+                // progresso real: etapa atual + itens já lidos + tempo
+                var tick by remember { mutableStateOf(0L) }
+                LaunchedEffect(Unit) {
+                    while (true) {
+                        tick = System.currentTimeMillis()
+                        kotlinx.coroutines.delay(500)
+                    }
+                }
+                val step = vm.loadStep
+                val weights = floatArrayOf(0.02f, 0.03f, 0.40f, 0.12f, 0.28f, 0.15f)
+                val done = if (step <= 1) 0f else weights.take(step - 1).sum()
+                val frac = if (step == 0) 0f else (done + weights[(step - 1).coerceIn(0, 5)] * 0.5f).coerceIn(0.02f, 0.98f)
                 androidx.compose.material3.LinearProgressIndicator(
-                    modifier = Modifier.width(200.dp).height(2.dp),
+                    progress = { frac },
+                    modifier = Modifier.width(320.dp).height(3.dp),
                     color = Accent,
                     trackColor = Color(0x22FFF3EC),
                 )
                 Spacer(Modifier.height(18.dp))
-                Text(vm.loadMsg ?: "Preparando...", color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
+                val count = if (step in 3..5) vm.loadCount() else 0
+                val msg = (vm.loadMsg ?: "Preparando...") + (if (count > 0) ": " + String.format(java.util.Locale.GERMANY, "%,d", count) + " itens" else "")
+                Text(msg, color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
+                if (step > 0) {
+                    val secs = ((tick - vm.loadStartMs).coerceAtLeast(0L) / 1000L).toInt()
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "Etapa " + step + " de 6  ·  " + (secs / 60) + ":" + String.format("%02d", secs % 60),
+                        color = Muted,
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    "Isso só acontece na primeira vez: depois o catálogo fica guardado na TV e abre na hora.",
+                    "Listas muito grandes podem levar alguns minutos. Isso só acontece na primeira vez: depois o catálogo fica guardado e abre na hora, e as atualizações acontecem em segundo plano.",
                     color = Muted,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
@@ -475,6 +500,8 @@ fun TopNav(vm: MainViewModel) {
         Spacer(Modifier.weight(1f))
         if (vm.refreshing) {
             CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
+            Spacer(Modifier.width(8.dp))
+            Text("Atualizando a lista...", color = Muted, fontSize = 12.sp)
             Spacer(Modifier.width(12.dp))
         }
         if (vm.countryStats().size > 1) {

@@ -252,6 +252,30 @@ fun PickBanner(label: String) {
     }
 }
 
+/** Aviso rápido (sem botão, não rouba o foco): ex. "Lista atualizada". */
+@Composable
+fun ListNotice(text: String) {
+    PickBanner2(text)
+}
+
+@Composable
+private fun PickBanner2(text: String) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+        Text(
+            text = text,
+            color = TextMain,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(bottom = 18.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(AccentDark)
+                .border(1.dp, Accent, RoundedCornerShape(24.dp))
+                .padding(horizontal = 22.dp, vertical = 10.dp),
+        )
+    }
+}
+
 /** "Há versão nova": atualizar agora (baixa e abre o instalador) ou depois. */
 @Composable
 fun UpdateDialog(vm: MainViewModel, u: UpdateInfo) {

@@ -4,6 +4,12 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
+/** Quantos itens já foram lidos no download em andamento (a tela de carregamento mostra). */
+object LoadCounter {
+    @Volatile
+    var items: Int = 0
+}
+
 object Net {
     /**
      * Abre a conexão seguindo redirecionamentos à mão (alguns provedores redirecionam de http para outro host).

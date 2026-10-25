@@ -107,9 +107,13 @@ private object RawParser {
                 continue
             }
             val item = readItem(r)
-            if (item != null && seen.add(item.id)) out.add(item)
+            if (item != null && seen.add(item.id)) {
+                out.add(item)
+                if (out.size % 500 == 0) LoadCounter.items = out.size
+            }
         }
         r.endArray()
+        LoadCounter.items = out.size
         return out
     }
 
