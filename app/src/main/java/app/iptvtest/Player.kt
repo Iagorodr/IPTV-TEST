@@ -218,6 +218,7 @@ fun PlayerScreen(
 
     val rootFocus = remember { FocusRequester() }
     val playFocus = remember { FocusRequester() }
+    val barFocus = remember { FocusRequester() }
     val panelFocus = remember { FocusRequester() }
 
     // ------------------------------------------------------------------ fontes de canal
@@ -681,7 +682,6 @@ fun PlayerScreen(
     var seekDir by remember { mutableIntStateOf(0) }
     var seekAt by remember { mutableLongStateOf(0L) }
     var seekHint by remember { mutableStateOf("") }
-    val barFocus = remember { FocusRequester() }
     var barFocused by remember { mutableStateOf(false) }
 
     fun seekBy(ms: Long) {
