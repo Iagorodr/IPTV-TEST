@@ -1,4 +1,1 @@
-Barra do topo nova: logo, ícones de busca e ajustes, e o infantil num círculo discreto.
-Países do app só em Ajustes; em Canais, Filmes e Séries o botão "País ▾" filtra só aquela tela.
-Avançar/voltar no filme mais gradual (10 s, 30 s, 1 min, 2 min, 5 min, 10 min).
-Legendas: uma opção por idioma, sem repetir.
+Legendas da internet: em Legendas, "Buscar legendas em outros idiomas" (OpenSubtitles). Ficam 7 dias no aparelho e somem sozinhas.

@@ -696,6 +696,33 @@ fun PlayerScreen(
         touch++
     }
 
+    // legendas baixadas nesta reprodução (arquivo, idioma)
+    val extraSubs = remember(req) { mutableStateListOf<Pair<java.io.File, String>>() }
+    var subLang by remember(req) { mutableStateOf<String?>(null) }
+    var subResults by remember(req) { mutableStateOf<List<SubResult>?>(null) }
+    var subMsg by remember(req) { mutableStateOf<String?>(null) }
+    val subScope = rememberCoroutineScope()
+
+    fun applySub(file: java.io.File, lang: String) {
+        val pos = exo.currentPosition
+        extraSubs.add(Pair(file, lang))
+        val confs = extraSubs.map {
+            MediaItem.SubtitleConfiguration.Builder(android.net.Uri.fromFile(it.first))
+                .setMimeType(androidx.media3.common.MimeTypes.APPLICATION_SUBRIP)
+                .setLanguage(it.second)
+                .setSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+                .build()
+        }
+        exo.setMediaItem(MediaItem.Builder().setUri(req.url).setSubtitleConfigurations(confs).build(), pos)
+        exo.prepare()
+        exo.playWhenReady = true
+        exo.trackSelectionParameters = exo.trackSelectionParameters.buildUpon()
+            .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, false)
+            .clearOverridesOfType(C.TRACK_TYPE_TEXT)
+            .setPreferredTextLanguage(lang)
+            .build()
+    }
+
     fun accelSeek(dir: Int) {
         val now = System.currentTimeMillis()
         // segurando o botão a TV repete muito rápido: no máximo um pulo a cada 0,35 s
@@ -1153,10 +1180,105 @@ fun PlayerScreen(
                     )
                 }
             }
+        } else if (which == "subsearch" && req.subQuery != null) {
+            val q = req.subQuery
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(24.dp)
+                    .width(440.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Color(0xF0161E2F))
+                    .padding(14.dp),
+            ) {
+                Text(if (subLang == null) "Buscar legenda: idioma" else "Legendas em " + Subs.langName(subLang ?: ""), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(q.name + (if (q.season > 0) " · T${q.season} E${q.episode}" else if (q.year.isNotEmpty()) " (${q.year})" else ""), color = Muted, fontSize = 12.sp, maxLines = 1)
+                Spacer(Modifier.height(8.dp))
+                val m = subMsg
+                if (m != null) {
+                    Text(m, color = Accent, fontSize = 13.sp)
+                    Spacer(Modifier.height(6.dp))
+                }
+                LazyColumn(modifier = Modifier.fillMaxHeight(0.7f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    val res = subResults
+                    if (subLang == null) {
+                        itemsIndexed(Subs.LANGS) { idx, l ->
+                            FocusBox(
+                                modifier = Modifier.fillMaxWidth(),
+                                focusRequester = if (idx == 0) panelFocus else null,
+                                onClick = {
+                                    subLang = l.first
+                                    subResults = null
+                                    subMsg = "Procurando..."
+                                    subScope.launch {
+                                        try {
+                                            val r = Subs.search(q, l.first)
+                                            subResults = r
+                                            subMsg = if (r.isEmpty()) "Nenhuma legenda encontrada nesse idioma." else null
+                                        } catch (e: Exception) {
+                                            subMsg = e.message ?: "Não consegui buscar agora."
+                                            subResults = emptyList()
+                                        }
+                                        try { panelFocus.requestFocus() } catch (e: Exception) { }
+                                    }
+                                },
+                            ) { focused ->
+                                Box(Modifier.fillMaxWidth().background(if (focused) PanelAlt else Panel).padding(horizontal = 12.dp, vertical = 10.dp)) {
+                                    Text(l.second, color = TextMain, fontSize = 14.sp)
+                                }
+                            }
+                        }
+                    } else if (res != null) {
+                        item {
+                            FocusBox(
+                                modifier = Modifier.fillMaxWidth(),
+                                focusRequester = if (res.isEmpty()) panelFocus else null,
+                                onClick = {
+                                    subLang = null
+                                    subResults = null
+                                    subMsg = null
+                                },
+                            ) { focused ->
+                                Box(Modifier.fillMaxWidth().background(if (focused) PanelAlt else Panel).padding(horizontal = 12.dp, vertical = 10.dp)) {
+                                    Text("‹ Outro idioma", color = Muted, fontSize = 14.sp)
+                                }
+                            }
+                        }
+                        itemsIndexed(res) { idx, r ->
+                            FocusBox(
+                                modifier = Modifier.fillMaxWidth(),
+                                focusRequester = if (idx == 0) panelFocus else null,
+                                onClick = {
+                                    subMsg = "Baixando..."
+                                    subScope.launch {
+                                        try {
+                                            val f = Subs.download(context, r)
+                                            applySub(f, r.lang.ifEmpty { subLang ?: "und" })
+                                            subMsg = null
+                                            panel = null
+                                            note = "Legenda em " + Subs.langName(subLang ?: "") + " ativada."
+                                        } catch (e: Exception) {
+                                            subMsg = e.message ?: "Não consegui baixar."
+                                        }
+                                    }
+                                },
+                            ) { focused ->
+                                Column(Modifier.fillMaxWidth().background(if (focused) PanelAlt else Panel).padding(horizontal = 12.dp, vertical = 8.dp)) {
+                                    Text(r.release.ifEmpty { "Legenda " + (idx + 1) }, color = TextMain, fontSize = 13.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                    Text("${r.downloads} downloads" + (if (r.hearing) " · para surdos" else ""), color = Muted, fontSize = 11.sp)
+                                }
+                            }
+                        }
+                    }
+                }
+                Text("Ficam guardadas por 7 dias e depois são apagadas.", color = Muted, fontSize = 11.sp)
+            }
         } else if (which == "audio" || which == "text" || which == "versions") {
             val type = if (which == "audio") C.TRACK_TYPE_AUDIO else C.TRACK_TYPE_TEXT
             val options = if (which == "versions") {
                 (req.versions?.invoke() ?: emptyList()).map { pv -> TrackOption(pv.label, pv.selected, true, pv.onSelect) }
+            } else if (which == "text" && Subs.enabled && req.subQuery != null) {
+                buildOptions(exo, tracks, type) + TrackOption("🔎 Buscar legendas em outros idiomas...", false, true) { panel = "subsearch" }
             } else {
                 buildOptions(exo, tracks, type)
             }
@@ -1189,8 +1311,9 @@ fun PlayerScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 focusRequester = if (index == 0) panelFocus else null,
                                 onClick = {
+                                    val before = panel
                                     opt.onSelect()
-                                    panel = null
+                                    if (panel == before) panel = null
                                 },
                             ) { focused ->
                                 Row(

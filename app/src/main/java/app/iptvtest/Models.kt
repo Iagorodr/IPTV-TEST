@@ -180,4 +180,6 @@ class PlaybackRequest(
     val catchupStartMs: Long = 0L,
     /** Outras versões do mesmo título (idioma/qualidade). Null ou só uma = sem botão no player. */
     val versions: (() -> List<PlayVersion>)? = null,
+    /** Para buscar legendas na internet (filmes e séries). */
+    val subQuery: SubQuery? = null,
 )

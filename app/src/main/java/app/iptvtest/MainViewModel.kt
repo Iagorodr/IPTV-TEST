@@ -293,6 +293,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         Tmdb.init(app)
+        try { Subs.cleanup(app) } catch (e: Exception) { }
         AppTz.apply(user.tzId)
         favTeams = user.favTeams.toList()
         favLeagues = user.favLeagues.toList()
@@ -1044,6 +1045,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 saveProgress(title, v, epId, ext, label, pos, dur, zoom)
             },
             next = if (title.series) ({ nextEpisodeOf(title, v, epId, zoom) }) else null,
+            subQuery = run {
+                val m = Regex("T(\\d+) E(\\d+)").find(label)
+                SubQuery(title.name, title.year, m?.groupValues?.get(1)?.toIntOrNull() ?: 0, m?.groupValues?.get(2)?.toIntOrNull() ?: 0)
+            },
             versions = if (title.versions.size > 1) {
                 {
                     val cur = episodes[v.id]?.episodes?.firstOrNull { it.id == epId }
