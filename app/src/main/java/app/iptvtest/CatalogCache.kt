@@ -97,6 +97,7 @@ object CatalogCache {
             w.value(v.is4k)
             w.value(v.cam)
             w.value(v.cc)
+            w.value(v.src)
             w.endArray()
         }
         w.endArray()
@@ -214,8 +215,10 @@ object CatalogCache {
                         val k4 = r.nextBoolean()
                         val cam = r.nextBoolean()
                         val vcc = if (r.hasNext()) r.nextString() else ""
+                        val vsrc = if (r.hasNext()) r.nextString() else ""
+                        while (r.hasNext()) r.skipValue()
                         r.endArray()
-                        versions.add(Version(id, ext, leg, k4, cam, vcc))
+                        versions.add(Version(id, ext, leg, k4, cam, vcc, vsrc))
                     }
                     r.endArray()
                 }

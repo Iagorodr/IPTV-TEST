@@ -894,7 +894,7 @@ fun PlayerScreen(
                         }
                     }
                 }
-                if (!isLive && req.url.startsWith("file:")) {
+                if (!isLive) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -906,6 +906,12 @@ fun PlayerScreen(
                         TvButton(text = "10 s ⏩", minWidth = 110.dp) { seekBy(10_000) }
                         TvButton(text = "1 min ⏩", minWidth = 110.dp) { seekBy(60_000) }
                         TvButton(text = "10 min ⏩", minWidth = 110.dp) { seekBy(600_000) }
+                        for (pc in listOf(25, 50, 75)) {
+                            TvButton(text = "$pc%", minWidth = 70.dp) {
+                                val d = exo.duration
+                                if (d != C.TIME_UNSET && d > 0L) seekBy(d * pc / 100L - exo.currentPosition)
+                            }
+                        }
                     }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -955,10 +961,6 @@ fun PlayerScreen(
                             }
                         }
                     } else {
-                        if (!req.url.startsWith("file:")) {
-                            TvButton(text = "-10s") { seekBy(-10_000) }
-                            TvButton(text = "+10s") { seekBy(10_000) }
-                        }
                         if (nextEp != null) {
                             TvButton(text = "Próximo episódio", primary = true) { nextEp.go() }
                         }

@@ -925,13 +925,32 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     /** Última posição conhecida do que está tocando (usada ao trocar de idioma/versão). */
     private var lastPosMs = 0L
 
-    private fun versionLabel(title: Title, v: Version): String {
+    private val Q_TAGS = listOf(
+        "4K" to Regex("\\b(4K|UHD|2160P?)\\b", RegexOption.IGNORE_CASE),
+        "FHD" to Regex("\\b(FHD|FULL ?HD|1080P?)\\b", RegexOption.IGNORE_CASE),
+        "HD" to Regex("\\b(HD|720P?)\\b", RegexOption.IGNORE_CASE),
+        "SD" to Regex("\\b(SD|480P?)\\b", RegexOption.IGNORE_CASE),
+        "H265" to Regex("\\b(H\\.?265|HEVC|X265)\\b", RegexOption.IGNORE_CASE),
+        "HDR" to Regex("\\b(HDR|DV|DOLBY VISION)\\b", RegexOption.IGNORE_CASE),
+        "Multi-áudio" to Regex("\\b(MULTI|DUAL|DUBLADO E LEGENDADO)\\b", RegexOption.IGNORE_CASE),
+        "VOST" to Regex("\\b(VOSTFR|VOST|VOSE)\\b", RegexOption.IGNORE_CASE),
+    )
+
+    private fun versionLabel(title: Title, v: Version, idx: Int): String {
         val parts = ArrayList<String>()
         if (v.cc.isNotEmpty()) parts.add(Countries.label(v.cc))
         parts.add(if (v.leg) "Legendado" else if (title.national) "Original" else "Dublado")
-        if (v.is4k) parts.add("4K")
+        val tags = LinkedHashSet<String>()
+        if (v.is4k) tags.add("4K")
+        for ((t, re) in Q_TAGS) if (re.containsMatchIn(v.src)) tags.add(t)
+        if (tags.contains("4K")) tags.remove("FHD")
+        if (tags.contains("FHD") || tags.contains("4K")) tags.remove("HD")
+        parts.addAll(tags)
         if (v.cam) parts.add("cinema")
-        return parts.joinToString(" · ")
+        parts.add("cópia " + (idx + 1))
+        val base = parts.joinToString(" · ")
+        val src = v.src.take(60)
+        return if (src.isEmpty()) base else base + "\n" + src
     }
 
     /** Troca para outra versão do mesmo título mantendo o ponto onde a pessoa está. */
@@ -988,8 +1007,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             versions = if (title.versions.size > 1) {
                 {
                     val cur = episodes[v.id]?.episodes?.firstOrNull { it.id == epId }
-                    title.versions.filter { !it.cam || it.id == v.id }.map { nv ->
-                        PlayVersion(versionLabel(title, nv), nv.id == v.id) {
+                    title.versions.filter { !it.cam || it.id == v.id }.mapIndexed { i, nv ->
+                        PlayVersion(versionLabel(title, nv, i), nv.id == v.id) {
                             if (nv.id != v.id) switchVersion(title, nv, cur?.season ?: 0, cur?.number ?: 0, zoom)
                         }
                     }

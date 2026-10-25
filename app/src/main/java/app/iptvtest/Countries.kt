@@ -38,7 +38,9 @@ object Countries {
 
     private val PREFIX = Regex("""^[\s|\[({*•#>·\-]*([A-Za-z]{2,5})(?=[\s|\])}:\-–—_.,/]|$)""")
 
-    fun label(code: String): String = NAMES[code] ?: code
+    fun label(code: String): String = NAMES[code] ?: EXTRA[code] ?: code
+
+    private val EXTRA = mapOf("AF" to "África", "EXYU" to "Ex-Iugoslávia", "AFR" to "África", "ASIA" to "Ásia", "LA" to "América Latina", "CAR" to "Caribe", "IR" to "Irã", "PK" to "Paquistão", "BD" to "Bangladesh", "SO" to "Somália", "ET" to "Etiópia", "NG" to "Nigéria", "MA" to "Marrocos", "DZ" to "Argélia", "TN" to "Tunísia", "EG" to "Egito", "SA" to "Arábia Saudita", "IL" to "Israel", "UA" to "Ucrânia", "BG" to "Bulgária", "HU" to "Hungria", "CZ" to "Tchéquia", "SK" to "Eslováquia", "SI" to "Eslovênia", "BA" to "Bósnia", "MK" to "Macedônia", "LT" to "Lituânia", "LV" to "Letônia", "EE" to "Estônia", "AT" to "Áustria", "IE" to "Irlanda", "AU" to "Austrália", "NZ" to "Nova Zelândia", "PH" to "Filipinas", "TH" to "Tailândia", "VN" to "Vietnã", "ID" to "Indonésia", "MY" to "Malásia", "CL" to "Chile", "CO" to "Colômbia", "PE" to "Peru", "VE" to "Venezuela", "UY" to "Uruguai", "PY" to "Paraguai", "BO" to "Bolívia", "EC" to "Equador", "DO" to "Rep. Dominicana", "PR" to "Porto Rico", "CU" to "Cuba", "KU" to "Curdistão", "AM" to "Armênia", "AZ" to "Azerbaijão", "GE" to "Geórgia", "KZ" to "Cazaquistão")
 
     /** A sigla é de um país/idioma conhecido (inclui apelidos como GB, USA, BRA)? */
     fun isCodeToken(t: String): Boolean {
@@ -53,8 +55,12 @@ object Countries {
         val m = NAME_PREFIX.find(channelName) ?: return null
         val c = m.groupValues[1].uppercase(Locale.ROOT)
         val canon = ALIAS[c] ?: c
-        return if (NAMES.containsKey(canon)) canon else null
+        if (NAMES.containsKey(canon)) return canon
+        // sigla desconhecida mas com cara de país/região ("AF:", "EXYU|"): vale como etiqueta própria
+        return if (canon.length in 2..4 && canon !in NOT_CODES) canon else null
     }
+
+    private val NOT_CODES = setOf("TV", "HD", "FHD", "UHD", "SD", "VIP", "PPV", "LIVE", "NEW", "THE", "BEIN", "ESPN", "SKY", "BBC", "CNN", "FOX", "NBC", "CBS", "RTP", "SIC", "TVI", "MAX", "HBO", "RAW", "BOX", "VOD", "SUB", "DUB")
 
     /** O país/idioma que o nome da categoria indica, ou null se não indicar nenhum. */
     fun tagOf(rawName: String): String? {

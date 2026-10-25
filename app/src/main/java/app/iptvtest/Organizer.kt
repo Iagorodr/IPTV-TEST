@@ -335,7 +335,7 @@ object Organizer {
             if (series && raw.genre.isNotEmpty()) genres.addAll(genreFromText(raw.genre))
             val leg = parsed.leg || catLeg
             val ext = if (raw.ext.isEmpty() && !series) "mp4" else raw.ext
-            val ver = Version(raw.id, ext, leg, parsed.k4 || cat4k, parsed.cam, cc)
+            val ver = Version(raw.id, ext, leg, parsed.k4 || cat4k, parsed.cam, cc, raw.name.trim())
 
             val tm = raw.tmdb
             var acc = map[key]

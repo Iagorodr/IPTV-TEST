@@ -24,6 +24,8 @@ data class Version(
     val cam: Boolean,
     /** País/idioma indicado pela categoria do provedor ("" = sem indicação). */
     val cc: String = "",
+    /** Nome original no provedor (mostra qualidade/idioma que o provedor escreveu: FHD, 4K, MULTI, VOST...). */
+    val src: String = "",
 )
 
 /** Um filme ou série já agrupado: dublado, legendado e 4K ficam todos dentro do mesmo card. */
