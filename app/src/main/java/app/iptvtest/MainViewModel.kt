@@ -917,12 +917,50 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     // Reprodução
     // =====================================================================
 
-    private fun startPlayback(title: Title, v: Version, epId: String, ext: String, label: String, zoom: Boolean) {
+    /** Última posição conhecida do que está tocando (usada ao trocar de idioma/versão). */
+    private var lastPosMs = 0L
+
+    private fun versionLabel(title: Title, v: Version): String {
+        val parts = ArrayList<String>()
+        if (v.cc.isNotEmpty()) parts.add(Countries.label(v.cc))
+        parts.add(if (v.leg) "Legendado" else if (title.national) "Original" else "Dublado")
+        if (v.is4k) parts.add("4K")
+        if (v.cam) parts.add("cinema")
+        return parts.joinToString(" · ")
+    }
+
+    /** Troca para outra versão do mesmo título mantendo o ponto onde a pessoa está. */
+    private fun switchVersion(title: Title, nv: Version, epSeason: Int, epNumber: Int, zoom: Boolean) {
+        val pos = lastPosMs
+        if (!title.series) {
+            startPlayback(title, nv, "", nv.ext, "", zoom, pos)
+            return
+        }
+        ensureInfo(title, nv)
+        viewModelScope.launch {
+            // espera a lista de episódios dessa versão chegar
+            var tries = 0
+            while (tries < 60) {
+                val st = episodes[nv.id]
+                if (st != null && !st.loading) break
+                delay(250)
+                tries++
+            }
+            val ep = episodes[nv.id]?.episodes?.firstOrNull { it.season == epSeason && it.number == epNumber }
+            if (ep != null) {
+                val label = String.format(Locale.US, "T%d E%d", ep.season, ep.number)
+                startPlayback(title, nv, ep.id, ep.ext, label, zoom, pos)
+            }
+        }
+    }
+
+    private fun startPlayback(title: Title, v: Version, epId: String, ext: String, label: String, zoom: Boolean, forceStartMs: Long = -1L) {
         val a = api ?: return
         val res = user.resume[title.key]
         val same = res != null && res.versionId == v.id && res.epId == epId &&
             res.durMs > 0L && res.posMs < res.durMs * 95L / 100L
-        val start = if (same && res != null) res.posMs else 0L
+        val start = if (forceStartMs >= 0L) forceStartMs else if (same && res != null) res.posMs else 0L
+        lastPosMs = start
         val url = if (title.series) {
             a.streamUrl(Kind.SERIES, epId, ext)
         } else {
@@ -937,8 +975,23 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             isLive = false,
             startMs = start,
             zoom = zoom,
-            onProgress = { pos, dur -> saveProgress(title, v, epId, ext, label, pos, dur, zoom) },
+            onProgress = { pos, dur ->
+                lastPosMs = pos
+                saveProgress(title, v, epId, ext, label, pos, dur, zoom)
+            },
             next = if (title.series) ({ nextEpisodeOf(title, v, epId, zoom) }) else null,
+            versions = if (title.versions.size > 1) {
+                {
+                    val cur = episodes[v.id]?.episodes?.firstOrNull { it.id == epId }
+                    title.versions.filter { !it.cam || it.id == v.id }.map { nv ->
+                        PlayVersion(versionLabel(title, nv), nv.id == v.id) {
+                            if (nv.id != v.id) switchVersion(title, nv, cur?.season ?: 0, cur?.number ?: 0, zoom)
+                        }
+                    }
+                }
+            } else {
+                null
+            },
         )
     }
 

@@ -161,6 +161,9 @@ class LiveInfo(
 /** O episódio seguinte de uma série: o rótulo (ex.: "T1 E4") e o que fazer para tocá-lo. */
 class NextEp(val label: String, val go: () -> Unit)
 
+/** Uma versão do mesmo filme/série (idioma, dublado/legendado, 4K) para trocar durante a reprodução. */
+class PlayVersion(val label: String, val selected: Boolean, val onSelect: () -> Unit)
+
 class PlaybackRequest(
     val title: String,
     val url: String,
@@ -173,4 +176,6 @@ class PlaybackRequest(
     val next: (() -> NextEp?)? = null,
     /** Se for maior que zero, abre o canal ao vivo já voltando para este horário (rever um jogo). */
     val catchupStartMs: Long = 0L,
+    /** Outras versões do mesmo título (idioma/qualidade). Null ou só uma = sem botão no player. */
+    val versions: (() -> List<PlayVersion>)? = null,
 )

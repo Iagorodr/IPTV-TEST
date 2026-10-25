@@ -962,6 +962,12 @@ fun PlayerScreen(
                         if (nextEp != null) {
                             TvButton(text = "Próximo episódio", primary = true) { nextEp.go() }
                         }
+                        if ((req.versions?.invoke()?.size ?: 0) > 1) {
+                            TvButton(text = "Idioma / versão") {
+                                touch++
+                                panel = "versions"
+                            }
+                        }
                         TvButton(text = "Áudio") {
                             touch++
                             panel = "audio"
@@ -1091,9 +1097,13 @@ fun PlayerScreen(
                     )
                 }
             }
-        } else if (which == "audio" || which == "text") {
+        } else if (which == "audio" || which == "text" || which == "versions") {
             val type = if (which == "audio") C.TRACK_TYPE_AUDIO else C.TRACK_TYPE_TEXT
-            val options = buildOptions(exo, tracks, type)
+            val options = if (which == "versions") {
+                (req.versions?.invoke() ?: emptyList()).map { pv -> TrackOption(pv.label, pv.selected, true, pv.onSelect) }
+            } else {
+                buildOptions(exo, tracks, type)
+            }
             Column(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
@@ -1104,7 +1114,7 @@ fun PlayerScreen(
                     .padding(14.dp),
             ) {
                 Text(
-                    text = if (which == "audio") "Áudio" else "Legendas",
+                    text = if (which == "audio") "Áudio" else if (which == "versions") "Idioma / versão" else "Legendas",
                     color = TextMain,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,

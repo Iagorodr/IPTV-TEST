@@ -1,4 +1,3 @@
-"Onde passa" agora aceita até 3 países ao mesmo tempo (Brasil, Portugal, Bélgica, Espanha, Reino Unido, França, EUA) e segue os canais que você tem.
-Botão País também na tela de Canais.
-Botão rápido de País no topo e nomes de filmes e séries mais limpos.
-Aviso quando o relógio da TV está errado.
+Tela de carregamento com progresso real (etapas, itens e tempo) e aviso quando a lista nova fica pronta em segundo plano.
+Filmes e séries: escolha de idioma/país na ficha e botão "Idioma / versão" dentro do player (continua do mesmo minuto).
+"Onde passa" com até 3 países e botão País em Canais.

@@ -47,8 +47,8 @@ import kotlinx.coroutines.delay
 import java.util.Locale
 
 /** Cópias do título que combinam com o idioma e a qualidade escolhidos (sem cinema primeiro). */
-private fun copiesOf(title: Title, leg: Boolean, k4: Boolean): List<Version> {
-    val byLang = title.versions.filter { it.leg == leg }
+private fun copiesOf(pool: List<Version>, leg: Boolean, k4: Boolean): List<Version> {
+    val byLang = pool.filter { it.leg == leg }
     val byQuality = byLang.filter { it.is4k == k4 }
     val base = if (byQuality.isNotEmpty()) byQuality else byLang
     return base.sortedBy { if (it.cam) 1 else 0 }
@@ -91,18 +91,27 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
             },
         )
     }
+    // idioma/país da cópia ("" = todos): vem das categorias do provedor (BR, PT, FR...)
+    var lang by rememberSaveable(title.key) {
+        mutableStateOf(resume?.let { r -> title.versions.firstOrNull { it.id == r.versionId }?.cc } ?: "")
+    }
     var copyIdx by rememberSaveable(title.key) { mutableIntStateOf(0) }
     var zoom by rememberSaveable(title.key) { mutableStateOf(resume?.zoom ?: false) }
     var season by rememberSaveable(title.key) { mutableIntStateOf(-1) }
 
-    val hasDub = title.versions.any { !it.leg }
-    val hasLeg = title.versions.any { it.leg }
-    val legEff = if (title.versions.any { it.leg == leg }) leg else !leg
-    val langVersions = title.versions.filter { it.leg == legEff }
+    val ccs = title.versions.map { it.cc }.distinct()
+    val langOptions = ccs.sortedWith(compareBy({ it.isEmpty() }, { Countries.label(it) }))
+    val showLang = ccs.size > 1
+    val langEff = if (lang.isNotEmpty() && ccs.contains(lang)) lang else ""
+    val pool = if (showLang && langEff.isNotEmpty()) title.versions.filter { it.cc == langEff } else title.versions
+    val hasDub = pool.any { !it.leg }
+    val hasLeg = pool.any { it.leg }
+    val legEff = if (pool.any { it.leg == leg }) leg else !leg
+    val langVersions = pool.filter { it.leg == legEff }
     val has4kHere = langVersions.any { it.is4k }
     val hasStdHere = langVersions.any { !it.is4k }
     val k4Eff = if (langVersions.any { it.is4k == k4 }) k4 else !k4
-    val copies = copiesOf(title, legEff, k4Eff)
+    val copies = copiesOf(pool, legEff, k4Eff)
     val chosen: Version? = if (copies.isEmpty()) null else copies[copyIdx.coerceIn(0, copies.lastIndex)]
 
     LaunchedEffect(title.key, chosen?.id) {
@@ -307,6 +316,22 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                         } else if (hasLeg && !hasDub) {
                             Spacer(Modifier.width(6.dp))
                             Text("Só legendado", color = Muted, fontSize = 14.sp)
+                        }
+                    }
+
+                    // idioma/país da cópia: só quando o título existe em mais de um
+                    if (showLang) {
+                        Spacer(Modifier.height(8.dp))
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 2.dp)) {
+                            item(key = "l-all") {
+                                ChipItem(text = "Idioma: todos", selected = langEff.isEmpty()) { lang = ""; copyIdx = 0 }
+                            }
+                            items(langOptions, key = { "l|$it" }) { cc ->
+                                ChipItem(text = if (cc.isEmpty()) "Outros" else Countries.label(cc), selected = langEff == cc) {
+                                    lang = cc
+                                    copyIdx = 0
+                                }
+                            }
                         }
                     }
 
