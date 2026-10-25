@@ -329,8 +329,8 @@ fun App(vm: MainViewModel = viewModel()) {
         }
 
         // lista nova ficou pronta em segundo plano
-        val note = vm.listNotice
-        if (note != null && playing == null && catalog != null) ListNotice(note)
+        val listNote = vm.listNotice
+        if (listNote != null && playing == null && catalog != null) ListNotice(listNote)
 
         // agendar gravação: faixa enquanto escolhe o canal, e a tela de horário depois
         if (vm.pickCb != null && playing == null) PickBanner(vm.pickLabel)
