@@ -641,6 +641,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 a.prepare()
                 val fresh = downloadAndBuild(a)
                 withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
+                if (catalog == null) loadMsg = "Montando as telas"
                 val wasShowing = catalog != null
                 applyCatalog(fresh)
                 if (wasShowing) {
@@ -685,6 +686,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             step(5, "Baixando canais")
             val live = a.fetchItems(Kind.LIVE)
             step(6, "Organizando por gênero e país")
+            Organizer.phase = { m ->
+                LoadCounter.items = 0
+                if (show) viewModelScope.launch { loadMsg = m }
+            }
             return withContext(Dispatchers.Default) { Organizer.build(vc, sc, lc, vod, ser, live) }
         } finally {
             loadStep = 0

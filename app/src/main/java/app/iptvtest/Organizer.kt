@@ -297,7 +297,9 @@ object Organizer {
         val map = LinkedHashMap<String, Acc>()
         // mesmo código TMDB = mesmo filme/série, mesmo que o nome venha em outra língua
         val byTmdb = HashMap<String, String>()
+        var nDone = 0
         for (raw in items) {
+            if (++nDone % 500 == 0) LoadCounter.items = nDone
             var adult = false
             var cc = ""
             for (cid in raw.cats) {
@@ -473,7 +475,9 @@ object Organizer {
         }
 
         val groups = LinkedHashMap<String, ArrayList<RawItem>>()
+        var nDone = 0
         for (raw in items) {
+            if (++nDone % 500 == 0) LoadCounter.items = nDone
             val cn = raw.cats.firstOrNull()?.let { catName[it] } ?: ""
             if (isAdultCategory(cn)) continue
             val key = channelKey(raw.name)
@@ -545,6 +549,10 @@ object Organizer {
 
     // ------------------------------------------------------------------
 
+    /** Avisa a tela de carregamento em que parte está. */
+    @Volatile
+    var phase: (String) -> Unit = {}
+
     fun build(
         vodCats: List<Category>,
         serCats: List<Category>,
@@ -553,9 +561,13 @@ object Organizer {
         ser: List<RawItem>,
         live: List<RawItem>,
     ): Catalog {
+        phase("Organizando filmes")
         val movies = buildTitles(vodCats, vod, series = false)
+        phase("Organizando séries")
         val series = buildTitles(serCats, ser, series = true)
+        phase("Organizando canais")
         val ch = buildChannels(liveCats, live)
+        phase("Salvando na TV")
         return Catalog(movies, series, ch.first, ch.second, System.currentTimeMillis())
     }
 }

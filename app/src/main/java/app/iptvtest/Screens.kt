@@ -329,7 +329,7 @@ fun LoadingScreen(vm: MainViewModel) {
                     trackColor = Color(0x22FFF3EC),
                 )
                 Spacer(Modifier.height(18.dp))
-                val count = if (step in 3..5) vm.loadCount() else 0
+                val count = if (step in 3..6) vm.loadCount() else 0
                 val msg = (vm.loadMsg ?: "Preparando...") + (if (count > 0) ": " + String.format(java.util.Locale.GERMANY, "%,d", count) + " itens" else "")
                 Text(msg, color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
                 if (step > 0) {
