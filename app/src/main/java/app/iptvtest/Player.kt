@@ -48,6 +48,8 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.foundation.border
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -657,7 +659,7 @@ fun PlayerScreen(
                 panelFocus.requestFocus()
             } else if (controls) {
                 delay(50)
-                playFocus.requestFocus()
+                if (!isLive) barFocus.requestFocus() else playFocus.requestFocus()
             } else {
                 rootFocus.requestFocus()
             }
@@ -674,6 +676,14 @@ fun PlayerScreen(
         }
     }
 
+    // avanço acelerado: cada toque seguido no mesmo sentido pula mais (10 s, 30 s, 2 min, 10 min, 15 min)
+    var seekStreak by remember { mutableIntStateOf(0) }
+    var seekDir by remember { mutableIntStateOf(0) }
+    var seekAt by remember { mutableLongStateOf(0L) }
+    var seekHint by remember { mutableStateOf("") }
+    val barFocus = remember { FocusRequester() }
+    var barFocused by remember { mutableStateOf(false) }
+
     fun seekBy(ms: Long) {
         if (!isLive && exo.isCurrentMediaItemSeekable) {
             var target = exo.currentPosition + ms
@@ -684,6 +694,18 @@ fun PlayerScreen(
         }
         controls = true
         touch++
+    }
+
+    fun accelSeek(dir: Int) {
+        val now = System.currentTimeMillis()
+        seekStreak = if (dir == seekDir && now - seekAt < 1_500L) seekStreak + 1 else 0
+        seekDir = dir
+        seekAt = now
+        val steps = longArrayOf(10_000L, 30_000L, 120_000L, 600_000L, 900_000L)
+        val step = steps[(seekStreak / 2).coerceIn(0, steps.size - 1)]
+        seekBy(dir * step)
+        val label = if (step >= 60_000L) "${step / 60_000L} min" else "${step / 1000L} s"
+        seekHint = (if (dir > 0) "⏩ +" else "⏪ -") + label
     }
 
     fun togglePlay() {
@@ -733,13 +755,15 @@ fun PlayerScreen(
                             when (ev.key) {
                                 Key.DirectionLeft -> {
                                     if (isLive) false else {
-                                        seekBy(-10_000)
+                                        accelSeek(-1)
+                                        controls = true
                                         true
                                     }
                                 }
                                 Key.DirectionRight -> {
                                     if (isLive) false else {
-                                        seekBy(10_000)
+                                        accelSeek(1)
+                                        controls = true
                                         true
                                     }
                                 }
@@ -873,7 +897,54 @@ fun PlayerScreen(
                     .background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xDD0B1020))))
                     .padding(horizontal = 32.dp, vertical = 20.dp),
             ) {
-                ProgressRow(position, duration, isLive)
+                if (isLive) {
+                    ProgressRow(position, duration, true)
+                } else {
+                    // a "linha" do filme: com ela selecionada, ◀ ▶ andam (segurar ou apertar seguido acelera)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(if (barFocused) Color(0x33FFFFFF) else Color.Transparent)
+                            .border(if (barFocused) 1.dp else 0.dp, if (barFocused) Accent else Color.Transparent, RoundedCornerShape(8.dp))
+                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                            .onFocusChanged { barFocused = it.isFocused }
+                            .focusRequester(barFocus)
+                            .onPreviewKeyEvent { ev ->
+                                if (ev.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                                when (ev.key) {
+                                    Key.DirectionLeft -> {
+                                        touch++
+                                        accelSeek(-1)
+                                        true
+                                    }
+                                    Key.DirectionRight -> {
+                                        touch++
+                                        accelSeek(1)
+                                        true
+                                    }
+                                    Key.DirectionCenter, Key.Enter, Key.NumPadEnter -> {
+                                        togglePlay()
+                                        true
+                                    }
+                                    else -> false
+                                }
+                            }
+                            .focusable(),
+                    ) {
+                        Column {
+                            ProgressRow(position, duration, false)
+                            val hint = if (seekHint.isNotEmpty() && System.currentTimeMillis() - seekAt < 2_000L) seekHint else ""
+                            Text(
+                                if (barFocused) (if (hint.isNotEmpty()) hint + "   ·   " else "") + "◀ ▶ para andar (aperte seguido para pular mais)   ·   OK pausa"
+                                else "Suba para a linha do tempo para avançar ou voltar",
+                                color = if (hint.isNotEmpty()) Accent else Color(0xFFC9C9D8),
+                                fontSize = 12.sp,
+                                modifier = Modifier.padding(top = 4.dp),
+                            )
+                        }
+                    }
+                }
                 Spacer(Modifier.height(12.dp))
                 if (isLive && channel != null && liveInfo?.timeshift != null && channel.sources.any { it.arch > 0 }) {
                     Row(
@@ -890,26 +961,6 @@ fun PlayerScreen(
                                 touch++
                                 val c = current ?: ranked.firstOrNull()
                                 if (c != null) playSource(c, "Ao vivo.")
-                            }
-                        }
-                    }
-                }
-                if (!isLive) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 10.dp),
-                    ) {
-                        TvButton(text = "⏪ 10 min", minWidth = 110.dp) { seekBy(-600_000) }
-                        TvButton(text = "⏪ 1 min", minWidth = 110.dp) { seekBy(-60_000) }
-                        TvButton(text = "⏪ 10 s", minWidth = 110.dp) { seekBy(-10_000) }
-                        TvButton(text = "10 s ⏩", minWidth = 110.dp) { seekBy(10_000) }
-                        TvButton(text = "1 min ⏩", minWidth = 110.dp) { seekBy(60_000) }
-                        TvButton(text = "10 min ⏩", minWidth = 110.dp) { seekBy(600_000) }
-                        for (pc in listOf(25, 50, 75)) {
-                            TvButton(text = "$pc%", minWidth = 70.dp) {
-                                val d = exo.duration
-                                if (d != C.TIME_UNSET && d > 0L) seekBy(d * pc / 100L - exo.currentPosition)
                             }
                         }
                     }

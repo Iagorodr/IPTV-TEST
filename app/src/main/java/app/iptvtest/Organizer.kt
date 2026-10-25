@@ -100,7 +100,7 @@ object Organizer {
             val mp = LEAD_PREFIX.find(n)
             if (mp != null) {
                 val tok = mp.groupValues[1]
-                if (Countries.isCodeToken(tok) || PLATFORM_CODES.contains(tok.uppercase(Locale.ROOT))) {
+                if (Countries.isCodeToken(tok) || PLATFORM_CODES.contains(tok.uppercase(Locale.ROOT)) || tok.endsWith("+")) {
                     if (ncc.isEmpty() && Countries.isCodeToken(tok)) ncc = Countries.canon(tok)
                     val rest = n.substring(mp.range.last + 1).trim()
                     if (rest.length >= 2) n = rest
@@ -124,6 +124,7 @@ object Organizer {
         return Parsed(n, leg, k4 || nk4, cam, yr, ncc)
     }
 
+    private val DIVIDER = Regex("""^\s*([#=*~•_\-]{3,}|[▬━─═]{2,})|([#=*~_\-]{3,})\s*$""")
     private val LEAD_COMBO = Regex("^([A-Za-z0-9+]{2,5}(?:[-_|][A-Za-z0-9+]{2,5}){1,4})\\s*[-|:]\\s+")
     private val QUALITY_TOKENS = setOf("4K", "UHD", "HDR", "HDR10", "DV", "FHD", "HD", "SD", "HEVC", "H265", "MULTI", "VOST", "VOSTFR", "VO", "VF", "VFF", "VFQ", "DUAL", "LEG", "DUB", "SUB", "3D", "IMAX")
     private val LEAD_PREFIX = Regex("^([A-Z][A-Z0-9+]{1,3})\\s*[-|:]\\s+")
@@ -131,7 +132,7 @@ object Organizer {
     private val TRAIL_CODE = Regex("\\s*[(\\[]([A-Z]{2,3})[)\\]]\\s*$")
     private val PLATFORM_CODES = setOf(
         "NF", "NFX", "AMZ", "APV", "ATV", "ATP", "DSNP", "DNP", "DSN", "HBO", "HMX", "MAX", "PMT", "PRM", "HLU", "HULU",
-        "STZ", "SKY", "CRU", "GPL", "CNP", "TVP", "PCK", "UNI", "DIS", "YT", "SHO", "ROK", "TUB", "PLT", "CRA",
+        "STZ", "SKY", "P+", "D+", "A+", "AP+", "HBO+", "NF+", "PV", "AMZN", "ATVP", "CR", "GP", "GLB", "STAR", "STAR+", "MUBI", "SHOW", "CRU", "GPL", "CNP", "TVP", "PCK", "UNI", "DIS", "YT", "SHO", "ROK", "TUB", "PLT", "CRA",
     )
 
     // ------------------------------------------------------------------
@@ -496,11 +497,20 @@ object Organizer {
         }
 
         val groups = LinkedHashMap<String, ArrayList<RawItem>>()
+        // linhas separadoras do provedor ("##### Africa #####"): não são canais, mas dizem o país dos que vêm depois
+        val divCc = HashMap<String, String>()
+        val curDiv = HashMap<String, String>()
         var nDone = 0
         for (raw in items) {
             if (++nDone % 500 == 0) LoadCounter.items = nDone
             val cn = raw.cats.firstOrNull()?.let { catName[it] } ?: ""
             if (isAdultCategory(cn)) continue
+            if (DIVIDER.containsMatchIn(raw.name)) {
+                curDiv[cn] = Countries.fromName(raw.name) ?: ""
+                continue
+            }
+            val dc = curDiv[cn]
+            if (!dc.isNullOrEmpty()) divCc[raw.id] = dc
             val key = channelKey(raw.name)
             if (key.isEmpty()) continue
             groups.getOrPut(key) { ArrayList() }.add(raw)
@@ -531,7 +541,7 @@ object Organizer {
                 val idx = IDX.find(raw.name)?.groupValues?.get(1)?.toIntOrNull() ?: 1
                 val grp = if (raw.name.contains("**")) "B" else "A"
                 val label = q + (if (idx > 1) " $idx" else "") + " · Fonte " + grp
-                sources.add(Source(raw.id, q, rankOf(q), grp, label, raw.arch, raw.cats.firstNotNullOfOrNull { catCc[it] } ?: Countries.prefixTag(raw.name) ?: ""))
+                sources.add(Source(raw.id, q, rankOf(q), grp, label, raw.arch, raw.cats.firstNotNullOfOrNull { catCc[it] } ?: Countries.prefixTag(raw.name) ?: divCc[raw.id] ?: ""))
             }
             val seen = HashMap<String, Int>()
             val fixed = ArrayList<Source>()

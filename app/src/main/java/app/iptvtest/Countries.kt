@@ -38,11 +38,42 @@ object Countries {
 
     private val PREFIX = Regex("""^[\s|\[({*•#>·\-]*([A-Za-z]{2,5})(?=[\s|\])}:\-–—_.,/]|$)""")
 
+    private val EN_NAMES: Map<String, String> = mapOf(
+        "brazil" to "BR", "brasil" to "BR", "portugal" to "PT", "spain" to "ES", "espana" to "ES", "france" to "FR", "italy" to "IT",
+        "italia" to "IT", "germany" to "DE", "deutschland" to "DE", "united kingdom" to "UK", "uk" to "UK", "england" to "UK",
+        "usa" to "US", "united states" to "US", "canada" to "CA", "mexico" to "MX", "latino" to "LAT", "latin" to "LAT",
+        "arabic" to "AR", "arab" to "AR", "turkey" to "TR", "turkiye" to "TR", "netherlands" to "NL", "holland" to "NL",
+        "belgium" to "BE", "belgique" to "BE", "poland" to "PL", "russia" to "RU", "greece" to "GR", "romania" to "RO",
+        "india" to "IN", "switzerland" to "CH", "sweden" to "SE", "norway" to "NO", "denmark" to "DK", "finland" to "FI",
+        "albania" to "AL", "serbia" to "RS", "croatia" to "HR", "china" to "CN", "japan" to "JP", "korea" to "KR",
+        "angola" to "AO", "mozambique" to "MZ", "africa" to "AF", "bosnia" to "BA", "bulgaria" to "BG", "chile" to "CL",
+        "colombia" to "CO", "peru" to "PE", "argentina" to "ARG", "austria" to "AT", "australia" to "AU", "ireland" to "IE",
+        "hungary" to "HU", "czech" to "CZ", "slovakia" to "SK", "slovenia" to "SI", "macedonia" to "MK", "ukraine" to "UA",
+        "israel" to "IL", "iran" to "IR", "pakistan" to "PK", "philippines" to "PH", "thailand" to "TH", "vietnam" to "VN",
+        "indonesia" to "ID", "malaysia" to "MY", "caribbean" to "CAR", "exyu" to "EXYU", "ex yu" to "EXYU", "kurdish" to "KU",
+        "armenia" to "AM", "georgia" to "GE", "azerbaijan" to "AZ", "kazakhstan" to "KZ", "egypt" to "EG", "morocco" to "MA",
+        "algeria" to "DZ", "tunisia" to "TN", "nigeria" to "NG", "somalia" to "SO", "ethiopia" to "ET", "uruguay" to "UY",
+        "paraguay" to "PY", "venezuela" to "VE", "ecuador" to "EC", "bolivia" to "BO", "dominican" to "DO", "cuba" to "CU",
+        "puerto rico" to "PR", "new zealand" to "NZ", "lithuania" to "LT", "latvia" to "LV", "estonia" to "EE",
+        "saudi" to "SA", "bangladesh" to "BD", "asia" to "ASIA",
+    )
+
+    /** País pelo texto de uma linha separadora ("##### Africa RAW #####"), ou null. */
+    fun fromName(text: String): String? {
+        val f = Organizer.fold(text)
+        if (f.isEmpty()) return null
+        val words = " $f "
+        for ((w, code) in EN_NAMES) if (words.contains(" $w ")) return code
+        val first = f.split(' ').firstOrNull { it.isNotEmpty() } ?: return null
+        val u = first.uppercase(Locale.ROOT)
+        return if (u.length in 2..4 && (NAMES.containsKey(ALIAS[u] ?: u))) (ALIAS[u] ?: u) else null
+    }
+
     fun canon(t: String): String { val u = t.uppercase(Locale.ROOT); return ALIAS[u] ?: u }
 
     fun label(code: String): String = NAMES[code] ?: EXTRA[code] ?: code
 
-    private val EXTRA = mapOf("AF" to "África", "EXYU" to "Ex-Iugoslávia", "AFR" to "África", "ASIA" to "Ásia", "LA" to "América Latina", "CAR" to "Caribe", "IR" to "Irã", "PK" to "Paquistão", "BD" to "Bangladesh", "SO" to "Somália", "ET" to "Etiópia", "NG" to "Nigéria", "MA" to "Marrocos", "DZ" to "Argélia", "TN" to "Tunísia", "EG" to "Egito", "SA" to "Arábia Saudita", "IL" to "Israel", "UA" to "Ucrânia", "BG" to "Bulgária", "HU" to "Hungria", "CZ" to "Tchéquia", "SK" to "Eslováquia", "SI" to "Eslovênia", "BA" to "Bósnia", "MK" to "Macedônia", "LT" to "Lituânia", "LV" to "Letônia", "EE" to "Estônia", "AT" to "Áustria", "IE" to "Irlanda", "AU" to "Austrália", "NZ" to "Nova Zelândia", "PH" to "Filipinas", "TH" to "Tailândia", "VN" to "Vietnã", "ID" to "Indonésia", "MY" to "Malásia", "CL" to "Chile", "CO" to "Colômbia", "PE" to "Peru", "VE" to "Venezuela", "UY" to "Uruguai", "PY" to "Paraguai", "BO" to "Bolívia", "EC" to "Equador", "DO" to "Rep. Dominicana", "PR" to "Porto Rico", "CU" to "Cuba", "KU" to "Curdistão", "AM" to "Armênia", "AZ" to "Azerbaijão", "GE" to "Geórgia", "KZ" to "Cazaquistão")
+    private val EXTRA = mapOf("AF" to "África", "ARG" to "Argentina", "EXYU" to "Ex-Iugoslávia", "AFR" to "África", "ASIA" to "Ásia", "LA" to "América Latina", "CAR" to "Caribe", "IR" to "Irã", "PK" to "Paquistão", "BD" to "Bangladesh", "SO" to "Somália", "ET" to "Etiópia", "NG" to "Nigéria", "MA" to "Marrocos", "DZ" to "Argélia", "TN" to "Tunísia", "EG" to "Egito", "SA" to "Arábia Saudita", "IL" to "Israel", "UA" to "Ucrânia", "BG" to "Bulgária", "HU" to "Hungria", "CZ" to "Tchéquia", "SK" to "Eslováquia", "SI" to "Eslovênia", "BA" to "Bósnia", "MK" to "Macedônia", "LT" to "Lituânia", "LV" to "Letônia", "EE" to "Estônia", "AT" to "Áustria", "IE" to "Irlanda", "AU" to "Austrália", "NZ" to "Nova Zelândia", "PH" to "Filipinas", "TH" to "Tailândia", "VN" to "Vietnã", "ID" to "Indonésia", "MY" to "Malásia", "CL" to "Chile", "CO" to "Colômbia", "PE" to "Peru", "VE" to "Venezuela", "UY" to "Uruguai", "PY" to "Paraguai", "BO" to "Bolívia", "EC" to "Equador", "DO" to "Rep. Dominicana", "PR" to "Porto Rico", "CU" to "Cuba", "KU" to "Curdistão", "AM" to "Armênia", "AZ" to "Azerbaijão", "GE" to "Geórgia", "KZ" to "Cazaquistão")
 
     /** A sigla é de um país/idioma conhecido (inclui apelidos como GB, USA, BRA)? */
     fun isCodeToken(t: String): Boolean {

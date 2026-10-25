@@ -1,4 +1,3 @@
-Filmes: botões de pular 10 s, 1 min, 10 min e ir para 25%/50%/75%.
-"Idioma / versão" mostra qualidade (4K, FHD, HD), multi-áudio e o nome original de cada cópia (aparece depois da próxima atualização da lista).
-Filtro de País reconhece mais siglas (AF:, EXYU... ).
-Nomes como "4K-FR-HDR - Moana" ficam só "Moana", e o país/4K vão para a cópia.
+Player: a linha do tempo agora é selecionável; ◀ ▶ andam e aceleram (10 s, 30 s, 2 min, 10 min, 15 min). Sem a fileira de botões.
+Canais: linhas "##### País #####" somem e dão o país aos canais abaixo; aba Documentários reconhece Discovery, Nat Geo, History...
+Nomes com "P+ -", "D+ -" limpos.

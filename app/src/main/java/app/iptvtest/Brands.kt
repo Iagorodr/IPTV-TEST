@@ -178,11 +178,12 @@ object ChannelGroups {
                 else -> "Outros"
             }
         }
+        if (has(n, listOf("discovery", "nat geo", "national geographic", "history", "animal planet", "docu", "documentar", "investigation discovery", "smithsonian", "curiosity", "love nature", "viajar", "travel channel"))) return "Documentários"
         if (has(c, ESPORTES)) return "Esportes"
         if (has(c, ABERTA)) return "TV aberta"
         if (has(c, listOf("noticia", "news", "nachrichten", "actualite", "notizie", "haber", "informacion"))) return "Notícias"
         if (has(c, INFANTIL)) return "Infantil e anime"
-        if (has(c, listOf("document", "dokument"))) return "Documentários"
+        if (has(c, listOf("document", "dokument", "docu", "discovery", "nature", "natureza", "history", "historia", "ciencia", "science"))) return "Documentários"
         if (has(c, listOf("religios"))) return "Religiosos"
         if (has(c, MUSICA)) return "Música e rádios"
         if (has(c, VARIEDADES) || has(c, listOf("variedades"))) {
