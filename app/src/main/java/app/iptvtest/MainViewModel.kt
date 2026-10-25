@@ -1194,7 +1194,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /** Canais de uma pasta do provedor (já com os jogos avulsos limpos). */
-    fun channelsInCategory(cat: String): List<Channel> = cleanChannels.filter { it.category == cat }
+    fun channelsInCategory(cat: String): List<Channel> = cleanChannels.filter { it.category == cat }.distinctBy { it.key }
 
     // =====================================================================
     // Gravações
@@ -1757,7 +1757,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val info = gameInfo(g)
         val now = System.currentTimeMillis()
         val opts = info.options
-        val extra = if (opts.isNotEmpty()) Broadcasts.channelsFor(opts, channelCards) else emptyList()
+        val cards = channelCards
         val when0 = SportsTime.dayLabel(g.startMs, now, tz) + " " + SportsTime.clock(g.startMs, tz)
         val hint = if (pick) {
             "Escolha o canal para gravar. Confira se o jogo realmente passa nele: o app pode errar."
@@ -1767,15 +1767,29 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             "Este jogo ainda não está em \"Jogos em Destaque\" da sua lista. Veja abaixo os canais de quem costuma passar, " +
                 "os canais de esporte ou use a busca."
         }
-        channelList = ChannelListRequest(
-            title = g.home.short + " x " + g.away.short,
-            subtitle = when0 + " · " + g.leagueName,
-            hint = hint,
-            highlight = info.matched,
-            searchQuery = g.home.short,
-            extra = extra,
-            extraTitle = if (opts.isEmpty()) "" else (if (info.bgame != null) "Passa em: " else "Costuma passar em: ") + opts.take(4).joinToString(" · "),
-        )
+        viewModelScope.launch {
+            // a procura em listas enormes (dezenas de milhares de canais) não pode travar a tela
+            val extra = if (opts.isNotEmpty()) {
+                withContext(Dispatchers.Default) {
+                    try {
+                        Broadcasts.channelsFor(opts, cards)
+                    } catch (e: Exception) {
+                        emptyList()
+                    }
+                }
+            } else {
+                emptyList()
+            }
+            channelList = ChannelListRequest(
+                title = g.home.short + " x " + g.away.short,
+                subtitle = when0 + " · " + g.leagueName,
+                hint = hint,
+                highlight = info.matched.distinctBy { it.key },
+                searchQuery = g.home.short,
+                extra = extra.distinctBy { it.key },
+                extraTitle = if (opts.isEmpty()) "" else (if (info.bgame != null) "Passa em: " else "Costuma passar em: ") + opts.take(4).joinToString(" · "),
+            )
+        }
     }
 
     // ---- lembretes

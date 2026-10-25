@@ -117,7 +117,17 @@ object Broadcasts {
         "Univision" to listOf("univision"),
     )
 
-    private fun hasWords(hay: String, words: String): Boolean = (" $hay ").contains(" $words ")
+    /** [words] aparece em [hay] como palavra(s) inteira(s). Sem criar textos novos: roda dezenas de milhares de vezes. */
+    private fun hasWords(hay: String, words: String): Boolean {
+        if (words.isEmpty()) return false
+        var i = hay.indexOf(words)
+        while (i >= 0) {
+            val end = i + words.length
+            if ((i == 0 || hay[i - 1] == ' ') && (end == hay.length || hay[end] == ' ')) return true
+            i = hay.indexOf(words, i + 1)
+        }
+        return false
+    }
 
     private fun channelMatches(option: String, ch: Channel): Boolean {
         val hints = HINTS[option] ?: listOf(Organizer.fold(option))

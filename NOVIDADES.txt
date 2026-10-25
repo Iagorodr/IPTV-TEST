@@ -1,3 +1,4 @@
 Tela de carregamento com progresso real (etapas, itens e tempo) e aviso quando a lista nova fica pronta em segundo plano.
 Filmes e séries: escolha de idioma/país na ficha e botão "Idioma / versão" dentro do player (continua do mesmo minuto).
 "Onde passa" com até 3 países e botão País em Canais.
+Corrigido: travamento ao abrir "ver canais" de um jogo em listas muito grandes.
