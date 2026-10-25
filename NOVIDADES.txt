@@ -1,2 +1,1 @@
-Filtro de País reescrito com a sua lista real: categorias "XX|" de qualquer país, letrinhas enfeitadas (ᴿᴬᵂ, ⁴ᴷ) limpas, canais sem país somem quando a lista é de vários países.
-Nomes de canais sem "US:", "VIP:", "RK:" na frente; avisos "NO Event Streaming" e vagas vazias escondidos.
+Nomes de filmes e séries limpos com base na lista real: 4K-FR-HDR, SC-DO, EN-TOP - 02., NF, AMZ, D+, PRMT, SOC... saem do nome; SC vira "Nórdicos", AS "Ásia". Filmes XXX escondidos.

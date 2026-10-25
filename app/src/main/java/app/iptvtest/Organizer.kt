@@ -105,10 +105,11 @@ object Organizer {
             if (toks.isNotEmpty() && toks.all { t -> val u = t.uppercase(Locale.ROOT); Countries.isCodeToken(u) || PLATFORM_CODES.contains(u) || QUALITY_TOKENS.contains(u) }) {
                 val rest = n.substring(combo.range.last + 1).trim()
                 if (rest.length >= 2) {
-                    n = rest
+                    n = if (toks.any { it.equals("TOP", true) }) TOP_NUM.replace(rest, "") else rest
                     for (t in toks) {
                         val u = t.uppercase(Locale.ROOT)
                         if (u == "4K" || u == "UHD") nk4 = true
+                        if (ncc.isEmpty() && REGION_TOKENS.containsKey(u)) ncc = REGION_TOKENS.getValue(u)
                         if (ncc.isEmpty() && Countries.isCodeToken(u) && !QUALITY_TOKENS.contains(u)) ncc = Countries.canon(u)
                     }
                 }
@@ -144,8 +145,14 @@ object Organizer {
     }
 
     private val DIVIDER = Regex("""^\s*([#=*~•_\-]{3,}|[▬━─═]{2,})|([#=*~_\-]{3,})\s*$""")
-    private val LEAD_COMBO = Regex("^([A-Za-z0-9+]{2,5}(?:[-_|][A-Za-z0-9+]{2,5}){1,4})\\s*[-|:]\\s+")
-    private val QUALITY_TOKENS = setOf("4K", "UHD", "HDR", "HDR10", "DV", "FHD", "HD", "SD", "HEVC", "H265", "MULTI", "VOST", "VOSTFR", "VO", "VF", "VFF", "VFQ", "DUAL", "LEG", "DUB", "SUB", "3D", "IMAX")
+    private val LEAD_COMBO = Regex("^([A-Za-z0-9+]{1,6}(?:[-_|][A-Za-z0-9+]{1,6}){0,4})\\s*[-|:]\\s+")
+    private val XXX = Regex("^\\s*XXX\\b")
+    private val TOP_NUM = Regex("^\\d{1,3}\\.\\s+")
+    private val REGION_TOKENS = mapOf("SC" to "NORDIC", "AS" to "ASIA", "QC" to "QC", "LA" to "LAT")
+    private val QUALITY_TOKENS = setOf(
+        "SC", "SOC", "S0C", "TOP", "AS", "UNV", "MV", "PRMT", "VP", "DO", "JO", "FIFA+", "MRVL", "DWA", "CAM", "DSC", "DSC+",
+        "DSC+S", "S", "NICK", "PCOK", "CR", "SHWT", "SUBS", "CD", "SAS", "AC", "EQC", "4M", "K", "QC", "LA", "NORDIC",
+        "AMZ", "NF", "D+", "A+", "P+", "MAX", "SKY","4K", "UHD", "HDR", "HDR10", "DV", "FHD", "HD", "SD", "HEVC", "H265", "MULTI", "VOST", "VOSTFR", "VO", "VF", "VFF", "VFQ", "DUAL", "LEG", "DUB", "SUB", "3D", "IMAX")
     private val LEAD_PREFIX = Regex("^([A-Z][A-Z0-9+]{1,3})\\s*[-|:]\\s+")
     private val TRAIL_YEAR = Regex("\\s*[(\\[]((?:19|20)\\d\\d)[)\\]]\\s*$")
     private val TRAIL_CODE = Regex("\\s*[(\\[]([A-Z]{2,3})[)\\]]\\s*$")
@@ -367,6 +374,7 @@ object Organizer {
                 if (p != null) platforms.add(p)
             }
             if (adult) continue
+            if (XXX.containsMatchIn(raw.name)) continue
             val parsed = parseName(raw.name)
             val keyText = fold(parsed.base)
             if (keyText.isEmpty()) continue
