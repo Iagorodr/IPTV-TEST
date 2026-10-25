@@ -46,7 +46,7 @@ object Organizer {
     // Nome do título: tags (L) legendado, (4K), (CAM)
     // ------------------------------------------------------------------
 
-    private class Parsed(val base: String, val leg: Boolean, val k4: Boolean, val cam: Boolean, val year: String = "")
+    private class Parsed(val base: String, val leg: Boolean, val k4: Boolean, val cam: Boolean, val year: String = "", val cc: String = "")
 
     private val TAG_PRE = Regex("^\\((L|4K|CAM)\\)\\s*", RegexOption.IGNORE_CASE)
     private val TAG_SUF = Regex("\\s*\\((L|4K|CAM)\\)\\s*$", RegexOption.IGNORE_CASE)
@@ -77,12 +77,31 @@ object Organizer {
         }
         // listas de vários países: "FR - Título (2026) (SE)" vira "Título"; a sigla do país já vem da categoria
         var yr = ""
+        var ncc = ""
+        var nk4 = false
+        // prefixo composto: "4K-FR-HDR - Moana", "FR|MULTI: Título"
+        val combo = LEAD_COMBO.find(n)
+        if (combo != null) {
+            val toks = combo.groupValues[1].split('-', '_', ' ', '|').filter { it.isNotEmpty() }
+            if (toks.isNotEmpty() && toks.all { t -> val u = t.uppercase(Locale.ROOT); Countries.isCodeToken(u) || PLATFORM_CODES.contains(u) || QUALITY_TOKENS.contains(u) }) {
+                val rest = n.substring(combo.range.last + 1).trim()
+                if (rest.length >= 2) {
+                    n = rest
+                    for (t in toks) {
+                        val u = t.uppercase(Locale.ROOT)
+                        if (u == "4K" || u == "UHD") nk4 = true
+                        if (ncc.isEmpty() && Countries.isCodeToken(u) && !QUALITY_TOKENS.contains(u)) ncc = Countries.canon(u)
+                    }
+                }
+            }
+        }
         for (round in 0 until 3) {
             val before = n
             val mp = LEAD_PREFIX.find(n)
             if (mp != null) {
                 val tok = mp.groupValues[1]
                 if (Countries.isCodeToken(tok) || PLATFORM_CODES.contains(tok.uppercase(Locale.ROOT))) {
+                    if (ncc.isEmpty() && Countries.isCodeToken(tok)) ncc = Countries.canon(tok)
                     val rest = n.substring(mp.range.last + 1).trim()
                     if (rest.length >= 2) n = rest
                 }
@@ -102,9 +121,11 @@ object Organizer {
             }
             if (n == before) break
         }
-        return Parsed(n, leg, k4, cam, yr)
+        return Parsed(n, leg, k4 || nk4, cam, yr, ncc)
     }
 
+    private val LEAD_COMBO = Regex("^([A-Za-z0-9+]{2,5}(?:[-_|][A-Za-z0-9+]{2,5}){1,4})\\s*[-|:]\\s+")
+    private val QUALITY_TOKENS = setOf("4K", "UHD", "HDR", "HDR10", "DV", "FHD", "HD", "SD", "HEVC", "H265", "MULTI", "VOST", "VOSTFR", "VO", "VF", "VFF", "VFQ", "DUAL", "LEG", "DUB", "SUB", "3D", "IMAX")
     private val LEAD_PREFIX = Regex("^([A-Z][A-Z0-9+]{1,3})\\s*[-|:]\\s+")
     private val TRAIL_YEAR = Regex("\\s*[(\\[]((?:19|20)\\d\\d)[)\\]]\\s*$")
     private val TRAIL_CODE = Regex("\\s*[(\\[]([A-Z]{2,3})[)\\]]\\s*$")
@@ -335,7 +356,7 @@ object Organizer {
             if (series && raw.genre.isNotEmpty()) genres.addAll(genreFromText(raw.genre))
             val leg = parsed.leg || catLeg
             val ext = if (raw.ext.isEmpty() && !series) "mp4" else raw.ext
-            val ver = Version(raw.id, ext, leg, parsed.k4 || cat4k, parsed.cam, cc, raw.name.trim())
+            val ver = Version(raw.id, ext, leg, parsed.k4 || cat4k, parsed.cam, cc.ifEmpty { parsed.cc }, raw.name.trim())
 
             val tm = raw.tmdb
             var acc = map[key]
