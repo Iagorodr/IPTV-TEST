@@ -82,6 +82,39 @@ object Broadcasts {
         "SIC" to listOf("sic"),
         "TVI" to listOf("tvi"),
         "Eurosport" to listOf("eurosport"),
+        // Bélgica
+        "Pickx" to listOf("pickx", "proximus"),
+        "Telenet" to listOf("telenet", "play sports"),
+        "VOO Sport" to listOf("voo sport", "voo"),
+        "VRT" to listOf("vrt", "een"),
+        "RTBF" to listOf("rtbf", "auvio", "la une"),
+        "Streamz" to listOf("streamz"),
+        // Espanha
+        "Movistar+" to listOf("movistar"),
+        "LaLiga TV" to listOf("laliga tv", "la liga tv", "laliga"),
+        "Gol" to listOf("gol tv", "gol play"),
+        "TVE" to listOf("tve", "la 1"),
+        "Teledeporte" to listOf("teledeporte"),
+        // Reino Unido
+        "Sky Sports" to listOf("sky sports"),
+        "TNT Sports UK" to listOf("tnt sports", "tnt"),
+        "BBC" to listOf("bbc"),
+        "ITV" to listOf("itv"),
+        "Amazon Prime" to listOf("prime video", "amazon"),
+        "Premier Sports" to listOf("premier sports"),
+        // França
+        "Canal+" to listOf("canal+", "canal plus"),
+        "beIN Sports" to listOf("bein"),
+        "Ligue 1+" to listOf("ligue 1"),
+        "RMC Sport" to listOf("rmc sport", "rmc"),
+        "France TV" to listOf("france tv", "france 2", "france 3"),
+        // EUA
+        "Peacock" to listOf("peacock"),
+        "CBS" to listOf("cbs"),
+        "NBC" to listOf("nbc"),
+        "Fox" to listOf("fox"),
+        "ESPN+" to listOf("espn"),
+        "Univision" to listOf("univision"),
     )
 
     private fun hasWords(hay: String, words: String): Boolean = (" $hay ").contains(" $words ")

@@ -76,6 +76,9 @@ class UserData(ctx: Context) {
     var bcCountry: String = "BR"
         private set
 
+    /** Países da tabela "onde passa" escolhidos à mão (até 3). Vazio = automático (segue os países em uso). */
+    val bcCountries = LinkedHashSet<String>()
+
     /** Países/idiomas que a pessoa quer ver (vazio = todos). */
     val countryFilter = HashSet<String>()
 
@@ -106,6 +109,7 @@ class UserData(ctx: Context) {
             autoSwitch = sp.getBoolean("auto", true)
             tzId = sp.getString("tz", "") ?: ""
             bcCountry = sp.getString("bc", "BR") ?: "BR"
+            bcCountries.addAll((sp.getString("bcs", "") ?: "").split(",").filter { it.isNotBlank() })
             profileName = sp.getString("pname", "") ?: ""
             profileLang = sp.getString("plang", "") ?: ""
             onboarded = sp.getBoolean("onboarded", false)
@@ -401,6 +405,12 @@ class UserData(ctx: Context) {
         countryFilter.clear()
         countryFilter.addAll(v)
         sp.edit().putStringSet("cfilter", HashSet(v)).apply()
+    }
+
+    fun setBcCountries(v: List<String>) {
+        bcCountries.clear()
+        bcCountries.addAll(v.take(3))
+        sp.edit().putString("bcs", bcCountries.joinToString(",")).apply()
     }
 
     fun setBcCountry(v: String) {

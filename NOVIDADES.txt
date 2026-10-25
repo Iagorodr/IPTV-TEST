@@ -1,3 +1,4 @@
-Botão rápido de País no topo (escolha até 3 países ou veja tudo).
-Nomes de filmes e séries mais limpos (sem FR -, NF -, (SE)...).
+"Onde passa" agora aceita até 3 países ao mesmo tempo (Brasil, Portugal, Bélgica, Espanha, Reino Unido, França, EUA) e segue os canais que você tem.
+Botão País também na tela de Canais.
+Botão rápido de País no topo e nomes de filmes e séries mais limpos.
 Aviso quando o relógio da TV está errado.

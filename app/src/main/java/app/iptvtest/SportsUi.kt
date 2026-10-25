@@ -1193,7 +1193,7 @@ fun FavTeamsSettings(vm: MainViewModel) {
         }
         Spacer(Modifier.height(4.dp))
         Text(
-            "Onde passa: tabela " + BroadcastStore.countryName() + " de " + BroadcastStore.table.updatedPretty() + " (atualizada toda semana).",
+            "Onde passa: tabela " + BroadcastStore.countriesLine() + " de " + BroadcastStore.table.updatedPretty() + " (atualizada toda semana).",
             color = Muted,
             fontSize = 12.sp,
         )

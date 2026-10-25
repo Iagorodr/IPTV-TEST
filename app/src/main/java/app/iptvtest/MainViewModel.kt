@@ -285,7 +285,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         favTeams = user.favTeams.toList()
         favLeagues = user.favLeagues.toList()
         reminders = user.reminders.toList()
-        BroadcastStore.load(appCtx, user.bcCountry)
+        BroadcastStore.load(appCtx, effectiveBcCountries())
         viewModelScope.launch { BroadcastStore.refresh(appCtx) }
         if (store.agent.isNotEmpty()) USER_AGENT = store.agent
         accessStatus = Control.cachedStatus(appCtx)
@@ -727,6 +727,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
         cleanChannels = shaped.first
         channelCards = shaped.second
+        syncBroadcasts()
         channelGroups = shaped.third
         for (ch in shaped.first) chIdx[ch.key] = ch
         for (ch in shaped.second) chIdx[ch.key] = ch
@@ -1606,19 +1607,41 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val bg = Broadcasts.gameFor(table, g)
         val options = bg?.tv ?: comp?.options ?: emptyList()
         val inList = if (options.isEmpty()) emptySet() else Broadcasts.inList(options, channelCards)
-        return GameInfo(matched, comp, bg, inList, table.updatedPretty(), BroadcastStore.countryName(table.country))
+        return GameInfo(matched, comp, bg, inList, table.updatedPretty(), BroadcastStore.countriesLine())
     }
 
-    /** Troca o país da tabela "onde passa" (Ajustes) e já tenta baixar a tabela dele. */
-    fun setBroadcastCountry(cc: String) {
-        if (cc == user.bcCountry) return
-        user.setBcCountry(cc)
-        BroadcastStore.load(appCtx, cc)
+    /**
+     * Países da tabela "onde passa": os escolhidos à mão; senão os países em uso (filtro "País"); senão os países que
+     * mais têm canais na lista. Assim "onde passa" só fala de emissoras que a pessoa realmente tem.
+     */
+    fun effectiveBcCountries(): List<String> {
+        val ok = BroadcastStore.COUNTRIES.map { it.first }
+        val manual = user.bcCountries.filter { it in ok }
+        if (manual.isNotEmpty()) return manual.take(3)
+        val picked = user.countryFilter.filter { it in ok }
+        if (picked.isNotEmpty()) return picked.take(3)
+        val stats = countryStats()
+        val byChannels = stats.entries.filter { it.key in ok && it.value.second > 0 }.sortedByDescending { it.value.second }.map { it.key }
+        if (byChannels.isNotEmpty()) return byChannels.take(3)
+        return listOf(user.bcCountry.takeIf { it in ok } ?: "BR")
+    }
+
+    /** Recarrega as tabelas se os países em uso mudaram (chamar depois de mudar filtro, lista ou escolha). */
+    fun syncBroadcasts() {
+        val want = effectiveBcCountries()
+        if (want == BroadcastStore.countries) return
+        BroadcastStore.load(appCtx, want)
         dataRev++
         viewModelScope.launch {
-            BroadcastStore.refresh(appCtx, force = true)
+            BroadcastStore.refresh(appCtx)
             dataRev++
         }
+    }
+
+    /** Escolha manual dos países da tabela "onde passa" (vazio = automático). */
+    fun setBroadcastCountries(list: List<String>) {
+        user.setBcCountries(list)
+        syncBroadcasts()
     }
 
     /** Botão "Conferir de novo": baixa a tabela agora (sem esperar o dia seguinte) e diz o resultado. */

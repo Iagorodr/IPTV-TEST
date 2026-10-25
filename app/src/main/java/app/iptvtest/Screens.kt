@@ -1105,37 +1105,45 @@ private fun TimeZoneSettings(vm: MainViewModel) {
     }
 }
 
-/** País da tabela "onde passa": define de onde vêm as emissoras de cada jogo (e os nomes delas). */
+/** Países da tabela "onde passa": até 3, ou automático (os países que a sua lista realmente tem). */
 @Composable
 private fun BroadcastSettings(vm: MainViewModel) {
     // a tabela entra como chave: quando ela muda, esta parte da tela se refaz
     val t = remember(BroadcastStore.rev) { BroadcastStore.table }
-    val chosen = vm.user.bcCountry
+    val manual = vm.user.bcCountries.toList()
     var msg by remember { mutableStateOf<String?>(null) }
     var checking by remember { mutableStateOf(false) }
     Column {
-        Text("País da busca (onde passa)", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Text("Países da busca (onde passa)", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.height(4.dp))
         val jogos = if (t.games.isEmpty()) "sem jogos confirmados ainda" else t.games.size.toString() + " jogos dos próximos dias"
         Text(
-            "Define de qual país vem a tabela de emissoras de cada jogo, com os nomes dos canais do país (use o da sua lista: " +
-                "lista do Brasil → Brasil; lista de Portugal → Portugal). Agora: " + BroadcastStore.countryName() +
+            "Escolha até 3 países de onde vêm as emissoras de cada jogo. Em \"Automático\" o app usa os países dos canais que você tem " +
+                "(ou os marcados no botão País). Agora: " + BroadcastStore.countriesLine() +
                 ", tabela de " + t.updatedPretty() + " (" + jogos + "). Pesquisada na internet e atualizada toda semana.",
             color = Muted,
             fontSize = 14.sp,
         )
         Spacer(Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-            for (c in BroadcastStore.COUNTRIES) {
-                ChipItem(text = c.second, selected = chosen == c.first) { vm.setBroadcastCountry(c.first) }
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 4.dp)) {
+            item(key = "auto") {
+                ChipItem(text = "Automático", selected = manual.isEmpty()) { vm.setBroadcastCountries(emptyList()) }
             }
-            TvButton(text = if (checking) "Conferindo..." else "Conferir tabela agora") {
-                if (!checking) {
-                    checking = true
-                    vm.recheckBroadcasts { m ->
-                        checking = false
-                        msg = m
-                    }
+            items(BroadcastStore.COUNTRIES, key = { it.first }) { c ->
+                val on = manual.contains(c.first)
+                ChipItem(text = (if (on) "✓ " else "") + c.second, selected = on) {
+                    val next = if (on) manual - c.first else if (manual.size >= 3) manual else manual + c.first
+                    vm.setBroadcastCountries(next)
+                }
+            }
+        }
+        Spacer(Modifier.height(6.dp))
+        TvButton(text = if (checking) "Conferindo..." else "Conferir tabelas agora") {
+            if (!checking) {
+                checking = true
+                vm.recheckBroadcasts { m ->
+                    checking = false
+                    msg = m
                 }
             }
         }

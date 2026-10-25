@@ -21,13 +21,25 @@ object BroadcastStore {
     private const val PREFS = "iptv_broadcasts"
     private const val DAY_MS = 86_400_000L
 
-    /** (código do país, nome na tela). */
-    val COUNTRIES: List<Pair<String, String>> = listOf("BR" to "Brasil", "PT" to "Portugal")
+    /** (código do país, nome na tela). Os códigos são os mesmos de [Countries]. */
+    val COUNTRIES: List<Pair<String, String>> = listOf(
+        "BR" to "Brasil", "PT" to "Portugal", "BE" to "Bélgica", "ES" to "Espanha",
+        "UK" to "Reino Unido", "FR" to "França", "US" to "EUA",
+    )
 
+    /** Países cujas tabelas estão ativas agora (até 3), na ordem de prioridade. */
     @Volatile
-    var country: String = "BR"
+    var countries: List<String> = listOf("BR")
         private set
 
+    /** O primeiro país ativo (compatível com o código antigo). */
+    val country: String get() = countries.firstOrNull() ?: "BR"
+
+    /** A tabela de cada país ativo, separada. */
+    @Volatile
+    private var tables: Map<String, BroadcastTable> = emptyMap()
+
+    /** Tabela única para as telas: as dos países ativos juntas (emissoras somadas, jogos repetidos unidos). */
     @Volatile
     var table: BroadcastTable = BroadcastTable("", emptyMap())
         private set
@@ -38,13 +50,24 @@ object BroadcastStore {
 
     fun countryName(cc: String = country): String = COUNTRIES.firstOrNull { it.first == cc }?.second ?: cc
 
+    /** "Brasil + Portugal" para mostrar na tela. */
+    fun countriesLine(): String = countries.joinToString(" + ") { countryName(it) }
+
     private fun fileOf(cc: String): String = if (cc == "BR") "broadcasts.json" else "broadcasts-" + cc.lowercase() + ".json"
 
     // os apps antigos guardavam a tabela do Brasil em "json"/"at": mantém essas chaves para o BR
     private fun keyJson(cc: String): String = if (cc == "BR") "json" else "json_$cc"
     private fun keyAt(cc: String): String = if (cc == "BR") "at" else "at_$cc"
 
-    private fun defaultTz(cc: String): String = if (cc == "PT") "Europe/Lisbon" else "America/Sao_Paulo"
+    private fun defaultTz(cc: String): String = when (cc) {
+        "PT" -> "Europe/Lisbon"
+        "BE" -> "Europe/Brussels"
+        "ES" -> "Europe/Madrid"
+        "UK" -> "Europe/London"
+        "FR" -> "Europe/Paris"
+        "US" -> "America/New_York"
+        else -> "America/Sao_Paulo"
+    }
 
     fun parse(text: String, cc: String = "BR"): BroadcastTable? {
         return try {
@@ -109,9 +132,7 @@ object BroadcastStore {
         }
     }
 
-    /** Carrega a tabela do país: a embutida e a última baixada (a mais nova das duas vale). Chamar ao abrir o app. */
-    fun load(ctx: Context, cc: String) {
-        country = cc
+    private fun loadOne(ctx: Context, cc: String): BroadcastTable {
         var best: BroadcastTable? = null
         try {
             val text = ctx.assets.open(fileOf(cc)).bufferedReader(Charsets.UTF_8).use { it.readText() }
@@ -126,16 +147,79 @@ object BroadcastStore {
         } catch (e: Exception) {
             // cópia salva ilegível: usa a embutida
         }
-        table = best ?: BroadcastTable("", emptyMap(), emptyList(), cc, defaultTz(cc))
+        return best ?: BroadcastTable("", emptyMap(), emptyList(), cc, defaultTz(cc))
+    }
+
+    private fun norm(x: String): String = Organizer.fold(x)
+
+    /** Junta as tabelas dos países ativos numa só. Com um país só, devolve a própria tabela. */
+    private fun merge(list: List<BroadcastTable>): BroadcastTable {
+        if (list.size == 1) return list[0]
+        val comps = LinkedHashMap<String, BroadcastComp>()
+        for (t in list) {
+            for ((k, c) in t.comps) {
+                val old = comps[k]
+                if (old == null) {
+                    comps[k] = c
+                } else {
+                    val opts = LinkedHashSet<String>(old.options)
+                    opts.addAll(c.options)
+                    val note = listOf(old.note, c.note).filter { it.isNotEmpty() }.joinToString(" ")
+                    comps[k] = BroadcastComp(old.label, opts.toList(), note)
+                }
+            }
+        }
+        val games = ArrayList<BroadcastGame>()
+        val seen = HashMap<String, Int>()
+        for (t in list) {
+            for (g in t.games) {
+                val id = g.date + "|" + norm(g.home) + "|" + norm(g.away)
+                val at = seen[id]
+                if (at == null) {
+                    seen[id] = games.size
+                    games.add(g)
+                } else {
+                    val o = games[at]
+                    val tv = LinkedHashSet<String>(o.tv)
+                    tv.addAll(g.tv)
+                    games[at] = BroadcastGame(
+                        o.date, o.comp, o.home, o.away, tv.toList(), o.confirmed || g.confirmed,
+                        listOf(o.obs, g.obs).filter { it.isNotEmpty() }.distinct().joinToString(" · "), o.src,
+                    )
+                }
+            }
+        }
+        val updated = list.maxOf { it.updated }
+        return BroadcastTable(updated, comps, games.sortedBy { it.date }, list[0].country, list[0].tz)
+    }
+
+    private fun rebuild() {
+        val l = countries.mapNotNull { tables[it] }
+        table = if (l.isEmpty()) BroadcastTable("", emptyMap()) else merge(l)
         rev++
     }
 
+    /** Carrega as tabelas dos países (até 3): a embutida e a última baixada (a mais nova das duas vale). Chamar ao abrir o app. */
+    fun load(ctx: Context, ccs: List<String>) {
+        val list = ccs.filter { c -> COUNTRIES.any { it.first == c } }.distinct().take(3).ifEmpty { listOf("BR") }
+        countries = list
+        tables = list.associateWith { loadOne(ctx, it) }
+        rebuild()
+    }
+
     /**
-     * Baixa a versão nova do país escolhido (no máximo uma vez por dia, a não ser que [force]).
-     * Devolve true se baixou e leu uma tabela; falhar não atrapalha nada.
+     * Baixa a versão nova de cada país ativo (no máximo uma vez por dia, a não ser que [force]).
+     * Devolve true se baixou e leu alguma tabela; falhar não atrapalha nada.
      */
     suspend fun refresh(ctx: Context, force: Boolean = false): Boolean {
-        val cc = country
+        var any = false
+        for (cc in countries.toList()) {
+            if (refreshOne(ctx, cc, force)) any = true
+        }
+        return any
+    }
+
+    private suspend fun refreshOne(ctx: Context, cc: String, force: Boolean): Boolean {
         val sp = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val last = sp.getLong(keyAt(cc), 0L)
         if (!force && System.currentTimeMillis() - last < DAY_MS) return false
@@ -150,9 +234,10 @@ object BroadcastStore {
                 }
                 val t = parse(text, cc) ?: return@withContext false
                 sp.edit().putString(keyJson(cc), text).putLong(keyAt(cc), System.currentTimeMillis()).apply()
-                if (country == cc && t.updated >= table.updated) {
-                    table = t
-                    rev++
+                val cur = tables[cc]
+                if (cc in countries && (cur == null || t.updated >= cur.updated)) {
+                    tables = tables + (cc to t)
+                    rebuild()
                 }
                 true
             } catch (e: Exception) {

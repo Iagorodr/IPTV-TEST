@@ -113,6 +113,17 @@ fun ChannelsTab(vm: MainViewModel) {
                     contentPadding = PaddingValues(vertical = 4.dp, horizontal = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
+                    if (vm.countryStats().size > 1) {
+                        item(key = "__pais") {
+                            val picked = vm.user.countryFilter
+                            val label = when {
+                                picked.isEmpty() -> "País: Todos"
+                                picked.size <= 3 -> "País: " + picked.joinToString(" · ")
+                                else -> "País: " + picked.size + " escolhidos"
+                            }
+                            ChipItem(text = label, selected = picked.isNotEmpty()) { vm.countryDialog = true }
+                        }
+                    }
                     item(key = ALL) {
                         ChipItem(text = "Todos", selected = sel == ALL) { selected = ALL }
                     }
