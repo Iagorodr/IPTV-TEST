@@ -88,14 +88,16 @@ fun ChannelsTab(vm: MainViewModel) {
             m
         }
         val sel = if (selected == FAVS && favs.isEmpty()) ALL else selected
-        val list = remember(sel, groups, favs) {
-            when (sel) {
+        val lcc = vm.localCc[Tab.CHANNELS] ?: ""
+        val list = remember(sel, groups, favs, lcc) {
+            val l = when (sel) {
                 ALL -> all
                 FAVS -> favs
                 K4 -> all.filter { ChannelGroups.has4k(it) }
                 YT -> all.filter { ChannelGroups.isYoutube(it) }
                 else -> groups.firstOrNull { it.first == sel }?.second ?: emptyList()
             }
+            if (lcc.isEmpty()) l else l.filter { ch -> ch.sources.any { it.cc == lcc } || ch.variants.any { v -> v.channel.sources.any { it.cc == lcc } } }
         }
         val playingCh = playingKey?.let { k -> byKey[k] ?: favs.firstOrNull { it.key == k } }
         val live = playingCh?.let { vm.previewLive(it) }
@@ -113,17 +115,7 @@ fun ChannelsTab(vm: MainViewModel) {
                     contentPadding = PaddingValues(vertical = 4.dp, horizontal = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    if (vm.countryStats().size > 1) {
-                        item(key = "__pais") {
-                            val picked = vm.user.countryFilter
-                            val label = when {
-                                picked.isEmpty() -> "País: Todos"
-                                picked.size <= 3 -> "País: " + picked.joinToString(" · ")
-                                else -> "País: " + picked.size + " escolhidos"
-                            }
-                            ChipItem(text = label, selected = picked.isNotEmpty()) { vm.countryDialog = true }
-                        }
-                    }
+                    item(key = "__pais") { LocalCountryChip(vm, Tab.CHANNELS) }
                     item(key = ALL) {
                         ChipItem(text = "Todos", selected = sel == ALL) { selected = ALL }
                     }

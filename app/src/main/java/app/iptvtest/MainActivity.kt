@@ -319,6 +319,10 @@ fun App(vm: MainViewModel = viewModel()) {
             ClockDialog(vm)
         }
 
+        // filtro rápido de país da tela
+        val lp = vm.localPickFor
+        if (lp != null && playing == null && catalog != null) LocalCountryDialog(vm, lp)
+
         // escolha rápida de países (botão no topo)
         if (vm.countryDialog && playing == null && catalog != null) CountryDialog(vm)
 

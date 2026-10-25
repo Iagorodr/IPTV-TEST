@@ -698,11 +698,14 @@ fun PlayerScreen(
 
     fun accelSeek(dir: Int) {
         val now = System.currentTimeMillis()
-        seekStreak = if (dir == seekDir && now - seekAt < 1_500L) seekStreak + 1 else 0
+        // segurando o botão a TV repete muito rápido: no máximo um pulo a cada 0,35 s
+        if (dir == seekDir && now - seekAt < 350L) return
+        seekStreak = if (dir == seekDir && now - seekAt < 1_600L) seekStreak + 1 else 0
         seekDir = dir
         seekAt = now
-        val steps = longArrayOf(10_000L, 30_000L, 120_000L, 600_000L, 900_000L)
-        val step = steps[(seekStreak / 2).coerceIn(0, steps.size - 1)]
+        // sobe devagar: 4 toques de 10 s, 4 de 30 s, 4 de 1 min, 4 de 2 min, depois 5 min e 10 min
+        val steps = longArrayOf(10_000L, 30_000L, 60_000L, 120_000L, 300_000L, 600_000L)
+        val step = steps[(seekStreak / 4).coerceIn(0, steps.size - 1)]
         seekBy(dir * step)
         val label = if (step >= 60_000L) "${step / 60_000L} min" else "${step / 1000L} s"
         seekHint = (if (dir > 0) "⏩ +" else "⏪ -") + label
@@ -1559,6 +1562,54 @@ private fun buildOptions(exo: ExoPlayer, tracks: Tracks, type: Int): List<TrackO
                 },
             ),
         )
+    }
+    if (type == C.TRACK_TYPE_TEXT) {
+        // legendas: uma opção por idioma (+ "só falas estrangeiras" e "para surdos" à parte), escolhendo a melhor cópia
+        class Cand(val g: Tracks.Group, val i: Int, val f: Format)
+        val groups = LinkedHashMap<String, ArrayList<Cand>>()
+        for (g in tracks.groups) {
+            if (g.type != type) continue
+            for (i in 0 until g.length) {
+                val f = g.getTrackFormat(i)
+                val lab = (f.label ?: "").lowercase(Locale.ROOT)
+                val forced = (f.selectionFlags and C.SELECTION_FLAG_FORCED) != 0 || lab.contains("forced") || lab.contains("forçad")
+                val sdh = lab.contains("sdh") || lab.contains("cc") && lab.split(' ', ':', '-').contains("cc") || (f.roleFlags and C.ROLE_FLAG_DESCRIBES_MUSIC_AND_SOUND) != 0
+                val key = (f.language ?: "und").lowercase(Locale.ROOT).take(2) + (if (forced) "|f" else if (sdh) "|s" else "")
+                groups.getOrPut(key) { ArrayList() }.add(Cand(g, i, f))
+            }
+        }
+        fun rank(c: Cand): Int {
+            var r = 0
+            if (c.g.isTrackSupported(c.i)) r += 100
+            val m = c.f.sampleMimeType ?: ""
+            if (m.contains("subrip") || m.contains("vtt") || m.contains("ssa") || m.contains("ttml") || m.contains("tx3g")) r += 10
+            return r
+        }
+        val ordered = groups.entries.sortedWith(compareBy({ it.key.contains("|") }, { langName(it.value.first().f.language) }))
+        for ((key, cands) in ordered) {
+            val best = cands.maxByOrNull { rank(it) } ?: continue
+            val selected = cands.any { it.g.isTrackSelected(it.i) }
+            val extra = when {
+                key.endsWith("|f") -> " (só falas em outra língua)"
+                key.endsWith("|s") -> " (para surdos)"
+                else -> ""
+            }
+            list.add(
+                TrackOption(
+                    label = langName(best.f.language) + extra,
+                    selected = selected,
+                    supported = best.g.isTrackSupported(best.i),
+                    onSelect = {
+                        exo.trackSelectionParameters = exo.trackSelectionParameters
+                            .buildUpon()
+                            .setTrackTypeDisabled(type, false)
+                            .setOverrideForType(TrackSelectionOverride(best.g.mediaTrackGroup, best.i))
+                            .build()
+                    },
+                ),
+            )
+        }
+        return list
     }
     for (g in tracks.groups) {
         if (g.type != type) continue

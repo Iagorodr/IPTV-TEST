@@ -712,6 +712,46 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         checkControl(false)
     }
 
+    // ---- filtro rápido de país por tela (Canais, Filmes, Séries); "" = todos os países escolhidos nos Ajustes
+    val localCc = androidx.compose.runtime.mutableStateMapOf<Tab, String>()
+    var localPickFor by mutableStateOf<Tab?>(null)
+
+    /** Países que dá para escolher dentro das telas: os dos Ajustes, ou todos os da lista se nada foi escolhido. */
+    fun localChoices(): List<String> {
+        val st = countryStats()
+        val base = if (user.countryFilter.isNotEmpty()) user.countryFilter.toList() else st.keys.toList()
+        return base.sortedByDescending { (st[it]?.first ?: 0) + (st[it]?.second ?: 0) }
+    }
+
+    fun localLabel(tab: Tab): String {
+        val cc = localCc[tab] ?: ""
+        return if (cc.isEmpty()) "País: todos" else "País: " + Countries.label(cc)
+    }
+
+    private val localCache = HashMap<String, Pair<List<Shelf>, List<Title>>>()
+    private var localCacheFor: Catalog? = null
+
+    /** Prateleiras de Filmes/Séries só com o país [cc] (montadas fora da tela e guardadas). */
+    suspend fun localShelves(series: Boolean, cc: String): Pair<List<Shelf>, List<Title>> {
+        val c = catalog ?: return Pair(emptyList(), emptyList())
+        if (localCacheFor !== c) {
+            localCache.clear()
+            localCacheFor = c
+        }
+        val k = (if (series) "s|" else "m|") + cc
+        localCache[k]?.let { return it }
+        val r = withContext(Dispatchers.Default) {
+            val f = Countries.filter(c, setOf(cc))
+            val src = if (user.kidsMode) Kids.filter(f) else f
+            val only = if (series) Catalog(emptyList(), src.series, emptyList(), src.channelCategories, src.builtAt)
+            else Catalog(src.movies, emptyList(), emptyList(), src.channelCategories, src.builtAt)
+            val b = Shelves.buildAll(only, mixSeed)
+            if (series) Pair(b.series, b.featuredSeries) else Pair(b.movies, b.featuredMovies)
+        }
+        localCache[k] = r
+        return r
+    }
+
     /** Escolhe os países/idiomas que aparecem (vazio = todos) e refaz as telas. */
     /** Janela rápida de países (botão no topo). */
     var countryDialog by mutableStateOf(false)

@@ -3,6 +3,8 @@ package app.iptvtest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -460,6 +462,65 @@ fun ClockDialog(vm: MainViewModel) {
             )
             Spacer(Modifier.height(16.dp))
             TvButton(text = "Entendi", primary = true, focusRequester = first) { vm.clockDismissed = true }
+        }
+    }
+}
+
+
+/** Escolha rápida de um país só para a tela atual (Canais, Filmes ou Séries). */
+@Composable
+fun LocalCountryDialog(vm: MainViewModel, tab: Tab) {
+    val opts = remember { listOf("") + vm.localChoices() }
+    val cur = vm.localCc[tab] ?: ""
+    val first = remember { FocusRequester() }
+    LaunchedEffect(Unit) {
+        delay(80)
+        try {
+            first.requestFocus()
+        } catch (e: Exception) {
+            // ainda não estava na tela
+        }
+    }
+    Dialog(onDismissRequest = { vm.localPickFor = null }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Column(
+            modifier = Modifier
+                .width(420.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Panel)
+                .padding(20.dp),
+        ) {
+            Text("Mostrar nesta tela", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(4.dp))
+            Text("Só muda esta tela. Os países do app ficam em Ajustes.", color = Muted, fontSize = 12.sp)
+            Spacer(Modifier.height(12.dp))
+            androidx.compose.foundation.lazy.LazyColumn(
+                modifier = Modifier.heightIn(max = 380.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                items(opts.size) { i ->
+                    val cc = opts[i]
+                    val sel = cc == cur
+                    FocusBox(
+                        modifier = Modifier.fillMaxWidth(),
+                        focusRequester = if (sel || (i == 0 && opts.none { it == cur })) first else null,
+                        onClick = {
+                            if (cc.isEmpty()) vm.localCc.remove(tab) else vm.localCc[tab] = cc
+                            vm.localPickFor = null
+                        },
+                    ) { focused ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(if (focused) PanelAlt else Color.Transparent)
+                                .padding(horizontal = 14.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(if (sel) "●" else "○", color = if (sel) Accent else Muted, fontSize = 14.sp, modifier = Modifier.width(24.dp))
+                            Text(if (cc.isEmpty()) "Todos os países" else Countries.label(cc), color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+                }
+            }
         }
     }
 }

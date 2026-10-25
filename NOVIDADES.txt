@@ -1,1 +1,4 @@
-Nomes de filmes e séries limpos com base na lista real: 4K-FR-HDR, SC-DO, EN-TOP - 02., NF, AMZ, D+, PRMT, SOC... saem do nome; SC vira "Nórdicos", AS "Ásia". Filmes XXX escondidos.
+Barra do topo nova: logo, ícones de busca e ajustes, e o infantil num círculo discreto.
+Países do app só em Ajustes; em Canais, Filmes e Séries o botão "País ▾" filtra só aquela tela.
+Avançar/voltar no filme mais gradual (10 s, 30 s, 1 min, 2 min, 5 min, 10 min).
+Legendas: uma opção por idioma, sem repetir.

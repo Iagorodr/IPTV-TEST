@@ -384,6 +384,89 @@ private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
     }
 }
 
+/** Botão "País: todos ▾" das telas: abre a lista para escolher um país só nesta tela. */
+@Composable
+fun LocalCountryChip(vm: MainViewModel, tab: Tab) {
+    if (vm.localChoices().size < 2) return
+    val cc = vm.localCc[tab] ?: ""
+    ChipItem(text = vm.localLabel(tab) + " ▾", selected = cc.isNotEmpty()) { vm.localPickFor = tab }
+}
+
+/** Logo provisória: monograma "i" num quadradinho com o degradê da marca + "IAGO" fino. */
+@Composable
+fun AppLogo() {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(30.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Accent, Color(0xFF7B5CFF)))),
+            contentAlignment = Alignment.Center,
+        ) {
+            androidx.compose.foundation.Canvas(modifier = Modifier.size(18.dp)) {
+                val w = size.minDimension
+                // um "play" arredondado dentro do quadrado
+                val path = androidx.compose.ui.graphics.Path().apply {
+                    moveTo(w * 0.30f, w * 0.18f)
+                    lineTo(w * 0.84f, w * 0.50f)
+                    lineTo(w * 0.30f, w * 0.82f)
+                    close()
+                }
+                drawPath(path, Color.White)
+            }
+        }
+        Spacer(Modifier.width(8.dp))
+        Text("IAGO", color = TextMain, fontSize = 17.sp, fontWeight = FontWeight.Black, letterSpacing = 3.sp, maxLines = 1)
+    }
+}
+
+/** Modo infantil: um círculo pequeno com carinha, como o avatar de perfil dos apps de streaming. Ligado = colorido. */
+@Composable
+private fun KidsAvatar(on: Boolean, onClick: () -> Unit) {
+    val kidA = Color(0xFFFFC145)
+    val kidB = Color(0xFFFF7A9C)
+    FocusBox(shape = CircleShape, focusScale = 1.08f, onClick = onClick) { focused ->
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(
+                        if (on) androidx.compose.ui.graphics.Brush.linearGradient(listOf(kidA, kidB))
+                        else androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0x33FFFFFF), Color(0x22FFFFFF))),
+                    )
+                    .border(2.dp, if (focused) TextMain else Color.Transparent, CircleShape),
+                contentAlignment = Alignment.Center,
+            ) {
+                val face = if (on) Color(0xFF3A1A00) else if (focused) TextMain else Muted
+                androidx.compose.foundation.Canvas(modifier = Modifier.size(18.dp)) {
+                    val w = size.minDimension
+                    val st = w * 0.11f
+                    drawCircle(color = face, radius = w * 0.07f, center = androidx.compose.ui.geometry.Offset(w * 0.33f, w * 0.38f))
+                    drawCircle(color = face, radius = w * 0.07f, center = androidx.compose.ui.geometry.Offset(w * 0.67f, w * 0.38f))
+                    drawArc(
+                        color = face, startAngle = 15f, sweepAngle = 150f, useCenter = false,
+                        topLeft = androidx.compose.ui.geometry.Offset(w * 0.24f, w * 0.30f),
+                        size = androidx.compose.ui.geometry.Size(w * 0.52f, w * 0.42f),
+                        style = androidx.compose.ui.graphics.drawscope.Stroke(width = st, cap = androidx.compose.ui.graphics.StrokeCap.Round),
+                    )
+                }
+            }
+            // o nome só aparece com o foco ou com o modo ligado (fica discreto no resto do tempo)
+            if (focused || on) {
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    if (on) (if (focused) "Sair do infantil" else "Infantil") else "Infantil",
+                    color = if (on) kidA else TextMain,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                )
+            }
+        }
+    }
+}
+
 /** Troca rápida Normal/Infantil: cápsula colorida com carinha, diferente das abas de texto. */
 @Composable
 private fun KidsSwitch(on: Boolean, onClick: () -> Unit) {
@@ -488,8 +571,8 @@ fun TopNav(vm: MainViewModel) {
             .padding(start = 40.dp, end = 44.dp, top = 22.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        BrandButton(vm.tab == Tab.SETTINGS) { vm.selectTab(Tab.SETTINGS) }
-        Spacer(Modifier.width(16.dp))
+        AppLogo()
+        Spacer(Modifier.width(18.dp))
         NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
         if (!vm.user.kidsMode) NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
         NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
@@ -504,19 +587,11 @@ fun TopNav(vm: MainViewModel) {
             Text("Atualizando a lista...", color = Muted, fontSize = 12.sp)
             Spacer(Modifier.width(12.dp))
         }
-        if (vm.countryStats().size > 1) {
-            val picked = vm.user.countryFilter
-            val label = when {
-                picked.isEmpty() -> "País: Todos"
-                picked.size <= 3 -> "País: " + picked.joinToString(" · ")
-                else -> "País: " + picked.size + " escolhidos"
-            }
-            ChipItem(text = label, selected = picked.isNotEmpty()) { vm.countryDialog = true }
-            Spacer(Modifier.width(8.dp))
-        }
-        KidsSwitch(vm.user.kidsMode) { vm.setKids(!vm.user.kidsMode) }
-        Spacer(Modifier.width(8.dp))
         NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
+        Spacer(Modifier.width(4.dp))
+        NavIcon(vm.tab == Tab.SETTINGS, { vm.selectTab(Tab.SETTINGS) }) { c -> GearIcon(color = c, size = 20) }
+        Spacer(Modifier.width(10.dp))
+        KidsAvatar(vm.user.kidsMode) { vm.setKids(!vm.user.kidsMode) }
     }
 }
 
@@ -525,8 +600,8 @@ fun TabScreen(vm: MainViewModel) {
     when (vm.tab) {
         Tab.HOME -> HomeTab(vm)
         Tab.GAMES -> GamesTab(vm)
-        Tab.MOVIES -> ShelfTab(vm, vm.movieShelves, vm.heroMovies)
-        Tab.SERIES -> ShelfTab(vm, vm.seriesShelves, vm.heroSeries)
+        Tab.MOVIES -> LocalShelfTab(vm, Tab.MOVIES)
+        Tab.SERIES -> LocalShelfTab(vm, Tab.SERIES)
         Tab.CHANNELS -> ChannelsTab(vm)
         Tab.LIST -> FavoritesTab(vm)
         Tab.REC -> RecordingsTab(vm)
@@ -739,13 +814,14 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
 private const val CONTINUE_TAB = "Continuar assistindo"
 
 @Composable
-private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: String?, hasContinue: Boolean = false, onSelect: (String?) -> Unit) {
+private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: String?, hasContinue: Boolean = false, lead: (@Composable () -> Unit)? = null, onSelect: (String?) -> Unit) {
     LazyRow(
         modifier = Modifier.fadeRight(0.07f),
         contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        if (lead != null) item(key = "__lead") { lead() }
         item(key = "__todos") {
             ChipItem(text = "Todos", selected = selected == null) { onSelect(null) }
         }
@@ -876,16 +952,31 @@ fun HomeTab(vm: MainViewModel) {
     }
 }
 
+/** Filmes/Séries com o filtro rápido de país desta tela. */
 @Composable
-fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
+fun LocalShelfTab(vm: MainViewModel, tab: Tab) {
+    val series = tab == Tab.SERIES
+    val cc = vm.localCc[tab] ?: ""
+    val base = if (series) Pair(vm.seriesShelves, vm.heroSeries) else Pair(vm.movieShelves, vm.heroMovies)
+    var local by remember(cc, vm.catalog, vm.dataRev) { mutableStateOf<Pair<List<Shelf>, List<Title>>?>(null) }
+    LaunchedEffect(cc, vm.catalog, vm.dataRev) {
+        local = if (cc.isEmpty()) null else vm.localShelves(series, cc)
+    }
+    val shown = if (cc.isEmpty()) base else (local ?: Pair(emptyList(), emptyList()))
+    ShelfTab(vm, shown.first, shown.second, tab, loading = cc.isNotEmpty() && local == null)
+}
+
+@Composable
+fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>, tab: Tab? = null, loading: Boolean = false) {
     val listState = rememberLazyListState()
     var sel by rememberSaveable { mutableStateOf<String?>(null) }
     val picked = if (sel == null) null else shelves.firstOrNull { it.name == sel }
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         if (shelves.isEmpty()) {
+            if (tab != null) Row(modifier = Modifier.padding(horizontal = 40.dp, vertical = 4.dp)) { LocalCountryChip(vm, tab) }
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Nada por aqui ainda.", color = Muted)
+                Text(if (loading) "Separando por país..." else "Nada por aqui com esse país.", color = Muted)
             }
         } else {
             LazyColumn(
@@ -898,7 +989,9 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>) {
                     item(key = "hero") { HeroCarousel(vm, hero, listState, 0) }
                 }
                 item(key = "chips") {
-                    Box(modifier = Modifier.topOnFocus(listState)) { FilterChips(vm, shelves, sel) { sel = it } }
+                    Box(modifier = Modifier.topOnFocus(listState)) {
+                        FilterChips(vm, shelves, sel, lead = if (tab != null) ({ LocalCountryChip(vm, tab) }) else null) { sel = it }
+                    }
                 }
                 if (picked != null) {
                     filteredShelf(picked) { vm.open(it) }
@@ -1310,7 +1403,7 @@ private fun CountrySection(vm: MainViewModel) {
                 SectionTitle(
                     "País e idioma",
                     "Para listas com conteúdo de vários países. Escolha o que quer ver: o resto fica escondido. " +
-                        "O que não tem país indicado na lista aparece sempre.",
+                        "Dentro de Canais, Filmes e Séries ainda dá para escolher um só destes países pelo botão \"País\".",
                 )
             }
         }
