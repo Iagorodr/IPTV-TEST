@@ -91,6 +91,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CrashLog.install(this)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContent {
             AppTheme {
@@ -317,6 +318,26 @@ fun App(vm: MainViewModel = viewModel()) {
         // relógio do aparelho errado
         if (vm.clockReal != 0L && !vm.clockDismissed && playing == null && vm.recMode == null && !vm.blocked && account != null) {
             ClockDialog(vm)
+        }
+
+        // o app fechou sozinho da última vez: mostra o motivo (foto disso ajuda a corrigir)
+        val crash = vm.lastCrash
+        if (crash != null) {
+            androidx.compose.ui.window.Dialog(onDismissRequest = { vm.lastCrash = null }) {
+                Column(
+                    modifier = Modifier
+                        .width(720.dp)
+                        .background(Panel, androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                        .padding(20.dp),
+                ) {
+                    Text("O app fechou sozinho da última vez", color = TextMain, fontSize = 18.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                    Text("Tire uma foto desta tela e mande para o Claude: é o que ele precisa para corrigir.", color = Muted, fontSize = 13.sp)
+                    Spacer(Modifier.height(8.dp))
+                    Text(crash.take(1400), color = TextMain, fontSize = 11.sp, lineHeight = 14.sp)
+                    Spacer(Modifier.height(10.dp))
+                    TvButton(text = "Fechar", primary = true) { vm.lastCrash = null }
+                }
+            }
         }
 
         // filtro rápido de país da tela

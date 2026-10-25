@@ -189,8 +189,21 @@ object ChannelGroups {
         if (has(c, VARIEDADES) || has(c, listOf("variedades"))) {
             return if (has(n, MUSICA_NOME)) "Música e rádios" else "Variedades e reality"
         }
-        if (has(c, FILMES)) return "Filmes e séries"
-        return "Outros"
+        if (has(c, FILMES) || has(c, listOf("24 7", "cinema", "series", "shows", "netflix", "prime video", "hbo", "kino", "filmow"))) return "Filmes e séries"
+        if (has(c, listOf("kids", "kinder", "bambini", "enfant", "dzieci", "infantil", "barn", "cocuk"))) return "Infantil e anime"
+        if (has(c, listOf("radio", "muzyczne", "muziek"))) return "Música e rádios"
+        // pasta genérica ("BRAZIL HD", "GENERAL"): decide pelo nome do canal
+        return when {
+            has(n, listOf("sportv", "espn", "premiere", "tnt sports", "band sports", "combate", "dazn", "eleven", "sport", "esporte", "ufc", "nba", "f1")) -> "Esportes"
+            has(n, listOf("globo", "sbt", "record", "band", "redetv", "rede tv", "cultura", "tv brasil", "gazeta")) -> "TV aberta"
+            has(n, listOf("news", "noticia", "cnn", "jovem pan", "bandnews", "globonews", "record news")) -> "Notícias"
+            has(n, listOf("cartoon", "discovery kids", "disney jr", "nick", "gloob", "boomerang", "baby", "kids", "zoomoo", "cartoonito")) -> "Infantil e anime"
+            has(n, listOf("discovery", "nat geo", "history", "animal planet", "docu", "tlc", "investigation")) -> "Documentários"
+            has(n, listOf("hbo", "telecine", "megapix", "cinemax", "tcm", "warner", "universal", "sony", "axn", "amc", "fx", "paramount", "space", "studio", "cine", "filme", "serie", "a&e", "a e")) -> "Filmes e séries"
+            has(n, listOf("mtv", "music", "radio", "multishow", "bis")) -> "Música e rádios"
+            has(n, listOf("canal brasil", "off", "gnt", "viva", "e!", "comedy", "lifetime", "food", "hgtv", "arte 1", "reality")) -> "Variedades e reality"
+            else -> "Outros"
+        }
     }
 
     private val ESPORTES_FIRST = listOf("jogo", "evento", "sportv", "espn", "premiere", "tnt", "copa", "campeonato", "estaduais", "youtube", "f1")

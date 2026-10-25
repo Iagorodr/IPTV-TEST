@@ -1,1 +1,3 @@
-Legendas da internet: em Legendas, "Buscar legendas em outros idiomas" (OpenSubtitles). Ficam 7 dias no aparelho e somem sozinhas.
+Listas juntas: a lista brasileira (sem país nas categorias) agora conta como Brasil, e os canais dela voltam a aparecer.
+Canais de pastas genéricas vão para a aba certa pelo nome (Esportes, TV aberta, Infantil...).
+Mais memória para listas grandes, e se o app fechar sozinho ele mostra o motivo na próxima abertura.

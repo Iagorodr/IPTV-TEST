@@ -179,6 +179,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var loadMsg by mutableStateOf<String?>(null)
 
+    /** Motivo do último fechamento inesperado (mostrado uma vez). */
+    var lastCrash by mutableStateOf<String?>(null)
+
     /** Etapa atual (1..LOAD_STEPS) do carregamento do catálogo; 0 = parado. */
     var loadStep by mutableIntStateOf(0)
         private set
@@ -294,6 +297,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     init {
         Tmdb.init(app)
         try { Subs.cleanup(app) } catch (e: Exception) { }
+        lastCrash = CrashLog.take(app)
         AppTz.apply(user.tzId)
         favTeams = user.favTeams.toList()
         favLeagues = user.favLeagues.toList()

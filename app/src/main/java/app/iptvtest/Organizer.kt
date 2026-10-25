@@ -625,6 +625,31 @@ object Organizer {
 
     // ------------------------------------------------------------------
 
+    private fun listPrefix(id: String): String = if (id.startsWith("~")) id.substring(0, id.indexOf('~', 1).coerceAtLeast(1) + 1) else ""
+
+    private val BR_WORDS = listOf("filmes", "series", "canais", "abertos", "esportes", "infantil", "novelas", "globo", "sbt", "record", "lancamentos", "nacionais", "documentarios", "legendado", "dublado", "telecine", "premiere", "sportv", "reality", "variedades")
+    private val PT_WORDS = listOf("desporto", "generalistas", "criancas", "sport tv", "rtp", "tvi", "sic ")
+
+    /** Para cada lista (prefixo do id) quase sem país nas categorias: o país provável pelos nomes. */
+    private fun listDefaults(cats: List<Category>): Map<String, String> {
+        val by = HashMap<String, ArrayList<Category>>()
+        for (c in cats) by.getOrPut(listPrefix(c.id)) { ArrayList() }.add(c)
+        val out = HashMap<String, String>()
+        for ((k, l) in by) {
+            val tagged = l.count { Countries.tagOf(it.name) != null }
+            if (l.isEmpty() || tagged * 10 >= l.size * 3) continue
+            var br = 0
+            var pt = 0
+            for (c in l) {
+                val f = " " + fold(c.name) + " "
+                if (BR_WORDS.any { f.contains(it) }) br++
+                if (PT_WORDS.any { f.contains(it) }) pt++
+            }
+            if (br + pt >= 2) out[k] = if (pt > br) "PT" else "BR"
+        }
+        return out
+    }
+
     /** Avisa a tela de carregamento em que parte está. */
     @Volatile
     var phase: (String) -> Unit = {}
@@ -638,9 +663,17 @@ object Organizer {
         live: List<RawItem>,
     ): Catalog {
         fun nk(l: List<Category>): List<Category> = l.map { Category(it.id, plain(it.name)) }
-        val vodCats = nk(vodCats)
-        val serCats = nk(serCats)
-        val liveCats = nk(liveCats)
+        // listas juntas: uma lista sem país nas categorias (ex.: a brasileira) ganha o país dela,
+        // senão o filtro de País a esconderia por inteiro
+        val all = nk(vodCats) + nk(serCats) + nk(liveCats)
+        val def = listDefaults(all)
+        fun tagged(l: List<Category>): List<Category> = nk(l).map { c ->
+            val d = def[listPrefix(c.id)]
+            if (d != null && Countries.tagOf(c.name) == null) Category(c.id, d + "| " + c.name) else c
+        }
+        val vodCats = tagged(vodCats)
+        val serCats = tagged(serCats)
+        val liveCats = tagged(liveCats)
         phase("Organizando filmes")
         val movies = buildTitles(vodCats, vod, series = false)
         phase("Organizando séries")
