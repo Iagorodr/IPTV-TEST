@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter
  */
 object CatalogCache {
 
-    private const val FORMAT = 3
+    private const val FORMAT = 4
 
     fun accKey(acc: Account): String =
         if (acc.m3u.isEmpty()) {

@@ -225,6 +225,17 @@ fun App(vm: MainViewModel = viewModel()) {
         }
     }
 
+    // confere o relógio ao abrir e a cada 30 min (relógio errado quebra jogos, capas e gravações agendadas)
+    LaunchedEffect(account != null) {
+        if (account != null) {
+            delay(2_500L)
+            while (true) {
+                vm.checkClock()
+                delay(30L * 60_000L)
+            }
+        }
+    }
+
     // procura versão nova ao abrir e a cada 6 horas
     LaunchedEffect(account != null) {
         if (account != null) {
@@ -302,6 +313,14 @@ fun App(vm: MainViewModel = viewModel()) {
         if (note != null && !vm.blocked) {
             if (vm.noticeSecs > 0) NoticeBanner(vm, note.first, note.second, vm.noticeSecs) else NoticeDialog(vm, note.second)
         }
+
+        // relógio do aparelho errado
+        if (vm.clockReal != 0L && !vm.clockDismissed && playing == null && vm.recMode == null && !vm.blocked && account != null) {
+            ClockDialog(vm)
+        }
+
+        // escolha rápida de países (botão no topo)
+        if (vm.countryDialog && playing == null && catalog != null) CountryDialog(vm)
 
         // versão nova: pergunta uma vez por abertura, e nunca por cima do player ou da tela preta
         val upd = vm.update

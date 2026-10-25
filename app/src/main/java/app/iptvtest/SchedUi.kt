@@ -331,3 +331,111 @@ fun UpdateDialog(vm: MainViewModel, u: UpdateInfo) {
         }
     }
 }
+
+/** Escolha rápida de países/idiomas: marque os que quer ver (ou "Mostrar tudo") e toque em Aplicar. */
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+fun CountryDialog(vm: MainViewModel) {
+    val stats = remember(vm.catalog) { vm.countryStats() }
+    var sel by remember { mutableStateOf(vm.user.countryFilter.toSet()) }
+    val first = remember { FocusRequester() }
+    LaunchedEffect(Unit) {
+        delay(80)
+        try {
+            first.requestFocus()
+        } catch (e: Exception) {
+            // o botão ainda não estava na tela
+        }
+    }
+    Dialog(
+        onDismissRequest = { vm.countryDialog = false },
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Column(
+            modifier = Modifier
+                .width(820.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Panel)
+                .border(1.dp, PanelAlt, RoundedCornerShape(16.dp))
+                .padding(24.dp),
+        ) {
+            Text("Que países e idiomas você quer ver?", color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "Vale para filmes, séries e canais. Dica: escolha 2 ou 3 e a lista fica bem mais leve. O que não tem país indicado aparece sempre.",
+                color = Muted,
+                fontSize = 12.sp,
+            )
+            Spacer(Modifier.height(14.dp))
+            androidx.compose.foundation.layout.FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                ChipItem(text = "Mostrar tudo", selected = sel.isEmpty(), focusRequester = first) { sel = emptySet() }
+                for ((code, n) in stats.entries.sortedByDescending { it.value.first + it.value.second }) {
+                    val on = sel.contains(code)
+                    ChipItem(
+                        text = (if (on) "✓ " else "") + Countries.label(code) + " · " + n.first + " títulos, " + n.second + " canais",
+                        selected = on,
+                    ) {
+                        sel = if (on) sel - code else sel + code
+                    }
+                }
+            }
+            Spacer(Modifier.height(18.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                TvButton(text = "Aplicar", primary = true) {
+                    vm.countryDialog = false
+                    vm.setCountryFilter(sel)
+                }
+                TvButton(text = "Cancelar") { vm.countryDialog = false }
+            }
+        }
+    }
+}
+
+/** Aviso: o relógio da TV/box está errado. */
+@Composable
+fun ClockDialog(vm: MainViewModel) {
+    val tz = remember { TimeZone.getDefault() }
+    val real = vm.clockReal
+    val now = System.currentTimeMillis()
+    val first = remember { FocusRequester() }
+    LaunchedEffect(Unit) {
+        delay(80)
+        try {
+            first.requestFocus()
+        } catch (e: Exception) {
+            // o botão ainda não estava na tela
+        }
+    }
+    fun full(ms: Long): String = SportsTime.shortDate(ms, tz) + "/" + java.util.Calendar.getInstance(tz).also { it.timeInMillis = ms }.get(java.util.Calendar.YEAR) +
+        " " + SportsTime.clock(ms, tz)
+    Dialog(
+        onDismissRequest = { vm.clockDismissed = true },
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Column(
+            modifier = Modifier
+                .width(640.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Panel)
+                .border(1.dp, Warn, RoundedCornerShape(16.dp))
+                .padding(26.dp),
+        ) {
+            Text("O relógio deste aparelho está errado", color = Warn, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(10.dp))
+            Text("O aparelho mostra: " + full(now), color = TextMain, fontSize = 15.sp)
+            Text("Hora certa: " + full(real), color = Good, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(10.dp))
+            Text(
+                "Com a data errada, jogos, capas, atualização do app e gravações agendadas deixam de funcionar. " +
+                    "Nas configurações da TV ou da box, abra Data e hora e ligue \"Data e hora automáticas\" (e confira o fuso). Depois reabra o app.",
+                color = TextMain,
+                fontSize = 13.sp,
+            )
+            Spacer(Modifier.height(16.dp))
+            TvButton(text = "Entendi", primary = true, focusRequester = first) { vm.clockDismissed = true }
+        }
+    }
+}

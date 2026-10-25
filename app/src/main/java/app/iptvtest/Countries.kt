@@ -40,6 +40,12 @@ object Countries {
 
     fun label(code: String): String = NAMES[code] ?: code
 
+    /** A sigla é de um país/idioma conhecido (inclui apelidos como GB, USA, BRA)? */
+    fun isCodeToken(t: String): Boolean {
+        val u = t.uppercase(Locale.ROOT)
+        return NAMES.containsKey(u) || ALIAS.containsKey(u)
+    }
+
     /** O país/idioma que o nome da categoria indica, ou null se não indicar nenhum. */
     fun tagOf(rawName: String): String? {
         val m = PREFIX.find(rawName)

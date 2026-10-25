@@ -477,6 +477,16 @@ fun TopNav(vm: MainViewModel) {
             CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(12.dp))
         }
+        if (vm.countryStats().size > 1) {
+            val picked = vm.user.countryFilter
+            val label = when {
+                picked.isEmpty() -> "País: Todos"
+                picked.size <= 3 -> "País: " + picked.joinToString(" · ")
+                else -> "País: " + picked.size + " escolhidos"
+            }
+            ChipItem(text = label, selected = picked.isNotEmpty()) { vm.countryDialog = true }
+            Spacer(Modifier.width(8.dp))
+        }
         KidsSwitch(vm.user.kidsMode) { vm.setKids(!vm.user.kidsMode) }
         Spacer(Modifier.width(8.dp))
         NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }

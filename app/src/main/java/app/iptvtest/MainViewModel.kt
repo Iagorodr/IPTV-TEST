@@ -3,6 +3,7 @@ package app.iptvtest
 import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -677,6 +678,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /** Escolhe os países/idiomas que aparecem (vazio = todos) e refaz as telas. */
+    /** Janela rápida de países (botão no topo). */
+    var countryDialog by mutableStateOf(false)
+
     fun setCountryFilter(sel: Set<String>) {
         user.setCountryFilter(sel)
         catalog?.let { c -> viewModelScope.launch { applyCatalog(c) } }
@@ -1144,6 +1148,21 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     /** Gravação onde o foco estava na lista; ao voltar para a aba o foco retorna para ela. */
     var recFocusId by mutableStateOf<String?>(null)
+
+    // ---- relógio errado
+    /** Hora certa (ms) quando o relógio do aparelho está errado por mais de 10 min; 0 = tudo certo ou não deu para conferir. */
+    var clockReal by mutableLongStateOf(0L)
+        private set
+    var clockDismissed by mutableStateOf(false)
+
+    fun checkClock() {
+        viewModelScope.launch {
+            val real = ClockCheck.realTime() ?: return@launch
+            val off = Math.abs(real - System.currentTimeMillis())
+            clockReal = if (off > 10 * 60_000L) real else 0L
+            if (clockReal == 0L) clockDismissed = false
+        }
+    }
 
     // ---- atualização dentro do app
     var update by mutableStateOf<UpdateInfo?>(null)

@@ -46,7 +46,7 @@ object Organizer {
     // Nome do título: tags (L) legendado, (4K), (CAM)
     // ------------------------------------------------------------------
 
-    private class Parsed(val base: String, val leg: Boolean, val k4: Boolean, val cam: Boolean)
+    private class Parsed(val base: String, val leg: Boolean, val k4: Boolean, val cam: Boolean, val year: String = "")
 
     private val TAG_PRE = Regex("^\\((L|4K|CAM)\\)\\s*", RegexOption.IGNORE_CASE)
     private val TAG_SUF = Regex("\\s*\\((L|4K|CAM)\\)\\s*$", RegexOption.IGNORE_CASE)
@@ -75,8 +75,43 @@ object Organizer {
                 changed = true
             }
         }
-        return Parsed(n, leg, k4, cam)
+        // listas de vários países: "FR - Título (2026) (SE)" vira "Título"; a sigla do país já vem da categoria
+        var yr = ""
+        for (round in 0 until 3) {
+            val before = n
+            val mp = LEAD_PREFIX.find(n)
+            if (mp != null) {
+                val tok = mp.groupValues[1]
+                if (Countries.isCodeToken(tok) || PLATFORM_CODES.contains(tok.uppercase(Locale.ROOT))) {
+                    val rest = n.substring(mp.range.last + 1).trim()
+                    if (rest.length >= 2) n = rest
+                }
+            }
+            val my = TRAIL_YEAR.find(n)
+            if (my != null) {
+                val rest = n.substring(0, my.range.first).trim()
+                if (rest.length >= 2) {
+                    if (yr.isEmpty()) yr = my.groupValues[1]
+                    n = rest
+                }
+            }
+            val mc = TRAIL_CODE.find(n)
+            if (mc != null) {
+                val rest = n.substring(0, mc.range.first).trim()
+                if (rest.length >= 2) n = rest
+            }
+            if (n == before) break
+        }
+        return Parsed(n, leg, k4, cam, yr)
     }
+
+    private val LEAD_PREFIX = Regex("^([A-Z][A-Z0-9+]{1,3})\\s*[-|:]\\s+")
+    private val TRAIL_YEAR = Regex("\\s*[(\\[]((?:19|20)\\d\\d)[)\\]]\\s*$")
+    private val TRAIL_CODE = Regex("\\s*[(\\[]([A-Z]{2,3})[)\\]]\\s*$")
+    private val PLATFORM_CODES = setOf(
+        "NF", "NFX", "AMZ", "APV", "ATV", "ATP", "DSNP", "DNP", "DSN", "HBO", "HMX", "MAX", "PMT", "PRM", "HLU", "HULU",
+        "STZ", "SKY", "CRU", "GPL", "CNP", "TVP", "PCK", "UNI", "DIS", "YT", "SHO", "ROK", "TUB", "PLT", "CRA",
+    )
 
     // ------------------------------------------------------------------
     // Categorias do provedor -> gênero / plataforma
@@ -292,7 +327,7 @@ object Organizer {
             val parsed = parseName(raw.name)
             val keyText = fold(parsed.base)
             if (keyText.isEmpty()) continue
-            val y = raw.year.trim()
+            val y = raw.year.trim().ifEmpty { parsed.year }
             val year = if (y.length == 4 && y.all { c -> c.isDigit() }) y else ""
             val key = (if (series) "s|" else "m|") + keyText + "|" + year
             if (series && raw.genre.isNotEmpty()) genres.addAll(genreFromText(raw.genre))

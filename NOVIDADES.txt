@@ -1,4 +1,3 @@
-Capas, imagens grandes e sinopses completas vindas do TMDB.
-Gravações agendadas (pelo jogo ou manual), com escolha de qualidade.
-Atualização dentro do próprio app.
-Capas e sinopses do TMDB já ativas.
+Botão rápido de País no topo (escolha até 3 países ou veja tudo).
+Nomes de filmes e séries mais limpos (sem FR -, NF -, (SE)...).
+Aviso quando o relógio da TV está errado.
