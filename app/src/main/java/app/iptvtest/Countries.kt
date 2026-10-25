@@ -46,6 +46,16 @@ object Countries {
         return NAMES.containsKey(u) || ALIAS.containsKey(u)
     }
 
+    private val NAME_PREFIX = Regex("""^[\s|\[({*•#>·]*([A-Za-z]{2,4})\s*(?:[:|\])\-])""")
+
+    /** País indicado só pelo começo do nome de um canal ("FR: Eurosport", "[PT] Sport TV", "BR| Globo"), ou null. */
+    fun prefixTag(channelName: String): String? {
+        val m = NAME_PREFIX.find(channelName) ?: return null
+        val c = m.groupValues[1].uppercase(Locale.ROOT)
+        val canon = ALIAS[c] ?: c
+        return if (NAMES.containsKey(canon)) canon else null
+    }
+
     /** O país/idioma que o nome da categoria indica, ou null se não indicar nenhum. */
     fun tagOf(rawName: String): String? {
         val m = PREFIX.find(rawName)
