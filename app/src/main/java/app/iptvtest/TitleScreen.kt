@@ -326,7 +326,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                             item(key = "l-all") {
                                 ChipItem(text = "Idioma: todos", selected = langEff.isEmpty()) { lang = ""; copyIdx = 0 }
                             }
-                            items(langOptions, key = { "l|$it" }) { cc ->
+                            items(langOptions.distinctBy { "l|$it" }, key = { "l|$it" }) { cc ->
                                 ChipItem(text = if (cc.isEmpty()) "Outros" else Countries.label(cc), selected = langEff == cc) {
                                     lang = cc
                                     copyIdx = 0
@@ -372,7 +372,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                     Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 4.dp)) {
                         if (seasons.size > 1) {
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 4.dp)) {
-                                items(seasons, key = { it }) { s ->
+                                items(seasons.distinctBy { it }, key = { it }) { s ->
                                     ChipItem(text = if (s == 0) "Especiais" else "Temporada $s", selected = s == seasonSel) { season = s }
                                 }
                             }
@@ -398,7 +398,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
-                            items(seasonEps, key = { "ep|" + it.id }) { ep ->
+                            items(seasonEps.distinctBy { "ep|" + it.id }, key = { "ep|" + it.id }) { ep ->
                                 val here = resEp != null && resEp.id == ep.id
                                 val frac = if (here && resume != null && resume.durMs > 0L) resume.posMs.toFloat() / resume.durMs.toFloat() else null
                                 EpisodeCard(ep = ep, resumeHere = here, progress = frac) {

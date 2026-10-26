@@ -368,7 +368,7 @@ fun GamesStrip(vm: MainViewModel, now: Long) {
                         }
                     }
                 }
-                items(shown, key = { it.game.key }) { sg ->
+                items(shown.distinctBy { it.game.key }, key = { it.game.key }) { sg ->
                     StripGameItem(sg, now, tz, onClick = { vm.showGame(sg.game) })
                 }
                 items(SportKind.values().toList(), key = { "sp|" + it.name }) { k ->
@@ -660,7 +660,7 @@ fun AllGamesScreen(vm: MainViewModel) {
                 val label = SportsTime.dayLabel(day * SportsTime.DAY + SportsTime.DAY / 2 - tz.rawOffset, now, tz)
                 Text(label, color = Accent, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 6.dp))
             }
-            gridItems(list, key = { "g|" + it.game.key }) { sg ->
+            gridItems(list.distinctBy { "g|" + it.game.key }, key = { "g|" + it.game.key }) { sg ->
                 GameCard(
                     game = sg.game,
                     now = now,
@@ -705,7 +705,7 @@ fun GamesTab(vm: MainViewModel) {
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(offsets, key = { it }) { o ->
+            items(offsets.distinctBy { it }, key = { it }) { o ->
                 val label = if (o == 0) "Hoje" else SportsTime.dayLabel(now + o * SportsTime.DAY, now, tz)
                 ChipItem(text = label + " (" + perDay[o + 1].size + ")", selected = o == offset) { offset = o }
             }
@@ -740,7 +740,7 @@ fun GamesTab(vm: MainViewModel) {
             verticalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier.fillMaxWidth().weight(1f),
         ) {
-            gridItems(list, key = { "gd|" + it.game.key }) { sg ->
+            gridItems(list.distinctBy { "gd|" + it.game.key }, key = { "gd|" + it.game.key }) { sg ->
                 GameCard(
                     game = sg.game,
                     now = now,
@@ -853,7 +853,7 @@ private fun CountryTeams(vm: MainViewModel, country: Country, onNotice: (String?
         contentPadding = PaddingValues(horizontal = 48.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        items(country.leagues, key = { it.slug }) { lg ->
+        items(country.leagues.distinctBy { it.slug }, key = { it.slug }) { lg ->
             ChipItem(text = lg.label, selected = tab == lg.slug) { tab = lg.slug }
         }
         item(key = NATIONAL) {
@@ -877,7 +877,7 @@ private fun CountryTeams(vm: MainViewModel, country: Country, onNotice: (String?
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxSize(),
     ) {
-        gridItems(list, key = { it.id }) { info ->
+        gridItems(list.distinctBy { it.id }, key = { it.id }) { info ->
             val national = tab == NATIONAL
             TeamCard(
                 info = info,
@@ -936,7 +936,7 @@ private fun LeaguePicker(vm: MainViewModel, onNotice: (String?) -> Unit) {
             item(key = "h|$group", span = { GridItemSpan(maxLineSpan) }) {
                 Text(group, color = Accent, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 6.dp))
             }
-            gridItems(slugs, key = { "l|$it" }) { slug ->
+            gridItems(slugs.distinctBy { "l|$it" }, key = { "l|$it" }) { slug ->
                 LeagueCard(
                     label = SportsData.leagueLabel(slug, slug),
                     selected = vm.isFavLeague(slug),
@@ -1005,10 +1005,10 @@ fun TeamPickerScreen(vm: MainViewModel) {
                 contentPadding = PaddingValues(horizontal = 48.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                items(chosen, key = { "t|" + it.id }) { t ->
+                items(chosen.distinctBy { "t|" + it.id }, key = { "t|" + it.id }) { t ->
                     ChipItem(text = "★ " + t.short + "  ✕", selected = true) { notice = vm.toggleFavTeam(t) }
                 }
-                items(leagues, key = { "l|$it" }) { slug ->
+                items(leagues.distinctBy { "l|$it" }, key = { "l|$it" }) { slug ->
                     ChipItem(text = SportsData.leagueLabel(slug, slug) + "  ✕", selected = true) { notice = vm.toggleFavLeague(slug) }
                 }
             }
@@ -1029,7 +1029,7 @@ fun TeamPickerScreen(vm: MainViewModel) {
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                gridItems(SportsData.countries, key = { it.code }) { c ->
+                gridItems(SportsData.countries.distinctBy { it.code }, key = { it.code }) { c ->
                     CountryCard(
                         c = c,
                         focusId = "ctry|" + c.code,
@@ -1087,7 +1087,7 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
             }
         }
         if (req.highlight.isNotEmpty()) {
-            gridItems(req.highlight, key = { "hl|" + it.key }) { ch ->
+            gridItems(req.highlight.distinctBy { "hl|" + it.key }, key = { "hl|" + it.key }) { ch ->
                 ChannelTile(
                     ch = ch,
                     stability = vm.channelStability(ch),
@@ -1111,7 +1111,7 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
                     }
                 }
             }
-            gridItems(req.extra, key = { "ex|" + it.key }) { ch ->
+            gridItems(req.extra.distinctBy { "ex|" + it.key }, key = { "ex|" + it.key }) { ch ->
                 ChannelTile(
                     ch = ch,
                     stability = vm.channelStability(ch),
@@ -1140,13 +1140,13 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
                     )
                     Spacer(Modifier.height(6.dp))
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        items(cats, key = { it }) { name ->
+                        items(cats.distinctBy { it }, key = { it }) { name ->
                             ChipItem(text = name, selected = selected == name) { selected = name }
                         }
                     }
                 }
             }
-            gridItems(list, key = { "cat|" + it.key }) { ch ->
+            gridItems(list.distinctBy { "cat|" + it.key }, key = { "cat|" + it.key }) { ch ->
                 ChannelTile(
                     ch = ch,
                     stability = vm.channelStability(ch),

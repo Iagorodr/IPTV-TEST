@@ -132,7 +132,7 @@ fun RecordingsTab(vm: MainViewModel) {
                     )
                 }
             }
-            items(vm.scheds.filter { it.state != "started" }, key = { "s" + it.id }) { sc ->
+            items(vm.scheds.filter { it.state != "started" }.distinctBy { "s" + it.id }, key = { "s" + it.id }) { sc ->
                 val missed = sc.state == "missed"
                 val asking = confirmSched == sc.id
                 Row(
@@ -172,7 +172,7 @@ fun RecordingsTab(vm: MainViewModel) {
                     }
                 }
             }
-            items(vm.recs, key = { it.id }) { r ->
+            items(vm.recs.distinctBy { it.id }, key = { it.id }) { r ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

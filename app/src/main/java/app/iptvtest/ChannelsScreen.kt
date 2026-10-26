@@ -124,7 +124,7 @@ fun ChannelsTab(vm: MainViewModel) {
                             ChipItem(text = "★ Favoritos", selected = sel == FAVS) { selected = FAVS }
                         }
                     }
-                    items(groups, key = { it.first }) { g ->
+                    items(groups.distinctBy { it.first }, key = { it.first }) { g ->
                         ChipItem(text = g.first, selected = sel == g.first) { selected = g.first }
                     }
                     item(key = K4) {
@@ -141,7 +141,7 @@ fun ChannelsTab(vm: MainViewModel) {
                         contentPadding = PaddingValues(top = 6.dp, bottom = 24.dp),
                         verticalArrangement = Arrangement.spacedBy(3.dp),
                     ) {
-                        items(list, key = { it.key }) { ch ->
+                        items(list.distinctBy { it.key }, key = { it.key }) { ch ->
                             ChannelRow(
                                 ch = ch,
                                 stability = vm.channelStability(ch),
@@ -254,7 +254,7 @@ private fun PreviewInfo(
         if (ch.isBrand) {
             Spacer(Modifier.height(10.dp))
             ChipsLine("PRAÇA") {
-                items(ch.variants, key = { it.channel.key }) { v ->
+                items(ch.variants.distinctBy { it.channel.key }, key = { it.channel.key }) { v ->
                     ChipItem(text = v.label, selected = v.channel.key == real.key) { vm.chooseVariant(ch, v) }
                 }
             }

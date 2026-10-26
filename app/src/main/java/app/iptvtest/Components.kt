@@ -400,7 +400,7 @@ fun ShelfRow(
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(shelf.row, key = { it.key }) { t ->
+            items(shelf.row.distinctBy { it.key }, key = { it.key }) { t ->
                 TitlePoster(
                     title = t,
                     focusId = shelf.name + "|" + t.key,
@@ -442,7 +442,7 @@ fun ContinueRow(
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(entries, key = { it.first.key }) { pair ->
+            items(entries.distinctBy { it.first.key }, key = { it.first.key }) { pair ->
                 val t = pair.first
                 val e = pair.second
                 val frac = if (e.durMs > 0L) e.posMs.toFloat() / e.durMs.toFloat() else 0f

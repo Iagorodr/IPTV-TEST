@@ -1182,6 +1182,14 @@ fun PlayerScreen(
             }
         } else if (which == "subsearch" && req.subQuery != null) {
             val q = req.subQuery
+            LaunchedEffect(subLang, subResults) {
+                delay(80)
+                try {
+                    panelFocus.requestFocus()
+                } catch (e: Exception) {
+                    // ainda montando a lista
+                }
+            }
             Column(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
@@ -1219,7 +1227,6 @@ fun PlayerScreen(
                                             subMsg = e.message ?: "Não consegui buscar agora."
                                             subResults = emptyList()
                                         }
-                                        try { panelFocus.requestFocus() } catch (e: Exception) { }
                                     }
                                 },
                             ) { focused ->
@@ -1228,11 +1235,12 @@ fun PlayerScreen(
                                 }
                             }
                         }
-                    } else if (res != null) {
+                    } else {
+                        // o "voltar" existe sempre (também enquanto procura): o selecionador nunca fica sem lugar
                         item {
                             FocusBox(
                                 modifier = Modifier.fillMaxWidth(),
-                                focusRequester = if (res.isEmpty()) panelFocus else null,
+                                focusRequester = if (res.isNullOrEmpty()) panelFocus else null,
                                 onClick = {
                                     subLang = null
                                     subResults = null
@@ -1244,7 +1252,7 @@ fun PlayerScreen(
                                 }
                             }
                         }
-                        itemsIndexed(res) { idx, r ->
+                        itemsIndexed(res ?: emptyList()) { idx, r ->
                             FocusBox(
                                 modifier = Modifier.fillMaxWidth(),
                                 focusRequester = if (idx == 0) panelFocus else null,

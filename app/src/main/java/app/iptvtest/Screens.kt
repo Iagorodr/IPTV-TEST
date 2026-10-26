@@ -392,31 +392,49 @@ fun LocalCountryChip(vm: MainViewModel, tab: Tab) {
     ChipItem(text = vm.localLabel(tab) + " ▾", selected = cc.isNotEmpty()) { vm.localPickFor = tab }
 }
 
-/** Logo provisória: monograma "i" num quadradinho com o degradê da marca + "IAGO" fino. */
+/** Logo provisória: um sol nascendo atrás de uma tela (o mesmo sol do fundo do app), nas cores da marca. */
 @Composable
-fun AppLogo() {
+fun AppLogoMark(sizeDp: Int = 32) {
+    androidx.compose.foundation.Canvas(modifier = Modifier.size(sizeDp.dp)) {
+        val w = size.minDimension
+        val r = w * 0.24f
+        // fundo: vinho -> vermelho da marca
+        drawRoundRect(
+            brush = androidx.compose.ui.graphics.Brush.linearGradient(listOf(Wine, Red), start = androidx.compose.ui.geometry.Offset(0f, 0f), end = androidx.compose.ui.geometry.Offset(w, w)),
+            cornerRadius = androidx.compose.ui.geometry.CornerRadius(r, r),
+        )
+        // sol (metade de cima de um círculo) apoiado no horizonte
+        val horizon = w * 0.66f
+        drawArc(
+            brush = androidx.compose.ui.graphics.Brush.verticalGradient(listOf(TextMain, Accent), startY = w * 0.28f, endY = horizon),
+            startAngle = 180f, sweepAngle = 180f, useCenter = true,
+            topLeft = androidx.compose.ui.geometry.Offset(w * 0.24f, w * 0.30f),
+            size = androidx.compose.ui.geometry.Size(w * 0.52f, w * 0.72f),
+        )
+        // linhas do horizonte (lembram as linhas de uma tela)
+        drawLine(Accent, androidx.compose.ui.geometry.Offset(w * 0.16f, horizon + w * 0.04f), androidx.compose.ui.geometry.Offset(w * 0.84f, horizon + w * 0.04f), strokeWidth = w * 0.07f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+        drawLine(Accent.copy(alpha = 0.55f), androidx.compose.ui.geometry.Offset(w * 0.30f, horizon + w * 0.16f), androidx.compose.ui.geometry.Offset(w * 0.70f, horizon + w * 0.16f), strokeWidth = w * 0.06f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+    }
+}
+
+/** Logo + "Olá, nome" (nome escolhido na primeira abertura; nomes longos são cortados com "..."). */
+@Composable
+fun AppLogo(name: String = "") {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(30.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Accent, Color(0xFF7B5CFF)))),
-            contentAlignment = Alignment.Center,
-        ) {
-            androidx.compose.foundation.Canvas(modifier = Modifier.size(18.dp)) {
-                val w = size.minDimension
-                // um "play" arredondado dentro do quadrado
-                val path = androidx.compose.ui.graphics.Path().apply {
-                    moveTo(w * 0.30f, w * 0.18f)
-                    lineTo(w * 0.84f, w * 0.50f)
-                    lineTo(w * 0.30f, w * 0.82f)
-                    close()
-                }
-                drawPath(path, Color.White)
-            }
+        AppLogoMark(32)
+        val n = name.trim().split(' ').firstOrNull { it.isNotEmpty() } ?: ""
+        if (n.isNotEmpty()) {
+            Spacer(Modifier.width(10.dp))
+            Text(
+                "Olá, $n",
+                color = TextMain,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                modifier = Modifier.widthIn(max = 120.dp),
+            )
         }
-        Spacer(Modifier.width(8.dp))
-        Text("IAGO", color = TextMain, fontSize = 17.sp, fontWeight = FontWeight.Black, letterSpacing = 3.sp, maxLines = 1)
     }
 }
 
@@ -571,7 +589,7 @@ fun TopNav(vm: MainViewModel) {
             .padding(start = 40.dp, end = 44.dp, top = 22.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AppLogo()
+        AppLogo(vm.user.profileName)
         Spacer(Modifier.width(18.dp))
         NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
         if (!vm.user.kidsMode) NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
@@ -830,7 +848,7 @@ private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: Strin
                 ChipItem(text = CONTINUE_TAB, selected = selected == CONTINUE_TAB) { onSelect(CONTINUE_TAB) }
             }
         }
-        items(shelves.take(16), key = { "chip|" + it.name }) { sh ->
+        items(shelves.take(16).distinctBy { "chip|" + it.name }, key = { "chip|" + it.name }) { sh ->
             ChipItem(text = sh.name, selected = selected == sh.name) { onSelect(sh.name) }
         }
     }
@@ -855,7 +873,7 @@ private fun LazyListScope.filteredShelf(shelf: Shelf, onOpen: (Title) -> Unit) {
                 contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                items(row, key = { it.key }) { t ->
+                items(row.distinctBy { it.key }, key = { it.key }) { t ->
                     TitlePoster(
                         title = t,
                         focusId = "flt|" + shelf.name + "|" + t.key,
@@ -926,7 +944,7 @@ fun HomeTab(vm: MainViewModel) {
                                 contentPadding = PaddingValues(horizontal = 40.dp, vertical = 6.dp),
                                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                             ) {
-                                items(favs, key = { it.key }) { c ->
+                                items(favs.distinctBy { it.key }, key = { it.key }) { c ->
                                     ChannelTile(
                                         ch = c,
                                         stability = vm.channelStability(c),
@@ -944,7 +962,7 @@ fun HomeTab(vm: MainViewModel) {
                         ShelfRow(mineShelf, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(mineShelf) })
                     }
                 }
-                items(shelves, key = { it.name }) { s ->
+                items(shelves.distinctBy { it.name }, key = { it.name }) { s ->
                     ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
                 }
             }
@@ -996,7 +1014,7 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>, tab: Ta
                 if (picked != null) {
                     filteredShelf(picked) { vm.open(it) }
                 } else {
-                    items(shelves, key = { it.name }) { s ->
+                    items(shelves.distinctBy { it.name }, key = { it.name }) { s ->
                         ShelfRow(s, onOpen = { vm.open(it) }, onSeeAll = { vm.openGrid(s) })
                     }
                 }
@@ -1031,7 +1049,7 @@ fun GridScreen(vm: MainViewModel, shelf: Shelf) {
             verticalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier.fillMaxSize(),
         ) {
-            gridItems(shelf.all, key = { it.key }) { t ->
+            gridItems(shelf.all.distinctBy { it.key }, key = { it.key }) { t ->
                 TitlePoster(
                     title = t,
                     focusId = "grid|" + shelf.name + "|" + t.key,
@@ -1092,7 +1110,7 @@ fun SearchTab(vm: MainViewModel) {
                 contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                items(chans, key = { it.key }) { c ->
+                items(chans.distinctBy { it.key }, key = { it.key }) { c ->
                     ChannelTile(
                         ch = c,
                         stability = vm.channelStability(c),
@@ -1118,7 +1136,7 @@ fun SearchTab(vm: MainViewModel) {
                 verticalArrangement = Arrangement.spacedBy(14.dp),
                 modifier = Modifier.weight(1f).fillMaxWidth(),
             ) {
-                gridItems(titles, key = { it.key }) { t ->
+                gridItems(titles.distinctBy { it.key }, key = { it.key }) { t ->
                     TitlePoster(
                         title = t,
                         focusId = "search|" + t.key,
@@ -1180,7 +1198,7 @@ fun FavoritesTab(vm: MainViewModel) {
                             contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
                             horizontalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
-                            items(favs, key = { it.key }) { c ->
+                            items(favs.distinctBy { it.key }, key = { it.key }) { c ->
                                 ChannelTile(
                                     ch = c,
                                     stability = vm.channelStability(c),
@@ -1218,7 +1236,7 @@ private fun TimeZoneSettings(vm: MainViewModel) {
         )
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            items(AppTz.OPTIONS, key = { it.first }) { o ->
+            items(AppTz.OPTIONS.distinctBy { it.first }, key = { it.first }) { o ->
                 ChipItem(text = o.second, selected = chosen == o.first) { vm.setTimeZone(o.first) }
             }
         }
@@ -1249,7 +1267,7 @@ private fun BroadcastSettings(vm: MainViewModel) {
             item(key = "auto") {
                 ChipItem(text = "Automático", selected = manual.isEmpty()) { vm.setBroadcastCountries(emptyList()) }
             }
-            items(BroadcastStore.COUNTRIES, key = { it.first }) { c ->
+            items(BroadcastStore.COUNTRIES.distinctBy { it.first }, key = { it.first }) { c ->
                 val on = manual.contains(c.first)
                 ChipItem(text = (if (on) "✓ " else "") + c.second, selected = on) {
                     val next = if (on) manual - c.first else if (manual.size >= 3) manual else manual + c.first
