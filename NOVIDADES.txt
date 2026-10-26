@@ -1,3 +1,3 @@
-Listas juntas: a lista brasileira (sem país nas categorias) agora conta como Brasil, e os canais dela voltam a aparecer.
-Canais de pastas genéricas vão para a aba certa pelo nome (Esportes, TV aberta, Infantil...).
-Mais memória para listas grandes, e se o app fechar sozinho ele mostra o motivo na próxima abertura.
+Logo nova (sol no horizonte) e "Olá, seu nome" no topo.
+Busca de legendas: o selecionador não se perde mais.
+Correção de fechamentos inesperados com listas juntas.
