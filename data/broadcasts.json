@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22",
+  "updated": "2026-10-29",
   "country": "BR",
   "tz": "America/Sao_Paulo",
   "note": "Onde costuma passar no Brasil. Pesquisado em fontes públicas e pode estar desatualizado: contratos mudam. Atualizado toda semana; a seção games traz jogo a jogo dos próximos 14 dias.",
@@ -180,424 +180,89 @@
   },
   "games": [
     {
-      "d": "2026-10-21",
-      "comp": "conmebol.libertadores",
-      "h": "Palmeiras",
-      "a": "Fluminense",
-      "tv": [
-        "Globo",
-        "GE TV",
-        "Paramount+"
-      ],
-      "ok": 1,
-      "obs": "Semifinal, volta",
-      "src": "terra.com.br"
-    },
-    {
-      "d": "2026-10-21",
-      "comp": "conmebol.sudamericana",
-      "h": "Montevideo City Torque",
-      "a": "Atlético-MG",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Semifinal, volta",
-      "src": "tribunadejundiai.com.br"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "conmebol.libertadores",
-      "h": "Flamengo",
-      "a": "Estudiantes",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Semifinal, volta; ESPN confirmada, Disney+ simulcast provável",
-      "src": "terra.com.br"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Juventus",
-      "a": "Rennes",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Dinamo Zagreb",
-      "a": "NEC Nijmegen",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "OFI Creta",
-      "a": "Bayer Leverkusen",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Sturm Graz",
-      "a": "Olympique de Marselha",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Lech Poznań",
-      "a": "Sunderland",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Bournemouth",
-      "a": "Milan",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Lillestrøm",
-      "a": "Real Sociedad",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Celtic",
-      "a": "Celta de Vigo",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Jagiellonia",
-      "a": "Anderlecht",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Beşiktaş",
-      "a": "Crystal Palace",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Hoffenheim",
-      "a": "Lyon",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Olympiacos",
-      "a": "Sparta Praga",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Kairat Almaty",
-      "a": "Panathinaikos",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Jablonec",
-      "a": "Brighton",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Getafe",
-      "a": "Lugano",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Estrela Vermelha",
-      "a": "Copenhagen",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Trabzonspor",
-      "a": "Hearts",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Monaco",
-      "a": "Freiburg",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Ajax",
-      "a": "Atalanta",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa.conf",
-      "h": "Braga",
-      "a": "Gent",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "Streaming gratuito no YouTube",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-22",
-      "comp": "uefa.europa",
-      "h": "Omonia Nicosia",
-      "a": "Benfica",
-      "tv": [
-        "CNN Esportes",
-        "Itatiaia Esporte"
-      ],
-      "ok": 1,
-      "obs": "Só no YouTube (CNN Esportes e Itatiaia); não passa na CazéTV",
-      "src": "auvaromaia.com"
-    },
-    {
-      "d": "2026-10-23",
+      "d": "2026-10-29",
       "comp": "bra.1",
-      "h": "Cruzeiro",
-      "a": "Remo",
+      "h": "Atlético-MG",
+      "a": "Cruzeiro",
       "tv": [
-        "SporTV",
-        "Premiere"
-      ],
-      "ok": 1,
-      "src": "mktesportivo.com"
-    },
-    {
-      "d": "2026-10-24",
-      "comp": "bra.1",
-      "h": "Mirassol",
-      "a": "São Paulo",
-      "tv": [
-        "Globo",
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "Globo sujeita à programação regional",
-      "src": "maquinadoesporte.com.br"
-    },
-    {
-      "d": "2026-10-24",
-      "comp": "bra.1",
-      "h": "Internacional",
-      "a": "Botafogo",
-      "tv": [
-        "Globo",
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "Globo sujeita à programação regional",
-      "src": "maquinadoesporte.com.br"
-    },
-    {
-      "d": "2026-10-24",
-      "comp": "bra.1",
-      "h": "Vitória",
-      "a": "Athletico-PR",
-      "tv": [
-        "GE TV",
-        "Globo",
-        "Premiere"
+        "Premiere",
+        "SporTV"
       ],
       "ok": 0,
-      "obs": "Fontes divergem: uma cita exclusivo da GE TV, outra Globo e Premiere",
-      "src": "maquinadoesporte.com.br"
+      "obs": "Fontes divergem: O Tempo cita SporTV e YouTube do O Tempo; outra só Premiere",
+      "src": "otempo.com.br"
     },
     {
-      "d": "2026-10-24",
+      "d": "2026-10-29",
       "comp": "bra.1",
       "h": "Vasco da Gama",
-      "a": "Corinthians",
-      "tv": [
-        "Record",
-        "CazéTV",
-        "Premiere",
-        "Globo"
-      ],
-      "ok": 0,
-      "obs": "Fontes divergem: uma cita Record e CazéTV, outra Globo",
-      "src": "maquinadoesporte.com.br"
-    },
-    {
-      "d": "2026-10-24",
-      "comp": "bra.1",
-      "h": "Palmeiras",
-      "a": "Red Bull Bragantino",
-      "tv": [
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "Só Premiere (assinantes)",
-      "src": "maquinadoesporte.com.br"
-    },
-    {
-      "d": "2026-10-24",
-      "comp": "bra.1",
-      "h": "Chapecoense",
-      "a": "Fluminense",
+      "a": "Flamengo",
       "tv": [
         "Prime Video"
       ],
       "ok": 1,
-      "obs": "Exclusivo Prime Video segundo uma fonte; outra lista Premiere",
-      "src": "maquinadoesporte.com.br"
+      "obs": "Exclusivo no streaming",
+      "src": "otempo.com.br"
     },
     {
-      "d": "2026-10-24",
+      "d": "2026-10-29",
       "comp": "bra.1",
-      "h": "Santos",
-      "a": "Bahia",
+      "h": "Grêmio",
+      "a": "Athletico-PR",
       "tv": [
         "SporTV",
         "Premiere"
       ],
       "ok": 1,
-      "src": "maquinadoesporte.com.br"
+      "src": "otempo.com.br"
     },
     {
-      "d": "2026-10-26",
+      "d": "2026-10-29",
+      "comp": "ita.1",
+      "h": "Frosinone",
+      "a": "Lecce",
+      "tv": [
+        "Disney+"
+      ],
+      "ok": 1,
+      "src": "opovo.com.br"
+    },
+    {
+      "d": "2026-10-29",
+      "comp": "ita.1",
+      "h": "Fiorentina",
+      "a": "Atalanta",
+      "tv": [
+        "ESPN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "ESPN 3",
+      "src": "opovo.com.br"
+    },
+    {
+      "d": "2026-10-30",
+      "comp": "bra.1",
+      "h": "Corinthians",
+      "a": "Mirassol",
+      "tv": [
+        "SporTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-10-31",
       "comp": "bra.1",
       "h": "Coritiba",
-      "a": "Grêmio",
+      "a": "Vitória",
       "tv": [
         "Premiere"
       ],
       "ok": 1,
-      "obs": "Só Premiere (assinantes)",
-      "src": "maquinadoesporte.com.br"
-    },
-    {
-      "d": "2026-10-26",
-      "comp": "bra.1",
-      "h": "Flamengo",
-      "a": "Atlético-MG",
-      "tv": [
-        "SporTV",
-        "Premiere"
-      ],
-      "ok": 1,
-      "src": "maquinadoesporte.com.br"
+      "obs": "Premiere pay-per-view",
+      "src": "otempo.com.br"
     },
     {
       "d": "2026-11-01",
@@ -607,13 +272,292 @@
       "tv": [
         "Globo",
         "SporTV",
-        "Prime Video",
         "Premiere",
+        "Prime Video",
         "GE TV"
       ],
       "ok": 1,
       "obs": "Semifinal, ida; fonte lista todas as plataformas, pode variar por praça",
-      "src": "tribunadejundiai.com.br"
+      "src": "portaldesports.com.br"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "bra.copa_do_brazil",
+      "h": "Grêmio",
+      "a": "Atlético-MG",
+      "tv": [
+        "SporTV",
+        "Premiere",
+        "Prime Video"
+      ],
+      "ok": 1,
+      "obs": "Semifinal, ida; sem TV aberta",
+      "src": "portaldesports.com.br"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Shakhtar Donetsk",
+      "a": "Sporting CP",
+      "tv": [
+        "HBO Max",
+        "TNT Sports"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Galatasaray",
+      "a": "VfB Stuttgart",
+      "tv": [
+        "HBO Max",
+        "Space"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Manchester United",
+      "a": "Roma",
+      "tv": [
+        "HBO Max",
+        "TNT Sports"
+      ],
+      "ok": 1,
+      "obs": "Também no YouTube da TNT Sports (grátis)",
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Barcelona",
+      "a": "Aston Villa",
+      "tv": [
+        "HBO Max",
+        "TNT Sports"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Atlético de Madrid",
+      "a": "Bayern de Munique",
+      "tv": [
+        "HBO Max",
+        "Space"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Villarreal",
+      "a": "PSG",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Feyenoord",
+      "a": "Inter de Milão",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Bodø/Glimt",
+      "a": "Lille",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "LASK Linz",
+      "a": "Slovan Bratislava",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "AEK Atenas",
+      "a": "Real Madrid",
+      "tv": [
+        "HBO Max",
+        "TNT Sports"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Fenerbahçe",
+      "a": "Liverpool",
+      "tv": [
+        "HBO Max",
+        "Space"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Borussia Dortmund",
+      "a": "Real Betis",
+      "tv": [
+        "HBO Max",
+        "TNT Sports",
+        "Space"
+      ],
+      "ok": 1,
+      "obs": "Também no YouTube da TNT Sports (grátis)",
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Slavia Praga",
+      "a": "Arsenal",
+      "tv": [
+        "HBO Max",
+        "TNT Sports"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "RB Leipzig",
+      "a": "Manchester City",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Porto",
+      "a": "Napoli",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Lens",
+      "a": "Como",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "PSV",
+      "a": "Club Brugge",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Viking",
+      "a": "Sabah",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "src": "portalmidiaesporte.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "bra.copa_do_brazil",
+      "h": "Atlético-MG",
+      "a": "Grêmio",
+      "tv": [
+        "SporTV",
+        "Premiere",
+        "Prime Video"
+      ],
+      "ok": 1,
+      "obs": "Semifinal, volta; sem TV aberta",
+      "src": "portaldesports.com.br"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "f1",
+      "h": "GP de São Paulo",
+      "a": "Classificação",
+      "tv": [
+        "SporTV"
+      ],
+      "ok": 1,
+      "obs": "Quali 15h (Brasília); sem TV aberta",
+      "src": "atletapro.com.br"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "bra.copa_do_brazil",
+      "h": "Vasco da Gama",
+      "a": "Palmeiras",
+      "tv": [
+        "Globo",
+        "SporTV",
+        "Premiere",
+        "Prime Video",
+        "GE TV"
+      ],
+      "ok": 1,
+      "obs": "Semifinal, volta",
+      "src": "portaldesports.com.br"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "f1",
+      "h": "GP de São Paulo",
+      "a": "Corrida",
+      "tv": [
+        "Globo",
+        "SporTV"
+      ],
+      "ok": 1,
+      "obs": "Corrida 14h (Brasília), Globo aberta",
+      "src": "atletapro.com.br"
     }
   ]
 }

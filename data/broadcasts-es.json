@@ -1,0 +1,140 @@
+{
+  "updated": "2026-10-29",
+  "country": "ES",
+  "tz": "Europe/Madrid",
+  "note": "LaLiga dividida entre DAZN e Movistar+; só jogos com canal confirmado têm entrada. Demais direitos não verificados nesta semana.",
+  "comps": {
+    "esp.1": {
+      "label": "LaLiga",
+      "options": [
+        "DAZN",
+        "Movistar+",
+        "LaLiga TV"
+      ],
+      "note": "DAZN transmite parte dos jogos de cada jornada (segunda temporada do acordo); o restante vai no Movistar+."
+    },
+    "esp.2": {
+      "label": "LaLiga Hypermotion (Segunda)",
+      "options": [
+        "LaLiga TV",
+        "DAZN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "esp.copa_del_rey": {
+      "label": "Copa del Rey",
+      "options": [
+        "TVE",
+        "Teledeporte",
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "uefa.champions": {
+      "label": "Champions League",
+      "options": [
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "uefa.europa": {
+      "label": "Europa League",
+      "options": [
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "uefa.europa.conf": {
+      "label": "Conference League",
+      "options": [
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "eng.1": {
+      "label": "Premier League",
+      "options": [
+        "DAZN",
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "ita.1": {
+      "label": "Serie A",
+      "options": [
+        "DAZN",
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "ger.1": {
+      "label": "Bundesliga",
+      "options": [
+        "DAZN",
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "fra.1": {
+      "label": "Ligue 1",
+      "options": [
+        "DAZN",
+        "Movistar+"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "f1": {
+      "label": "Fórmula 1",
+      "options": [
+        "DAZN"
+      ],
+      "note": "DAZN tem a F1 na Espanha (não reverificado nesta semana)."
+    },
+    "tennis": {
+      "label": "Tênis",
+      "options": [
+        "Movistar+",
+        "Eurosport"
+      ],
+      "note": "Não verificado nesta semana."
+    }
+  },
+  "games": [
+    {
+      "d": "2026-10-31",
+      "comp": "esp.1",
+      "h": "Real Betis",
+      "a": "Málaga",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "Jornada 11, ao vivo na DAZN",
+      "src": "dazn.com"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "esp.1",
+      "h": "Racing Santander",
+      "a": "Real Madrid",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "Jornada 11, ao vivo na DAZN",
+      "src": "dazn.com"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "esp.1",
+      "h": "Athletic Club",
+      "a": "Real Sociedad",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "Jornada 11, ao vivo na DAZN",
+      "src": "dazn.com"
+    }
+  ]
+}
