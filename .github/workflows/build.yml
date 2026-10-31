@@ -24,12 +24,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # o cartão do app na TV é desenhado a partir do nome em strings.xml: mudou o nome, o cartão acompanha
-      - name: Gerar o cartão (banner) com o nome do app
+      # o cartão do app na TV e o ícone do app são desenhados a partir do nome em strings.xml: mudou o nome, os dois acompanham
+      - name: Gerar o cartão (banner) e o ícone do app
         continue-on-error: true
         run: |
           python3 -c "import PIL" 2>/dev/null || pip install --quiet --break-system-packages pillow
           python3 tools/make_banner.py
+          python3 tools/make_icon.py
 
       - name: Ler o nome do app
         id: nome

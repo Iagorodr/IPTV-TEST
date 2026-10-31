@@ -20,7 +20,7 @@ class SubResult(val fileId: Long, val lang: String, val release: String, val dow
  */
 object Subs {
     private const val API = "https://api.opensubtitles.com/api/v1"
-    private const val UA = "IAGO IPTV v1.0"
+    private const val UA = "IPTIFY v1.0"
     private const val WEEK = 7L * 86_400_000L
 
     val enabled: Boolean get() = BuildConfig.OS_KEY.isNotEmpty()

@@ -70,6 +70,23 @@ def gradient_bg(w, h):
     return img
 
 
+def diagonal_gradient(w, h, c0, c1, angle_deg=135):
+    """Degradê diagonal simples entre duas cores (usado no selo da marca)."""
+    ang = math.radians(angle_deg)
+    dx, dy = math.sin(ang), -math.cos(ang)
+    corners = [(0, 0), (w, 0), (0, h), (w, h)]
+    proj = [x * dx + y * dy for x, y in corners]
+    lo, hi = min(proj), max(proj)
+    px = []
+    for y in range(h):
+        for x in range(w):
+            t = (x * dx + y * dy - lo) / (hi - lo)
+            px.append(lerp(c0, c1, t))
+    img = Image.new("RGB", (w, h))
+    img.putdata(px)
+    return img
+
+
 def vertical_gradient(w, h, stops):
     img = Image.new("RGB", (w, h))
     d = ImageDraw.Draw(img)
@@ -99,25 +116,30 @@ def main():
     name = app_name()
     img = gradient_bg(W * S, H * S).convert("RGBA")
 
-    # brilho e sol, à direita
+    # selo da marca (duas setas de "play" sobrepostas), à direita, com um brilho atrás
+    bx, by, bs = 440 * S, 55 * S, 190 * S
+    bcx, bcy = bx + bs // 2, by + bs // 2
     glow = Image.new("RGBA", img.size, (0, 0, 0, 0))
     gd = ImageDraw.Draw(glow)
-    cx, cy, r = 503 * S, 135 * S, 95 * S
-    gd.ellipse([cx - r * 1.9, cy - r * 1.9, cx + r * 1.9, cy + r * 1.9], fill=SALMON + (58,))
-    glow = glow.filter(ImageFilter.GaussianBlur(46 * S))
+    gr = bs * 0.92
+    gd.ellipse([bcx - gr, bcy - gr, bcx + gr, bcy + gr], fill=SALMON + (55,))
+    glow = glow.filter(ImageFilter.GaussianBlur(42 * S))
     img = Image.alpha_composite(img, glow)
 
-    sun = vertical_gradient(2 * r, 2 * r, [(0.0, SALMON), (0.55, (226, 85, 106)), (1.0, RED)]).convert("RGBA")
-    mask = Image.new("L", (2 * r, 2 * r), 0)
-    ImageDraw.Draw(mask).ellipse([0, 0, 2 * r - 1, 2 * r - 1], fill=255)
-    img.paste(sun, (cx - r, cy - r), mask)
+    badge = diagonal_gradient(bs, bs, CARMIM, RED).convert("RGBA")
+    mask = Image.new("L", (bs, bs), 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, bs - 1, bs - 1], radius=int(bs * 0.24), fill=255)
+    img.paste(badge, (bx, by), mask)
 
-    # montanhas (duas camadas)
     d = ImageDraw.Draw(img)
-    back = [(0, 250), (70, 205), (130, 235), (205, 170), (290, 232), (370, 188), (450, 238), (530, 196), (640, 250), (640, 360), (0, 360)]
-    front = [(0, 290), (90, 250), (170, 282), (260, 236), (350, 286), (440, 246), (540, 284), (640, 258), (640, 360), (0, 360)]
-    d.polygon([(x * S, y * S) for x, y in back], fill=MTN_BACK + (242,))
-    d.polygon([(x * S, y * S) for x, y in front], fill=NAVY + (255,))
+
+    def tri(cx0, cy0, w0, h0):
+        return [(cx0, cy0 - h0 / 2), (cx0 + w0, cy0), (cx0, cy0 + h0 / 2)]
+
+    back_arrow = tri(bx + bs * 0.50, by + bs * 0.50, bs * 0.34, bs * 0.60)
+    d.polygon(back_arrow, fill=SALMON + (115,))
+    front_arrow = tri(bx + bs * 0.22, by + bs * 0.50, bs * 0.40, bs * 0.64)
+    d.polygon(front_arrow, fill=TEXT + (255,))
 
     # selo "AO VIVO" (o mesmo do app), no canto de cima
     f_pill = ImageFont.truetype(BOLD, 15 * S)

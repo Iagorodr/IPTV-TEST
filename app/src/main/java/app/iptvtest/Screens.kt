@@ -392,7 +392,7 @@ fun LocalCountryChip(vm: MainViewModel, tab: Tab) {
     ChipItem(text = vm.localLabel(tab) + " ▾", selected = cc.isNotEmpty()) { vm.localPickFor = tab }
 }
 
-/** Logo provisória: um sol nascendo atrás de uma tela (o mesmo sol do fundo do app), nas cores da marca. */
+/** Logo da IPTIFY: duas setas de "play" sobrepostas, num selo com o degradê vinho -> vermelho da marca. */
 @Composable
 fun AppLogoMark(sizeDp: Int = 32) {
     androidx.compose.foundation.Canvas(modifier = Modifier.size(sizeDp.dp)) {
@@ -403,17 +403,22 @@ fun AppLogoMark(sizeDp: Int = 32) {
             brush = androidx.compose.ui.graphics.Brush.linearGradient(listOf(Wine, Red), start = androidx.compose.ui.geometry.Offset(0f, 0f), end = androidx.compose.ui.geometry.Offset(w, w)),
             cornerRadius = androidx.compose.ui.geometry.CornerRadius(r, r),
         )
-        // sol (metade de cima de um círculo) apoiado no horizonte
-        val horizon = w * 0.66f
-        drawArc(
-            brush = androidx.compose.ui.graphics.Brush.verticalGradient(listOf(TextMain, Accent), startY = w * 0.28f, endY = horizon),
-            startAngle = 180f, sweepAngle = 180f, useCenter = true,
-            topLeft = androidx.compose.ui.geometry.Offset(w * 0.24f, w * 0.30f),
-            size = androidx.compose.ui.geometry.Size(w * 0.52f, w * 0.72f),
-        )
-        // linhas do horizonte (lembram as linhas de uma tela)
-        drawLine(Accent, androidx.compose.ui.geometry.Offset(w * 0.16f, horizon + w * 0.04f), androidx.compose.ui.geometry.Offset(w * 0.84f, horizon + w * 0.04f), strokeWidth = w * 0.07f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
-        drawLine(Accent.copy(alpha = 0.55f), androidx.compose.ui.geometry.Offset(w * 0.30f, horizon + w * 0.16f), androidx.compose.ui.geometry.Offset(w * 0.70f, horizon + w * 0.16f), strokeWidth = w * 0.06f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+        // seta de trás: salmão translúcido, um pouco maior e deslocada
+        val back = androidx.compose.ui.graphics.Path().apply {
+            moveTo(w * 0.52f, w * 0.20f)
+            lineTo(w * 0.86f, w * 0.50f)
+            lineTo(w * 0.52f, w * 0.80f)
+            close()
+        }
+        drawPath(back, color = Accent.copy(alpha = 0.45f))
+        // seta da frente: sólida, cor do texto (máximo contraste num selo pequeno)
+        val front = androidx.compose.ui.graphics.Path().apply {
+            moveTo(w * 0.22f, w * 0.18f)
+            lineTo(w * 0.62f, w * 0.50f)
+            lineTo(w * 0.22f, w * 0.82f)
+            close()
+        }
+        drawPath(front, color = TextMain)
     }
 }
 
