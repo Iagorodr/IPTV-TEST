@@ -14,7 +14,7 @@ import os
 import re
 import sys
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STRINGS = os.path.join(ROOT, "app/src/main/res/values/strings.xml")
@@ -116,19 +116,21 @@ def main():
     name = app_name()
     img = gradient_bg(W * S, H * S).convert("RGBA")
 
-    # selo da marca (duas setas de "play" sobrepostas), à direita, com um brilho atrás
-    bx, by, bs = 440 * S, 55 * S, 190 * S
+    # selo da marca (duas setas de "play" sobrepostas), grande, vazando pela borda direita
+    # (estilo "hero graphic" dos cartões de app de streaming), com brilho atrás e um brilho de vidro por cima
+    bs = 300 * S
+    bx, by = 420 * S, (H * S - bs) // 2
     bcx, bcy = bx + bs // 2, by + bs // 2
     glow = Image.new("RGBA", img.size, (0, 0, 0, 0))
     gd = ImageDraw.Draw(glow)
-    gr = bs * 0.92
-    gd.ellipse([bcx - gr, bcy - gr, bcx + gr, bcy + gr], fill=SALMON + (55,))
-    glow = glow.filter(ImageFilter.GaussianBlur(42 * S))
+    gr = bs * 0.80
+    gd.ellipse([bcx - gr, bcy - gr, bcx + gr, bcy + gr], fill=SALMON + (60,))
+    glow = glow.filter(ImageFilter.GaussianBlur(48 * S))
     img = Image.alpha_composite(img, glow)
 
     badge = diagonal_gradient(bs, bs, CARMIM, RED).convert("RGBA")
     mask = Image.new("L", (bs, bs), 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, bs - 1, bs - 1], radius=int(bs * 0.24), fill=255)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, bs - 1, bs - 1], radius=int(bs * 0.22), fill=255)
     img.paste(badge, (bx, by), mask)
 
     d = ImageDraw.Draw(img)
@@ -141,22 +143,17 @@ def main():
     front_arrow = tri(bx + bs * 0.22, by + bs * 0.50, bs * 0.40, bs * 0.64)
     d.polygon(front_arrow, fill=TEXT + (255,))
 
-    # selo "AO VIVO" (o mesmo do app), no canto de cima
-    f_pill = ImageFont.truetype(BOLD, 15 * S)
-    label = "AO VIVO"
-    tw = spaced_width(f_pill, label, 1.5 * S)
-    px0, py0 = 40 * S, 38 * S
-    pw, ph = int(tw + 40 * S), 28 * S
-    d.rounded_rectangle([px0, py0, px0 + pw, py0 + ph], radius=ph // 2, fill=RED + (255,))
-    d.ellipse([px0 + 12 * S, py0 + ph // 2 - 4 * S, px0 + 20 * S, py0 + ph // 2 + 4 * S], fill=(255, 255, 255, 255))
-    asc, desc = f_pill.getmetrics()
-    draw_spaced(d, (px0 + 27 * S, py0 + (ph - (asc + desc)) // 2 - 1 * S), label, f_pill, (255, 255, 255, 255), 1.5 * S)
+    # brilho de vidro (sheen) no selo: uma luz suave no canto superior esquerdo, recortada pelo mesmo arredondado
+    sheen = Image.new("RGBA", (bs, bs), (0, 0, 0, 0))
+    ImageDraw.Draw(sheen).ellipse([-bs * 0.35, -bs * 0.55, bs * 0.70, bs * 0.55], fill=(255, 255, 255, 60))
+    sheen.putalpha(ImageChops.multiply(sheen.split()[3], mask))
+    img.paste(sheen, (bx, by), sheen)
 
     # nome em duas cores: primeira palavra clara, o resto salmão. Encolhe se o nome for comprido.
     words = name.split()
     first = words[0] if words else name
     rest = " ".join(words[1:])
-    max_w = 400 * S
+    max_w = 330 * S
     size = 68 * S
     while size > 24 * S:
         f_name = ImageFont.truetype(BOLD, size)
