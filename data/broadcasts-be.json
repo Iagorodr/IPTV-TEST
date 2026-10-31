@@ -1,0 +1,543 @@
+{
+  "updated": "2026-10-29",
+  "country": "BE",
+  "tz": "Europe/Brussels",
+  "note": "Jupiler Pro League na DAZN (canais DAZN Pro League, também no Pickx); Champions no Pickx+ Sports. Demais direitos a confirmar.",
+  "comps": {
+    "bel.1": {
+      "label": "Jupiler Pro League",
+      "options": [
+        "DAZN",
+        "Pickx"
+      ],
+      "note": "DAZN transmite todos os jogos; clientes Proximus/Pickx veem os canais DAZN Pro League no Pickx (fonte: Proximus, mai/2026)."
+    },
+    "bel.cup": {
+      "label": "Croky Cup",
+      "options": [
+        "DAZN",
+        "Pickx"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "uefa.champions": {
+      "label": "Champions League",
+      "options": [
+        "Pickx",
+        "Telenet"
+      ],
+      "note": "Pickx+ Sports passa todos os jogos da rodada (confirmado em sports.pickx.be). Telenet não verificado."
+    },
+    "uefa.europa": {
+      "label": "Europa League",
+      "options": [
+        "Telenet",
+        "Pickx"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "uefa.europa.conf": {
+      "label": "Conference League",
+      "options": [
+        "Telenet",
+        "Pickx"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "eng.1": {
+      "label": "Premier League",
+      "options": [
+        "Telenet",
+        "Pickx"
+      ],
+      "note": "Play Sports (Telenet) e Pickx; não verificado para 2026/27."
+    },
+    "esp.1": {
+      "label": "LaLiga",
+      "options": [
+        "DAZN",
+        "Pickx"
+      ],
+      "note": "Jogos da LaLiga aparecem nos canais DAZN no Pickx."
+    },
+    "ita.1": {
+      "label": "Serie A",
+      "options": [
+        "DAZN",
+        "Pickx"
+      ],
+      "note": "Jogos da Serie A aparecem nos canais DAZN no Pickx."
+    },
+    "ger.1": {
+      "label": "Bundesliga",
+      "options": [
+        "Telenet",
+        "Pickx"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "fra.1": {
+      "label": "Ligue 1",
+      "options": [
+        "DAZN",
+        "Pickx"
+      ],
+      "note": "Jogos da Ligue 1 aparecem nos canais DAZN no Pickx."
+    },
+    "f1": {
+      "label": "Fórmula 1",
+      "options": [
+        "Telenet",
+        "Pickx"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "tennis": {
+      "label": "Tênis",
+      "options": [
+        "Eurosport",
+        "Telenet"
+      ],
+      "note": "Não verificado nesta semana."
+    }
+  },
+  "games": [
+    {
+      "d": "2026-10-30",
+      "comp": "bel.1",
+      "h": "Zulte Waregem",
+      "a": "Club Brugge",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-30",
+      "comp": "fra.1",
+      "h": "Le Havre",
+      "a": "PSG",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "bel.1",
+      "h": "KV Mechelen",
+      "a": "KRC Genk",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "bel.1",
+      "h": "Standard Liège",
+      "a": "KV Kortrijk",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "bel.1",
+      "h": "RSC Anderlecht",
+      "a": "KVC Westerlo",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "bel.1",
+      "h": "SK Beveren",
+      "a": "Union SG",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "esp.1",
+      "h": "Levante",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "esp.1",
+      "h": "Barcelona",
+      "a": "Deportivo Alavés",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "ita.1",
+      "h": "Udinese",
+      "a": "Roma",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-10-31",
+      "comp": "ita.1",
+      "h": "Milan",
+      "a": "Inter de Milão",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "bel.1",
+      "h": "Cercle Brugge",
+      "a": "Royal Antwerp",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "bel.1",
+      "h": "STVV",
+      "a": "OH Leuven",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "bel.1",
+      "h": "Lommel SK",
+      "a": "KAA Gent",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "bel.1",
+      "h": "Charleroi",
+      "a": "La Louvière",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN Pro League 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "fra.1",
+      "h": "Marseille",
+      "a": "Toulouse",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "esp.1",
+      "h": "Racing Santander",
+      "a": "Real Madrid",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-01",
+      "comp": "ita.1",
+      "h": "Juventus",
+      "a": "Napoli",
+      "tv": [
+        "DAZN",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Shakhtar Donetsk",
+      "a": "Sporting CP",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 3",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Galatasaray",
+      "a": "VfB Stuttgart",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Manchester United",
+      "a": "Roma",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 4",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Barcelona",
+      "a": "Aston Villa",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 3",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Atlético de Madrid",
+      "a": "Bayern de Munique",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Villarreal",
+      "a": "PSG",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 5",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Feyenoord",
+      "a": "Inter de Milão",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 6",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "Bodø/Glimt",
+      "a": "Lille",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 7",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-03",
+      "comp": "uefa.champions",
+      "h": "LASK Linz",
+      "a": "Slovan Bratislava",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 8",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "AEK Atenas",
+      "a": "Real Madrid",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 3",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Fenerbahçe",
+      "a": "Liverpool",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Borussia Dortmund",
+      "a": "Real Betis",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 5",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Slavia Praga",
+      "a": "Arsenal",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 6",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "RB Leipzig",
+      "a": "Manchester City",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 4",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Porto",
+      "a": "Napoli",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 3",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Lens",
+      "a": "Como",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 7",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "PSV",
+      "a": "Club Brugge",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 2",
+      "src": "sports.pickx.be"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Viking",
+      "a": "Sabah",
+      "tv": [
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "Pickx+ Sports 8",
+      "src": "sports.pickx.be"
+    }
+  ]
+}
