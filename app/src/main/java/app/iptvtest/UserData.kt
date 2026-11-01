@@ -66,6 +66,7 @@ class UserData(ctx: Context) {
     var stabilityFirst: Boolean = true
         private set
     var autoSwitch: Boolean = true
+        private set
 
     /** Modo jogo: imagem com cores mais vivas e mais contraste no player. */
     var vivid: Boolean = false

@@ -331,7 +331,7 @@ fun App(vm: MainViewModel = viewModel()) {
                         .padding(20.dp),
                 ) {
                     Text(tr("O app fechou sozinho da última vez"), color = TextMain, fontSize = 18.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
-                    Text(tr("Tire uma foto desta tela e mande para o Claude: é o que ele precisa para corrigir."), color = Muted, fontSize = 13.sp)
+                    Text(tr("Tire uma foto desta tela e mande em Ajustes > Fale com a gente: é o que precisamos para corrigir."), color = Muted, fontSize = 13.sp)
                     Spacer(Modifier.height(8.dp))
                     Text(crash.take(1400), color = TextMain, fontSize = 11.sp, lineHeight = 14.sp)
                     Spacer(Modifier.height(10.dp))

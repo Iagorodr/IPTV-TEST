@@ -283,6 +283,62 @@ internal fun fieldColors() = OutlinedTextFieldDefaults.colors(
 // Carregando o catálogo (primeira vez)
 // =========================================================================
 
+/** Só o "D que aponta" (sem selo), em degradê salmão -> vermelho, com a altura das maiúsculas [capDp]. */
+@Composable
+fun DMark(capDp: Int, modifier: Modifier = Modifier) {
+    androidx.compose.foundation.Canvas(modifier = modifier.width((capDp * 73f / 80f).dp).height(capDp.dp)) {
+        val k = size.height / 80f
+        fun X(u: Float) = (u - 18f) * k
+        fun Y(v: Float) = (v - 10f) * k
+        val d = androidx.compose.ui.graphics.Path().apply {
+            fillType = androidx.compose.ui.graphics.PathFillType.EvenOdd
+            moveTo(X(25f), Y(10f)); lineTo(X(50f), Y(10f))
+            cubicTo(X(72f), Y(10f), X(86f), Y(30f), X(91f), Y(50f))
+            cubicTo(X(86f), Y(70f), X(72f), Y(90f), X(50f), Y(90f))
+            lineTo(X(25f), Y(90f)); quadraticBezierTo(X(18f), Y(90f), X(18f), Y(83f))
+            lineTo(X(18f), Y(17f)); quadraticBezierTo(X(18f), Y(10f), X(25f), Y(10f)); close()
+            moveTo(X(38f), Y(31f)); quadraticBezierTo(X(35f), Y(29.5f), X(35f), Y(33f))
+            lineTo(X(35f), Y(67f)); quadraticBezierTo(X(35f), Y(70.5f), X(38f), Y(69f))
+            lineTo(X(64f), Y(52f)); quadraticBezierTo(X(66.5f), Y(50f), X(64f), Y(48f)); close()
+        }
+        drawPath(d, brush = androidx.compose.ui.graphics.Brush.linearGradient(listOf(Accent, Red), start = androidx.compose.ui.geometry.Offset(0f, 0f), end = androidx.compose.ui.geometry.Offset(size.width, size.height)))
+    }
+}
+
+/**
+ * A logo escrita: o nome do app com o último "D" virando o símbolo, mais o selinho PRO (o PRO é só da logo, não do nome).
+ * [capDp]: altura das letras maiúsculas.
+ */
+@Composable
+fun AppWordmark(capDp: Int, pulse: Float = 1f) {
+    val name = stringResource(R.string.app_name)
+    val useMark = name.length > 1 && name.endsWith("D", ignoreCase = true)
+    val letters = if (useMark) name.dropLast(1) else name
+    // Poppins/padrão: maiúscula ~0,72 do tamanho da fonte
+    val fs = (capDp / 0.72f)
+    val capPx = with(androidx.compose.ui.platform.LocalDensity.current) { capDp.dp.roundToPx() }
+    // tudo alinhado pela linha de base das letras: o D fica em pé nela e o PRO encosta no topo das maiúsculas
+    Row {
+        Text(letters, color = TextMain, fontSize = fs.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = (-1).sp, modifier = Modifier.alignByBaseline())
+        if (useMark) {
+            Spacer(Modifier.width((capDp * 0.06f).dp))
+            DMark(capDp, modifier = Modifier.alignBy { it.measuredHeight }.graphicsLayer(scaleX = pulse, scaleY = pulse))
+        }
+        Spacer(Modifier.width((capDp * 0.3f).dp))
+        Text(
+            "PRO",
+            color = Accent,
+            fontSize = (capDp * 0.42f).sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp,
+            modifier = Modifier
+                .alignBy { capPx }
+                .border(1.dp, Accent, RoundedCornerShape(5.dp))
+                .padding(horizontal = 6.dp, vertical = 1.dp),
+        )
+    }
+}
+
 /** Uma tela de dica/novidade do carregamento: ilustração (sem texto, vale para todos os idiomas) + título + explicação. */
 private class LoadTip(val image: Int, val title: String, val text: String)
 
@@ -306,21 +362,8 @@ fun LoadingScreen(vm: MainViewModel) {
     )
     Box(modifier = Modifier.fillMaxSize().background(AppBackground)) {
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 64.dp, vertical = 36.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier.graphicsLayer(scaleX = scale, scaleY = scale)) { AppLogoMark(40) }
-                Spacer(Modifier.width(14.dp))
-                Text(stringResource(R.string.app_name), color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.Bold, letterSpacing = 3.sp)
-                Spacer(Modifier.width(8.dp))
-                // o "PRO" é só da logo, não do nome do app
-                Text(
-                    "PRO",
-                    color = Accent,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp,
-                    modifier = Modifier.border(1.dp, Accent, RoundedCornerShape(5.dp)).padding(horizontal = 6.dp, vertical = 1.dp),
-                )
-            }
+            // a logo escrita (IPTVRO + o D que aponta + PRO), com o D pulsando enquanto carrega
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { AppWordmark(capDp = 30, pulse = scale) }
             val err = vm.loadError
             if (err != null) {
                 Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
