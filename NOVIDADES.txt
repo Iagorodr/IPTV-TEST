@@ -1,3 +1,7 @@
-Novo nome: IPTVROD PRO, com ícone e capa novos.
-Ajustes > Fale com a gente: mande um problema, ideia ou elogio pelo celular (QR code). A resposta aparece na TV.
-Português agora é só o do Brasil.
+O app agora fala 7 idiomas: escolha em Ajustes > Perfil.
+Novo Modo jogo no player: cores mais vivas e mais contraste.
+Continuar assistindo também em Filmes e Séries.
+Destaques mudam a cada abertura; Lançamentos vêm do mais novo para o mais antigo.
+Notas dos filmes mais confiáveis (vêm do TMDB).
+A escolha de fonte respeita estabilidade ou qualidade, como você marcou.
+Tela de carregamento nova, com dicas e novidades.
