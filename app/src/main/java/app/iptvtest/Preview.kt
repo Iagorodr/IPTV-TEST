@@ -191,9 +191,9 @@ fun ChannelPreview(
         val key = l.channel.key
         val first = wantedNow
             ?: l.channel.sources.firstOrNull { it.id == user.pinnedSource(key) }
-            ?: l.channel.sources.firstOrNull { it.id == user.lastOkSource(key) }
-            // nunca tocou: sorteia entre as 3 melhores (não varre todas, e as piores nem entram)
-            ?: user.rank(l.channel).take(3).randomOrNull()
+            ?: user.rank(l.channel).take(2).firstOrNull { it.id == user.lastOkSource(key) }
+            // senão a melhor pela prioridade escolhida (estabilidade ou qualidade)
+            ?: user.rank(l.channel).firstOrNull()
         if (first == null) {
             exo.stop()
             exo.clearMediaItems()

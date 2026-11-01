@@ -55,7 +55,14 @@ class Title(
     fun score(): Float {
         val y = year.toIntOrNull() ?: 0
         val recency = if (y > 1980) (minOf(y - 1980, 46) / 46f) * 30f else 0f
-        return rating * 10f + recency - (if (onlyCam) 40f else 0f)
+        return trustedRating() * 10f + recency - (if (onlyCam) 40f else 0f)
+    }
+
+    /** Nota da lista, mas sem acreditar nos "10" que muitos provedores colocam em tudo (viram uma nota neutra). */
+    fun trustedRating(): Float = when {
+        rating <= 0f -> 0f
+        rating >= 9.5f -> 6.5f
+        else -> rating
     }
 }
 

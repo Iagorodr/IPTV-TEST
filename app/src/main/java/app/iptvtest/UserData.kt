@@ -66,6 +66,9 @@ class UserData(ctx: Context) {
     var stabilityFirst: Boolean = true
         private set
     var autoSwitch: Boolean = true
+
+    /** Modo jogo: imagem com cores mais vivas e mais contraste no player. */
+    var vivid: Boolean = false
         private set
 
     /** Fuso horário escolhido nos Ajustes (vazio = o do aparelho). */
@@ -107,6 +110,7 @@ class UserData(ctx: Context) {
         try {
             stabilityFirst = sp.getBoolean("stab", true)
             autoSwitch = sp.getBoolean("auto", true)
+            vivid = sp.getBoolean("vivid", false)
             tzId = sp.getString("tz", "") ?: ""
             bcCountry = sp.getString("bc", "BR") ?: "BR"
             bcCountries.addAll((sp.getString("bcs", "") ?: "").split(",").filter { it.isNotBlank() })
@@ -394,6 +398,11 @@ class UserData(ctx: Context) {
     fun setStabilityFirst(v: Boolean) {
         stabilityFirst = v
         sp.edit().putBoolean("stab", v).apply()
+    }
+
+    fun setVivid(v: Boolean) {
+        vivid = v
+        sp.edit().putBoolean("vivid", v).apply()
     }
 
     fun setAutoSwitch(v: Boolean) {

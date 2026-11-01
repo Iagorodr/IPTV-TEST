@@ -704,7 +704,7 @@ object Mix {
         return out
     }
 
-    const val GENRE = 55f
+    const val GENRE = 90f
     const val SHUFFLE = -1f
 }
 
@@ -726,9 +726,11 @@ object Shelves {
     fun forTitles(titles: List<Title>, maxGenres: Int, rnd: java.util.Random): List<Shelf> {
         val out = ArrayList<Shelf>()
         val launches = titles.filter { it.launch && !it.onlyCam }
-        if (launches.size >= 6) out.add(Shelf("Lançamentos", Mix.arrange(launches, rnd, Mix.SHUFFLE), Mix.SHUFFLE))
+        // Lançamentos e Adicionados não são sorteados: o mais novo vem primeiro
+        val newest = launches.sortedWith(compareByDescending<Title> { it.year.toIntOrNull() ?: 0 }.thenByDescending { it.added })
+        if (launches.size >= 6) out.add(Shelf("Lançamentos", newest))
         val recent = titles.filter { !it.onlyCam }.sortedByDescending { it.added }.take(80)
-        if (recent.size >= 6) out.add(Shelf("Adicionados recentemente", Mix.arrange(recent, rnd, Mix.SHUFFLE), Mix.SHUFFLE))
+        if (recent.size >= 6) out.add(Shelf("Adicionados recentemente", recent))
 
         val byGenre = HashMap<String, ArrayList<Title>>()
         val byPlat = HashMap<String, ArrayList<Title>>()
@@ -756,19 +758,19 @@ object Shelves {
         // destaque: lançamentos de plataformas conhecidas, com capa e nota decente (evita títulos obscuros)
         // filmes e séries se alternam, para o início não parecer "só filmes"
         fun best(list: List<Title>): List<Title> =
-            list.filter { it.launch && !it.onlyCam && it.image != null && it.platforms.isNotEmpty() && it.rating >= 6f }
+            list.filter { it.launch && !it.onlyCam && it.image != null && it.platforms.isNotEmpty() && it.trustedRating() >= 6f }
                 .sortedByDescending { it.score() }
-                .take(12)
+                .take(30)
         var pm = best(c.movies)
         // série quase nunca vem marcada como lançamento: usa as adicionadas há pouco, de plataforma conhecida e bem avaliadas
         val year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
         var ps = c.series
-            .filter { it.image != null && !it.onlyCam && it.platforms.isNotEmpty() && it.rating >= 7f && (it.year.toIntOrNull() ?: 0) >= year - 2 }
+            .filter { it.image != null && !it.onlyCam && it.platforms.isNotEmpty() && it.trustedRating() >= 7f && (it.year.toIntOrNull() ?: 0) >= year - 2 }
             .sortedByDescending { it.added }
-            .take(12)
+            .take(30)
         // se faltar gente para girar, completa com os mais bem avaliados (com capa) de cada tipo
-        if (pm.size < 4) pm = c.movies.filter { it.image != null && !it.onlyCam && it.rating >= 6f }.sortedByDescending { it.score() }.take(12)
-        if (ps.size < 4) ps = c.series.filter { it.image != null && !it.onlyCam && it.rating >= 6f }.sortedByDescending { it.score() }.take(12)
+        if (pm.size < 4) pm = c.movies.filter { it.image != null && !it.onlyCam && it.trustedRating() >= 6f }.sortedByDescending { it.score() }.take(12)
+        if (ps.size < 4) ps = c.series.filter { it.image != null && !it.onlyCam && it.trustedRating() >= 6f }.sortedByDescending { it.score() }.take(12)
         val picks = ArrayList<Title>()
         for (i in 0 until maxOf(pm.size, ps.size)) {
             if (i < pm.size) picks.add(pm[i])

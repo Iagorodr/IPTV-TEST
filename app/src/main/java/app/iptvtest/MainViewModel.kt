@@ -824,8 +824,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         channelIndex = chIdx
         allTitles = built.all
         val fg = user.favGenres.toList()
+        // gêneros preferidos pesam, mas sem tirar o sorteio: cada abertura mostra destaques diferentes
+        val favRnd = java.util.Random(seed + 7)
         fun favFirst(l: List<Title>): List<Title> =
-            if (fg.isEmpty()) l else l.sortedByDescending { t -> t.genres.count { it in fg } }
+            if (fg.isEmpty()) l else l.map { t -> Pair(t, t.genres.count { it in fg } + favRnd.nextFloat() * 1.5f) }.sortedByDescending { it.second }.map { it.first }
         fun favShelves(l: List<Shelf>): List<Shelf> {
             if (fg.isEmpty()) return l
             val head = l.filter { it.name == "Lançamentos" || it.name == "Adicionados recentemente" }
@@ -919,7 +921,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var tabEpoch by mutableIntStateOf(0)
         private set
 
-    fun selectTab(t: Tab) {
+    /** A troca de aba veio do menu do topo: a tela nova devolve o foco para o item escolhido (não volta ao início). */
+    var navRefocus by mutableStateOf(false)
+
+    fun selectTab(t: Tab, fromNav: Boolean = false) {
+        navRefocus = fromNav
         tabEpoch++
         tab = t
         grid = null

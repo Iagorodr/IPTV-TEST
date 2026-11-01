@@ -49,7 +49,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -280,74 +282,123 @@ internal fun fieldColors() = OutlinedTextFieldDefaults.colors(
 // Carregando o catálogo (primeira vez)
 // =========================================================================
 
+/** Uma tela de dica/novidade do carregamento: ilustração (sem texto, vale para todos os idiomas) + título + explicação. */
+private class LoadTip(val image: Int, val title: String, val text: String)
+
+private val LOAD_TIPS = listOf(
+    LoadTip(R.drawable.load_feedback, "Novo: Fale com a gente", "Em Ajustes, aponte o celular para o QR code e mande um problema, uma ideia ou um elogio. A resposta aparece aqui na TV."),
+    LoadTip(R.drawable.load_vivid, "Novo: Modo jogo", "No player, toque em Modo jogo: cores mais vivas e mais contraste, ótimo para futebol."),
+    LoadTip(R.drawable.load_langs, "O app no seu idioma", "Português, inglês, espanhol, francês, italiano, alemão ou holandês. Troque quando quiser em Ajustes > Perfil."),
+    LoadTip(R.drawable.load_games, "Nunca perca um jogo", "Escolha seus times e ligas: os jogos aparecem no Início, com o dia, a hora e o canal onde passam."),
+    LoadTip(R.drawable.load_sources, "Canal travou? A gente troca", "Quando um canal tem várias fontes, o app escolhe a mais estável ou a de melhor imagem (você decide em Ajustes) e troca sozinho se travar."),
+)
+
 @Composable
 fun LoadingScreen(vm: MainViewModel) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.5f, sunY = 0.3f, sunR = 0.17f)
-        Column(
-            modifier = Modifier.width(560.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(Modifier.height(120.dp))
-            Text(
-                stringResource(R.string.app_name),
-                color = TextMain,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Light,
-                letterSpacing = 8.sp,
-            )
-            Spacer(Modifier.height(10.dp))
-            Box(Modifier.width(36.dp).height(2.dp).background(Accent))
-            Spacer(Modifier.height(36.dp))
+    // pulso suave do logo: mostra que o app está trabalhando
+    val pulse = androidx.compose.animation.core.rememberInfiniteTransition(label = "pulse")
+    val scale by pulse.animateFloat(
+        initialValue = 0.92f,
+        targetValue = 1.06f,
+        animationSpec = androidx.compose.animation.core.infiniteRepeatable(tween(900), androidx.compose.animation.core.RepeatMode.Reverse),
+        label = "scale",
+    )
+    Box(modifier = Modifier.fillMaxSize().background(AppBackground)) {
+        Column(modifier = Modifier.fillMaxSize().padding(horizontal = 64.dp, vertical = 36.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(modifier = Modifier.graphicsLayer(scaleX = scale, scaleY = scale)) { AppLogoMark(40) }
+                Spacer(Modifier.width(14.dp))
+                Text(stringResource(R.string.app_name), color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.Bold, letterSpacing = 3.sp)
+            }
             val err = vm.loadError
             if (err != null) {
-                Text(tr("Não foi possível carregar o catálogo"), color = ErrorColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(8.dp))
-                Text(err, color = TextMain, fontSize = 14.sp, textAlign = TextAlign.Center)
-                Spacer(Modifier.height(18.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    TvButton(text = tr("Tentar de novo"), primary = true) { vm.loadCatalog(force = true) }
-                    TvButton(text = tr("Sair da conta")) { vm.logout() }
-                }
-            } else {
-                // progresso real: etapa atual + itens já lidos + tempo
-                var tick by remember { mutableStateOf(0L) }
-                LaunchedEffect(Unit) {
-                    while (true) {
-                        tick = System.currentTimeMillis()
-                        kotlinx.coroutines.delay(500)
+                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Text(tr("Não foi possível carregar o catálogo"), color = ErrorColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(8.dp))
+                    Text(err, color = TextMain, fontSize = 14.sp, textAlign = TextAlign.Center, modifier = Modifier.widthIn(max = 560.dp))
+                    Spacer(Modifier.height(18.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        TvButton(text = tr("Tentar de novo"), primary = true) { vm.loadCatalog(force = true) }
+                        TvButton(text = tr("Sair da conta")) { vm.logout() }
                     }
                 }
-                val step = vm.loadStep
-                val weights = floatArrayOf(0.02f, 0.03f, 0.40f, 0.12f, 0.28f, 0.15f)
-                val done = if (step <= 1) 0f else weights.take(step - 1).sum()
-                val frac = if (step == 0) 0f else (done + weights[(step - 1).coerceIn(0, 5)] * 0.5f).coerceIn(0.02f, 0.98f)
-                androidx.compose.material3.LinearProgressIndicator(
-                    progress = { frac },
-                    modifier = Modifier.width(320.dp).height(3.dp),
-                    color = Accent,
-                    trackColor = Color(0x22FFF3EC),
-                )
-                Spacer(Modifier.height(18.dp))
+                return@Column
+            }
+
+            // dicas e novidades: uma de cada vez, trocando a cada 10 segundos
+            var tipIdx by remember { mutableIntStateOf(0) }
+            LaunchedEffect(Unit) {
+                while (true) {
+                    kotlinx.coroutines.delay(10_000)
+                    tipIdx = (tipIdx + 1) % LOAD_TIPS.size
+                }
+            }
+            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Crossfade(targetState = tipIdx, animationSpec = tween(700), label = "tip") { i ->
+                    val tip = LOAD_TIPS[i]
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(40.dp)) {
+                        androidx.compose.foundation.Image(
+                            painter = androidx.compose.ui.res.painterResource(tip.image),
+                            contentDescription = null,
+                            modifier = Modifier.width(440.dp).aspectRatio(16f / 9f).clip(RoundedCornerShape(16.dp)),
+                        )
+                        Column(modifier = Modifier.width(380.dp)) {
+                            Text(tr(tip.title), color = Accent, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, lineHeight = 29.sp)
+                            Spacer(Modifier.height(10.dp))
+                            Text(tr(tip.text), color = TextMain, fontSize = 16.sp, lineHeight = 23.sp)
+                            Spacer(Modifier.height(18.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                for (k in LOAD_TIPS.indices) {
+                                    Box(
+                                        Modifier
+                                            .width(if (k == i) 22.dp else 8.dp)
+                                            .height(8.dp)
+                                            .clip(RoundedCornerShape(4.dp))
+                                            .background(if (k == i) Accent else Color(0x33FFF3EC)),
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // progresso real: etapa atual + itens já lidos + tempo
+            var tick by remember { mutableStateOf(0L) }
+            LaunchedEffect(Unit) {
+                while (true) {
+                    tick = System.currentTimeMillis()
+                    kotlinx.coroutines.delay(500)
+                }
+            }
+            val step = vm.loadStep
+            val weights = floatArrayOf(0.02f, 0.03f, 0.40f, 0.12f, 0.28f, 0.15f)
+            val done = if (step <= 1) 0f else weights.take(step - 1).sum()
+            val frac = if (step == 0) 0f else (done + weights[(step - 1).coerceIn(0, 5)] * 0.5f).coerceIn(0.02f, 0.98f)
+            val shown by androidx.compose.animation.core.animateFloatAsState(frac, tween(600), label = "progress")
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                if (step == 0) {
+                    androidx.compose.material3.LinearProgressIndicator(modifier = Modifier.width(420.dp).height(4.dp), color = Accent, trackColor = Color(0x22FFF3EC))
+                } else {
+                    androidx.compose.material3.LinearProgressIndicator(progress = { shown }, modifier = Modifier.width(420.dp).height(4.dp), color = Accent, trackColor = Color(0x22FFF3EC))
+                }
+                Spacer(Modifier.height(10.dp))
                 val count = if (step in 3..6) vm.loadCount() else 0
                 val msg = (vm.loadMsg ?: tr("Preparando...")) + (if (count > 0) ": " + String.format(java.util.Locale.GERMANY, "%,d", count) + tr(" itens") else "")
-                Text(msg, color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
-                if (step > 0) {
-                    val secs = ((tick - vm.loadStartMs).coerceAtLeast(0L) / 1000L).toInt()
-                    Spacer(Modifier.height(4.dp))
-                    Text(
-                        tr("Etapa ") + step + tr(" de 6  ·  ") + (secs / 60) + ":" + String.format("%02d", secs % 60),
-                        color = Muted,
-                        fontSize = 13.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                }
-                Spacer(Modifier.height(6.dp))
+                val secs = ((tick - vm.loadStartMs).coerceAtLeast(0L) / 1000L).toInt()
+                Text(
+                    msg + (if (step > 0) "  ·  " + tr("Etapa {0} de 6", step) + "  ·  " + (secs / 60) + ":" + String.format("%02d", secs % 60) else ""),
+                    color = TextMain,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(Modifier.height(4.dp))
                 Text(
                     tr("Listas muito grandes podem levar alguns minutos. Isso só acontece na primeira vez: depois o catálogo fica guardado e abre na hora, e as atualizações acontecem em segundo plano."),
                     color = Muted,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
+                    modifier = Modifier.widthIn(max = 720.dp),
                 )
             }
         }
@@ -360,10 +411,12 @@ fun LoadingScreen(vm: MainViewModel) {
 
 /** Aba do menu: só texto. A aba atual ganha um fundo salmão bem translúcido (nada de cor chapada). */
 @Composable
-private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
+private fun NavItem(text: String, selected: Boolean, vm: MainViewModel? = null, onClick: () -> Unit) {
+    val fr = rememberNavRefocus(selected, vm)
     FocusBox(
         modifier = Modifier.padding(end = 2.dp),
         shape = RoundedCornerShape(10.dp),
+        focusRequester = fr,
         focusScale = 1f,
         onClick = onClick,
     ) { focused ->
@@ -382,6 +435,28 @@ private fun NavItem(text: String, selected: Boolean, onClick: () -> Unit) {
             )
         }
     }
+}
+
+/**
+ * Depois de trocar de aba pelo menu do topo, a tela nova nasce sem foco e o controle voltava para o começo.
+ * O item da aba escolhida pede o foco de volta, uma vez.
+ */
+@Composable
+private fun rememberNavRefocus(selected: Boolean, vm: MainViewModel?): FocusRequester? {
+    if (vm == null || !selected) return null
+    val fr = remember { FocusRequester() }
+    LaunchedEffect(vm.tabEpoch) {
+        if (vm.navRefocus) {
+            delay(60)
+            try {
+                fr.requestFocus()
+            } catch (e: Exception) {
+                // a tela ainda não estava pronta: sem problema
+            }
+            vm.navRefocus = false
+        }
+    }
+    return fr
 }
 
 /** Botão "País: todos ▾" das telas: abre a lista para escolher um país só nesta tela. */
@@ -556,9 +631,11 @@ private fun KidsSwitch(on: Boolean, onClick: () -> Unit) {
 
 /** Botão só com ícone (lupa). */
 @Composable
-private fun NavIcon(selected: Boolean, onClick: () -> Unit, icon: @Composable (Color) -> Unit) {
+private fun NavIcon(selected: Boolean, onClick: () -> Unit, vm: MainViewModel? = null, icon: @Composable (Color) -> Unit) {
+    val fr = rememberNavRefocus(selected, vm)
     FocusBox(
         shape = RoundedCornerShape(10.dp),
+        focusRequester = fr,
         focusScale = 1f,
         onClick = onClick,
     ) { focused ->
@@ -607,23 +684,22 @@ fun TopNav(vm: MainViewModel) {
     ) {
         AppLogo(vm.user.profileName)
         Spacer(Modifier.width(18.dp))
-        NavItem(tr("Início"), vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
-        if (!vm.user.kidsMode) NavItem(tr("Jogos"), vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
-        NavItem(tr("Filmes"), vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
-        NavItem(tr("Séries"), vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
-        NavItem(tr("Canais"), vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
-        NavItem(tr("Favoritos"), vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
-        if (!vm.user.kidsMode) NavItem(tr("Gravações"), vm.tab == Tab.REC) { vm.selectTab(Tab.REC) }
+        NavItem(tr("Início"), vm.tab == Tab.HOME, vm) { vm.selectTab(Tab.HOME, fromNav = true) }
+        if (!vm.user.kidsMode) NavItem(tr("Jogos"), vm.tab == Tab.GAMES, vm) { vm.selectTab(Tab.GAMES, fromNav = true) }
+        NavItem(tr("Filmes"), vm.tab == Tab.MOVIES, vm) { vm.selectTab(Tab.MOVIES, fromNav = true) }
+        NavItem(tr("Séries"), vm.tab == Tab.SERIES, vm) { vm.selectTab(Tab.SERIES, fromNav = true) }
+        NavItem(tr("Canais"), vm.tab == Tab.CHANNELS, vm) { vm.selectTab(Tab.CHANNELS, fromNav = true) }
+        NavItem(tr("Favoritos"), vm.tab == Tab.LIST, vm) { vm.selectTab(Tab.LIST, fromNav = true) }
+        if (!vm.user.kidsMode) NavItem(tr("Gravações"), vm.tab == Tab.REC, vm) { vm.selectTab(Tab.REC, fromNav = true) }
         Spacer(Modifier.weight(1f))
+        // atualizando a lista em segundo plano: só o símbolo girando (o texto apertava o botão do infantil)
         if (vm.refreshing) {
             CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
-            Spacer(Modifier.width(8.dp))
-            Text(tr("Atualizando a lista..."), color = Muted, fontSize = 12.sp)
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(14.dp))
         }
-        NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
+        NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH, fromNav = true) }, vm) { c -> SearchIcon(color = c) }
         Spacer(Modifier.width(4.dp))
-        NavIcon(vm.tab == Tab.SETTINGS, { vm.selectTab(Tab.SETTINGS) }) { c -> GearIcon(color = c, size = 20) }
+        NavIcon(vm.tab == Tab.SETTINGS, { vm.selectTab(Tab.SETTINGS, fromNav = true) }, vm) { c -> GearIcon(color = c, size = 20) }
         Spacer(Modifier.width(10.dp))
         KidsAvatar(vm.user.kidsMode) { vm.setKids(!vm.user.kidsMode) }
     }
@@ -721,7 +797,8 @@ private fun HeroContent(t: Title) {
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(Modifier.height(5.dp))
-            val rating = if (t.rating > 0f) "★ " + String.format(java.util.Locale.US, "%.1f", t.rating).replace('.', ',') else ""
+            val shown = shownRating(t.rating, tm)
+            val rating = if (shown > 0f) "★ " + String.format(java.util.Locale.US, "%.1f", shown).replace('.', ',') else ""
             val meta = listOf(rating, t.genres.take(2).joinToString(" · ")).filter { it.isNotEmpty() }.joinToString("   ")
             if (meta.isNotEmpty()) {
                 Text(meta, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -1005,6 +1082,8 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>, tab: Ta
     val listState = rememberLazyListState()
     var sel by rememberSaveable { mutableStateOf<String?>(null) }
     val picked = if (sel == null) null else shelves.firstOrNull { it.name == sel }
+    // "Continuar assistindo" também em Filmes e Séries, só com o tipo da página
+    val cont = if (tab == Tab.MOVIES || tab == Tab.SERIES) vm.continueEntries().filter { it.first.series == (tab == Tab.SERIES) } else emptyList()
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         if (shelves.isEmpty()) {
@@ -1024,10 +1103,12 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>, tab: Ta
                 }
                 item(key = "chips") {
                     Box(modifier = Modifier.topOnFocus(listState)) {
-                        FilterChips(vm, shelves, sel, lead = if (tab != null) ({ LocalCountryChip(vm, tab) }) else null) { sel = it }
+                        FilterChips(vm, shelves, sel, hasContinue = cont.isNotEmpty(), lead = if (tab != null) ({ LocalCountryChip(vm, tab) }) else null) { sel = it }
                     }
                 }
-                if (picked != null) {
+                if (sel == CONTINUE_TAB && cont.isNotEmpty()) {
+                    item(key = "cont") { ContinueRow(cont, onResume = { vm.resumeEntry(it) }) }
+                } else if (picked != null) {
                     filteredShelf(picked) { vm.open(it) }
                 } else {
                     items(shelves.distinctBy { it.name }, key = { it.name }) { s ->

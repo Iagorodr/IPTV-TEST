@@ -79,8 +79,8 @@ class MainActivity : ComponentActivity() {
         } catch (e: Exception) {
             // sem problema
         }
-        // voltou ao app depois de uns minutos fora (botão Home): prateleiras novas, como numa abertura nova
-        if (stoppedAt > 0L && SystemClock.elapsedRealtime() - stoppedAt > 3 * 60_000L) {
+        // voltou ao app depois de 1 minuto fora (botão Home): prateleiras novas, como numa abertura nova
+        if (stoppedAt > 0L && SystemClock.elapsedRealtime() - stoppedAt > 60_000L) {
             try {
                 ViewModelProvider(this)[MainViewModel::class.java].reshuffle()
             } catch (e: Exception) {

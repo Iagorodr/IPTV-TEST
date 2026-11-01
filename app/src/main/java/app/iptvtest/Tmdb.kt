@@ -15,7 +15,8 @@ import java.net.URLEncoder
 import java.util.concurrent.ConcurrentHashMap
 
 /** Capa, imagem larga e sinopse de um filme/série, vindas do TMDB. */
-class TmdbMeta(val poster: String?, val backdrop: String?, val overview: String)
+/** [vote]: nota média do TMDB (0 a 10); [votes]: quantas pessoas votaram (nota com poucos votos não vale muito). */
+class TmdbMeta(val poster: String?, val backdrop: String?, val overview: String, val vote: Float = 0f, val votes: Int = 0)
 
 /**
  * Completa o que a lista não traz (capa, imagem larga, sinopse) com o TMDB. Só funciona se o app foi compilado com o
@@ -45,8 +46,10 @@ object Tmdb {
             val at = j.getLong("at")
             if (j.optBoolean("none")) {
                 Pair(at, null)
+            } else if (!j.has("n")) {
+                null // guardado antes de existir a nota do TMDB: busca de novo
             } else {
-                Pair(at, TmdbMeta(j.optString("p").ifEmpty { null }, j.optString("b").ifEmpty { null }, j.optString("o")))
+                Pair(at, TmdbMeta(j.optString("p").ifEmpty { null }, j.optString("b").ifEmpty { null }, j.optString("o"), j.optDouble("v", 0.0).toFloat(), j.optInt("n", 0)))
             }
         } catch (e: Exception) {
             null
@@ -67,7 +70,7 @@ object Tmdb {
         val now = System.currentTimeMillis()
         mem[k] = Pair(now, m)
         val j = JSONObject().put("at", now)
-        if (m == null) j.put("none", true) else j.put("p", m.poster ?: "").put("b", m.backdrop ?: "").put("o", m.overview)
+        if (m == null) j.put("none", true) else j.put("p", m.poster ?: "").put("b", m.backdrop ?: "").put("o", m.overview).put("v", m.vote.toDouble()).put("n", m.votes)
         try {
             prefs?.edit()?.putString(k, j.toString())?.apply()
         } catch (e: Exception) {
@@ -124,6 +127,8 @@ object Tmdb {
                             p?.let { x -> "https://image.tmdb.org/t/p/w342$x" },
                             b?.let { x -> "https://image.tmdb.org/t/p/w1280$x" },
                             it.optString("overview").trim(),
+                            it.optDouble("vote_average", 0.0).toFloat(),
+                            it.optInt("vote_count", 0),
                         )
                     }
                     save(k, m)
@@ -142,3 +147,15 @@ fun rememberTmdb(title: Title, needed: Boolean = true): State<TmdbMeta?> =
     produceState<TmdbMeta?>(initialValue = if (needed) Tmdb.cached(title) else null, title.key, needed) {
         if (needed && value == null) value = Tmdb.get(title)
     }
+
+
+/**
+ * Nota que aparece na tela. A da lista do provedor costuma ser inventada (muitos "10"), então vale a do TMDB, que é a
+ * média de votos de quem viu, desde que tenha votos suficientes. Sem TMDB, a da lista só aparece se for plausível.
+ */
+fun shownRating(listRating: Float, tm: TmdbMeta?): Float = when {
+    tm != null && tm.votes >= 25 && tm.vote > 0f -> tm.vote
+    tm != null -> 0f
+    listRating > 0f && listRating < 9.5f -> listRating
+    else -> 0f
+}

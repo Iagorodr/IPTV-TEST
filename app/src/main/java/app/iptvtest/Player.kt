@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -190,6 +191,7 @@ fun PlayerScreen(
     var controls by remember { mutableStateOf(true) }
     var touch by remember { mutableIntStateOf(0) }
     var zoom by remember { mutableStateOf(req.zoom) }
+    var vivid by remember { mutableStateOf(user.vivid) }
     var panel by remember { mutableStateOf<String?>(null) }
 
     // ---- canal ao vivo
@@ -554,9 +556,10 @@ fun PlayerScreen(
             val order = user.rank(channel)
             ranked = order
             val pin = user.pinnedSource(channel.key)
-            // fixada > a última que tocou nesse canal > a melhor nota
+            // fixada > a melhor pela prioridade escolhida (estabilidade ou qualidade). A última que tocou só vale
+            // se estiver entre as 2 melhores dessa ordem: assim a preferência dos Ajustes manda de verdade.
             val start = order.firstOrNull { it.id == pin }
-                ?: order.firstOrNull { it.id == user.lastOkSource(channel.key) }
+                ?: order.take(2).firstOrNull { it.id == user.lastOkSource(channel.key) }
                 ?: order.firstOrNull()
             if (start == null) {
                 error = tr("Este canal não tem fontes disponíveis.")
@@ -810,23 +813,32 @@ fun PlayerScreen(
             .focusRequester(rootFocus)
             .focusable(),
     ) {
-        AndroidView(
-            factory = { ctx ->
-                PlayerView(ctx).apply {
-                    useController = false
-                    player = exo
-                    isFocusable = false
-                    isFocusableInTouchMode = false
-                    descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
-                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                    keepScreenOn = true
-                }
-            },
-            update = { view ->
-                view.resizeMode = if (zoom) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
-            },
-            modifier = Modifier.fillMaxSize(),
-        )
+        // modo jogo: troca para a TextureView (a única que aceita filtro de cor) e aplica cores mais vivas e mais contraste
+        key(vivid) {
+            AndroidView(
+                factory = { ctx ->
+                    val pv = if (vivid) {
+                        android.view.LayoutInflater.from(ctx).inflate(R.layout.player_texture, null) as PlayerView
+                    } else {
+                        PlayerView(ctx)
+                    }
+                    pv.apply {
+                        useController = false
+                        player = exo
+                        isFocusable = false
+                        isFocusableInTouchMode = false
+                        descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+                        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                        keepScreenOn = true
+                        if (vivid) (videoSurfaceView as? android.view.TextureView)?.let { applyVivid(it) }
+                    }
+                },
+                update = { view ->
+                    view.resizeMode = if (zoom) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
 
         if (buffering && error == null && !testing) {
             CircularProgressIndicator(color = Accent, modifier = Modifier.align(Alignment.Center))
@@ -1063,6 +1075,12 @@ fun PlayerScreen(
                     TvButton(text = if (zoom) tr("Tela: preencher") else tr("Tela: ajustar")) {
                         touch++
                         zoom = !zoom
+                    }
+                    TvButton(text = if (vivid) tr("Modo jogo: ligado") else tr("Modo jogo")) {
+                        touch++
+                        vivid = !vivid
+                        user.setVivid(vivid)
+                        note = if (vivid) tr("Modo jogo ligado: cores mais vivas e mais contraste.") else tr("Modo jogo desligado.")
                     }
                 }
             }
@@ -1814,4 +1832,25 @@ private fun describeError(e: PlaybackException): String {
         else -> tr("Erro de reprodução.")
     }
     return base + "\n(" + e.errorCodeName + ")"
+}
+
+
+/**
+ * Modo jogo: cores mais vivas (saturação +35%) e um pouco mais de contraste (+12%), como as TVs fazem no modo
+ * "esporte/vívido". Não é HDR de verdade (o canal manda a imagem comum), mas deixa o gramado e as camisas mais vivos.
+ */
+private fun applyVivid(tv: android.view.TextureView) {
+    val cm = android.graphics.ColorMatrix()
+    cm.setSaturation(1.35f)
+    val c = 1.12f
+    val t = (1f - c) * 0.5f * 255f
+    cm.postConcat(android.graphics.ColorMatrix(floatArrayOf(
+        c, 0f, 0f, 0f, t,
+        0f, c, 0f, 0f, t,
+        0f, 0f, c, 0f, t,
+        0f, 0f, 0f, 1f, 0f,
+    )))
+    val p = android.graphics.Paint()
+    p.colorFilter = android.graphics.ColorMatrixColorFilter(cm)
+    tv.setLayerType(android.view.View.LAYER_TYPE_HARDWARE, p)
 }

@@ -259,7 +259,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                             overflow = TextOverflow.Ellipsis,
                         )
                         Spacer(Modifier.height(5.dp))
-                        val rate = if ((info?.rating ?: 0f) > 0f) info?.rating ?: 0f else title.rating
+                        val rate = shownRating(if ((info?.rating ?: 0f) > 0f) info?.rating ?: 0f else title.rating, tm)
                         val ratingText = if (rate > 0f) "★ " + String.format(Locale.US, "%.1f", rate).replace('.', ',') else ""
                         val meta = listOf(ratingText, title.genres.take(3).joinToString(" · ")).filter { it.isNotEmpty() }.joinToString("   ")
                         if (meta.isNotEmpty()) {
