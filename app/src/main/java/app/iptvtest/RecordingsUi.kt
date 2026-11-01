@@ -62,7 +62,7 @@ private fun sizeText(b: Long): String =
 
 private fun lengthText(ms: Long): String {
     val m = (ms / 60_000L).coerceAtLeast(0L)
-    return if (m >= 60) "${m / 60} h ${m % 60} min" else "$m min"
+    return if (m >= 60) "${m / 60} h ${m % 60} min" else tr("{0} min", m)
 }
 
 /** Aba "Gravações": o que está sendo gravado e o que já foi gravado neste aparelho. */
@@ -113,9 +113,9 @@ fun RecordingsTab(vm: MainViewModel) {
         ) {
             item(key = "__new") {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    TvButton(text = "+ Agendar gravação", primary = vm.recs.isEmpty() && vm.scheds.isEmpty()) { vm.recordManual() }
+                    TvButton(text = tr("+ Agendar gravação"), primary = vm.recs.isEmpty() && vm.scheds.isEmpty()) { vm.recordManual() }
                     Text(
-                        "Dica: para um jogo, abra o jogo e toque em \"● Gravar\".",
+                        tr("Dica: para um jogo, abra o jogo e toque em \"● Gravar\"."),
                         color = Muted,
                         fontSize = 12.sp,
                     )
@@ -124,7 +124,7 @@ fun RecordingsTab(vm: MainViewModel) {
             if (vm.recs.isEmpty() && vm.scheds.isEmpty()) {
                 item(key = "__empty") {
                     Text(
-                        "Nenhuma gravação ainda.\nAbra um canal ao vivo e escolha \"Gravar\", ou agende uma acima.\nA gravação continua com a tela apagada.",
+                        tr("Nenhuma gravação ainda.\nAbra um canal ao vivo e escolha \"Gravar\", ou agende uma acima.\nA gravação continua com a tela apagada."),
                         color = Muted,
                         fontSize = 15.sp,
                         textAlign = TextAlign.Center,
@@ -149,9 +149,9 @@ fun RecordingsTab(vm: MainViewModel) {
                         Spacer(Modifier.height(2.dp))
                         Text(
                             if (missed) {
-                                whenText(sc.startMs) + " · não gravou: " + sc.error.ifEmpty { "a TV estava desligada ou o app fechado." }
+                                whenText(sc.startMs) + tr(" · não gravou: ") + sc.error.ifEmpty { tr("a TV estava desligada ou o app fechado.") }
                             } else {
-                                "Agendada · " + whenText(sc.startMs) + " até " + SportsTime.clock(sc.endMs, java.util.TimeZone.getDefault()) +
+                                tr("Agendada · ") + whenText(sc.startMs) + tr(" até ") + SportsTime.clock(sc.endMs, java.util.TimeZone.getDefault()) +
                                     " · " + Recorder.qualityLabel(sc.quality)
                             },
                             color = if (missed) ErrorColor else Warn,
@@ -161,7 +161,7 @@ fun RecordingsTab(vm: MainViewModel) {
                         )
                     }
                     TvButton(
-                        text = if (asking) "Confirmar" else if (missed) "Remover" else "Cancelar agendamento",
+                        text = if (asking) tr("Confirmar") else if (missed) tr("Remover") else tr("Cancelar agendamento"),
                     ) {
                         if (!asking) {
                             confirmSched = sc.id
@@ -186,9 +186,9 @@ fun RecordingsTab(vm: MainViewModel) {
                         Text(r.title, color = TextMain, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         Spacer(Modifier.height(2.dp))
                         val status = when {
-                            r.recording -> "Gravando · " + lengthText(System.currentTimeMillis() - r.startedAt)
-                            r.state == "error" -> r.error.ifEmpty { "Não deu certo" }
-                            else -> "Gravado"
+                            r.recording -> tr("Gravando · ") + lengthText(System.currentTimeMillis() - r.startedAt)
+                            r.state == "error" -> r.error.ifEmpty { tr("Não deu certo") }
+                            else -> tr("Gravado")
                         }
                         Text(
                             fmt.format(Date(r.startedAt)) + " · " + sizeText(r.size) + " · " + status,
@@ -201,13 +201,13 @@ fun RecordingsTab(vm: MainViewModel) {
                     val askKey = r.id
                     val asking = confirmDelete == askKey
                     if (r.size > 0L) {
-                        TvButton(text = "Assistir", primary = true, focusRequester = if (vm.recFocusId == r.id) rowFocus else null) {
+                        TvButton(text = tr("Assistir"), primary = true, focusRequester = if (vm.recFocusId == r.id) rowFocus else null) {
                             vm.recFocusId = r.id
                             vm.playRecording(r)
                         }
                     }
                     if (r.recording) {
-                        TvButton(text = "Tela preta") {
+                        TvButton(text = tr("Tela preta")) {
                             vm.recFocusId = r.id
                             vm.enterRecMode(r.id)
                         }
@@ -215,10 +215,10 @@ fun RecordingsTab(vm: MainViewModel) {
                     // um único botão que só troca o texto: assim o foco não se perde ao apertar
                     TvButton(
                         text = when {
-                            r.recording && asking -> "Confirmar parar"
-                            r.recording -> "Parar"
-                            asking -> "Confirmar"
-                            else -> "Apagar"
+                            r.recording && asking -> tr("Confirmar parar")
+                            r.recording -> tr("Parar")
+                            asking -> tr("Confirmar")
+                            else -> tr("Apagar")
                         },
                         focusRequester = if (vm.recFocusId == r.id && r.size <= 0L) rowFocus else null,
                     ) {
@@ -342,21 +342,21 @@ fun RecordingModeScreen(vm: MainViewModel) {
         ) {
             val dim = Color(0xFF6B6F7B)
             if (rec == null) {
-                Text("Gravação não encontrada.", color = dim, fontSize = 16.sp)
+                Text(tr("Gravação não encontrada."), color = dim, fontSize = 16.sp)
             } else if (running) {
-                Text("● Gravando", color = Color(0xFF8A2E3B), fontSize = 18.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 2.sp)
+                Text(tr("● Gravando"), color = Color(0xFF8A2E3B), fontSize = 18.sp, fontWeight = FontWeight.SemiBold, letterSpacing = 2.sp)
                 Spacer(Modifier.height(8.dp))
                 Text(rec.title, color = dim, fontSize = 22.sp, fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    fmt.format(Date(rec.startedAt)) + " às " + fmt.format(Date(rec.endsAt)),
+                    fmt.format(Date(rec.startedAt)) + tr(" às ") + fmt.format(Date(rec.endsAt)),
                     color = dim, fontSize = 16.sp,
                 )
                 Spacer(Modifier.height(4.dp))
-                Text("Faltam " + lengthText(rec.endsAt - now) + " · " + sizeText(rec.size), color = dim, fontSize = 14.sp)
+                Text(tr("Faltam ") + lengthText(rec.endsAt - now) + " · " + sizeText(rec.size), color = dim, fontSize = 14.sp)
             } else {
                 Text(
-                    if (rec.state == "error") "A gravação não deu certo." else "Gravação concluída",
+                    if (rec.state == "error") tr("A gravação não deu certo.") else tr("Gravação concluída"),
                     color = Color(0xFF9AA0AE), fontSize = 20.sp, fontWeight = FontWeight.Medium,
                 )
                 Spacer(Modifier.height(4.dp))
@@ -366,26 +366,26 @@ fun RecordingModeScreen(vm: MainViewModel) {
                 )
                 if (!controls) {
                     Spacer(Modifier.height(10.dp))
-                    Text("Aperte qualquer botão.", color = dim, fontSize = 13.sp)
+                    Text(tr("Aperte qualquer botão."), color = dim, fontSize = 13.sp)
                 }
             }
             if (controls || (rec != null && !running)) {
                 Spacer(Modifier.height(24.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     if (running) {
-                        TvButton(text = "Sair da tela preta", primary = true, focusRequester = first) { vm.exitRecMode() }
+                        TvButton(text = tr("Sair da tela preta"), primary = true, focusRequester = first) { vm.exitRecMode() }
                         if (askStop) {
-                            TvButton(text = "Confirmar parar") {
+                            TvButton(text = tr("Confirmar parar")) {
                                 askStop = false
                                 vm.stopRecording(recId)
                             }
                         } else {
-                            TvButton(text = "Parar gravação") {
+                            TvButton(text = tr("Parar gravação")) {
                                 touch++
                                 askStop = true
                             }
                         }
-                        TvButton(text = "Desligar a TV depois") {
+                        TvButton(text = tr("Desligar a TV depois")) {
                             touch++
                             val i = Intent(Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             try {
@@ -395,17 +395,17 @@ fun RecordingModeScreen(vm: MainViewModel) {
                             }
                         }
                     } else {
-                        TvButton(text = "Ver gravações", primary = true, focusRequester = first) {
+                        TvButton(text = tr("Ver gravações"), primary = true, focusRequester = first) {
                             vm.exitRecMode()
                             vm.selectTab(Tab.REC)
                         }
-                        TvButton(text = "Voltar ao início") { vm.exitRecMode() }
+                        TvButton(text = tr("Voltar ao início")) { vm.exitRecMode() }
                     }
                 }
                 if (running) {
                     Spacer(Modifier.height(10.dp))
                     Text(
-                        "Para a TV desligar sozinha, ative o temporizador de desligamento nos ajustes dela.",
+                        tr("Para a TV desligar sozinha, ative o temporizador de desligamento nos ajustes dela."),
                         color = dim, fontSize = 12.sp, textAlign = TextAlign.Center,
                         modifier = Modifier.widthIn(max = 480.dp),
                     )

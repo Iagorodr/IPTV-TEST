@@ -45,7 +45,7 @@ private const val HOUR = 3_600_000L
 
 fun durationText(ms: Long): String {
     val m = (ms / MIN).coerceAtLeast(0L)
-    return if (m >= 60) (m / 60).toString() + " h" + (if (m % 60 > 0) " " + (m % 60) + " min" else "") else "$m min"
+    return if (m >= 60) (m / 60).toString() + " h" + (if (m % 60 > 0) " " + (m % 60) + tr(" min") else "") else tr("{0} min", m)
 }
 
 /** "Hoje 20:00" / "Amanhã 20:00" / "Sáb 24/10 20:00". */
@@ -119,36 +119,36 @@ fun ScheduleDialog(vm: MainViewModel, init: SchedInit) {
                 .padding(24.dp),
         ) {
             if (done != null) {
-                Text("Agendado!", color = Good, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Agendado!"), color = Good, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(8.dp))
                 Text(done ?: "", color = TextMain, fontSize = 15.sp)
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    "Deixe a TV (ou a box) ligada e com internet. O app não precisa ficar aberto na tela, mas se você " +
-                        "fechar o app à força ou a TV desligar, a gravação não acontece.",
+                    tr("Deixe a TV (ou a box) ligada e com internet. O app não precisa ficar aberto na tela, mas se você ") +
+                        tr("fechar o app à força ou a TV desligar, a gravação não acontece."),
                     color = Warn,
                     fontSize = 13.sp,
                 )
                 Spacer(Modifier.height(16.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    TvButton(text = "Ver agendadas", primary = true, focusRequester = firstFocus) {
+                    TvButton(text = tr("Ver agendadas"), primary = true, focusRequester = firstFocus) {
                         vm.schedInit = null
                         vm.selectTab(Tab.REC)
                     }
-                    TvButton(text = "Fechar") { vm.schedInit = null }
+                    TvButton(text = tr("Fechar")) { vm.schedInit = null }
                 }
                 return@Column
             }
 
-            Text("Agendar gravação", color = Muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("Agendar gravação"), color = Muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(4.dp))
             Text(init.title, color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, maxLines = 2)
-            Text("Canal: " + init.channelName, color = Accent, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Canal: ") + init.channelName, color = Accent, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             if (init.fromGame) {
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "Confira se o jogo realmente passa nesse canal. O app pode errar: se o canal estiver passando outra coisa, " +
-                        "a gravação sai com o programa errado.",
+                    tr("Confira se o jogo realmente passa nesse canal. O app pode errar: se o canal estiver passando outra coisa, ") +
+                        tr("a gravação sai com o programa errado."),
                     color = Warn,
                     fontSize = 12.sp,
                 )
@@ -156,50 +156,50 @@ fun ScheduleDialog(vm: MainViewModel, init: SchedInit) {
             Spacer(Modifier.height(14.dp))
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 StepRow(
-                    label = "Dia",
+                    label = tr("Dia"),
                     value = SportsTime.dayLabel(start, now, tz),
-                    minus = listOf("◀ dia" to {
+                    minus = listOf(tr("◀ dia") to {
                         if (end - 24 * HOUR > now) {
                             start -= 24 * HOUR
                             end -= 24 * HOUR
                         }
                     }),
-                    plus = listOf("dia ▶" to {
+                    plus = listOf(tr("dia ▶") to {
                         start += 24 * HOUR
                         end += 24 * HOUR
                     }),
                     focus = if (init.fromGame) null else firstFocus,
                 )
                 StepRow(
-                    label = "Início",
+                    label = tr("Início"),
                     value = SportsTime.clock(start, tz),
                     minus = listOf("−1 h" to { start -= HOUR }, "−5 min" to { start -= 5 * MIN }),
                     plus = listOf("+5 min" to { start += 5 * MIN }, "+1 h" to { start += HOUR }),
                 )
                 StepRow(
-                    label = "Fim",
-                    value = SportsTime.clock(end, tz) + (if (SportsTime.dayNumber(end, tz) != SportsTime.dayNumber(start, tz)) " (+1 dia)" else ""),
+                    label = tr("Fim"),
+                    value = SportsTime.clock(end, tz) + (if (SportsTime.dayNumber(end, tz) != SportsTime.dayNumber(start, tz)) tr(" (+1 dia)") else ""),
                     minus = listOf("−1 h" to { end -= HOUR }, "−5 min" to { end -= 5 * MIN }),
                     plus = listOf("+5 min" to { end += 5 * MIN }, "+1 h" to { end += HOUR }),
                 )
             }
             Spacer(Modifier.height(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Qualidade", color = Muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(88.dp))
+                Text(tr("Qualidade"), color = Muted, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.width(88.dp))
                 for (q in 0..2) {
                     ChipItem(text = Recorder.qualityLabel(q), selected = quality == q) { quality = q }
                 }
             }
             Spacer(Modifier.height(4.dp))
             Text(
-                "Média e Baixa só funcionam em canais que oferecem mais de uma versão da imagem; nos outros, grava como o canal manda.",
+                tr("Média e Baixa só funcionam em canais que oferecem mais de uma versão da imagem; nos outros, grava como o canal manda."),
                 color = Muted,
                 fontSize = 11.sp,
             )
             Spacer(Modifier.height(10.dp))
             Text(
-                "Duração: " + durationText(end - start) + " · espaço estimado: até " + String.format(Locale.US, "%.1f", estGb) +
-                    " GB · livre no aparelho: " + String.format(Locale.US, "%.1f", freeGb) + " GB",
+                tr("Duração: ") + durationText(end - start) + tr(" · espaço estimado: até ") + String.format(Locale.US, "%.1f", estGb) +
+                    tr(" GB · livre no aparelho: ") + String.format(Locale.US, "%.1f", freeGb) + tr(" GB"),
                 color = if (estGb > freeGb * 0.8) ErrorColor else TextMain,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -211,25 +211,25 @@ fun ScheduleDialog(vm: MainViewModel, init: SchedInit) {
             }
             Spacer(Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                TvButton(text = "Agendar", primary = true, focusRequester = if (init.fromGame) firstFocus else null) {
+                TvButton(text = tr("Agendar"), primary = true, focusRequester = if (init.fromGame) firstFocus else null) {
                     val t = System.currentTimeMillis()
                     when {
-                        end <= start + MIN -> error = "O fim precisa ser depois do início."
-                        end <= t -> error = "Esse horário já passou."
-                        end - start > 6 * HOUR -> error = "O máximo é 6 horas por gravação."
+                        end <= start + MIN -> error = tr("O fim precisa ser depois do início.")
+                        end <= t -> error = tr("Esse horário já passou.")
+                        end - start > 6 * HOUR -> error = tr("O máximo é 6 horas por gravação.")
                         else -> {
                             Recorder.setQuality(ctx, quality)
                             val msg = vm.addSchedule(init, start, end, quality)
                             if (msg == null) {
                                 error = null
-                                done = init.title + "\n" + whenText(start) + " até " + SportsTime.clock(end, tz) + " · " + Recorder.qualityLabel(quality)
+                                done = init.title + "\n" + whenText(start) + tr(" até ") + SportsTime.clock(end, tz) + " · " + Recorder.qualityLabel(quality)
                             } else {
                                 error = msg
                             }
                         }
                     }
                 }
-                TvButton(text = "Cancelar") { vm.schedInit = null }
+                TvButton(text = tr("Cancelar")) { vm.schedInit = null }
             }
         }
     }
@@ -240,7 +240,7 @@ fun ScheduleDialog(vm: MainViewModel, init: SchedInit) {
 fun PickBanner(label: String) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
         Text(
-            text = label + "  ·  Voltar cancela",
+            text = label + tr("  ·  Voltar cancela"),
             color = TextMain,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
@@ -302,20 +302,20 @@ fun UpdateDialog(vm: MainViewModel, u: UpdateInfo) {
                 .border(1.dp, PanelAlt, RoundedCornerShape(16.dp))
                 .padding(26.dp),
         ) {
-            Text("Versão nova disponível", color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr("Versão nova disponível"), color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             Text(
-                "Você tem o build " + vm.installedBuild() + " · novo: build " + u.code,
+                tr("Você tem o build ") + vm.installedBuild() + tr(" · novo: build ") + u.code,
                 color = Muted,
                 fontSize = 13.sp,
             )
             if (u.notes.isNotBlank()) {
                 Spacer(Modifier.height(10.dp))
-                Text("O que mudou", color = Accent, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                Text(tr("O que mudou"), color = Accent, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                 Text(u.notes, color = TextMain, fontSize = 14.sp)
             }
             if (vm.anyRecording()) {
                 Spacer(Modifier.height(10.dp))
-                Text("Há uma gravação em andamento: ela seria cortada. Atualize depois que terminar.", color = Warn, fontSize = 13.sp)
+                Text(tr("Há uma gravação em andamento: ela seria cortada. Atualize depois que terminar."), color = Warn, fontSize = 13.sp)
             }
             val msg = vm.updateMsg
             if (msg != null) {
@@ -324,7 +324,7 @@ fun UpdateDialog(vm: MainViewModel, u: UpdateInfo) {
             }
             Spacer(Modifier.height(16.dp))
             if (vm.updateState == "baixando") {
-                Text("Baixando... " + vm.updateProgress + "%", color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Baixando... ") + vm.updateProgress + "%", color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
                 Box(
                     modifier = Modifier
@@ -341,15 +341,15 @@ fun UpdateDialog(vm: MainViewModel, u: UpdateInfo) {
                     )
                 }
                 Spacer(Modifier.height(14.dp))
-                TvButton(text = "Cancelar", focusRequester = first) { vm.cancelUpdate() }
+                TvButton(text = tr("Cancelar"), focusRequester = first) { vm.cancelUpdate() }
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    TvButton(text = "Atualizar agora", primary = true, focusRequester = first) { vm.startUpdate() }
-                    TvButton(text = "Depois") { vm.updateDismissed = true }
+                    TvButton(text = tr("Atualizar agora"), primary = true, focusRequester = first) { vm.startUpdate() }
+                    TvButton(text = tr("Depois")) { vm.updateDismissed = true }
                 }
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "Ao terminar de baixar, o Android pede para confirmar a instalação. O app fecha e você abre de novo.",
+                    tr("Ao terminar de baixar, o Android pede para confirmar a instalação. O app fecha e você abre de novo."),
                     color = Muted,
                     fontSize = 11.sp,
                 )
@@ -385,10 +385,10 @@ fun CountryDialog(vm: MainViewModel) {
                 .border(1.dp, PanelAlt, RoundedCornerShape(16.dp))
                 .padding(24.dp),
         ) {
-            Text("Que países e idiomas você quer ver?", color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr("Que países e idiomas você quer ver?"), color = TextMain, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(4.dp))
             Text(
-                "Vale para filmes, séries e canais. Dica: escolha 2 ou 3 e a lista fica bem mais leve. O que não tem país indicado aparece sempre.",
+                tr("Vale para filmes, séries e canais. Dica: escolha 2 ou 3 e a lista fica bem mais leve. O que não tem país indicado aparece sempre."),
                 color = Muted,
                 fontSize = 12.sp,
             )
@@ -397,11 +397,11 @@ fun CountryDialog(vm: MainViewModel) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                ChipItem(text = "Mostrar tudo", selected = sel.isEmpty(), focusRequester = first) { sel = emptySet() }
+                ChipItem(text = tr("Mostrar tudo"), selected = sel.isEmpty(), focusRequester = first) { sel = emptySet() }
                 for ((code, n) in stats.entries.sortedByDescending { it.value.first + it.value.second }) {
                     val on = sel.contains(code)
                     ChipItem(
-                        text = (if (on) "✓ " else "") + Countries.label(code) + " · " + n.first + " títulos, " + n.second + " canais",
+                        text = (if (on) "✓ " else "") + Countries.label(code) + " · " + n.first + tr(" títulos, ") + n.second + tr(" canais"),
                         selected = on,
                     ) {
                         sel = if (on) sel - code else sel + code
@@ -410,11 +410,11 @@ fun CountryDialog(vm: MainViewModel) {
             }
             Spacer(Modifier.height(18.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                TvButton(text = "Aplicar", primary = true) {
+                TvButton(text = tr("Aplicar"), primary = true) {
                     vm.countryDialog = false
                     vm.setCountryFilter(sel)
                 }
-                TvButton(text = "Cancelar") { vm.countryDialog = false }
+                TvButton(text = tr("Cancelar")) { vm.countryDialog = false }
             }
         }
     }
@@ -449,19 +449,19 @@ fun ClockDialog(vm: MainViewModel) {
                 .border(1.dp, Warn, RoundedCornerShape(16.dp))
                 .padding(26.dp),
         ) {
-            Text("O relógio deste aparelho está errado", color = Warn, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr("O relógio deste aparelho está errado"), color = Warn, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(10.dp))
-            Text("O aparelho mostra: " + full(now), color = TextMain, fontSize = 15.sp)
-            Text("Hora certa: " + full(real), color = Good, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(tr("O aparelho mostra: ") + full(now), color = TextMain, fontSize = 15.sp)
+            Text(tr("Hora certa: ") + full(real), color = Good, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(10.dp))
             Text(
-                "Com a data errada, jogos, capas, atualização do app e gravações agendadas deixam de funcionar. " +
-                    "Nas configurações da TV ou da box, abra Data e hora e ligue \"Data e hora automáticas\" (e confira o fuso). Depois reabra o app.",
+                tr("Com a data errada, jogos, capas, atualização do app e gravações agendadas deixam de funcionar. ") +
+                    tr("Nas configurações da TV ou da box, abra Data e hora e ligue \"Data e hora automáticas\" (e confira o fuso). Depois reabra o app."),
                 color = TextMain,
                 fontSize = 13.sp,
             )
             Spacer(Modifier.height(16.dp))
-            TvButton(text = "Entendi", primary = true, focusRequester = first) { vm.clockDismissed = true }
+            TvButton(text = tr("Entendi"), primary = true, focusRequester = first) { vm.clockDismissed = true }
         }
     }
 }
@@ -489,9 +489,9 @@ fun LocalCountryDialog(vm: MainViewModel, tab: Tab) {
                 .background(Panel)
                 .padding(20.dp),
         ) {
-            Text("Mostrar nesta tela", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr("Mostrar nesta tela"), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(4.dp))
-            Text("Só muda esta tela. Os países do app ficam em Ajustes.", color = Muted, fontSize = 12.sp)
+            Text(tr("Só muda esta tela. Os países do app ficam em Ajustes."), color = Muted, fontSize = 12.sp)
             Spacer(Modifier.height(12.dp))
             androidx.compose.foundation.lazy.LazyColumn(
                 modifier = Modifier.heightIn(max = 380.dp),
@@ -516,7 +516,7 @@ fun LocalCountryDialog(vm: MainViewModel, tab: Tab) {
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(if (sel) "●" else "○", color = if (sel) Accent else Muted, fontSize = 14.sp, modifier = Modifier.width(24.dp))
-                            Text(if (cc.isEmpty()) "Todos os países" else Countries.label(cc), color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                            Text(if (cc.isEmpty()) tr("Todos os países") else Countries.label(cc), color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                         }
                     }
                 }

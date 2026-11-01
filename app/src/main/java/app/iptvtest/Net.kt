@@ -27,7 +27,7 @@ object Net {
                 conn.setRequestProperty("Accept", accept)
                 val code = conn.responseCode
                 if (code in 300..399) {
-                    val loc = conn.getHeaderField("Location") ?: throw IOException("Redirecionamento inválido do servidor.")
+                    val loc = conn.getHeaderField("Location") ?: throw IOException(tr("Redirecionamento inválido do servidor."))
                     url = URL(URL(url), loc).toString()
                     conn.disconnect()
                     continue
@@ -35,9 +35,9 @@ object Net {
                 if (code !in 200..299) {
                     throw IOException(
                         when (code) {
-                            401, 403 -> "O servidor recusou o acesso (HTTP $code). Confira usuário e senha."
-                            404 -> "Endereço não encontrado (HTTP 404)."
-                            else -> "O servidor respondeu HTTP $code."
+                            401, 403 -> tr("O servidor recusou o acesso (HTTP {0}). Confira usuário e senha.", code)
+                            404 -> tr("Endereço não encontrado (HTTP 404).")
+                            else -> tr("O servidor respondeu HTTP {0}.", code)
                         },
                     )
                 }
@@ -47,6 +47,6 @@ object Net {
                 throw e
             }
         }
-        throw IOException("Redirecionamentos demais.")
+        throw IOException(tr("Redirecionamentos demais."))
     }
 }

@@ -16,12 +16,12 @@ class Obs(
 )
 
 fun statusLabel(r: Float?): String = when {
-    r == null -> "Sem teste"
-    r >= 0.85f -> "Estável"
-    r >= 0.70f -> "Boa"
-    r >= 0.50f -> "Média"
-    r >= 0.30f -> "Oscila"
-    else -> "Ruim"
+    r == null -> tr("Sem teste")
+    r >= 0.85f -> tr("Estável")
+    r >= 0.70f -> tr("Boa")
+    r >= 0.50f -> tr("Média")
+    r >= 0.30f -> tr("Oscila")
+    else -> tr("Ruim")
 }
 
 fun statusColor(r: Float?): Color = when {

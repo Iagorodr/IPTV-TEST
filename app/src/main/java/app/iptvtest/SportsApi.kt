@@ -140,7 +140,7 @@ object SportsApi {
             val clock = st?.s("displayClock") ?: ""
             val detail = when {
                 state != 1 -> ""
-                shortD.equals("HT", true) || what.contains("half", true) -> "Intervalo"
+                shortD.equals("HT", true) || what.contains("half", true) -> tr("Intervalo")
                 clock.isNotEmpty() && clock != "0'" -> clock
                 else -> shortD
             }
@@ -207,7 +207,7 @@ object SportsApi {
             load(lacking.flatMap { it.leagues }.distinct(), SportsTime.espnDay(now + d * SportsTime.DAY))
             d++
         }
-        if (ok == 0) throw IOException("Sem resposta do serviço de jogos.")
+        if (ok == 0) throw IOException(tr("Sem resposta do serviço de jogos."))
         if (rangeOk == null) rangeOk = false
         found.values.toList()
     }
@@ -263,7 +263,7 @@ object SportsApi {
                 if (rangeOk == null) rangeOk = false
             }
         }
-        if (ok == 0) throw IOException("Sem resposta do serviço de jogos.")
+        if (ok == 0) throw IOException(tr("Sem resposta do serviço de jogos."))
         found.values.toList()
     }
 

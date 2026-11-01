@@ -168,11 +168,11 @@ fun App(vm: MainViewModel = viewModel()) {
                     .padding(horizontal = 40.dp, vertical = 28.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text("Fechar o app?", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Fechar o app?"), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 if (vm.anyRecording()) {
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        "Há uma gravação em andamento. Ela continua, mas a TV precisa ficar ligada.",
+                        tr("Há uma gravação em andamento. Ela continua, mas a TV precisa ficar ligada."),
                         color = Accent, fontSize = 13.sp, textAlign = TextAlign.Center,
                         modifier = Modifier.width(300.dp),
                     )
@@ -199,8 +199,8 @@ fun App(vm: MainViewModel = viewModel()) {
                         }
                     },
                 ) {
-                    TvButton(text = "Ficar", primary = true, focusRequester = stay, minWidth = 120.dp) { askExit = false }
-                    TvButton(text = "Sair", focusRequester = leave, minWidth = 120.dp) {
+                    TvButton(text = tr("Ficar"), primary = true, focusRequester = stay, minWidth = 120.dp) { askExit = false }
+                    TvButton(text = tr("Sair"), focusRequester = leave, minWidth = 120.dp) {
                         askExit = false
                         (ctx as? android.app.Activity)?.finish()
                     }
@@ -330,12 +330,12 @@ fun App(vm: MainViewModel = viewModel()) {
                         .background(Panel, androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
                         .padding(20.dp),
                 ) {
-                    Text("O app fechou sozinho da última vez", color = TextMain, fontSize = 18.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
-                    Text("Tire uma foto desta tela e mande para o Claude: é o que ele precisa para corrigir.", color = Muted, fontSize = 13.sp)
+                    Text(tr("O app fechou sozinho da última vez"), color = TextMain, fontSize = 18.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                    Text(tr("Tire uma foto desta tela e mande para o Claude: é o que ele precisa para corrigir."), color = Muted, fontSize = 13.sp)
                     Spacer(Modifier.height(8.dp))
                     Text(crash.take(1400), color = TextMain, fontSize = 11.sp, lineHeight = 14.sp)
                     Spacer(Modifier.height(10.dp))
-                    TvButton(text = "Fechar", primary = true) { vm.lastCrash = null }
+                    TvButton(text = tr("Fechar"), primary = true) { vm.lastCrash = null }
                 }
             }
         }
@@ -407,20 +407,20 @@ private fun DueReminderDialog(vm: MainViewModel, r: Reminder) {
                 .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("⏰ Já vai começar", color = Accent, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr("⏰ Já vai começar"), color = Accent, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(8.dp))
             Text(r.title, color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
             Spacer(Modifier.height(4.dp))
             val m = minutesLeft(r.startMs)
             Text(
-                (if (m <= 0L) "Está começando agora" else "Começa em $m min") + (if (r.league.isNotEmpty()) " · " + r.league else ""),
+                (if (m <= 0L) tr("Está começando agora") else tr("Começa em {0} min", m)) + (if (r.league.isNotEmpty()) " · " + r.league else ""),
                 color = Muted,
                 fontSize = 15.sp,
             )
             Spacer(Modifier.height(20.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                TvButton(text = "Ver canais", primary = true, focusRequester = first) { vm.dismissDue(true) }
-                TvButton(text = "Dispensar") { vm.dismissDue(false) }
+                TvButton(text = tr("Ver canais"), primary = true, focusRequester = first) { vm.dismissDue(true) }
+                TvButton(text = tr("Dispensar")) { vm.dismissDue(false) }
             }
         }
     }
@@ -435,7 +435,7 @@ private fun DueReminderStrip(vm: MainViewModel, r: Reminder) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         val m = minutesLeft(r.startMs)
         Text(
-            "⏰ " + r.title + (if (m <= 0L) " está começando" else " começa em $m min"),
+            "⏰ " + r.title + (if (m <= 0L) tr(" está começando") else tr(" começa em {0} min", m)),
             color = TextMain,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
@@ -482,7 +482,7 @@ private fun BlockedScreen(vm: MainViewModel) {
             Text(stringResource(R.string.app_name), color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.Light, letterSpacing = 6.sp)
             Spacer(Modifier.height(22.dp))
             Text(
-                if (vm.pendingApproval) "Aguardando liberação" else "Acesso suspenso",
+                if (vm.pendingApproval) tr("Aguardando liberação") else tr("Acesso suspenso"),
                 color = Accent,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
@@ -491,35 +491,35 @@ private fun BlockedScreen(vm: MainViewModel) {
             if (!form) {
                 Text(
                     if (vm.requestState == 2) {
-                        "Recebemos o seu pedido. Ele está em análise e a gente entra em contato."
+                        tr("Recebemos o seu pedido. Ele está em análise e a gente entra em contato.")
                     } else if (vm.pendingApproval) {
-                        "Este aparelho ainda não foi liberado. Você pode pedir a liberação."
+                        tr("Este aparelho ainda não foi liberado. Você pode pedir a liberação.")
                     } else {
-                        "O acesso deste aparelho ao app foi pausado. Você pode pedir a liberação."
+                        tr("O acesso deste aparelho ao app foi pausado. Você pode pedir a liberação.")
                     },
                     color = TextMain,
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(Modifier.height(12.dp))
-                Text("Código: " + vm.deviceCode(), color = Muted, fontSize = 14.sp, letterSpacing = 2.sp)
+                Text(tr("Código: ") + vm.deviceCode(), color = Muted, fontSize = 14.sp, letterSpacing = 2.sp)
                 Spacer(Modifier.height(22.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     if (vm.requestState != 2) {
-                        TvButton(text = "Pedir liberação", primary = true, focusRequester = first) { form = true }
-                        TvButton(text = "Tentar de novo") { vm.retryControl() }
+                        TvButton(text = tr("Pedir liberação"), primary = true, focusRequester = first) { form = true }
+                        TvButton(text = tr("Tentar de novo")) { vm.retryControl() }
                     } else {
-                        TvButton(text = "Tentar de novo", primary = true, focusRequester = first) { vm.retryControl() }
+                        TvButton(text = tr("Tentar de novo"), primary = true, focusRequester = first) { vm.retryControl() }
                     }
-                    TvButton(text = "Sair") { (ctx as? android.app.Activity)?.finish() }
+                    TvButton(text = tr("Sair")) { (ctx as? android.app.Activity)?.finish() }
                 }
             } else if (vm.requestState == 2) {
-                Text("Pedido enviado! Ele está em análise e a gente entra em contato.", color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
+                Text(tr("Pedido enviado! Ele está em análise e a gente entra em contato."), color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(18.dp))
-                TvButton(text = "Voltar", primary = true, focusRequester = first) { form = false }
+                TvButton(text = tr("Voltar"), primary = true, focusRequester = first) { form = false }
             } else {
                 Text(
-                    "Seus dados vão só para quem desenvolve o app, para ele entrar em contato. Preencha aqui ou pelo celular.",
+                    tr("Seus dados vão só para quem desenvolve o app, para ele entrar em contato. Preencha aqui ou pelo celular."),
                     color = Muted,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
@@ -528,7 +528,7 @@ private fun BlockedScreen(vm: MainViewModel) {
                 Row(horizontalArrangement = Arrangement.spacedBy(24.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(modifier = Modifier.weight(1f)) {
                         androidx.compose.material3.OutlinedTextField(
-                            value = name, onValueChange = { name = it }, label = { Text("Nome") }, singleLine = true,
+                            value = name, onValueChange = { name = it }, label = { Text(tr("Nome")) }, singleLine = true,
                             colors = fieldColors(), modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Next),
                             keyboardActions = androidx.compose.foundation.text.KeyboardActions(onNext = { focus.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }),
@@ -545,7 +545,7 @@ private fun BlockedScreen(vm: MainViewModel) {
                         )
                         Spacer(Modifier.height(8.dp))
                         androidx.compose.material3.OutlinedTextField(
-                            value = phone, onValueChange = { phone = it }, label = { Text("Telefone") }, singleLine = true,
+                            value = phone, onValueChange = { phone = it }, label = { Text(tr("Telefone")) }, singleLine = true,
                             colors = fieldColors(), modifier = Modifier.fillMaxWidth(),
                             keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                                 keyboardType = androidx.compose.ui.text.input.KeyboardType.Phone,
@@ -559,22 +559,22 @@ private fun BlockedScreen(vm: MainViewModel) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             QrCode(text = url, modifier = Modifier.size(140.dp))
                             Spacer(Modifier.height(6.dp))
-                            Text("Ou aponte a câmera do celular", color = Muted, fontSize = 11.sp)
+                            Text(tr("Ou aponte a câmera do celular"), color = Muted, fontSize = 11.sp)
                         }
                     }
                 }
                 Spacer(Modifier.height(14.dp))
                 if (vm.requestState == 3) {
-                    Text("Não consegui enviar. Preencha tudo e confira a internet.", color = ErrorColor, fontSize = 13.sp)
+                    Text(tr("Não consegui enviar. Preencha tudo e confira a internet."), color = ErrorColor, fontSize = 13.sp)
                     Spacer(Modifier.height(8.dp))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     TvButton(
-                        text = if (vm.requestState == 1) "Enviando..." else "Enviar pedido",
+                        text = if (vm.requestState == 1) tr("Enviando...") else tr("Enviar pedido"),
                         primary = true,
                         focusRequester = first,
                     ) { vm.sendAccessRequest(name, email, phone) }
-                    TvButton(text = "Voltar") { form = false }
+                    TvButton(text = tr("Voltar")) { form = false }
                 }
             }
         }
@@ -602,7 +602,7 @@ private fun NoticeDialog(vm: MainViewModel, text: String) {
                 .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("Aviso", color = Accent, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+            Text(tr("Aviso"), color = Accent, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
             Spacer(Modifier.height(10.dp))
             Text(text, color = TextMain, fontSize = 16.sp, textAlign = TextAlign.Center)
             Spacer(Modifier.height(20.dp))
@@ -629,7 +629,7 @@ private fun NoticeBanner(vm: MainViewModel, id: Int, text: String, secs: Int) {
                 .padding(horizontal = 24.dp, vertical = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("Aviso", color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+            Text(tr("Aviso"), color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
             Spacer(Modifier.height(4.dp))
             Text(text, color = TextMain, fontSize = 16.sp, textAlign = TextAlign.Center)
         }

@@ -84,13 +84,13 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
         var last: Exception? = null
         for ((i, a) in apis.withIndex()) {
             try {
-                out.add("Lista ${i + 1}: " + f(a))
+                out.add(tr("Lista {0}: ", i + 1) + f(a))
                 ok++
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
                 last = e
-                out.add("Lista ${i + 1}: não respondeu")
+                out.add(tr("Lista {0}: não respondeu", i + 1))
             }
         }
         if (ok == 0 && last != null) throw last

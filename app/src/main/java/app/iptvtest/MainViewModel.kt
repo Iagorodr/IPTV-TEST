@@ -123,9 +123,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun deviceLang(): String = java.util.Locale.getDefault().toLanguageTag()
 
+    /** Troca o idioma da interface na hora (a tela se redesenha). */
+    fun applyLang(tag: String) = I18n.apply(appCtx, tag)
+
     /** Guarda nome, idioma e fuso (as respostas obrigatórias) e avisa o servidor. */
     fun saveProfile(name: String, lang: String, tzId: String) {
         user.setProfile(name, lang)
+        applyLang(lang)
         val deviceTz = java.util.TimeZone.getDefault().id
         setTimeZone(if (tzId == deviceTz) "" else tzId)
         user.setOnboarded()
@@ -136,6 +140,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     /** Troca nome e idioma depois (Ajustes → Perfil). */
     fun updateProfile(name: String, lang: String) {
         user.setProfile(name, lang)
+        applyLang(lang)
         checkControl(false)
     }
 
@@ -302,6 +307,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         try { Subs.cleanup(app) } catch (e: Exception) { }
         lastCrash = CrashLog.take(app)
         AppTz.apply(user.tzId)
+        I18n.apply(app, user.profileLang.ifEmpty { detectLang(deviceLang()) })
         favTeams = user.favTeams.toList()
         favLeagues = user.favLeagues.toList()
         reminders = user.reminders.toList()
@@ -344,7 +350,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val u = userRaw.trim()
         val p = passRaw.trim()
         if (server.isEmpty() || u.isEmpty() || p.isEmpty()) {
-            loginError = "Preencha servidor, usuário e senha."
+            loginError = tr("Preencha servidor, usuário e senha.")
             return
         }
         if (loginBusy) return
@@ -373,11 +379,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun loginM3u(linkRaw: String) {
         val link = linkRaw.trim()
         if (link.isEmpty()) {
-            loginError = "Cole o link da lista."
+            loginError = tr("Cole o link da lista.")
             return
         }
         if (!link.startsWith("http://", ignoreCase = true) && !link.startsWith("https://", ignoreCase = true)) {
-            loginError = "O link precisa começar com http:// ou https://"
+            loginError = tr("O link precisa começar com http:// ou https://")
             return
         }
         if (loginBusy) return
@@ -414,7 +420,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val ip = PhoneLoginServer.localIp()
         if (ip == null) {
             phoneUrl = null
-            phoneMsg = "A TV não está numa rede Wi-Fi/cabo. Conecte e abra esta aba de novo."
+            phoneMsg = tr("A TV não está numa rede Wi-Fi/cabo. Conecte e abra esta aba de novo.")
             return
         }
         val token = PhoneLoginServer.newToken()
@@ -423,7 +429,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
         if (!srv.start()) {
             phoneUrl = null
-            phoneMsg = "Não consegui abrir a conexão com o celular nesta TV. Use as outras abas."
+            phoneMsg = tr("Não consegui abrir a conexão com o celular nesta TV. Use as outras abas.")
             return
         }
         phoneServer = srv
@@ -442,7 +448,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             sendAccessRequest(f["nome"] ?: "", f["email"] ?: "", f["tel"] ?: "")
             return
         }
-        phoneMsg = "Recebido do celular. Entrando..."
+        phoneMsg = tr("Recebido do celular. Entrando...")
         if (mode == "m3u") {
             loginM3u(f["link"] ?: "")
         } else {
@@ -465,7 +471,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                accountInfo = "Não foi possível verificar a conta: ${friendly(e)}"
+                accountInfo = tr("Não foi possível verificar a conta: {0}", friendly(e))
             }
         }
     }
@@ -641,7 +647,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 }
             }
             if (catalog == null) {
-                loadMsg = "Preparando..."
+                loadMsg = tr("Preparando...")
             } else {
                 refreshing = true
             }
@@ -649,11 +655,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 a.prepare()
                 val fresh = downloadAndBuild(a)
                 withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
-                if (catalog == null) loadMsg = "Montando as telas"
+                if (catalog == null) loadMsg = tr("Montando as telas")
                 val wasShowing = catalog != null
                 applyCatalog(fresh)
                 if (wasShowing) {
-                    listNotice = "Lista atualizada: " + fresh.movies.size + " filmes · " + fresh.series.size + " séries · " + fresh.channels.size + " canais"
+                    listNotice = tr("Lista atualizada: ") + fresh.movies.size + tr(" filmes · ") + fresh.series.size + tr(" séries · ") + fresh.channels.size + tr(" canais")
                     launch {
                         delay(9_000L)
                         listNotice = null
@@ -681,19 +687,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             if (show) loadMsg = msg
         }
         try {
-            step(1, "Baixando a lista...")
+            step(1, tr("Baixando a lista..."))
             a.refresh()
-            step(2, "Baixando categorias...")
+            step(2, tr("Baixando categorias..."))
             val vc = a.categories(Kind.MOVIES)
             val sc = a.categories(Kind.SERIES)
             val lc = a.categories(Kind.LIVE)
-            step(3, "Baixando filmes")
+            step(3, tr("Baixando filmes"))
             val vod = a.fetchItems(Kind.MOVIES)
-            step(4, "Baixando séries")
+            step(4, tr("Baixando séries"))
             val ser = a.fetchItems(Kind.SERIES)
-            step(5, "Baixando canais")
+            step(5, tr("Baixando canais"))
             val live = a.fetchItems(Kind.LIVE)
-            step(6, "Organizando por gênero e país")
+            step(6, tr("Organizando por gênero e país"))
             Organizer.phase = { m ->
                 LoadCounter.items = 0
                 if (show) viewModelScope.launch { loadMsg = m }
@@ -733,7 +739,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun localLabel(tab: Tab): String {
         val cc = localCc[tab] ?: ""
-        return if (cc.isEmpty()) "País: todos" else "País: " + Countries.label(cc)
+        return if (cc.isEmpty()) tr("País: todos") else tr("País: ") + Countries.label(cc)
     }
 
     private val localCache = HashMap<String, Pair<List<Shelf>, List<Title>>>()
@@ -840,10 +846,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val c = catalog ?: return ""
         val mins = (System.currentTimeMillis() - c.builtAt) / 60_000L
         return when {
-            mins < 2L -> "agora há pouco"
-            mins < 90L -> "há $mins min"
-            mins < 48L * 60L -> "há ${mins / 60L} h"
-            else -> "há ${mins / 1440L} dias"
+            mins < 2L -> tr("agora há pouco")
+            mins < 90L -> tr("há {0} min", mins)
+            mins < 48L * 60L -> tr("há {0} h", mins / 60L)
+            else -> tr("há {0} dias", mins / 1440L)
         }
     }
 
@@ -945,7 +951,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             viewModelScope.launch {
                 try {
                     val eps = a.seriesEpisodes(v.id)
-                    episodes[v.id] = EpisodesState(false, if (eps.isEmpty()) "Nenhum episódio encontrado." else null, eps)
+                    episodes[v.id] = EpisodesState(false, if (eps.isEmpty()) tr("Nenhum episódio encontrado.") else null, eps)
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
@@ -987,7 +993,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private fun versionLabel(title: Title, v: Version, idx: Int): String {
         val parts = ArrayList<String>()
         if (v.cc.isNotEmpty()) parts.add(Countries.label(v.cc))
-        parts.add(if (v.leg) "Legendado" else if (title.national) "Original" else "Dublado")
+        parts.add(if (v.leg) tr("Legendado") else if (title.national) tr("Original") else tr("Dublado"))
         val tags = LinkedHashSet<String>()
         if (v.is4k) tags.add("4K")
         for ((t, re) in Q_TAGS) if (re.containsMatchIn(v.src)) tags.add(t)
@@ -995,7 +1001,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (tags.contains("FHD") || tags.contains("4K")) tags.remove("HD")
         parts.addAll(tags)
         if (v.cam) parts.add("cinema")
-        parts.add("cópia " + (idx + 1))
+        parts.add(tr("cópia ") + (idx + 1))
         val base = parts.joinToString(" · ")
         val src = v.src.take(60)
         return if (src.isEmpty()) base else base + "\n" + src
@@ -1186,7 +1192,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Resumo do "voltar no tempo" da lista em uso (para os Ajustes). */
     fun catchupSummary(): String {
-        val c = catalog ?: return "Catálogo ainda não carregado."
+        val c = catalog ?: return tr("Catálogo ainda não carregado.")
         var n = 0
         var days = 0
         for (ch in c.channels) {
@@ -1197,9 +1203,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             }
         }
         return if (n == 0) {
-            "Esta lista não oferece catch-up (voltar no tempo)."
+            tr("Esta lista não oferece catch-up (voltar no tempo).")
         } else {
-            "$n canais guardam a programação passada (até $days dia(s))."
+            tr("{0} canais guardam a programação passada (até {1} dia(s)).", n, days)
         }
     }
 
@@ -1349,7 +1355,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 if (manual) updateDismissed = false
                 updateMsg = null
             } else if (manual) {
-                updateMsg = "Você já está na versão mais recente (build " + installedBuild() + ")."
+                updateMsg = tr("Você já está na versão mais recente (build ") + installedBuild() + ")."
             }
         }
     }
@@ -1363,7 +1369,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val f = Updater.download(appCtx) { p -> updateProgress = p }
             if (f == null) {
                 updateState = "erro"
-                updateMsg = "Não consegui baixar. Confira a internet e tente de novo."
+                updateMsg = tr("Não consegui baixar. Confira a internet e tente de novo.")
             } else {
                 updateState = ""
                 val problem = Updater.install(appCtx, f)
@@ -1422,7 +1428,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun recordGame(g: Game) {
         gameDialog = null
         val title = g.home.short + " x " + g.away.short
-        beginPick("Escolha o canal que vai gravar " + title) { _, real ->
+        beginPick(tr("Escolha o canal que vai gravar ") + title) { _, real ->
             SchedInit(
                 title = title + " · " + real.name,
                 channelKey = real.key,
@@ -1438,7 +1444,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Agendamento manual: a pessoa abre qualquer canal e depois escolhe o horário. */
     fun recordManual() {
-        beginPick("Escolha o canal que quer gravar") { _, real ->
+        beginPick(tr("Escolha o canal que quer gravar")) { _, real ->
             val q = 15L * 60_000L
             val t = ((System.currentTimeMillis() + 3L * 60_000L) / q + 1) * q
             SchedInit(
@@ -1460,9 +1466,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun addSchedule(init: SchedInit, startMs: Long, endMs: Long, quality: Int): String? {
-        if (init.urls.isEmpty() || init.urls.all { it.isBlank() }) return "Esse canal não tem endereço para gravar."
+        if (init.urls.isEmpty() || init.urls.all { it.isBlank() }) return tr("Esse canal não tem endereço para gravar.")
         if (SchedStore.all(appCtx).any { it.state == "pending" && it.channelKey == init.channelKey && it.startMs < endMs && startMs < it.endMs }) {
-            return "Você já tem uma gravação agendada nesse canal nesse horário."
+            return tr("Você já tem uma gravação agendada nesse canal nesse horário.")
         }
         val id = System.currentTimeMillis().toString() + "-" + (Math.random() * 1000).toInt()
         SchedStore.add(appCtx, Sched(id, init.channelKey, init.channelName, init.title, init.urls, startMs, endMs, quality))
@@ -1581,14 +1587,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    err = "Não consegui buscar os jogos agora."
+                    err = tr("Não consegui buscar os jogos agora.")
                 }
                 try {
                     leagueGames = if (leagues.isEmpty()) emptyList() else SportsApi.leagueGames(leagues, now - SportsTime.DAY, now + 2L * SportsTime.DAY)
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    err = "Não consegui buscar os jogos agora."
+                    err = tr("Não consegui buscar os jogos agora.")
                 }
                 gamesError = err
                 if (my == gamesGen) gamesLoading = false
@@ -1621,7 +1627,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (cur.any { it.id == t.id }) {
             favTeams = cur.filter { it.id != t.id }
         } else {
-            if (cur.size >= 5) return "Você já escolheu 5 times. Tire um para escolher outro."
+            if (cur.size >= 5) return tr("Você já escolheu 5 times. Tire um para escolher outro.")
             favTeams = cur + t
         }
         user.saveFavTeams(favTeams)
@@ -1639,7 +1645,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (cur.contains(slug)) {
             favLeagues = cur.filter { it != slug }
         } else {
-            if (cur.size >= SportsData.MAX_LEAGUES) return "Você já escolheu ${SportsData.MAX_LEAGUES} ligas. Tire uma para escolher outra."
+            if (cur.size >= SportsData.MAX_LEAGUES) return tr("Você já escolheu {0} ligas. Tire uma para escolher outra.", SportsData.MAX_LEAGUES)
             favLeagues = cur + slug
         }
         user.saveFavLeagues(favLeagues)
@@ -1692,7 +1698,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                allGamesError = "Não consegui buscar os jogos agora."
+                allGamesError = tr("Não consegui buscar os jogos agora.")
                 allGamesAt = 0L
             } finally {
                 allGamesLoading = false
@@ -1723,7 +1729,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 throw e
             } catch (e: Exception) {
                 popAt = 0L
-                popError = "Não consegui buscar os jogos agora."
+                popError = tr("Não consegui buscar os jogos agora.")
             } finally {
                 popLoading = false
             }
@@ -1812,9 +1818,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val t = BroadcastStore.table
             onDone(
                 when {
-                    !ok -> "Não consegui baixar agora (sem internet?). Segue a tabela de " + t.updatedPretty() + "."
-                    t.updated != before -> "Tabela nova carregada: " + t.updatedPretty() + "."
-                    else -> "Já é a tabela mais nova: " + t.updatedPretty() + "."
+                    !ok -> tr("Não consegui baixar agora (sem internet?). Segue a tabela de ") + t.updatedPretty() + "."
+                    t.updated != before -> tr("Tabela nova carregada: ") + t.updatedPretty() + "."
+                    else -> tr("Já é a tabela mais nova: ") + t.updatedPretty() + "."
                 },
             )
         }
@@ -1836,12 +1842,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val cards = channelCards
         val when0 = SportsTime.dayLabel(g.startMs, now, tz) + " " + SportsTime.clock(g.startMs, tz)
         val hint = if (pick) {
-            "Escolha o canal para gravar. Confira se o jogo realmente passa nele: o app pode errar."
+            tr("Escolha o canal para gravar. Confira se o jogo realmente passa nele: o app pode errar.")
         } else if (info.matched.isNotEmpty()) {
-            "Achei na sua lista. Se travar, volte e escolha outra fonte."
+            tr("Achei na sua lista. Se travar, volte e escolha outra fonte.")
         } else {
-            "Este jogo ainda não está em \"Jogos em Destaque\" da sua lista. Veja abaixo os canais de quem costuma passar, " +
-                "os canais de esporte ou use a busca."
+            tr("Este jogo ainda não está em \"Jogos em Destaque\" da sua lista. Veja abaixo os canais de quem costuma passar, ") +
+                tr("os canais de esporte ou use a busca.")
         }
         viewModelScope.launch {
             // a procura em listas enormes (dezenas de milhares de canais) não pode travar a tela
@@ -1863,7 +1869,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 highlight = info.matched.distinctBy { it.key },
                 searchQuery = g.home.short,
                 extra = extra.distinctBy { it.key },
-                extraTitle = if (opts.isEmpty()) "" else (if (info.bgame != null) "Passa em: " else "Costuma passar em: ") + opts.take(4).joinToString(" · "),
+                extraTitle = if (opts.isEmpty()) "" else (if (info.bgame != null) tr("Passa em: ") else tr("Costuma passar em: ")) + opts.take(4).joinToString(" · "),
             )
         }
     }
@@ -1880,9 +1886,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             ReminderAlarms.cancel(appCtx, ex)
             reminders = cur.filter { it.gameKey != g.key }
             user.saveReminders(reminders)
-            return "Lembrete removido."
+            return tr("Lembrete removido.")
         }
-        if (g.state != 0) return "Esse jogo já começou."
+        if (g.state != 0) return tr("Esse jogo já começou.")
         val r = Reminder(
             gameKey = g.key,
             title = g.home.short + " x " + g.away.short,
@@ -1896,7 +1902,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         reminders = (cur + r).sortedBy { it.startMs }
         user.saveReminders(reminders)
         ReminderAlarms.schedule(appCtx, r)
-        return "Pronto! Vou avisar 10 minutos antes do jogo."
+        return tr("Pronto! Vou avisar 10 minutos antes do jogo.")
     }
 
     private fun gameOf(r: Reminder): Game {
@@ -1948,7 +1954,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val ev = sportEvents[kind]
         val now = System.currentTimeMillis()
         val sub = if (ev == null) {
-            "Sem data confirmada agora"
+            tr("Sem data confirmada agora")
         } else {
             ev.name + " · " + SportsTime.dayLabel(ev.startMs, now, tz) + " " + SportsTime.clock(ev.startMs, tz)
         }
@@ -1961,9 +1967,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val comp = BroadcastStore.table.forKey(key)
         val extra = if (comp != null) Broadcasts.channelsFor(comp.options, channelCards).filter { e -> list.none { it.key == e.key } } else emptyList()
         val hint = if (list.isNotEmpty()) {
-            "Canais da sua lista para ${kind.label}."
+            tr("Canais da sua lista para {0}.", tr(kind.label))
         } else {
-            "Não achei canais de ${kind.label} pelo nome. Veja os canais de esporte abaixo ou use a busca."
+            tr("Não achei canais de {0} pelo nome. Veja os canais de esporte abaixo ou use a busca.", tr(kind.label))
         }
         val q = when (kind) {
             SportKind.F1 -> "F1"
@@ -1971,9 +1977,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             SportKind.TENNIS -> "tenis"
         }
         channelList = ChannelListRequest(
-            kind.label, sub, hint, list, q,
+            tr(kind.label), sub, hint, list, q,
             extra = extra,
-            extraTitle = if (comp != null) "Costuma passar em: " + comp.options.joinToString(" · ") else "",
+            extraTitle = if (comp != null) tr("Costuma passar em: ") + comp.options.joinToString(" · ") else "",
         )
     }
 
@@ -2035,11 +2041,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun friendly(e: Throwable): String = when (e) {
-        is UnknownHostException -> "Servidor não encontrado. Confira o endereço e a internet."
-        is SocketTimeoutException -> "O servidor demorou demais para responder."
-        is ConnectException -> "Não foi possível conectar ao servidor."
-        is JSONException -> "O servidor devolveu uma resposta inválida."
-        is OutOfMemoryError -> "A TV ficou sem memória ao organizar o catálogo."
-        else -> e.message ?: "Erro desconhecido."
+        is UnknownHostException -> tr("Servidor não encontrado. Confira o endereço e a internet.")
+        is SocketTimeoutException -> tr("O servidor demorou demais para responder.")
+        is ConnectException -> tr("Não foi possível conectar ao servidor.")
+        is JSONException -> tr("O servidor devolveu uma resposta inválida.")
+        is OutOfMemoryError -> tr("A TV ficou sem memória ao organizar o catálogo.")
+        else -> e.message ?: tr("Erro desconhecido.")
     }
 }

@@ -111,7 +111,7 @@ fun LoginScreen(vm: MainViewModel) {
                 Text(stringResource(R.string.app_name), color = Accent, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    if (vm.addingList) "Adicionar outra lista.\nElas ficam guardadas só nesta TV." else "Entre com a sua lista.\nOs dados ficam guardados só nesta TV.",
+                    if (vm.addingList) tr("Adicionar outra lista.\nElas ficam guardadas só nesta TV.") else tr("Entre com a sua lista.\nOs dados ficam guardados só nesta TV."),
                     color = TextMain,
                     fontSize = 14.sp,
                     lineHeight = 19.sp,
@@ -119,7 +119,7 @@ fun LoginScreen(vm: MainViewModel) {
                 )
                 if (vm.addingList) {
                     Spacer(Modifier.height(14.dp))
-                    TvButton(text = "Cancelar") { vm.cancelAddList() }
+                    TvButton(text = tr("Cancelar")) { vm.cancelAddList() }
                 }
                 Spacer(Modifier.height(34.dp))
             }
@@ -133,9 +133,9 @@ fun LoginScreen(vm: MainViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                ChipItem(text = "Xtream", selected = mode == 0) { mode = 0; vm.clearLoginError() }
-                ChipItem(text = "Link M3U", selected = mode == 1) { mode = 1; vm.clearLoginError() }
-                ChipItem(text = "Pelo celular (QR)", selected = mode == 2) { mode = 2; vm.clearLoginError() }
+                ChipItem(text = tr("Xtream"), selected = mode == 0) { mode = 0; vm.clearLoginError() }
+                ChipItem(text = tr("Link M3U"), selected = mode == 1) { mode = 1; vm.clearLoginError() }
+                ChipItem(text = tr("Pelo celular (QR)"), selected = mode == 2) { mode = 2; vm.clearLoginError() }
             }
             Spacer(Modifier.height(16.dp))
 
@@ -144,7 +144,7 @@ fun LoginScreen(vm: MainViewModel) {
                     OutlinedTextField(
                         value = server,
                         onValueChange = { server = it },
-                        label = { Text("Servidor (ex.: http://exemplo.com:8080)") },
+                        label = { Text(tr("Servidor (ex.: http://exemplo.com:8080)")) },
                         singleLine = true,
                         colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
@@ -155,7 +155,7 @@ fun LoginScreen(vm: MainViewModel) {
                     OutlinedTextField(
                         value = user,
                         onValueChange = { user = it },
-                        label = { Text("Usuário") },
+                        label = { Text(tr("Usuário")) },
                         singleLine = true,
                         colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
@@ -166,7 +166,7 @@ fun LoginScreen(vm: MainViewModel) {
                     OutlinedTextField(
                         value = pass,
                         onValueChange = { pass = it },
-                        label = { Text("Senha") },
+                        label = { Text(tr("Senha")) },
                         singleLine = true,
                         colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
@@ -179,8 +179,8 @@ fun LoginScreen(vm: MainViewModel) {
                     )
                     Spacer(Modifier.height(18.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                        TvButton(text = if (showPass) "Ocultar senha" else "Mostrar senha") { showPass = !showPass }
-                        TvButton(text = if (vm.loginBusy) "Entrando..." else "Entrar", primary = true) {
+                        TvButton(text = if (showPass) tr("Ocultar senha") else tr("Mostrar senha")) { showPass = !showPass }
+                        TvButton(text = if (vm.loginBusy) tr("Entrando...") else tr("Entrar"), primary = true) {
                             vm.login(server, user, pass)
                         }
                     }
@@ -190,7 +190,7 @@ fun LoginScreen(vm: MainViewModel) {
                     OutlinedTextField(
                         value = link,
                         onValueChange = { link = it },
-                        label = { Text("Link da lista (ex.: http://exemplo.com/lista.m3u)") },
+                        label = { Text(tr("Link da lista (ex.: http://exemplo.com/lista.m3u)")) },
                         singleLine = true,
                         colors = fieldColors(),
                         modifier = Modifier.fillMaxWidth(),
@@ -202,14 +202,14 @@ fun LoginScreen(vm: MainViewModel) {
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        "Links do tipo get.php?username=...&password=... entram como Xtream (mais completo, com sinopse e episódios). " +
-                            "Listas M3U comuns trazem só nome, imagem e categoria.",
+                        tr("Links do tipo get.php?username=...&password=... entram como Xtream (mais completo, com sinopse e episódios). ") +
+                            tr("Listas M3U comuns trazem só nome, imagem e categoria."),
                         color = Muted,
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center,
                     )
                     Spacer(Modifier.height(14.dp))
-                    TvButton(text = if (vm.loginBusy) "Entrando..." else "Entrar", primary = true) {
+                    TvButton(text = if (vm.loginBusy) tr("Entrando...") else tr("Entrar"), primary = true) {
                         vm.loginM3u(link)
                     }
                 }
@@ -220,19 +220,19 @@ fun LoginScreen(vm: MainViewModel) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
                             QrCode(text = url, modifier = Modifier.size(170.dp))
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("1. Conecte o celular no mesmo Wi-Fi da TV.", color = TextMain, fontSize = 13.sp)
+                                Text(tr("1. Conecte o celular no mesmo Wi-Fi da TV."), color = TextMain, fontSize = 13.sp)
                                 Spacer(Modifier.height(6.dp))
-                                Text("2. Aponte a câmera para o QR code.", color = TextMain, fontSize = 13.sp)
+                                Text(tr("2. Aponte a câmera para o QR code."), color = TextMain, fontSize = 13.sp)
                                 Spacer(Modifier.height(6.dp))
-                                Text("3. Digite os dados no celular e toque em Enviar.", color = TextMain, fontSize = 13.sp)
+                                Text(tr("3. Digite os dados no celular e toque em Enviar."), color = TextMain, fontSize = 13.sp)
                                 Spacer(Modifier.height(10.dp))
-                                Text("Ou abra no navegador do celular:", color = Muted, fontSize = 12.sp)
+                                Text(tr("Ou abra no navegador do celular:"), color = Muted, fontSize = 12.sp)
                                 Text(url, color = Accent, fontSize = 11.sp)
                             }
                         }
                     } else {
                         Text(
-                            vm.phoneMsg ?: "Preparando o QR code...",
+                            vm.phoneMsg ?: tr("Preparando o QR code..."),
                             color = Muted,
                             fontSize = 14.sp,
                             textAlign = TextAlign.Center,
@@ -301,13 +301,13 @@ fun LoadingScreen(vm: MainViewModel) {
             Spacer(Modifier.height(36.dp))
             val err = vm.loadError
             if (err != null) {
-                Text("Não foi possível carregar o catálogo", color = ErrorColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Não foi possível carregar o catálogo"), color = ErrorColor, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
                 Text(err, color = TextMain, fontSize = 14.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(18.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    TvButton(text = "Tentar de novo", primary = true) { vm.loadCatalog(force = true) }
-                    TvButton(text = "Sair da conta") { vm.logout() }
+                    TvButton(text = tr("Tentar de novo"), primary = true) { vm.loadCatalog(force = true) }
+                    TvButton(text = tr("Sair da conta")) { vm.logout() }
                 }
             } else {
                 // progresso real: etapa atual + itens já lidos + tempo
@@ -330,13 +330,13 @@ fun LoadingScreen(vm: MainViewModel) {
                 )
                 Spacer(Modifier.height(18.dp))
                 val count = if (step in 3..6) vm.loadCount() else 0
-                val msg = (vm.loadMsg ?: "Preparando...") + (if (count > 0) ": " + String.format(java.util.Locale.GERMANY, "%,d", count) + " itens" else "")
+                val msg = (vm.loadMsg ?: tr("Preparando...")) + (if (count > 0) ": " + String.format(java.util.Locale.GERMANY, "%,d", count) + tr(" itens") else "")
                 Text(msg, color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
                 if (step > 0) {
                     val secs = ((tick - vm.loadStartMs).coerceAtLeast(0L) / 1000L).toInt()
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Etapa " + step + " de 6  ·  " + (secs / 60) + ":" + String.format("%02d", secs % 60),
+                        tr("Etapa ") + step + tr(" de 6  ·  ") + (secs / 60) + ":" + String.format("%02d", secs % 60),
                         color = Muted,
                         fontSize = 13.sp,
                         textAlign = TextAlign.Center,
@@ -344,7 +344,7 @@ fun LoadingScreen(vm: MainViewModel) {
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    "Listas muito grandes podem levar alguns minutos. Isso só acontece na primeira vez: depois o catálogo fica guardado e abre na hora, e as atualizações acontecem em segundo plano.",
+                    tr("Listas muito grandes podem levar alguns minutos. Isso só acontece na primeira vez: depois o catálogo fica guardado e abre na hora, e as atualizações acontecem em segundo plano."),
                     color = Muted,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
@@ -442,7 +442,7 @@ fun AppLogo(name: String = "") {
         if (n.isNotEmpty()) {
             Spacer(Modifier.width(10.dp))
             Text(
-                "Olá, $n",
+                tr("Olá, {0}", n),
                 color = TextMain,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -490,7 +490,7 @@ private fun KidsAvatar(on: Boolean, onClick: () -> Unit) {
             if (focused || on) {
                 Spacer(Modifier.width(6.dp))
                 Text(
-                    if (on) (if (focused) "Sair do infantil" else "Infantil") else "Infantil",
+                    if (on) (if (focused) tr("Sair do infantil") else tr("Infantil")) else tr("Infantil"),
                     color = if (on) kidA else TextMain,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
@@ -544,7 +544,7 @@ private fun KidsSwitch(on: Boolean, onClick: () -> Unit) {
             }
             Spacer(Modifier.width(7.dp))
             Text(
-                text = if (on) "Sair do infantil" else "Infantil",
+                text = if (on) tr("Sair do infantil") else tr("Infantil"),
                 color = if (on) Color(0xFF3A1A00) else kidA,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
@@ -607,18 +607,18 @@ fun TopNav(vm: MainViewModel) {
     ) {
         AppLogo(vm.user.profileName)
         Spacer(Modifier.width(18.dp))
-        NavItem("Início", vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
-        if (!vm.user.kidsMode) NavItem("Jogos", vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
-        NavItem("Filmes", vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
-        NavItem("Séries", vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
-        NavItem("Canais", vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
-        NavItem("Favoritos", vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
-        if (!vm.user.kidsMode) NavItem("Gravações", vm.tab == Tab.REC) { vm.selectTab(Tab.REC) }
+        NavItem(tr("Início"), vm.tab == Tab.HOME) { vm.selectTab(Tab.HOME) }
+        if (!vm.user.kidsMode) NavItem(tr("Jogos"), vm.tab == Tab.GAMES) { vm.selectTab(Tab.GAMES) }
+        NavItem(tr("Filmes"), vm.tab == Tab.MOVIES) { vm.selectTab(Tab.MOVIES) }
+        NavItem(tr("Séries"), vm.tab == Tab.SERIES) { vm.selectTab(Tab.SERIES) }
+        NavItem(tr("Canais"), vm.tab == Tab.CHANNELS) { vm.selectTab(Tab.CHANNELS) }
+        NavItem(tr("Favoritos"), vm.tab == Tab.LIST) { vm.selectTab(Tab.LIST) }
+        if (!vm.user.kidsMode) NavItem(tr("Gravações"), vm.tab == Tab.REC) { vm.selectTab(Tab.REC) }
         Spacer(Modifier.weight(1f))
         if (vm.refreshing) {
             CircularProgressIndicator(color = Accent, strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(8.dp))
-            Text("Atualizando a lista...", color = Muted, fontSize = 12.sp)
+            Text(tr("Atualizando a lista..."), color = Muted, fontSize = 12.sp)
             Spacer(Modifier.width(12.dp))
         }
         NavIcon(vm.tab == Tab.SEARCH, { vm.selectTab(Tab.SEARCH) }) { c -> SearchIcon(color = c) }
@@ -679,7 +679,7 @@ private fun HeroContent(t: Title) {
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    if (t.series) "SÉRIE" else "FILME",
+                    if (t.series) tr("SÉRIE") else tr("FILME"),
                     color = Accent,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.ExtraBold,
@@ -702,8 +702,8 @@ private fun HeroContent(t: Title) {
                     )
                 }
                 val langs = listOfNotNull(
-                    if (t.versions.any { !it.leg && !it.cam }) "Dublado" else null,
-                    if (t.versions.any { it.leg }) "Legendado" else null,
+                    if (t.versions.any { !it.leg && !it.cam }) tr("Dublado") else null,
+                    if (t.versions.any { it.leg }) tr("Legendado") else null,
                 ).joinToString(" · ")
                 if (langs.isNotEmpty()) {
                     Spacer(Modifier.width(10.dp))
@@ -828,13 +828,13 @@ private fun HeroCarousel(vm: MainViewModel, titles: List<Title>, listState: Lazy
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TvButton(text = "Ver detalhes", primary = true) { vm.open(t) }
+            TvButton(text = tr("Ver detalhes"), primary = true) { vm.open(t) }
             CircleAction(if (vm.inMyList(t.key)) "✓" else "+") { vm.toggleMyList(t.key) }
             if (n > 1) {
                 CircleAction("‹") { idx = (idx - 1 + n) % n }
                 CircleAction("›") { idx = (idx + 1) % n }
                 Text(
-                    text = "${idx + 1} / $n",
+                    text = tr("{0} / {1}", idx + 1, n),
                     color = Muted,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -857,15 +857,15 @@ private fun FilterChips(vm: MainViewModel, shelves: List<Shelf>, selected: Strin
     ) {
         if (lead != null) item(key = "__lead") { lead() }
         item(key = "__todos") {
-            ChipItem(text = "Todos", selected = selected == null) { onSelect(null) }
+            ChipItem(text = tr("Todos"), selected = selected == null) { onSelect(null) }
         }
         if (hasContinue) {
             item(key = "__cont") {
-                ChipItem(text = CONTINUE_TAB, selected = selected == CONTINUE_TAB) { onSelect(CONTINUE_TAB) }
+                ChipItem(text = tr(CONTINUE_TAB), selected = selected == CONTINUE_TAB) { onSelect(CONTINUE_TAB) }
             }
         }
         items(shelves.take(16).distinctBy { "chip|" + it.name }, key = { "chip|" + it.name }) { sh ->
-            ChipItem(text = sh.name, selected = selected == sh.name) { onSelect(sh.name) }
+            ChipItem(text = tr(sh.name), selected = selected == sh.name) { onSelect(sh.name) }
         }
     }
 }
@@ -877,7 +877,7 @@ private fun LazyListScope.filteredShelf(shelf: Shelf, onOpen: (Title) -> Unit) {
         Column {
             if (i == 0) {
                 Text(
-                    text = shelf.name + "  ·  " + shelf.all.size + " títulos",
+                    text = tr(shelf.name) + "  ·  " + shelf.all.size + tr(" títulos"),
                     color = TextMain,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
@@ -906,7 +906,7 @@ private fun LazyListScope.filteredShelf(shelf: Shelf, onOpen: (Title) -> Unit) {
 fun HomeTab(vm: MainViewModel) {
     val cont = vm.continueEntries()
     val mine = vm.myListTitles()
-    val mineShelf = remember(mine) { Shelf("Favoritos", mine) }
+    val mineShelf = remember(mine) { Shelf(tr("Favoritos"), mine) }
     val favs = vm.favoriteChannels()
     val hero = vm.heroAll
     val shelves = vm.homeShelves
@@ -949,7 +949,7 @@ fun HomeTab(vm: MainViewModel) {
                     item(key = "favch") {
                         Column {
                             Text(
-                                "Seus canais",
+                                tr("Seus canais"),
                                 color = TextMain,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
@@ -1010,7 +1010,7 @@ fun ShelfTab(vm: MainViewModel, shelves: List<Shelf>, hero: List<Title>, tab: Ta
         if (shelves.isEmpty()) {
             if (tab != null) Row(modifier = Modifier.padding(horizontal = 40.dp, vertical = 4.dp)) { LocalCountryChip(vm, tab) }
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(if (loading) "Separando por país..." else "Nada por aqui com esse país.", color = Muted)
+                Text(if (loading) tr("Separando por país...") else tr("Nada por aqui com esse país."), color = Muted)
             }
         } else {
             LazyColumn(
@@ -1052,11 +1052,11 @@ fun GridScreen(vm: MainViewModel, shelf: Shelf) {
                 .padding(horizontal = 40.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TvButton(text = "Voltar") { vm.back() }
+            TvButton(text = tr("Voltar")) { vm.back() }
             Spacer(Modifier.width(16.dp))
-            Text(shelf.name, color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr(shelf.name), color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.width(12.dp))
-            Text("${shelf.all.size} títulos", color = Muted, fontSize = 14.sp)
+            Text(tr("{0} títulos", shelf.all.size), color = Muted, fontSize = 14.sp)
         }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(108.dp),
@@ -1107,7 +1107,7 @@ fun SearchTab(vm: MainViewModel) {
         OutlinedTextField(
             value = q,
             onValueChange = { q = it },
-            label = { Text("Buscar filmes, séries e canais") },
+            label = { Text(tr("Buscar filmes, séries e canais")) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -1116,7 +1116,7 @@ fun SearchTab(vm: MainViewModel) {
         )
         if (chans.isNotEmpty()) {
             Text(
-                "Canais",
+                tr("Canais"),
                 color = TextMain,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.ExtraBold,
@@ -1140,7 +1140,7 @@ fun SearchTab(vm: MainViewModel) {
         if (titles.isEmpty()) {
             Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Text(
-                    text = if (Organizer.fold(q).length < 2) "Digite pelo menos 2 letras." else if (chans.isEmpty()) "Nada encontrado." else "",
+                    text = if (Organizer.fold(q).length < 2) tr("Digite pelo menos 2 letras.") else if (chans.isEmpty()) tr("Nada encontrado.") else "",
                     color = Muted,
                 )
             }
@@ -1173,14 +1173,14 @@ fun SearchTab(vm: MainViewModel) {
 fun FavoritesTab(vm: MainViewModel) {
     val mine = vm.myListTitles()
     val favs = vm.favoriteChannels()
-    val mineShelf = remember(mine) { Shelf("Meus filmes e séries", mine) }
+    val mineShelf = remember(mine) { Shelf(tr("Meus filmes e séries"), mine) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         if (mine.isEmpty() && favs.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    "Nada por aqui ainda.\nAbra um filme ou série e escolha \"+ Favoritos\".\nNos canais, use a estrela ★ dentro do player.",
+                    tr("Nada por aqui ainda.\nAbra um filme ou série e escolha \"+ Favoritos\".\nNos canais, use a estrela ★ dentro do player."),
                     color = Muted,
                     fontSize = 15.sp,
                     textAlign = TextAlign.Center,
@@ -1203,7 +1203,7 @@ fun FavoritesTab(vm: MainViewModel) {
                 item(key = "favch") {
                     Column {
                         Text(
-                            "Canais favoritos",
+                            tr("Canais favoritos"),
                             color = TextMain,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -1242,11 +1242,11 @@ private fun TimeZoneSettings(vm: MainViewModel) {
     val clock = remember(rev) { SportsTime.clock(now, java.util.TimeZone.getDefault()) }
     val chosen = vm.user.tzId
     Column {
-        Text("Fuso horário", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Text(tr("Fuso horário"), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.height(4.dp))
         Text(
-            "Os horários dos jogos usam este fuso. Agora, no app: " + clock + " (" + AppTz.describe() + "). " +
-                "Se a hora estiver errada, escolha o seu fuso (ou acerte o fuso nas configurações da TV).",
+            tr("Os horários dos jogos usam este fuso. Agora, no app: ") + clock + " (" + AppTz.describe() + "). " +
+                tr("Se a hora estiver errada, escolha o seu fuso (ou acerte o fuso nas configurações da TV)."),
             color = Muted,
             fontSize = 14.sp,
         )
@@ -1268,20 +1268,20 @@ private fun BroadcastSettings(vm: MainViewModel) {
     var msg by remember { mutableStateOf<String?>(null) }
     var checking by remember { mutableStateOf(false) }
     Column {
-        Text("Países da busca (onde passa)", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Text(tr("Países da busca (onde passa)"), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.height(4.dp))
-        val jogos = if (t.games.isEmpty()) "sem jogos confirmados ainda" else t.games.size.toString() + " jogos dos próximos dias"
+        val jogos = if (t.games.isEmpty()) tr("sem jogos confirmados ainda") else t.games.size.toString() + tr(" jogos dos próximos dias")
         Text(
-            "Escolha até 3 países de onde vêm as emissoras de cada jogo. Em \"Automático\" o app usa os países dos canais que você tem " +
-                "(ou os marcados no botão País). Agora: " + BroadcastStore.countriesLine() +
-                ", tabela de " + t.updatedPretty() + " (" + jogos + "). Pesquisada na internet e atualizada toda semana.",
+            tr("Escolha até 3 países de onde vêm as emissoras de cada jogo. Em \"Automático\" o app usa os países dos canais que você tem ") +
+                tr("(ou os marcados no botão País). Agora: ") + BroadcastStore.countriesLine() +
+                tr(", tabela de ") + t.updatedPretty() + " (" + jogos + tr("). Pesquisada na internet e atualizada toda semana."),
             color = Muted,
             fontSize = 14.sp,
         )
         Spacer(Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 4.dp)) {
             item(key = "auto") {
-                ChipItem(text = "Automático", selected = manual.isEmpty()) { vm.setBroadcastCountries(emptyList()) }
+                ChipItem(text = tr("Automático"), selected = manual.isEmpty()) { vm.setBroadcastCountries(emptyList()) }
             }
             items(BroadcastStore.COUNTRIES.distinctBy { it.first }, key = { it.first }) { c ->
                 val on = manual.contains(c.first)
@@ -1292,7 +1292,7 @@ private fun BroadcastSettings(vm: MainViewModel) {
             }
         }
         Spacer(Modifier.height(6.dp))
-        TvButton(text = if (checking) "Conferindo..." else "Conferir tabelas agora") {
+        TvButton(text = if (checking) tr("Conferindo...") else tr("Conferir tabelas agora")) {
             if (!checking) {
                 checking = true
                 vm.recheckBroadcasts { m ->
@@ -1316,9 +1316,9 @@ private fun listLabel(a: Account, i: Int): String {
     } catch (e: Exception) {
         ""
     }
-    val kind = if (a.m3u.isNotEmpty()) "M3U" else "Xtream"
-    return "Lista ${i + 1}  ·  $kind" + (if (host.isNotEmpty()) "  ·  $host" else "") +
-        (if (a.m3u.isEmpty() && a.user.isNotEmpty()) "  ·  ${a.user}" else "")
+    val kind = if (a.m3u.isNotEmpty()) "M3U" else tr("Xtream")
+    return tr("Lista {0}  ·  {1}", i + 1, kind) + (if (host.isNotEmpty()) tr("  ·  {0}", host) else "") +
+        (if (a.m3u.isEmpty() && a.user.isNotEmpty()) tr("  ·  {0}", a.user) else "")
 }
 
 @Composable
@@ -1344,8 +1344,8 @@ private fun ListsSection(vm: MainViewModel) {
         item {
             Column {
                 SectionTitle(
-                    "Suas listas",
-                    "Guarde quantas listas quiser. Use uma por vez ou junte todas num só conteúdo.",
+                    tr("Suas listas"),
+                    tr("Guarde quantas listas quiser. Use uma por vez ou junte todas num só conteúdo."),
                 )
             }
         }
@@ -1361,7 +1361,7 @@ private fun ListsSection(vm: MainViewModel) {
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    if (!inUse) "Guardada" else if (vm.mergeLists) "Incluída no conteúdo junto" else "Em uso",
+                    if (!inUse) tr("Guardada") else if (vm.mergeLists) tr("Incluída no conteúdo junto") else tr("Em uso"),
                     color = if (inUse) Accent else Muted,
                     fontSize = 12.sp,
                 )
@@ -1371,9 +1371,9 @@ private fun ListsSection(vm: MainViewModel) {
                 Spacer(Modifier.height(6.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     if (!vm.mergeLists && i != vm.activeList) {
-                        TvButton(text = "Usar esta") { vm.selectList(i) }
+                        TvButton(text = tr("Usar esta")) { vm.selectList(i) }
                     }
-                    TvButton(text = if (confirmRemove == i) "Confirmar remover?" else "Remover") {
+                    TvButton(text = if (confirmRemove == i) tr("Confirmar remover?") else tr("Remover")) {
                         if (confirmRemove == i) {
                             confirmRemove = -1
                             vm.removeList(i)
@@ -1385,20 +1385,20 @@ private fun ListsSection(vm: MainViewModel) {
             }
         }
         item {
-            TvButton(text = if (lists.isEmpty()) "Adicionar lista" else "+ Adicionar outra lista") { vm.startAddList() }
+            TvButton(text = if (lists.isEmpty()) tr("Adicionar lista") else tr("+ Adicionar outra lista")) { vm.startAddList() }
         }
         if (lists.size > 1) {
             item {
                 Column {
                     SectionTitle(
-                        "Juntar listas",
-                        "Junta os filmes, séries e canais de todas as listas num só conteúdo. Os mesmos títulos viram um cartão " +
-                            "só, e os canais ganham as fontes de todas as listas.",
+                        tr("Juntar listas"),
+                        tr("Junta os filmes, séries e canais de todas as listas num só conteúdo. Os mesmos títulos viram um cartão ") +
+                            tr("só, e os canais ganham as fontes de todas as listas."),
                     )
                     Spacer(Modifier.height(6.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                        ChipItem(text = "Juntar todas", selected = vm.mergeLists) { vm.setMerge(true) }
-                        ChipItem(text = "Uma por vez", selected = !vm.mergeLists) { vm.setMerge(false) }
+                        ChipItem(text = tr("Juntar todas"), selected = vm.mergeLists) { vm.setMerge(true) }
+                        ChipItem(text = tr("Uma por vez"), selected = !vm.mergeLists) { vm.setMerge(false) }
                     }
                     if (vm.mergeLists && vm.accountInfo.isNotEmpty()) {
                         Spacer(Modifier.height(6.dp))
@@ -1409,9 +1409,9 @@ private fun ListsSection(vm: MainViewModel) {
         }
         item {
             Column {
-                SectionTitle("Sair")
+                SectionTitle(tr("Sair"))
                 Spacer(Modifier.height(6.dp))
-                TvButton(text = if (confirmLogout) "Confirmar? Remove todas as listas" else "Sair e remover as listas") {
+                TvButton(text = if (confirmLogout) tr("Confirmar? Remove todas as listas") else tr("Sair e remover as listas")) {
                     if (confirmLogout) vm.logout() else confirmLogout = true
                 }
             }
@@ -1435,16 +1435,16 @@ private fun CountrySection(vm: MainViewModel) {
         item {
             Column {
                 SectionTitle(
-                    "País e idioma",
-                    "Para listas com conteúdo de vários países. Escolha o que quer ver: o resto fica escondido. " +
-                        "Dentro de Canais, Filmes e Séries ainda dá para escolher um só destes países pelo botão \"País\".",
+                    tr("País e idioma"),
+                    tr("Para listas com conteúdo de vários países. Escolha o que quer ver: o resto fica escondido. ") +
+                        tr("Dentro de Canais, Filmes e Séries ainda dá para escolher um só destes países pelo botão \"País\"."),
                 )
             }
         }
         if (stats.isEmpty()) {
             item {
                 Text(
-                    if (vm.catalog == null) "Catálogo ainda não carregado." else "Esta lista não indica país nas categorias: nada para filtrar.",
+                    if (vm.catalog == null) tr("Catálogo ainda não carregado.") else tr("Esta lista não indica país nas categorias: nada para filtrar."),
                     color = Muted,
                     fontSize = 13.sp,
                 )
@@ -1452,9 +1452,9 @@ private fun CountrySection(vm: MainViewModel) {
         } else {
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    ChipItem(text = "Mostrar tudo", selected = picked.isEmpty()) { vm.setCountryFilter(emptySet()) }
+                    ChipItem(text = tr("Mostrar tudo"), selected = picked.isEmpty()) { vm.setCountryFilter(emptySet()) }
                     Text(
-                        if (picked.isEmpty()) "Nenhum filtro" else "Mostrando: " + picked.joinToString(", ") { Countries.label(it) },
+                        if (picked.isEmpty()) tr("Nenhum filtro") else tr("Mostrando: ") + picked.joinToString(", ") { Countries.label(it) },
                         color = Muted,
                         fontSize = 12.sp,
                     )
@@ -1468,7 +1468,7 @@ private fun CountrySection(vm: MainViewModel) {
                     for ((code, n) in stats) {
                         val on = picked.contains(code)
                         ChipItem(
-                            text = Countries.label(code) + "  ·  " + n.first + " títulos, " + n.second + " canais",
+                            text = Countries.label(code) + "  ·  " + n.first + tr(" títulos, ") + n.second + tr(" canais"),
                             selected = on,
                         ) {
                             val next = picked.toMutableSet()
@@ -1486,16 +1486,16 @@ private fun CountrySection(vm: MainViewModel) {
 private fun CatalogSection(vm: MainViewModel) {
     val cat = vm.catalog
     Column(modifier = Modifier.padding(top = 6.dp, end = 40.dp)) {
-        SectionTitle("Catálogo")
+        SectionTitle(tr("Catálogo"))
         Spacer(Modifier.height(4.dp))
         val resumo = if (cat == null) {
-            "Ainda não carregado."
+            tr("Ainda não carregado.")
         } else {
-            "${cat.movies.size} filmes · ${cat.series.size} séries · ${cat.channels.size} canais · atualizado ${vm.catalogAgeText()}"
+            tr("{0} filmes · {1} séries · {2} canais · atualizado {3}", cat.movies.size, cat.series.size, cat.channels.size, vm.catalogAgeText())
         }
         Text(resumo, color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(10.dp))
-        TvButton(text = if (vm.refreshing) "Atualizando..." else "Atualizar catálogo agora") {
+        TvButton(text = if (vm.refreshing) tr("Atualizando...") else tr("Atualizar catálogo agora")) {
             if (!vm.refreshing) vm.loadCatalog(force = true)
         }
     }
@@ -1517,23 +1517,23 @@ private fun SportsSection(vm: MainViewModel) {
 @Composable
 private fun LiveSection(vm: MainViewModel) {
     Column(modifier = Modifier.padding(top = 6.dp, end = 40.dp)) {
-        SectionTitle("Canais ao vivo", "Quando um canal tem várias fontes, o app escolhe a melhor para você.")
+        SectionTitle(tr("Canais ao vivo"), tr("Quando um canal tem várias fontes, o app escolhe a melhor para você."))
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("Priorizar", color = Muted, fontSize = 14.sp)
-            ChipItem(text = "Estabilidade", selected = vm.user.stabilityFirst) { vm.setStabilityFirst(true) }
-            ChipItem(text = "Qualidade máxima", selected = !vm.user.stabilityFirst) { vm.setStabilityFirst(false) }
+            Text(tr("Priorizar"), color = Muted, fontSize = 14.sp)
+            ChipItem(text = tr("Estabilidade"), selected = vm.user.stabilityFirst) { vm.setStabilityFirst(true) }
+            ChipItem(text = tr("Qualidade máxima"), selected = !vm.user.stabilityFirst) { vm.setStabilityFirst(false) }
         }
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("Trocar de fonte sozinho se travar", color = Muted, fontSize = 14.sp)
-            ChipItem(text = "Sim", selected = vm.user.autoSwitch) { vm.setAutoSwitch(true) }
-            ChipItem(text = "Não", selected = !vm.user.autoSwitch) { vm.setAutoSwitch(false) }
+            Text(tr("Trocar de fonte sozinho se travar"), color = Muted, fontSize = 14.sp)
+            ChipItem(text = tr("Sim"), selected = vm.user.autoSwitch) { vm.setAutoSwitch(true) }
+            ChipItem(text = tr("Não"), selected = !vm.user.autoSwitch) { vm.setAutoSwitch(false) }
         }
         Spacer(Modifier.height(10.dp))
-        TvButton(text = "Apagar notas de estabilidade") { vm.clearStats() }
+        TvButton(text = tr("Apagar notas de estabilidade")) { vm.clearStats() }
         Spacer(Modifier.height(18.dp))
-        SectionTitle("Voltar no tempo (catch-up)", "Com isso você volta lances no ao vivo e revê jogos de até 24 h.")
+        SectionTitle(tr("Voltar no tempo (catch-up)"), tr("Com isso você volta lances no ao vivo e revê jogos de até 24 h."))
         Spacer(Modifier.height(4.dp))
         Text(vm.catchupSummary(), color = Muted, fontSize = 13.sp)
     }
@@ -1574,7 +1574,7 @@ private fun ProfileSection(vm: MainViewModel) {
     var saved by remember { mutableStateOf(false) }
     LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(end = 40.dp, top = 6.dp, bottom = 30.dp)) {
         item {
-            SectionTitle("Perfil", "Seu nome, idioma e gêneros preferidos.")
+            SectionTitle(tr("Perfil"), tr("Seu nome, idioma e gêneros preferidos."))
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(
                 value = name,
@@ -1582,13 +1582,13 @@ private fun ProfileSection(vm: MainViewModel) {
                     name = it
                     saved = false
                 },
-                label = { Text("Seu nome") },
+                label = { Text(tr("Seu nome")) },
                 singleLine = true,
                 colors = fieldColors(),
                 modifier = Modifier.width(360.dp),
             )
             Spacer(Modifier.height(12.dp))
-            Text("Idioma", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("Idioma"), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(6.dp))
             androidx.compose.foundation.layout.FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 for ((tag, label) in APP_LANGS) ChipItem(text = label, selected = lang == tag) {
@@ -1598,22 +1598,22 @@ private fun ProfileSection(vm: MainViewModel) {
             }
             Spacer(Modifier.height(12.dp))
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                TvButton(text = "Salvar", primary = true) {
+                TvButton(text = tr("Salvar"), primary = true) {
                     if (name.isNotBlank()) {
                         vm.updateProfile(name, lang)
                         saved = true
                     }
                 }
-                if (saved) Text("Salvo.", color = Good, fontSize = 13.sp)
+                if (saved) Text(tr("Salvo."), color = Good, fontSize = 13.sp)
             }
             Spacer(Modifier.height(20.dp))
-            Text("Gêneros preferidos (até 3)", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("Gêneros preferidos (até 3)"), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(6.dp))
             GenreChips(vm)
             Spacer(Modifier.height(20.dp))
-            Text("Times e ligas favoritos", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("Times e ligas favoritos"), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(6.dp))
-            TvButton(text = "Escolher times") { vm.openPicker() }
+            TvButton(text = tr("Escolher times")) { vm.openPicker() }
         }
     }
 }
@@ -1621,28 +1621,28 @@ private fun ProfileSection(vm: MainViewModel) {
 @Composable
 private fun AboutSection(vm: MainViewModel) {
     Column(modifier = Modifier.fillMaxSize().padding(end = 40.dp, top = 6.dp)) {
-        SectionTitle("Sobre", "Informações deste aparelho.")
+        SectionTitle(tr("Sobre"), tr("Informações deste aparelho."))
         Spacer(Modifier.height(16.dp))
-        Text("Código deste aparelho", color = Muted, fontSize = 13.sp)
+        Text(tr("Código deste aparelho"), color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(4.dp))
         Text(vm.deviceCode(), color = TextMain, fontSize = 24.sp, fontWeight = FontWeight.Light, letterSpacing = 4.sp)
         Spacer(Modifier.height(10.dp))
         Text(
-            "Se precisar de ajuda, passe este código a quem te deu o app. Ele serve só para contar quantos aparelhos usam o app: " +
-                "não envia o link da sua lista, senha nem o que você assiste.",
+            tr("Se precisar de ajuda, passe este código a quem te deu o app. Ele serve só para contar quantos aparelhos usam o app: ") +
+                tr("não envia o link da sua lista, senha nem o que você assiste."),
             color = Muted,
             fontSize = 12.sp,
         )
         Spacer(Modifier.height(14.dp))
         Text(
-            "Capas e sinopses extras: este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.",
+            tr("Capas e sinopses extras: este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB."),
             color = Muted,
             fontSize = 11.sp,
         )
         Spacer(Modifier.height(14.dp))
-        Text("Versão instalada: build " + vm.installedBuild(), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+        Text(tr("Versão instalada: build ") + vm.installedBuild(), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(6.dp))
-        TvButton(text = "Procurar atualização") { vm.checkUpdate(manual = true) }
+        TvButton(text = tr("Procurar atualização")) { vm.checkUpdate(manual = true) }
         val um = vm.updateMsg
         if (um != null) {
             Spacer(Modifier.height(6.dp))
@@ -1655,17 +1655,17 @@ private fun AboutSection(vm: MainViewModel) {
 @Composable
 private fun FeedbackSection(vm: MainViewModel) {
     Column(modifier = Modifier.fillMaxSize().padding(end = 40.dp, top = 6.dp)) {
-        SectionTitle("Fale com a gente", "Problema, ideia, elogio ou apoio a quem fez o app.")
+        SectionTitle(tr("Fale com a gente"), tr("Problema, ideia, elogio ou apoio a quem fez o app."))
         Spacer(Modifier.height(18.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
             QrCode(text = vm.feedbackUrl(), modifier = Modifier.size(200.dp))
             Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.widthIn(max = 420.dp)) {
-                Text("1. Aponte a câmera do celular para o QR code.", color = TextMain, fontSize = 15.sp)
-                Text("2. Escreva sua mensagem e toque em Enviar.", color = TextMain, fontSize = 15.sp)
-                Text("3. A resposta aparece aqui na TV e na mesma página do celular.", color = TextMain, fontSize = 15.sp)
+                Text(tr("1. Aponte a câmera do celular para o QR code."), color = TextMain, fontSize = 15.sp)
+                Text(tr("2. Escreva sua mensagem e toque em Enviar."), color = TextMain, fontSize = 15.sp)
+                Text(tr("3. A resposta aparece aqui na TV e na mesma página do celular."), color = TextMain, fontSize = 15.sp)
                 Spacer(Modifier.height(4.dp))
-                Text("Na página também dá para apoiar o app com uma doação, se quiser.", color = Muted, fontSize = 13.sp)
-                Text("Código deste aparelho: " + vm.deviceCode(), color = Muted, fontSize = 13.sp, letterSpacing = 1.sp)
+                Text(tr("Na página também dá para apoiar o app com uma doação, se quiser."), color = Muted, fontSize = 13.sp)
+                Text(tr("Código deste aparelho: ") + vm.deviceCode(), color = Muted, fontSize = 13.sp, letterSpacing = 1.sp)
             }
         }
     }
@@ -1674,7 +1674,7 @@ private fun FeedbackSection(vm: MainViewModel) {
 @Composable
 fun SettingsTab(vm: MainViewModel) {
     var section by rememberSaveable { mutableIntStateOf(0) }
-    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo", "Perfil", "Fale com a gente", "Sobre")
+    val names = listOf(tr("Listas"), tr("País e idioma"), tr("Catálogo"), tr("Esportes"), tr("Canais ao vivo"), tr("Perfil"), tr("Fale com a gente"), tr("Sobre"))
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         Row(modifier = Modifier.fillMaxSize().padding(start = 40.dp, top = 8.dp)) {

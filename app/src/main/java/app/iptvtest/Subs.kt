@@ -31,7 +31,7 @@ object Subs {
         "fr" to "Francês", "it" to "Italiano", "de" to "Alemão", "nl" to "Holandês",
     )
 
-    fun langName(code: String): String = LANGS.firstOrNull { it.first == code }?.second ?: code
+    fun langName(code: String): String = LANGS.firstOrNull { it.first == code }?.second?.let { tr(it) } ?: code
 
     private var token: String? = null
     private var tokenAt = 0L
@@ -64,7 +64,7 @@ object Subs {
             } catch (e: Exception) {
                 ""
             }
-            throw RuntimeException(if (code == 406 || code == 429) "Limite de legendas do dia atingido. Tente amanhã." else msg.ifEmpty { "Erro $code no OpenSubtitles." })
+            throw RuntimeException(if (code == 406 || code == 429) tr("Limite de legendas do dia atingido. Tente amanhã.") else msg.ifEmpty { tr("Erro {0} no OpenSubtitles.", code) })
         }
         return JSONObject(s)
     }
@@ -115,7 +115,7 @@ object Subs {
         if (f.exists() && f.length() > 0) return@withContext f
         ensureLogin()
         val link = read(conn("/download", "POST", JSONObject().put("file_id", r.fileId).put("sub_format", "srt").toString(), true)).optString("link")
-        if (link.isEmpty()) throw RuntimeException("O OpenSubtitles não mandou o arquivo.")
+        if (link.isEmpty()) throw RuntimeException(tr("O OpenSubtitles não mandou o arquivo."))
         val c = URL(link).openConnection() as HttpURLConnection
         c.setRequestProperty("User-Agent", UA)
         c.inputStream.use { inp -> f.outputStream().use { inp.copyTo(it) } }

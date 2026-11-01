@@ -78,7 +78,7 @@ object ReminderAlarms {
             val pi = PendingIntent.getActivity(ctx, 0, open, flags)
             val n = NotificationCompat.Builder(ctx, CHANNEL)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("Começa em 10 min: $title")
+                .setContentTitle(tr("Começa em 10 min: {0}", title))
                 .setContentText(league)
                 .setAutoCancel(true)
                 .setContentIntent(pi)

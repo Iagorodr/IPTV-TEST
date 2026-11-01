@@ -38,7 +38,7 @@ object AppTz {
         val min = tz.getOffset(System.currentTimeMillis()) / 60_000
         val sign = if (min < 0) "-" else "+"
         val a = Math.abs(min)
-        val off = if (a % 60 == 0) "UTC$sign${a / 60}" else String.format(Locale.US, "UTC%s%d:%02d", sign, a / 60, a % 60)
+        val off = if (a % 60 == 0) "UTC" + sign + (a / 60) else String.format(Locale.US, "UTC%s%d:%02d", sign, a / 60, a % 60)
         return tz.id + ", " + off
     }
 }

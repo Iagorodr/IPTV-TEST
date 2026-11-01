@@ -148,7 +148,7 @@ fun ChannelPreview(
                 // sem varrer as outras fontes: avisa, e a pessoa escolhe outra ou abre em tela cheia
                 buffering = false
                 ready = false
-                error = "Esta fonte não abriu.\nEscolha outra em FONTES ou aperte OK para abrir em tela cheia."
+                error = tr("Esta fonte não abriu.\nEscolha outra em FONTES ou aperte OK para abrir em tela cheia.")
             }
         }
         exo.addListener(listener)
@@ -199,7 +199,7 @@ fun ChannelPreview(
             exo.clearMediaItems()
             buffering = false
             current = null
-            error = "Este canal não tem fontes."
+            error = tr("Este canal não tem fontes.")
             return@LaunchedEffect
         }
         play(first)
@@ -210,7 +210,7 @@ fun ChannelPreview(
         if (live == null) {
             SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.5f, sunY = 0.42f, sunR = 0.16f)
             Text(
-                "Aperte OK em um canal\npara ver aqui",
+                tr("Aperte OK em um canal\npara ver aqui"),
                 color = TextMain,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -263,7 +263,7 @@ fun ChannelPreview(
                 ) {
                     Box(modifier = Modifier.size(7.dp).clip(CircleShape).background(Color.White))
                     Spacer(Modifier.width(6.dp))
-                    Text("AO VIVO", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(tr("AO VIVO"), color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
                 }
             }
             val q = current?.quality

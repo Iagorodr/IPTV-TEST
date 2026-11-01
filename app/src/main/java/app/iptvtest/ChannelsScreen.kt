@@ -75,7 +75,7 @@ fun ChannelsTab(vm: MainViewModel) {
         TopNav(vm)
         if (cat == null || groups.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Nenhum canal encontrado nesta lista.", color = Muted)
+                Text(tr("Nenhum canal encontrado nesta lista."), color = Muted)
             }
             return@Column
         }
@@ -117,11 +117,11 @@ fun ChannelsTab(vm: MainViewModel) {
                 ) {
                     item(key = "__pais") { LocalCountryChip(vm, Tab.CHANNELS) }
                     item(key = ALL) {
-                        ChipItem(text = "Todos", selected = sel == ALL) { selected = ALL }
+                        ChipItem(text = tr("Todos"), selected = sel == ALL) { selected = ALL }
                     }
                     if (favs.isNotEmpty()) {
                         item(key = FAVS) {
-                            ChipItem(text = "★ Favoritos", selected = sel == FAVS) { selected = FAVS }
+                            ChipItem(text = tr("★ Favoritos"), selected = sel == FAVS) { selected = FAVS }
                         }
                     }
                     items(groups.distinctBy { it.first }, key = { it.first }) { g ->
@@ -193,7 +193,7 @@ fun ChannelsTab(vm: MainViewModel) {
                 Spacer(Modifier.height(10.dp))
                 if (playingCh == null || live == null) {
                     Text(
-                        "Escolha um canal na lista e aperte OK: ele toca aqui. Aperte OK de novo no mesmo canal para abrir em tela cheia.",
+                        tr("Escolha um canal na lista e aperte OK: ele toca aqui. Aperte OK de novo no mesmo canal para abrir em tela cheia."),
                         color = Muted,
                         fontSize = 14.sp,
                         lineHeight = 19.sp,
@@ -234,7 +234,7 @@ private fun PreviewInfo(
             Spacer(Modifier.width(10.dp))
             val info = ArrayList<String>()
             if (shown != null) {
-                info.add("Fonte ${shownIdx + 1} de ${ranked.size}")
+                info.add(tr("Fonte {0} de {1}", shownIdx + 1, ranked.size))
                 if (shown.quality.isNotEmpty()) info.add(shown.quality)
             }
             if (stab != null) info.add(statusLabel(stab).lowercase())
@@ -248,12 +248,12 @@ private fun PreviewInfo(
         }
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            TvButton(text = "▶ Tela cheia", primary = true) { vm.playChannel(ch) }
-            TvButton(text = if (vm.isFavChannel(ch.key)) "★ Favorito" else "☆ Favoritar") { vm.toggleFavChannel(ch.key) }
+            TvButton(text = tr("▶ Tela cheia"), primary = true) { vm.playChannel(ch) }
+            TvButton(text = if (vm.isFavChannel(ch.key)) tr("★ Favorito") else tr("☆ Favoritar")) { vm.toggleFavChannel(ch.key) }
         }
         if (ch.isBrand) {
             Spacer(Modifier.height(10.dp))
-            ChipsLine("PRAÇA") {
+            ChipsLine(tr("PRAÇA")) {
                 items(ch.variants.distinctBy { it.channel.key }, key = { it.channel.key }) { v ->
                     ChipItem(text = v.label, selected = v.channel.key == real.key) { vm.chooseVariant(ch, v) }
                 }
@@ -262,16 +262,16 @@ private fun PreviewInfo(
         if (ranked.size > 1) {
             Spacer(Modifier.height(10.dp))
             val pinned = vm.user.pinnedSource(real.key)
-            ChipsLine("FONTES") {
+            ChipsLine(tr("FONTES")) {
                 item(key = "__auto") {
-                    ChipItem(text = "Auto", selected = pinned == null && wantedId == null) {
+                    ChipItem(text = tr("Auto"), selected = pinned == null && wantedId == null) {
                         vm.pinSource(real.key, null)
                         onWanted(null)
                     }
                 }
                 items(ranked.size, key = { ranked[it].id }) { i ->
                     val s = ranked[i]
-                    val label = "Fonte ${i + 1}" + if (s.quality.isNotEmpty()) " · " + s.quality else ""
+                    val label = tr("Fonte {0}", i + 1) + if (s.quality.isNotEmpty()) " · " + s.quality else ""
                     ChipItem(text = label, selected = (wantedId ?: pinned) == s.id) {
                         vm.pinSource(real.key, s.id)
                         onWanted(s.id)
@@ -362,7 +362,7 @@ private fun ChannelRow(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                val count = if (ch.isBrand) "${ch.variants.size} praças" else if (ch.sources.size == 1) "1 fonte" else "${ch.sources.size} fontes"
+                val count = if (ch.isBrand) tr("{0} praças", ch.variants.size) else if (ch.sources.size == 1) tr("1 fonte") else tr("{0} fontes", ch.sources.size)
                 val sub = if (stability != null && stability >= 0.7f) count + " · " + statusLabel(stability).lowercase() else count
                 Text(sub, color = Muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }

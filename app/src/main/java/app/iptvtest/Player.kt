@@ -280,24 +280,24 @@ fun PlayerScreen(
         val target = base + deltaMin * 60_000L
         if (target >= nowMs - 45_000L) {
             val c = current ?: ranked.firstOrNull() ?: return
-            playSource(c, "Ao vivo.")
+            playSource(c, tr("Ao vivo."))
             return
         }
         val src = tsSrc ?: current?.takeIf { it.arch > 0 } ?: ranked.firstOrNull { it.arch > 0 }
         if (src == null) {
-            note = "Este canal não guarda a programação passada."
+            note = tr("Este canal não guarda a programação passada.")
             return
         }
         if (nowMs - target > src.arch * 24L * 3_600_000L) {
-            note = "O provedor guarda só ${src.arch} dia(s) deste canal."
+            note = tr("O provedor guarda só {0} dia(s) deste canal.", src.arch)
             return
         }
         tsTried.clear()
         tsTried.add(src.id)
         if (playTimeshift(target, src)) {
-            note = "Voltando para " + SportsTime.clock(target, java.util.TimeZone.getDefault()) + "."
+            note = tr("Voltando para ") + SportsTime.clock(target, java.util.TimeZone.getDefault()) + "."
         } else {
-            note = "Não consegui voltar no tempo neste canal."
+            note = tr("Não consegui voltar no tempo neste canal.")
         }
     }
 
@@ -311,7 +311,7 @@ fun PlayerScreen(
         ranked = order
         val next = order.firstOrNull { !session.tried.contains(it.id) } ?: return false
         session.lastSwitchAt = SystemClock.elapsedRealtime()
-        playSource(next, reason + " Trocamos para " + next.label + ".")
+        playSource(next, reason + tr(" Trocamos para ") + next.label + ".")
         return true
     }
 
@@ -324,9 +324,9 @@ fun PlayerScreen(
                 tsTried.clear()
                 tsTried.add(s.id)
                 playTimeshift(at, s)
-                note = "Fonte: " + s.label + " (mesmo horário)."
+                note = tr("Fonte: ") + s.label + tr(" (mesmo horário).")
             } else {
-                note = "Esta fonte não guarda a programação passada."
+                note = tr("Esta fonte não guarda a programação passada.")
             }
             panel = null
             return
@@ -336,7 +336,7 @@ fun PlayerScreen(
         pinnedId = s.id
         session.tried.clear()
         session.tried.add(s.id)
-        playSource(s, "Fonte fixada: " + s.label + ".")
+        playSource(s, tr("Fonte fixada: ") + s.label + ".")
         panel = null
     }
 
@@ -350,7 +350,7 @@ fun PlayerScreen(
         val first = order.firstOrNull() ?: return
         session.tried.clear()
         session.tried.add(first.id)
-        playSource(first, "Automático: " + first.label + ".")
+        playSource(first, tr("Automático: ") + first.label + ".")
         panel = null
     }
 
@@ -363,7 +363,7 @@ fun PlayerScreen(
         testPrev = null
         val ch = channel
         if (ch != null) ranked = user.rank(ch)
-        if (prev != null) playSource(prev, "Teste cancelado.")
+        if (prev != null) playSource(prev, tr("Teste cancelado."))
     }
 
     fun startTest(pickBest: Boolean = false) {
@@ -408,7 +408,7 @@ fun PlayerScreen(
                     session.tried.add(target.id)
                     playSource(
                         target,
-                        if (pickBest) "Melhor fonte: " + target.label + "." else "Teste concluído. Reproduzindo " + target.label + ".",
+                        if (pickBest) tr("Melhor fonte: ") + target.label + "." else tr("Teste concluído. Reproduzindo ") + target.label + ".",
                     )
                 }
                 if (pickBest) panel = null
@@ -436,7 +436,7 @@ fun PlayerScreen(
         ranked = user.rank(ch)
         session.tried.clear()
         session.tried.add(target.id)
-        playSource(target, "Melhor fonte: " + target.label + ".")
+        playSource(target, tr("Melhor fonte: ") + target.label + ".")
         panel = null
     }
 
@@ -509,7 +509,7 @@ fun PlayerScreen(
                         tsTried.add(other.id)
                         if (playTimeshift(tsStart, other, 0)) return
                     }
-                    error = "Não consegui abrir esse horário neste canal. Tente outro canal ou volte ao vivo."
+                    error = tr("Não consegui abrir esse horário neste canal. Tente outro canal ou volte ao vivo.")
                     return
                 }
                 if (e.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
@@ -526,7 +526,7 @@ fun PlayerScreen(
                         }
                         return
                     }
-                    if (failover("A fonte falhou.", 1)) return
+                    if (failover(tr("A fonte falhou."), 1)) return
                 }
                 error = describeError(e)
             }
@@ -559,7 +559,7 @@ fun PlayerScreen(
                 ?: order.firstOrNull { it.id == user.lastOkSource(channel.key) }
                 ?: order.firstOrNull()
             if (start == null) {
-                error = "Este canal não tem fontes disponíveis."
+                error = tr("Este canal não tem fontes disponíveis.")
             } else if (req.catchupStartMs > 0L) {
                 // rever um jogo: já abre voltando para o horário dele (se a fonte não guardar o passado, tenta outra)
                 val arch = order.firstOrNull { it.id == start.id && it.arch > 0 } ?: order.firstOrNull { it.arch > 0 }
@@ -569,7 +569,7 @@ fun PlayerScreen(
                 if (arch == null || !playTimeshift(req.catchupStartMs, arch)) {
                     session.tried.clear()
                     session.tried.add(start.id)
-                    playSource(start, "Este canal não guarda a programação passada: abrindo ao vivo.")
+                    playSource(start, tr("Este canal não guarda a programação passada: abrindo ao vivo."))
                 }
             } else {
                 session.tried.clear()
@@ -616,12 +616,12 @@ fun PlayerScreen(
                 val canSwitch = now - session.lastSwitchAt > 20_000L && autoSwitch
                 if (canSwitch) {
                     if (!session.ready && now - session.startedAt > 14_000L) {
-                        if (!failover("A fonte demorou demais para abrir.", 2)) session.startedAt = now
+                        if (!failover(tr("A fonte demorou demais para abrir."), 2)) session.startedAt = now
                     } else if (session.curStallMs > 8_000L) {
-                        if (!failover("A fonte travou.", 2)) session.curStallMs = 0L
+                        if (!failover(tr("A fonte travou."), 2)) session.curStallMs = 0L
                     } else if (recent >= 3) {
                         session.stallTimes.clear()
-                        failover("A fonte estava oscilando.", 2)
+                        failover(tr("A fonte estava oscilando."), 2)
                     }
                 }
             } else if (!isLive) {
@@ -734,7 +734,7 @@ fun PlayerScreen(
         val steps = longArrayOf(10_000L, 30_000L, 60_000L, 120_000L, 300_000L, 600_000L)
         val step = steps[(seekStreak / 4).coerceIn(0, steps.size - 1)]
         seekBy(dir * step)
-        val label = if (step >= 60_000L) "${step / 60_000L} min" else "${step / 1000L} s"
+        val label = if (step >= 60_000L) tr("{0} min", step / 60_000L) else tr("{0} s", step / 1000L)
         seekHint = (if (dir > 0) "⏩ +" else "⏪ -") + label
     }
 
@@ -842,12 +842,12 @@ fun PlayerScreen(
                     .padding(28.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text("Não foi possível reproduzir", color = ErrorColor, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Não foi possível reproduzir"), color = ErrorColor, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
                 Text(err, color = TextMain, fontSize = 14.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    text = if (isLive) "Abra \"Fontes\" para escolher outra, ou aperte Voltar para sair." else "Aperte Voltar para sair.",
+                    text = if (isLive) tr("Abra \"Fontes\" para escolher outra, ou aperte Voltar para sair.") else tr("Aperte Voltar para sair."),
                     color = Muted,
                     fontSize = 13.sp,
                 )
@@ -863,9 +863,9 @@ fun PlayerScreen(
                     .padding(horizontal = 28.dp, vertical = 18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text("Testando as fontes de " + req.title, color = TextMain, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Testando as fontes de ") + req.title, color = TextMain, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(4.dp))
-                Text("O vídeo fica parado enquanto medimos. Voltar cancela.", color = Muted, fontSize = 12.sp)
+                Text(tr("O vídeo fica parado enquanto medimos. Voltar cancela."), color = Muted, fontSize = 12.sp)
             }
         }
 
@@ -900,7 +900,7 @@ fun PlayerScreen(
                     Spacer(Modifier.height(2.dp))
                     val rel = user.reliability(cur.id)
                     Text(
-                        text = "Fonte: " + cur.label + "  ·  " + statusLabel(rel) + (if (pinnedId == cur.id) "  ·  fixada" else "  ·  automática"),
+                        text = tr("Fonte: ") + cur.label + "  ·  " + statusLabel(rel) + (if (pinnedId == cur.id) tr("  ·  fixada") else tr("  ·  automática")),
                         color = statusColor(rel),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -908,7 +908,7 @@ fun PlayerScreen(
                 }
                 if (tsStart > 0L) {
                     Text(
-                        text = "⏪ Reprise · " + SportsTime.clock(tsStart + position, java.util.TimeZone.getDefault()),
+                        text = tr("⏪ Reprise · ") + SportsTime.clock(tsStart + position, java.util.TimeZone.getDefault()),
                         color = Warn,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
@@ -966,8 +966,8 @@ fun PlayerScreen(
                             ProgressRow(position, duration, false)
                             val hint = if (seekHint.isNotEmpty() && System.currentTimeMillis() - seekAt < 2_000L) seekHint else ""
                             Text(
-                                if (barFocused) (if (hint.isNotEmpty()) hint + "   ·   " else "") + "◀ ▶ para andar (aperte seguido para pular mais)   ·   OK pausa"
-                                else "Suba para a linha do tempo para avançar ou voltar",
+                                if (barFocused) (if (hint.isNotEmpty()) hint + "   ·   " else "") + tr("◀ ▶ para andar (aperte seguido para pular mais)   ·   OK pausa")
+                                else tr("Suba para a linha do tempo para avançar ou voltar"),
                                 color = if (hint.isNotEmpty()) Accent else Color(0xFFC9C9D8),
                                 fontSize = 12.sp,
                                 modifier = Modifier.padding(top = 4.dp),
@@ -982,48 +982,48 @@ fun PlayerScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 10.dp),
                     ) {
-                        TvButton(text = "⏪ 10 min") { touch++; shift(-10) }
-                        TvButton(text = "⏪ 2 min") { touch++; shift(-2) }
+                        TvButton(text = tr("⏪ 10 min")) { touch++; shift(-10) }
+                        TvButton(text = tr("⏪ 2 min")) { touch++; shift(-2) }
                         if (tsStart > 0L) {
-                            TvButton(text = "2 min ⏩") { touch++; shift(2) }
-                            TvButton(text = "10 min ⏩") { touch++; shift(10) }
-                            TvButton(text = "AO VIVO", primary = true) {
+                            TvButton(text = tr("2 min ⏩")) { touch++; shift(2) }
+                            TvButton(text = tr("10 min ⏩")) { touch++; shift(10) }
+                            TvButton(text = tr("AO VIVO"), primary = true) {
                                 touch++
                                 val c = current ?: ranked.firstOrNull()
-                                if (c != null) playSource(c, "Ao vivo.")
+                                if (c != null) playSource(c, tr("Ao vivo."))
                             }
                         }
                     }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    TvButton(text = if (isPlaying) "Pausar" else "Reproduzir", focusRequester = playFocus) { togglePlay() }
+                    TvButton(text = if (isPlaying) tr("Pausar") else tr("Reproduzir"), focusRequester = playFocus) { togglePlay() }
                     if (isLive) {
-                        TvButton(text = "Fontes (${channel?.sources?.size ?: 0})", primary = true) {
+                        TvButton(text = tr("Fontes ({0})", channel?.sources?.size ?: 0), primary = true) {
                             touch++
                             panel = "sources"
                         }
                         if (brand != null && brand.variants.size > 1) {
                             val here = brand.variants.firstOrNull { it.channel.key == channel?.key }
-                            TvButton(text = "Praça: " + (here?.label ?: "trocar")) {
+                            TvButton(text = tr("Praça: ") + (here?.label ?: "trocar")) {
                                 touch++
                                 panel = "variants"
                             }
                         }
-                        TvButton(text = "Áudio") {
+                        TvButton(text = tr("Áudio")) {
                             touch++
                             panel = "audio"
                         }
-                        TvButton(text = if (favorite) "✓ Favorito" else "Favoritar") {
+                        TvButton(text = if (favorite) tr("✓ Favorito") else tr("Favoritar")) {
                             touch++
                             if (favKey != null) favorite = user.toggleFavChannel(favKey)
                         }
                         if (channel != null) {
                             if (recActive) {
-                                TvButton(text = "Tela preta") {
+                                TvButton(text = tr("Tela preta")) {
                                     touch++
                                     recordingId(channel.key)?.let(onRecMode)
                                 }
-                                TvButton(text = if (recAskStop) "Confirmar parar" else "■ Parar gravação") {
+                                TvButton(text = if (recAskStop) tr("Confirmar parar") else tr("■ Parar gravação")) {
                                     touch++
                                     if (!recAskStop) {
                                         recAskStop = true
@@ -1031,11 +1031,11 @@ fun PlayerScreen(
                                         recAskStop = false
                                         recordingId(channel.key)?.let(onStopRecord)
                                         recActive = false
-                                        note = "Gravação parada. Ela fica na aba Gravações."
+                                        note = tr("Gravação parada. Ela fica na aba Gravações.")
                                     }
                                 }
                             } else {
-                                TvButton(text = "● Gravar") {
+                                TvButton(text = tr("● Gravar")) {
                                     touch++
                                     panel = "rec"
                                 }
@@ -1043,24 +1043,24 @@ fun PlayerScreen(
                         }
                     } else {
                         if (nextEp != null) {
-                            TvButton(text = "Próximo episódio", primary = true) { nextEp.go() }
+                            TvButton(text = tr("Próximo episódio"), primary = true) { nextEp.go() }
                         }
                         if ((req.versions?.invoke()?.size ?: 0) > 1) {
-                            TvButton(text = "Idioma / versão") {
+                            TvButton(text = tr("Idioma / versão")) {
                                 touch++
                                 panel = "versions"
                             }
                         }
-                        TvButton(text = "Áudio") {
+                        TvButton(text = tr("Áudio")) {
                             touch++
                             panel = "audio"
                         }
-                        TvButton(text = "Legendas") {
+                        TvButton(text = tr("Legendas")) {
                             touch++
                             panel = "text"
                         }
                     }
-                    TvButton(text = if (zoom) "Tela: preencher" else "Tela: ajustar") {
+                    TvButton(text = if (zoom) tr("Tela: preencher") else tr("Tela: ajustar")) {
                         touch++
                         zoom = !zoom
                     }
@@ -1124,12 +1124,12 @@ fun PlayerScreen(
                     .background(Color(0xF0161E2F))
                     .padding(14.dp),
             ) {
-                Text("Gravar por quanto tempo?", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Gravar por quanto tempo?"), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(4.dp))
-                Text("Usa mais uma conexão da sua lista.", color = Muted, fontSize = 12.sp)
+                Text(tr("Usa mais uma conexão da sua lista."), color = Muted, fontSize = 12.sp)
                 Spacer(Modifier.height(10.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    val opts = listOf(30 to "30 minutos", 60 to "1 hora", 120 to "2 horas", 180 to "3 horas", 240 to "4 horas")
+                    val opts = listOf(30 to tr("30 minutos"), 60 to tr("1 hora"), 120 to tr("2 horas"), 180 to tr("3 horas"), 240 to tr("4 horas"))
                     for ((i, o) in opts.withIndex()) {
                         FocusBox(
                             modifier = Modifier.fillMaxWidth(),
@@ -1141,7 +1141,7 @@ fun PlayerScreen(
                                 val msg = onRecord(channel.key, channel.name, u, o.first)
                                 if (msg == null) {
                                     recActive = true
-                                    note = "Gravando por " + o.second + ". Veja na aba Gravações."
+                                    note = tr("Gravando por ") + o.second + tr(". Veja na aba Gravações.")
                                 } else {
                                     note = msg
                                 }
@@ -1170,11 +1170,11 @@ fun PlayerScreen(
                                 .background(if (focused) PanelAlt else Panel.copy(alpha = 0.6f))
                                 .padding(horizontal = 14.dp, vertical = 10.dp),
                         ) {
-                            Text("Qualidade: " + Recorder.qualityLabel(recQ), color = Accent, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                            Text(tr("Qualidade: ") + Recorder.qualityLabel(recQ), color = Accent, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                     Text(
-                        "Média e Baixa só valem para canais com mais de uma versão da imagem.",
+                        tr("Média e Baixa só valem para canais com mais de uma versão da imagem."),
                         color = Muted,
                         fontSize = 11.sp,
                     )
@@ -1199,8 +1199,8 @@ fun PlayerScreen(
                     .background(Color(0xF0161E2F))
                     .padding(14.dp),
             ) {
-                Text(if (subLang == null) "Buscar legenda: idioma" else "Legendas em " + Subs.langName(subLang ?: ""), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Text(q.name + (if (q.season > 0) " · T${q.season} E${q.episode}" else if (q.year.isNotEmpty()) " (${q.year})" else ""), color = Muted, fontSize = 12.sp, maxLines = 1)
+                Text(if (subLang == null) tr("Buscar legenda: idioma") else tr("Legendas em ") + Subs.langName(subLang ?: ""), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(q.name + (if (q.season > 0) tr(" · T{0} E{1}", q.season, q.episode) else if (q.year.isNotEmpty()) tr(" ({0})", q.year) else ""), color = Muted, fontSize = 12.sp, maxLines = 1)
                 Spacer(Modifier.height(8.dp))
                 val m = subMsg
                 if (m != null) {
@@ -1217,21 +1217,21 @@ fun PlayerScreen(
                                 onClick = {
                                     subLang = l.first
                                     subResults = null
-                                    subMsg = "Procurando..."
+                                    subMsg = tr("Procurando...")
                                     subScope.launch {
                                         try {
                                             val r = Subs.search(q, l.first)
                                             subResults = r
-                                            subMsg = if (r.isEmpty()) "Nenhuma legenda encontrada nesse idioma." else null
+                                            subMsg = if (r.isEmpty()) tr("Nenhuma legenda encontrada nesse idioma.") else null
                                         } catch (e: Exception) {
-                                            subMsg = e.message ?: "Não consegui buscar agora."
+                                            subMsg = e.message ?: tr("Não consegui buscar agora.")
                                             subResults = emptyList()
                                         }
                                     }
                                 },
                             ) { focused ->
                                 Box(Modifier.fillMaxWidth().background(if (focused) PanelAlt else Panel).padding(horizontal = 12.dp, vertical = 10.dp)) {
-                                    Text(l.second, color = TextMain, fontSize = 14.sp)
+                                    Text(tr(l.second), color = TextMain, fontSize = 14.sp)
                                 }
                             }
                         }
@@ -1248,7 +1248,7 @@ fun PlayerScreen(
                                 },
                             ) { focused ->
                                 Box(Modifier.fillMaxWidth().background(if (focused) PanelAlt else Panel).padding(horizontal = 12.dp, vertical = 10.dp)) {
-                                    Text("‹ Outro idioma", color = Muted, fontSize = 14.sp)
+                                    Text(tr("‹ Outro idioma"), color = Muted, fontSize = 14.sp)
                                 }
                             }
                         }
@@ -1257,36 +1257,36 @@ fun PlayerScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 focusRequester = if (idx == 0) panelFocus else null,
                                 onClick = {
-                                    subMsg = "Baixando..."
+                                    subMsg = tr("Baixando...")
                                     subScope.launch {
                                         try {
                                             val f = Subs.download(context, r)
                                             applySub(f, r.lang.ifEmpty { subLang ?: "und" })
                                             subMsg = null
                                             panel = null
-                                            note = "Legenda em " + Subs.langName(subLang ?: "") + " ativada."
+                                            note = tr("Legenda em ") + Subs.langName(subLang ?: "") + tr(" ativada.")
                                         } catch (e: Exception) {
-                                            subMsg = e.message ?: "Não consegui baixar."
+                                            subMsg = e.message ?: tr("Não consegui baixar.")
                                         }
                                     }
                                 },
                             ) { focused ->
                                 Column(Modifier.fillMaxWidth().background(if (focused) PanelAlt else Panel).padding(horizontal = 12.dp, vertical = 8.dp)) {
-                                    Text(r.release.ifEmpty { "Legenda " + (idx + 1) }, color = TextMain, fontSize = 13.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                                    Text("${r.downloads} downloads" + (if (r.hearing) " · para surdos" else ""), color = Muted, fontSize = 11.sp)
+                                    Text(r.release.ifEmpty { tr("Legenda ") + (idx + 1) }, color = TextMain, fontSize = 13.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                    Text(tr("{0} downloads", r.downloads) + (if (r.hearing) tr(" · para surdos") else ""), color = Muted, fontSize = 11.sp)
                                 }
                             }
                         }
                     }
                 }
-                Text("Ficam guardadas por 7 dias e depois são apagadas.", color = Muted, fontSize = 11.sp)
+                Text(tr("Ficam guardadas por 7 dias e depois são apagadas."), color = Muted, fontSize = 11.sp)
             }
         } else if (which == "audio" || which == "text" || which == "versions") {
             val type = if (which == "audio") C.TRACK_TYPE_AUDIO else C.TRACK_TYPE_TEXT
             val options = if (which == "versions") {
                 (req.versions?.invoke() ?: emptyList()).map { pv -> TrackOption(pv.label, pv.selected, true, pv.onSelect) }
             } else if (which == "text" && Subs.enabled && req.subQuery != null) {
-                buildOptions(exo, tracks, type) + TrackOption("🔎 Buscar legendas em outros idiomas...", false, true) { panel = "subsearch" }
+                buildOptions(exo, tracks, type) + TrackOption(tr("🔎 Buscar legendas em outros idiomas..."), false, true) { panel = "subsearch" }
             } else {
                 buildOptions(exo, tracks, type)
             }
@@ -1300,14 +1300,14 @@ fun PlayerScreen(
                     .padding(14.dp),
             ) {
                 Text(
-                    text = if (which == "audio") "Áudio" else if (which == "versions") "Idioma / versão" else "Legendas",
+                    text = if (which == "audio") tr("Áudio") else if (which == "versions") tr("Idioma / versão") else tr("Legendas"),
                     color = TextMain,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )
                 Spacer(Modifier.height(10.dp))
                 if (options.isEmpty()) {
-                    Text("Nenhuma faixa encontrada neste vídeo.", color = Muted, fontSize = 14.sp)
+                    Text(tr("Nenhuma faixa encontrada neste vídeo."), color = Muted, fontSize = 14.sp)
                     // sem opção para focar: Voltar fecha o painel
                 } else {
                     LazyColumn(
@@ -1338,7 +1338,7 @@ fun PlayerScreen(
                                         modifier = Modifier.width(26.dp),
                                     )
                                     Text(
-                                        text = if (opt.supported) opt.label else opt.label + "  (sem suporte neste aparelho)",
+                                        text = if (opt.supported) opt.label else opt.label + tr("  (sem suporte neste aparelho)"),
                                         color = if (opt.supported) TextMain else ErrorColor,
                                         fontSize = 14.sp,
                                         maxLines = 2,
@@ -1386,28 +1386,28 @@ private fun SourcesPanel(
             .background(Color(0xF0161E2F))
             .padding(14.dp),
     ) {
-        Text("Fontes · " + channelName, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(tr("Fontes · ") + channelName, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Spacer(Modifier.height(2.dp))
         Text(
-            text = if (stabilityFirst) "Ordenadas por estabilidade (a melhor primeiro)" else "Ordenadas por qualidade de imagem",
+            text = if (stabilityFirst) tr("Ordenadas por estabilidade (a melhor primeiro)") else tr("Ordenadas por qualidade de imagem"),
             color = Muted,
             fontSize = 12.sp,
         )
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
             TvButton(
-                text = if (testing) "Testando..." else "Testar fontes",
+                text = if (testing) tr("Testando...") else tr("Testar fontes"),
                 primary = true,
                 focusRequester = firstFocus,
             ) { if (!testing) onTest() }
             if (pinnedId != null) {
-                TvButton(text = "Voltar ao automático") { if (!testing) onAuto() }
+                TvButton(text = tr("Voltar ao automático")) { if (!testing) onAuto() }
             }
         }
         Spacer(Modifier.height(8.dp))
-        TvButton(text = "Melhor fonte (automático)") { if (!testing) onBest() }
+        TvButton(text = tr("Melhor fonte (automático)")) { if (!testing) onBest() }
         Text(
-            "Escolhe a de maior estabilidade e qualidade. Se ainda não mediu alguma, mede antes.",
+            tr("Escolhe a de maior estabilidade e qualidade. Se ainda não mediu alguma, mede antes."),
             color = Muted,
             fontSize = 11.sp,
             modifier = Modifier.padding(top = 3.dp),
@@ -1422,14 +1422,14 @@ private fun SourcesPanel(
                 val res = results[s.id]
                 val shownR: Float? = if (res != null) res.r else rel
                 val detail = when {
-                    testing && testingId == s.id -> "testando agora..."
-                    res != null -> if (res.ok) res.note else "sem resposta: " + res.note
+                    testing && testingId == s.id -> tr("testando agora...")
+                    res != null -> if (res.ok) res.note else tr("sem resposta: ") + res.note
                     else -> {
                         val ob = user.lastObs(s.id)
                         if (ob != null && ob.headroom > 0f) {
-                            String.format(Locale.US, "folga %.1fx na última medição", ob.headroom)
+                            tr("folga {0}x na última medição", String.format(Locale.US, "%.1f", ob.headroom))
                         } else if (ob != null && ob.stalls > 0) {
-                            "travou ${ob.stalls}x na última vez"
+                            tr("travou {0}x na última vez", ob.stalls)
                         } else {
                             ""
                         }
@@ -1455,7 +1455,7 @@ private fun SourcesPanel(
                         )
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = s.label + (if (s.id == pinnedId) "  (fixada)" else ""),
+                                text = s.label + (if (s.id == pinnedId) tr("  (fixada)") else ""),
                                 color = TextMain,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.SemiBold,
@@ -1478,15 +1478,15 @@ private fun SourcesPanel(
         }
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("Priorizar", color = Muted, fontSize = 12.sp)
-            ChipItem(text = "Estabilidade", selected = stabilityFirst) { onToggleStability(true) }
-            ChipItem(text = "Qualidade", selected = !stabilityFirst) { onToggleStability(false) }
+            Text(tr("Priorizar"), color = Muted, fontSize = 12.sp)
+            ChipItem(text = tr("Estabilidade"), selected = stabilityFirst) { onToggleStability(true) }
+            ChipItem(text = tr("Qualidade"), selected = !stabilityFirst) { onToggleStability(false) }
         }
         Spacer(Modifier.height(6.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("Trocar sozinho se travar", color = Muted, fontSize = 12.sp)
-            ChipItem(text = "Sim", selected = autoSwitch) { onToggleAuto(true) }
-            ChipItem(text = "Não", selected = !autoSwitch) { onToggleAuto(false) }
+            Text(tr("Trocar sozinho se travar"), color = Muted, fontSize = 12.sp)
+            ChipItem(text = tr("Sim"), selected = autoSwitch) { onToggleAuto(true) }
+            ChipItem(text = tr("Não"), selected = !autoSwitch) { onToggleAuto(false) }
         }
     }
 }
@@ -1528,9 +1528,9 @@ private fun VariantsPanel(
             .background(Color(0xF0161E2F))
             .padding(14.dp),
     ) {
-        Text("Praça · " + brand.name, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Text(tr("Praça · ") + brand.name, color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.height(2.dp))
-        Text("Escolha a sua região. Fica salva para a próxima vez.", color = Muted, fontSize = 12.sp)
+        Text(tr("Escolha a sua região. Fica salva para a próxima vez."), color = Muted, fontSize = 12.sp)
         Spacer(Modifier.height(8.dp))
         LazyColumn(
             state = state,
@@ -1578,7 +1578,7 @@ private fun VariantsPanel(
                                 modifier = Modifier.weight(1f),
                             )
                             Text(
-                                text = "${r.channel.sources.size} fontes",
+                                text = tr("{0} fontes", r.channel.sources.size),
                                 color = Muted,
                                 fontSize = 11.sp,
                             )
@@ -1598,7 +1598,7 @@ private fun VariantsPanel(
 private fun ProgressRow(position: Long, duration: Long, live: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = if (live) "AO VIVO" else formatTime(position),
+            text = if (live) tr("AO VIVO") else formatTime(position),
             color = Color.White,
             fontSize = 13.sp,
             modifier = Modifier.width(76.dp),
@@ -1639,8 +1639,8 @@ private fun formatTime(ms: Long): String {
 }
 
 private fun langName(code: String?): String {
-    if (code.isNullOrBlank() || code == "und") return "Idioma não informado"
-    val name = Locale.forLanguageTag(code).getDisplayLanguage(Locale("pt"))
+    if (code.isNullOrBlank() || code == "und") return tr("Idioma não informado")
+    val name = Locale.forLanguageTag(code).getDisplayLanguage(I18n.locale())
     return if (name.isNullOrBlank() || name.equals(code, ignoreCase = true)) code else name.replaceFirstChar { it.uppercase() }
 }
 
@@ -1649,8 +1649,8 @@ private fun codecName(mime: String?): String {
     return when (val sub = mime.substringAfter('/').lowercase()) {
         "mp4a-latm" -> "AAC"
         "ac3" -> "AC3"
-        "eac3" -> "EAC3 (Dolby Digital+)"
-        "eac3-joc" -> "Dolby Atmos"
+        "eac3" -> tr("EAC3 (Dolby Digital+)")
+        "eac3-joc" -> tr("Dolby Atmos")
         "true-hd" -> "TrueHD"
         "vnd.dts" -> "DTS"
         "vnd.dts.hd" -> "DTS-HD"
@@ -1667,7 +1667,7 @@ private fun trackLabel(f: Format, type: Int): String {
     val title = f.label
     if (!title.isNullOrBlank()) parts.add(title)
     if (type == C.TRACK_TYPE_AUDIO) {
-        val ch = if (f.channelCount > 0) " ${f.channelCount}ch" else ""
+        val ch = if (f.channelCount > 0) tr(" {0}ch", f.channelCount) else ""
         parts.add(codecName(f.sampleMimeType) + ch)
     }
     return parts.joinToString(" • ")
@@ -1682,7 +1682,7 @@ private fun buildOptions(exo: ExoPlayer, tracks: Tracks, type: Int): List<TrackO
         }
         list.add(
             TrackOption(
-                label = "Desligadas",
+                label = tr("Desligadas"),
                 selected = !anySelected,
                 supported = true,
                 onSelect = {
@@ -1721,8 +1721,8 @@ private fun buildOptions(exo: ExoPlayer, tracks: Tracks, type: Int): List<TrackO
             val best = cands.maxByOrNull { rank(it) } ?: continue
             val selected = cands.any { it.g.isTrackSelected(it.i) }
             val extra = when {
-                key.endsWith("|f") -> " (só falas em outra língua)"
-                key.endsWith("|s") -> " (para surdos)"
+                key.endsWith("|f") -> tr(" (só falas em outra língua)")
+                key.endsWith("|s") -> tr(" (para surdos)")
                 else -> ""
             }
             list.add(
@@ -1767,7 +1767,7 @@ private fun buildOptions(exo: ExoPlayer, tracks: Tracks, type: Int): List<TrackO
 }
 
 private fun trackSummary(t: Tracks): String {
-    var video = "vídeo: ?"
+    var video = tr("vídeo: ?")
     var audioSel = "nenhum"
     var audioCount = 0
     var textCount = 0
@@ -1777,8 +1777,8 @@ private fun trackSummary(t: Tracks): String {
             val f = g.getTrackFormat(i)
             when (g.type) {
                 C.TRACK_TYPE_VIDEO -> if (g.isTrackSelected(i)) {
-                    val size = if (f.width > 0) "${f.width}x${f.height} " else ""
-                    video = "vídeo: " + size + codecName(f.sampleMimeType)
+                    val size = if (f.width > 0) tr("{0}x{1} ", f.width, f.height) else ""
+                    video = tr("vídeo: ") + size + codecName(f.sampleMimeType)
                 }
                 C.TRACK_TYPE_AUDIO -> {
                     audioCount++
@@ -1805,13 +1805,13 @@ private fun describeError(e: PlaybackException): String {
         cause = cause.cause
     }
     val base = when {
-        http != null -> "O servidor respondeu HTTP $http."
-        e.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED -> "Falha de rede ao conectar."
-        e.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT -> "Tempo esgotado ao conectar."
-        e.errorCode == PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED -> "Formato de arquivo não suportado."
-        e.errorCode == PlaybackException.ERROR_CODE_DECODING_FAILED -> "O aparelho não conseguiu decodificar este vídeo."
-        e.errorCode == PlaybackException.ERROR_CODE_DECODER_INIT_FAILED -> "O aparelho não tem decodificador para este vídeo."
-        else -> "Erro de reprodução."
+        http != null -> tr("O servidor respondeu HTTP {0}.", http)
+        e.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED -> tr("Falha de rede ao conectar.")
+        e.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT -> tr("Tempo esgotado ao conectar.")
+        e.errorCode == PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED -> tr("Formato de arquivo não suportado.")
+        e.errorCode == PlaybackException.ERROR_CODE_DECODING_FAILED -> tr("O aparelho não conseguiu decodificar este vídeo.")
+        e.errorCode == PlaybackException.ERROR_CODE_DECODER_INIT_FAILED -> tr("O aparelho não tem decodificador para este vídeo.")
+        else -> tr("Erro de reprodução.")
     }
     return base + "\n(" + e.errorCodeName + ")"
 }

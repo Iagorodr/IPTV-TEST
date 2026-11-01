@@ -261,12 +261,12 @@ object SportsTime {
     /** "Hoje", "Amanhã" ou "Sáb 17/10". */
     fun dayLabel(ms: Long, now: Long, tz: TimeZone): String {
         val d = dayNumber(ms, tz) - dayNumber(now, tz)
-        if (d == 0L) return "Hoje"
-        if (d == 1L) return "Amanhã"
-        if (d == -1L) return "Ontem"
+        if (d == 0L) return tr("Hoje")
+        if (d == 1L) return tr("Amanhã")
+        if (d == -1L) return tr("Ontem")
         val c = Calendar.getInstance(tz, Locale.US)
         c.timeInMillis = ms
-        return WEEK[c.get(Calendar.DAY_OF_WEEK) - 1] + " " + shortDate(ms, tz)
+        return tr(WEEK[c.get(Calendar.DAY_OF_WEEK) - 1]) + " " + shortDate(ms, tz)
     }
 
     /** Data para a ESPN (ela agrupa os jogos pelo dia no horário da costa leste dos EUA). */

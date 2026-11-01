@@ -372,9 +372,9 @@ fun SeeAllTile(total: Int, modifier: Modifier = Modifier, onClick: () -> Unit) {
             contentAlignment = Alignment.Center,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Ver todos", color = TextMain, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Ver todos"), color = TextMain, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(4.dp))
-                Text("$total títulos", color = Muted, fontSize = 12.sp)
+                Text(tr("{0} títulos", total), color = Muted, fontSize = 12.sp)
             }
         }
     }
@@ -389,7 +389,7 @@ fun ShelfRow(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = shelf.name,
+            text = tr(shelf.name),
             color = TextMain,
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
@@ -431,7 +431,7 @@ fun ContinueRow(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "Continuar assistindo",
+            text = tr("Continuar assistindo"),
             color = TextMain,
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
@@ -531,7 +531,7 @@ fun ChannelTile(
                     )
                     Spacer(Modifier.width(6.dp))
                     Text(
-                        text = if (ch.isBrand) "${ch.variants.size} praças" else if (ch.sources.size == 1) "1 fonte" else "${ch.sources.size} fontes",
+                        text = if (ch.isBrand) tr("{0} praças", ch.variants.size) else if (ch.sources.size == 1) tr("1 fonte") else tr("{0} fontes", ch.sources.size),
                         color = TextMain,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,

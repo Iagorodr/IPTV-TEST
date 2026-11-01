@@ -143,14 +143,14 @@ fun WelcomeScreen(vm: MainViewModel) {
                 Column(modifier = Modifier.width(700.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     when (st) {
                         0 -> {
-                            StepHeader("Como podemos te chamar?", "Só para quem desenvolve o app saber quem usa. Nada além disso é enviado.")
+                            StepHeader(tr("Como podemos te chamar?"), tr("Só para quem desenvolve o app saber quem usa. Nada além disso é enviado."))
                             OutlinedTextField(
                                 value = name,
                                 onValueChange = {
                                     name = it
                                     warn = false
                                 },
-                                placeholder = { Text("Seu nome", color = Muted) },
+                                placeholder = { Text(tr("Seu nome"), color = Muted) },
                                 singleLine = true,
                                 textStyle = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Medium),
                                 colors = fieldColors(),
@@ -161,17 +161,20 @@ fun WelcomeScreen(vm: MainViewModel) {
                             )
                             if (warn) {
                                 Spacer(Modifier.height(8.dp))
-                                Text("Digite seu nome para continuar.", color = ErrorColor, fontSize = 13.sp)
+                                Text(tr("Digite seu nome para continuar."), color = ErrorColor, fontSize = 13.sp)
                             }
                             Spacer(Modifier.height(20.dp))
-                            TvButton(text = "Continuar", primary = true, minWidth = 160.dp, focusRequester = primary) {
+                            TvButton(text = tr("Continuar"), primary = true, minWidth = 160.dp, focusRequester = primary) {
                                 if (name.isBlank()) warn = true else step = 1
                             }
                         }
                         1 -> {
-                            StepHeader("Qual idioma você prefere?", "Os menus ainda estão em português. Sua escolha fica guardada para as traduções.")
+                            StepHeader(tr("Qual idioma você prefere?"), tr("Os menus mudam na hora para o idioma escolhido."))
                             CardGrid {
-                                for ((tag, label) in APP_LANGS) ChoiceCard(label, lang == tag) { lang = tag }
+                                for ((tag, label) in APP_LANGS) ChoiceCard(label, lang == tag) {
+                                    lang = tag
+                                    vm.applyLang(tag)
+                                }
                             }
                             Spacer(Modifier.height(20.dp))
                             NavButtons(primary, onBack = { step = 0 }) { step = 2 }
@@ -179,26 +182,26 @@ fun WelcomeScreen(vm: MainViewModel) {
                         2 -> {
                             val now = remember { System.currentTimeMillis() }
                             val clock = remember(tz) { SportsTime.clock(now, java.util.TimeZone.getTimeZone(tz)) }
-                            StepHeader("Qual é o seu fuso horário?", "Os jogos aparecem na sua hora. Agora, nesse fuso, são $clock.")
+                            StepHeader(tr("Qual é o seu fuso horário?"), tr("Os jogos aparecem na sua hora. Agora, nesse fuso, são {0}.", clock))
                             CardGrid {
                                 for (z in (listOf(deviceTz) + COMMON_ZONES).distinct()) {
                                     ChoiceCard(
                                         text = z.substringAfter('/').replace('_', ' '),
                                         selected = tz == z,
-                                        tag = if (z == deviceTz) "da TV" else null,
+                                        tag = if (z == deviceTz) tr("da TV") else null,
                                     ) { tz = z }
                                 }
                             }
                             Spacer(Modifier.height(20.dp))
-                            NavButtons(primary, label = "Concluir", onBack = { step = 1 }) {
+                            NavButtons(primary, label = tr("Concluir"), onBack = { step = 1 }) {
                                 vm.saveProfile(name, lang, tz)
                                 step = 3
                             }
                         }
                         3 -> {
-                            StepHeader("Seus times do coração", "Opcional. Os jogos deles aparecem no topo do início.")
+                            StepHeader(tr("Seus times do coração"), tr("Opcional. Os jogos deles aparecem no topo do início."))
                             val n = vm.favTeams.size + vm.favLeagues.size
-                            TvButton(text = if (n == 0) "Escolher times e ligas" else "Trocar times e ligas", minWidth = 220.dp, focusRequester = primary) { vm.openPicker() }
+                            TvButton(text = if (n == 0) tr("Escolher times e ligas") else tr("Trocar times e ligas"), minWidth = 220.dp, focusRequester = primary) { vm.openPicker() }
                             if (n > 0) {
                                 Spacer(Modifier.height(10.dp))
                                 Text(
@@ -208,17 +211,17 @@ fun WelcomeScreen(vm: MainViewModel) {
                             }
                             Spacer(Modifier.height(22.dp))
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                TvButton(text = if (n == 0) "Pular" else "Continuar", primary = n > 0, minWidth = 140.dp) { step = 4 }
+                                TvButton(text = if (n == 0) tr("Pular") else tr("Continuar"), primary = n > 0, minWidth = 140.dp) { step = 4 }
                             }
                         }
                         else -> {
-                            StepHeader("O que você mais curte?", "Opcional. Escolha até 3 gêneros. Eles aparecem primeiro nos destaques.")
+                            StepHeader(tr("O que você mais curte?"), tr("Opcional. Escolha até 3 gêneros. Eles aparecem primeiro nos destaques."))
                             GenreChips(vm, centered = true)
                             Spacer(Modifier.height(22.dp))
                             val any = vm.user.favGenres.isNotEmpty()
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                TvButton(text = "Voltar", minWidth = 120.dp) { step = 3 }
-                                TvButton(text = if (any) "Começar" else "Pular", primary = true, minWidth = 140.dp, focusRequester = primary) { vm.finishWelcome() }
+                                TvButton(text = tr("Voltar"), minWidth = 120.dp) { step = 3 }
+                                TvButton(text = if (any) tr("Começar") else tr("Pular"), primary = true, minWidth = 140.dp, focusRequester = primary) { vm.finishWelcome() }
                             }
                         }
                     }
@@ -248,9 +251,9 @@ private fun CardGrid(content: @Composable () -> Unit) {
 }
 
 @Composable
-private fun NavButtons(primary: FocusRequester, label: String = "Continuar", onBack: () -> Unit, onNext: () -> Unit) {
+private fun NavButtons(primary: FocusRequester, label: String = tr("Continuar"), onBack: () -> Unit, onNext: () -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        TvButton(text = "Voltar", minWidth = 120.dp, onClick = onBack)
+        TvButton(text = tr("Voltar"), minWidth = 120.dp, onClick = onBack)
         TvButton(text = label, primary = true, minWidth = 160.dp, focusRequester = primary, onClick = onNext)
     }
 }
@@ -300,14 +303,14 @@ fun GenreChips(vm: MainViewModel, centered: Boolean = false) {
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         for (g in PICK_GENRES) {
-            ChipItem(text = g, selected = g in chosen) {
+            ChipItem(text = tr(g), selected = g in chosen) {
                 val next = if (g in chosen) chosen - g else (chosen + g).takeLast(3)
                 vm.setFavGenres(next)
             }
         }
     }
     Text(
-        if (chosen.isEmpty()) "Nenhum escolhido." else chosen.size.toString() + " de 3: " + chosen.joinToString(", "),
+        if (chosen.isEmpty()) tr("Nenhum escolhido.") else chosen.size.toString() + tr(" de 3: ") + chosen.joinToString(", ") { tr(it) },
         color = Muted,
         fontSize = 11.sp,
         textAlign = if (centered) TextAlign.Center else TextAlign.Start,

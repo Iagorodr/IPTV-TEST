@@ -104,9 +104,9 @@ object Recorder {
     }
 
     fun qualityLabel(q: Int) = when (q) {
-        1 -> "Média"
-        2 -> "Baixa"
-        else -> "Original"
+        1 -> tr("Média")
+        2 -> tr("Baixa")
+        else -> tr("Original")
     }
 
     /** Começa a gravar agora. Devolve null se deu certo, ou o texto do problema. */
@@ -119,8 +119,8 @@ object Recorder {
     fun prepare(ctx: Context, key: String, title: String, endsAt: Long): Pair<Rec?, String?> {
         val dir = RecStore.dir(ctx)
         val free = try { dir.usableSpace } catch (e: Exception) { Long.MAX_VALUE }
-        if (free < 1_000_000_000L) return Pair(null, "Pouco espaço no aparelho (menos de 1 GB livre).")
-        if (RecStore.all(ctx).any { it.key == key && it.recording }) return Pair(null, "Esse canal já está sendo gravado.")
+        if (free < 1_000_000_000L) return Pair(null, tr("Pouco espaço no aparelho (menos de 1 GB livre)."))
+        if (RecStore.all(ctx).any { it.key == key && it.recording }) return Pair(null, tr("Esse canal já está sendo gravado."))
         val now = System.currentTimeMillis()
         val id = now.toString() + "-" + (Math.random() * 1000).toInt()
         val safe = title.replace(Regex("[^A-Za-z0-9]+"), "_").trim('_').take(40).ifEmpty { "gravacao" }
@@ -131,7 +131,7 @@ object Recorder {
     }
 
     fun launch(ctx: Context, key: String, title: String, urls: List<String>, endsAt: Long, quality: Int): String? {
-        if (urls.isEmpty() || urls.all { it.isBlank() }) return "Esse canal não tem endereço para gravar."
+        if (urls.isEmpty() || urls.all { it.isBlank() }) return tr("Esse canal não tem endereço para gravar.")
         val (rec, problem) = prepare(ctx, key, title, endsAt)
         if (rec == null) return problem
         val i = Intent(ctx, RecordService::class.java)
@@ -143,7 +143,7 @@ object Recorder {
             if (Build.VERSION.SDK_INT >= 26) ctx.startForegroundService(i) else ctx.startService(i)
         } catch (e: Exception) {
             RecStore.remove(ctx, rec.id)
-            return "O Android não deixou iniciar a gravação em segundo plano."
+            return tr("O Android não deixou iniciar a gravação em segundo plano.")
         }
         return null
     }
@@ -316,12 +316,12 @@ class RecordService : Service() {
         val pend = SchedStore.all(this).filter { it.state == "pending" }.minByOrNull { it.startMs }
         val b = if (Build.VERSION.SDK_INT >= 26) Notification.Builder(this, CHANNEL) else Notification.Builder(this)
         return b.setSmallIcon(android.R.drawable.ic_media_play)
-            .setContentTitle(if (n == 0) "Gravação agendada" else if (n == 1) "Gravando" else "Gravando $n canais")
+            .setContentTitle(if (n == 0) tr("Gravação agendada") else if (n == 1) tr("Gravando") else tr("Gravando {0} canais", n))
             .setContentText(
                 if (n == 0 && pend != null) {
                     pend.title + " · " + java.text.SimpleDateFormat("dd/MM HH:mm", java.util.Locale.getDefault()).format(java.util.Date(pend.startMs))
                 } else {
-                    "Toque para abrir o app e ver as gravações"
+                    tr("Toque para abrir o app e ver as gravações")
                 },
             )
             .setContentIntent(open)
@@ -370,10 +370,10 @@ class RecordService : Service() {
             try {
                 FileOutputStream(File(rec.file), true).use { out -> failure = record(out) }
             } catch (e: Exception) {
-                failure = "Erro ao gravar: " + (e.message ?: "desconhecido")
+                failure = tr("Erro ao gravar: ") + (e.message ?: "desconhecido")
             }
             rec.state = if (rec.size > 0L) "done" else "error"
-            rec.error = if (rec.size > 0L) "" else failure.ifEmpty { "Não consegui gravar esse canal." }
+            rec.error = if (rec.size > 0L) "" else failure.ifEmpty { tr("Não consegui gravar esse canal.") }
             RecStore.upsert(ctx, rec)
             onEnd()
         }
@@ -388,18 +388,18 @@ class RecordService : Service() {
                 c.setRequestProperty("User-Agent", USER_AGENT)
                 val code = c.responseCode
                 if (code in 300..399) {
-                    val loc = c.getHeaderField("Location") ?: throw java.io.IOException("redirecionamento sem destino")
+                    val loc = c.getHeaderField("Location") ?: throw java.io.IOException(tr("redirecionamento sem destino"))
                     c.disconnect()
                     cur = URL(URL(cur), loc).toString()
                     continue
                 }
                 if (code !in 200..299) {
                     c.disconnect()
-                    throw java.io.IOException("o servidor respondeu $code")
+                    throw java.io.IOException(tr("o servidor respondeu {0}", code))
                 }
                 return Pair(c, cur)
             }
-            throw java.io.IOException("redirecionamentos demais")
+            throw java.io.IOException(tr("redirecionamentos demais"))
         }
 
         /** Grava até o fim do tempo. Devolve o texto do problema se não conseguiu nada. */
@@ -433,7 +433,7 @@ class RecordService : Service() {
                     break
                 } catch (e: Exception) {
                     if (cancelled) break
-                    lastError = "Falha de conexão: " + (e.message ?: "desconhecida")
+                    lastError = tr("Falha de conexão: ") + (e.message ?: "desconhecida")
                     fails++
                     if (fails % 3 == 0) ui++
                     try {
@@ -482,7 +482,7 @@ class RecordService : Service() {
                         val next = lines.drop(i + 1).firstOrNull { !it.startsWith("#") } ?: continue
                         vs.add(Pair(bw, resolve(plUrl, next)))
                     }
-                    if (vs.isEmpty()) throw java.io.IOException("lista sem versões")
+                    if (vs.isEmpty()) throw java.io.IOException(tr("lista sem versões"))
                     vs.sortBy { it.first }
                     plUrl = when (quality) {
                         2 -> vs.first().second
@@ -493,7 +493,7 @@ class RecordService : Service() {
                     continue
                 }
                 if (lines.any { it.startsWith("#EXT-X-KEY") && !it.contains("METHOD=NONE") }) {
-                    throw java.io.IOException("Esse canal é protegido e não dá para gravar.")
+                    throw java.io.IOException(tr("Esse canal é protegido e não dá para gravar."))
                 }
                 var seq = lines.firstOrNull { it.startsWith("#EXT-X-MEDIA-SEQUENCE:") }
                     ?.substringAfter(':')?.toLongOrNull() ?: 0L
@@ -534,7 +534,7 @@ class RecordService : Service() {
                 }
                 if (lines.any { it == "#EXT-X-ENDLIST" }) return
                 idle = if (wrote == 0) idle + 1 else 0
-                if (idle > 60) throw java.io.IOException("o canal parou de enviar")
+                if (idle > 60) throw java.io.IOException(tr("o canal parou de enviar"))
                 val wait = (target * 500L).coerceIn(800L, 4_000L)
                 Thread.sleep(wait)
                 text = fetchText(plUrl)

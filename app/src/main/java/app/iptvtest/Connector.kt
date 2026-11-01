@@ -54,7 +54,7 @@ object Connector {
                 if (netFail) break
                 USER_AGENT = ua
                 tries++
-                if (tries > 1) status("Tentando outro jeito de conectar ($tries)…")
+                if (tries > 1) status(tr("Tentando outro jeito de conectar ({0})…", tries))
                 val acc = Account(srv, user, pass)
                 try {
                     val x = XtreamApi(acc)
@@ -75,7 +75,7 @@ object Connector {
                 USER_AGENT = DEFAULT_USER_AGENT
                 val link = srv.trimEnd('/') + "/get.php?username=" + android.net.Uri.encode(user) +
                     "&password=" + android.net.Uri.encode(pass) + "&type=m3u_plus&output=" + out
-                status("Tentando a lista M3U do provedor…")
+                status(tr("Tentando a lista M3U do provedor…"))
                 try {
                     return m3u(ctx, link, status, allowXtream = false)
                 } catch (e: CancellationException) {
@@ -112,7 +112,7 @@ object Connector {
                 if (netFail) break
                 USER_AGENT = ua
                 tries++
-                if (tries > 1) status("Tentando outro jeito de conectar ($tries)…")
+                if (tries > 1) status(tr("Tentando outro jeito de conectar ({0})…", tries))
                 try {
                     val m = M3uApi(ctx, l)
                     val info = m.login()
@@ -130,13 +130,13 @@ object Connector {
 
     private fun explain(e: Throwable?, tries: Int): Exception {
         val base = when (e) {
-            null -> "Não consegui entrar."
-            is UnknownHostException -> "Servidor não encontrado. Confira o endereço e a internet."
-            is SocketTimeoutException -> "O servidor demorou demais para responder."
-            is ConnectException -> "Não foi possível conectar ao servidor."
-            is OutOfMemoryError -> "A TV ficou sem memória ao organizar o catálogo."
-            else -> e.message ?: "Erro desconhecido."
+            null -> tr("Não consegui entrar.")
+            is UnknownHostException -> tr("Servidor não encontrado. Confira o endereço e a internet.")
+            is SocketTimeoutException -> tr("O servidor demorou demais para responder.")
+            is ConnectException -> tr("Não foi possível conectar ao servidor.")
+            is OutOfMemoryError -> tr("A TV ficou sem memória ao organizar o catálogo.")
+            else -> e.message ?: tr("Erro desconhecido.")
         }
-        return IOException(if (tries > 1) "$base (tentei $tries jeitos de conectar)" else base)
+        return IOException(if (tries > 1) tr("{0} (tentei {1} jeitos de conectar)", base, tries) else base)
     }
 }

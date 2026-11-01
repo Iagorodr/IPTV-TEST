@@ -115,9 +115,9 @@ object Updater {
                     Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + ctx.packageName))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 )
-                "Permita \"instalar apps desconhecidos\" para este app, volte e toque em Atualizar de novo."
+                tr("Permita \"instalar apps desconhecidos\" para este app, volte e toque em Atualizar de novo.")
             } catch (e: Exception) {
-                "Nas configurações da TV, permita instalar apps de fontes desconhecidas para este app e tente de novo."
+                tr("Nas configurações da TV, permita instalar apps de fontes desconhecidas para este app e tente de novo.")
             }
         }
         return try {
@@ -129,7 +129,7 @@ object Updater {
             )
             null
         } catch (e: Exception) {
-            "Não consegui abrir o instalador. Baixe pelo link de sempre (Downloader)."
+            tr("Não consegui abrir o instalador. Baixe pelo link de sempre (Downloader).")
         }
     }
 }

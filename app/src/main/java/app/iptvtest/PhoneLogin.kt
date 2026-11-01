@@ -91,25 +91,25 @@ class PhoneLoginServer(
             val query = parseForm(target.substringAfter('?', ""))
             if (method == "POST" && path == "/enviar") {
                 if (len <= 0 || len > 16_384) {
-                    send(sock, 400, simplePage("Pedido inválido."))
+                    send(sock, 400, simplePage(tr("Pedido inválido.")))
                     return
                 }
                 val body = readBody(input, len) ?: return
                 val f = parseForm(String(body, Charsets.UTF_8))
                 if (f["k"] != token) {
-                    send(sock, 403, simplePage("Esta página expirou. Aponte a câmera para o QR code da TV de novo."))
+                    send(sock, 403, simplePage(tr("Esta página expirou. Aponte a câmera para o QR code da TV de novo.")))
                     return
                 }
                 onSubmit(f["modo"] ?: "", f)
-                send(sock, 200, simplePage(if (page == Page.ACCESS) "Pedido enviado! Olhe a TV." else "Pronto! Olhe a TV. Se der algum erro, a TV mostra o motivo e você pode enviar de novo.", backLink = page != Page.ACCESS))
+                send(sock, 200, simplePage(if (page == Page.ACCESS) tr("Pedido enviado! Olhe a TV.") else tr("Pronto! Olhe a TV. Se der algum erro, a TV mostra o motivo e você pode enviar de novo."), backLink = page != Page.ACCESS))
             } else if (method == "GET" && path == "/") {
                 if (query["k"] != token) {
-                    send(sock, 403, simplePage("Aponte a câmera do celular para o QR code que aparece na TV."))
+                    send(sock, 403, simplePage(tr("Aponte a câmera do celular para o QR code que aparece na TV.")))
                     return
                 }
                 send(sock, 200, if (page == Page.ACCESS) accessPage() else formPage())
             } else {
-                send(sock, 404, simplePage("Página não encontrada."))
+                send(sock, 404, simplePage(tr("Página não encontrada.")))
             }
         } catch (e: Exception) {
             // conexão quebrada ou lenta: ignora
@@ -199,39 +199,39 @@ class PhoneLoginServer(
     private val safeName = appName.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
     private fun head(): String =
-        "<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\">" +
+        "<!doctype html><html lang=\"" + I18n.bcp47() + "\"><head><meta charset=\"utf-8\">" +
             "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>" + safeName + "</title>" +
             "<style>" + style + "</style></head><body><h1>" + safeName + "</h1>"
 
     private fun simplePage(msg: String, backLink: Boolean = false): String =
         head() + "<p>" + msg + "</p>" +
-            (if (backLink) "<p><a href=\"/?k=$token\">Enviar outra lista</a></p>" else "") + "</body></html>"
+            (if (backLink) "<p><a href=\"/?k=$token\">" + tr("Enviar outra lista") + "</a></p>" else "") + "</body></html>"
 
     private fun accessPage(): String =
         head() +
-            "<p>Peça a liberação do app. Seus dados vão para quem desenvolve o app, só para ele entrar em contato com você.</p>" +
-            "<form class=\"card\" method=\"post\" action=\"/enviar\"><h2>Pedir liberação</h2>" +
+            "<p>" + tr("Peça a liberação do app. Seus dados vão para quem desenvolve o app, só para ele entrar em contato com você.") + "</p>" +
+            "<form class=\"card\" method=\"post\" action=\"/enviar\"><h2>" + tr("Pedir liberação") + "</h2>" +
             "<input type=\"hidden\" name=\"k\" value=\"$token\"><input type=\"hidden\" name=\"modo\" value=\"access\">" +
-            "<label>Nome</label><input name=\"nome\" autocomplete=\"name\">" +
-            "<label>E-mail</label><input name=\"email\" type=\"email\" inputmode=\"email\" autocapitalize=\"off\" autocomplete=\"email\">" +
-            "<label>Telefone</label><input name=\"tel\" type=\"tel\" inputmode=\"tel\" autocomplete=\"tel\">" +
-            "<button type=\"submit\">Enviar pedido</button></form></body></html>"
+            "<label>" + tr("Nome") + "</label><input name=\"nome\" autocomplete=\"name\">" +
+            "<label>" + tr("E-mail") + "</label><input name=\"email\" type=\"email\" inputmode=\"email\" autocapitalize=\"off\" autocomplete=\"email\">" +
+            "<label>" + tr("Telefone") + "</label><input name=\"tel\" type=\"tel\" inputmode=\"tel\" autocomplete=\"tel\">" +
+            "<button type=\"submit\">" + tr("Enviar pedido") + "</button></form></body></html>"
 
     private fun formPage(): String =
         head() +
-            "<p>Digite aqui os dados da sua lista. Eles vão direto para a TV, pela sua rede Wi-Fi, e não passam por nenhum servidor.</p>" +
-            "<form class=\"card\" method=\"post\" action=\"/enviar\"><h2>Servidor, usuário e senha (Xtream)</h2>" +
+            "<p>" + tr("Digite aqui os dados da sua lista. Eles vão direto para a TV, pela sua rede Wi-Fi, e não passam por nenhum servidor.") + "</p>" +
+            "<form class=\"card\" method=\"post\" action=\"/enviar\"><h2>" + tr("Servidor, usuário e senha (Xtream)") + "</h2>" +
             "<input type=\"hidden\" name=\"k\" value=\"$token\"><input type=\"hidden\" name=\"modo\" value=\"xtream\">" +
-            "<label>Servidor (ex.: http://exemplo.com:8080)</label>" +
+            "<label>" + tr("Servidor (ex.: http://exemplo.com:8080)") + "</label>" +
             "<input name=\"server\" inputmode=\"url\" autocapitalize=\"off\" autocorrect=\"off\" spellcheck=\"false\">" +
-            "<label>Usuário</label><input name=\"user\" autocapitalize=\"off\" autocorrect=\"off\" spellcheck=\"false\">" +
-            "<label>Senha</label><input name=\"pass\" type=\"password\" autocapitalize=\"off\" autocorrect=\"off\">" +
-            "<button type=\"submit\">Enviar para a TV</button></form>" +
-            "<form class=\"card\" method=\"post\" action=\"/enviar\"><h2>Link da lista (M3U)</h2>" +
+            "<label>" + tr("Usuário") + "</label><input name=\"user\" autocapitalize=\"off\" autocorrect=\"off\" spellcheck=\"false\">" +
+            "<label>" + tr("Senha") + "</label><input name=\"pass\" type=\"password\" autocapitalize=\"off\" autocorrect=\"off\">" +
+            "<button type=\"submit\">" + tr("Enviar para a TV") + "</button></form>" +
+            "<form class=\"card\" method=\"post\" action=\"/enviar\"><h2>" + tr("Link da lista (M3U)") + "</h2>" +
             "<input type=\"hidden\" name=\"k\" value=\"$token\"><input type=\"hidden\" name=\"modo\" value=\"m3u\">" +
-            "<label>Cole o link</label>" +
+            "<label>" + tr("Cole o link") + "</label>" +
             "<input name=\"link\" inputmode=\"url\" autocapitalize=\"off\" autocorrect=\"off\" spellcheck=\"false\">" +
-            "<button type=\"submit\">Enviar para a TV</button></form></body></html>"
+            "<button type=\"submit\">" + tr("Enviar para a TV") + "</button></form></body></html>"
 
     companion object {
         fun newToken(): String {

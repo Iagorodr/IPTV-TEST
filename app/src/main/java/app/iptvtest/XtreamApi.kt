@@ -260,21 +260,21 @@ class XtreamApi(private val account: Account) : ListApi {
         val t = text.trim()
         if (t.startsWith("[")) return JSONArray(t)
         if (t.isEmpty() || t == "null" || t == "{}") return JSONArray()
-        throw IOException("Resposta inesperada do servidor.")
+        throw IOException(tr("Resposta inesperada do servidor."))
     }
 
     /** Valida usuário/senha e devolve um resumo da conta (sem dados sensíveis). */
     override suspend fun login(): String {
         val root = JSONObject(getText(apiUrl()))
         readServerClock(root)
-        val ui = root.optJSONObject("user_info") ?: throw IOException("Resposta inesperada do servidor.")
-        if (ui.optInt("auth", 0) != 1) throw IOException("Usuário ou senha inválidos.")
+        val ui = root.optJSONObject("user_info") ?: throw IOException(tr("Resposta inesperada do servidor."))
+        if (ui.optInt("auth", 0) != 1) throw IOException(tr("Usuário ou senha inválidos."))
         val status = ui.str("status") ?: "?"
         val exp = ui.str("exp_date")?.toLongOrNull()?.let {
             SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date(it * 1000))
-        } ?: "sem data"
+        } ?: tr("sem data")
         val max = ui.str("max_connections") ?: "?"
-        return "Conta $status • vence $exp • telas: $max"
+        return tr("Conta {0} • vence {1} • telas: {2}", status, exp, max)
     }
 
     override suspend fun categories(kind: Kind): List<Category> {
@@ -288,7 +288,7 @@ class XtreamApi(private val account: Account) : ListApi {
         for (i in 0 until arr.length()) {
             val o = arr.optJSONObject(i) ?: continue
             val id = o.str("category_id") ?: continue
-            out.add(Category(id, o.str("category_name") ?: "Categoria $id"))
+            out.add(Category(id, o.str("category_name") ?: tr("Categoria {0}", id)))
         }
         return out.distinctBy { it.id }
     }
@@ -335,7 +335,7 @@ class XtreamApi(private val account: Account) : ListApi {
                     id = id,
                     season = o.optInt("season", seasonFallback),
                     number = number,
-                    title = o.str("title") ?: "Episódio $number",
+                    title = o.str("title") ?: tr("Episódio {0}", number),
                     ext = o.str("container_extension") ?: "mp4",
                 ),
             )

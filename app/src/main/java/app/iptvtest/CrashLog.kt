@@ -13,9 +13,9 @@ object CrashLog {
         Thread.setDefaultUncaughtExceptionHandler { t, e ->
             try {
                 val rt = Runtime.getRuntime()
-                val mem = "memória: usada " + ((rt.totalMemory() - rt.freeMemory()) / 1048576) + " MB de " + (rt.maxMemory() / 1048576) + " MB"
+                val mem = tr("memória: usada ") + ((rt.totalMemory() - rt.freeMemory()) / 1048576) + tr(" MB de ") + (rt.maxMemory() / 1048576) + tr(" MB")
                 val sb = StringBuilder()
-                sb.append(java.text.SimpleDateFormat("dd/MM HH:mm", java.util.Locale.US).format(java.util.Date())).append(" · build ")
+                sb.append(java.text.SimpleDateFormat("dd/MM HH:mm", java.util.Locale.US).format(java.util.Date())).append(tr(" · build "))
                     .append(BuildConfig.VERSION_CODE).append(" · ").append(mem).append("\n")
                 var c: Throwable? = e
                 var depth = 0

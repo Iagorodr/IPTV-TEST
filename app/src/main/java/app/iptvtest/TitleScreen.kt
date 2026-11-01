@@ -58,7 +58,7 @@ private fun durationText(secs: Int): String {
     if (secs <= 0) return ""
     val h = secs / 3600
     val m = (secs % 3600) / 60
-    return if (h > 0) "${h}h ${m}min" else "${m}min"
+    return if (h > 0) tr("{0}h {1}min", h, m) else "${m}min"
 }
 
 private fun epCode(ep: Episode): String = String.format(Locale.US, "T%d E%d", ep.season, ep.number)
@@ -163,15 +163,15 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
     }
 
     val watchLabel: String = when {
-        chosen == null -> "Indisponível"
+        chosen == null -> tr("Indisponível")
         title.series -> when {
-            resEp != null -> "Continuar " + epCode(resEp)
-            firstEp != null -> "Assistir " + epCode(firstEp)
-            epState != null && epState.loading -> "Carregando episódios..."
-            else -> "Assistir"
+            resEp != null -> tr("Continuar ") + epCode(resEp)
+            firstEp != null -> tr("Assistir ") + epCode(firstEp)
+            epState != null && epState.loading -> tr("Carregando episódios...")
+            else -> tr("Assistir")
         }
-        resumeSame && resume != null && resume.posMs > 30_000L -> "Continuar de " + formatClock(resume.posMs)
-        else -> "Assistir"
+        resumeSame && resume != null && resume.posMs > 30_000L -> tr("Continuar de ") + formatClock(resume.posMs)
+        else -> tr("Assistir")
     }
 
     fun play() {
@@ -211,12 +211,12 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
         ) {
             item(key = "head") {
                 Column(modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 26.dp, bottom = 10.dp)) {
-                    TvButton(text = "‹ Voltar") { vm.back() }
+                    TvButton(text = tr("‹ Voltar")) { vm.back() }
                     Spacer(Modifier.height(14.dp))
                     Column(modifier = Modifier.width(520.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                if (title.series) "SÉRIE" else "FILME",
+                                if (title.series) tr("SÉRIE") else tr("FILME"),
                                 color = Accent,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.ExtraBold,
@@ -228,7 +228,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                             }
                             if (title.series && seasons.isNotEmpty()) {
                                 Spacer(Modifier.width(10.dp))
-                                Text(if (seasons.size == 1) "1 temporada" else "${seasons.size} temporadas", color = TextMain, fontSize = 13.sp)
+                                Text(if (seasons.size == 1) tr("1 temporada") else tr("{0} temporadas", seasons.size), color = TextMain, fontSize = 13.sp)
                             }
                             val dur = durationText(info?.durationSecs ?: 0)
                             if (dur.isNotEmpty()) {
@@ -274,13 +274,13 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                             Text(plot, color = TextMain.copy(alpha = 0.88f), fontSize = 13.sp, lineHeight = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
                         } else if (!title.series && info == null) {
                             Spacer(Modifier.height(6.dp))
-                            Text("Carregando sinopse...", color = Muted, fontSize = 13.sp)
+                            Text(tr("Carregando sinopse..."), color = Muted, fontSize = 13.sp)
                         }
                         if (info != null && (info.cast.isNotEmpty() || info.director.isNotEmpty())) {
                             Spacer(Modifier.height(4.dp))
                             val extra = ArrayList<String>()
-                            if (info.director.isNotEmpty()) extra.add("Direção: " + info.director)
-                            if (info.cast.isNotEmpty()) extra.add("Elenco: " + info.cast.take(110))
+                            if (info.director.isNotEmpty()) extra.add(tr("Direção: ") + info.director)
+                            if (info.cast.isNotEmpty()) extra.add(tr("Elenco: ") + info.cast.take(110))
                             Text(extra.joinToString("   "), color = Muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
                         }
                     }
@@ -305,17 +305,17 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                         }
                         if (hasDub && hasLeg) {
                             Spacer(Modifier.width(6.dp))
-                            ChipItem(text = if (title.national) "Original" else "Dublado", selected = !legEff) {
+                            ChipItem(text = if (title.national) tr("Original") else tr("Dublado"), selected = !legEff) {
                                 leg = false
                                 copyIdx = 0
                             }
-                            ChipItem(text = "Legendado", selected = legEff) {
+                            ChipItem(text = tr("Legendado"), selected = legEff) {
                                 leg = true
                                 copyIdx = 0
                             }
                         } else if (hasLeg && !hasDub) {
                             Spacer(Modifier.width(6.dp))
-                            Text("Só legendado", color = Muted, fontSize = 14.sp)
+                            Text(tr("Só legendado"), color = Muted, fontSize = 14.sp)
                         }
                     }
 
@@ -324,10 +324,10 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                         Spacer(Modifier.height(8.dp))
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 2.dp)) {
                             item(key = "l-all") {
-                                ChipItem(text = "Idioma: todos", selected = langEff.isEmpty()) { lang = ""; copyIdx = 0 }
+                                ChipItem(text = tr("Idioma: todos"), selected = langEff.isEmpty()) { lang = ""; copyIdx = 0 }
                             }
                             items(langOptions.distinctBy { "l|$it" }, key = { "l|$it" }) { cc ->
-                                ChipItem(text = if (cc.isEmpty()) "Outros" else Countries.label(cc), selected = langEff == cc) {
+                                ChipItem(text = if (cc.isEmpty()) tr("Outros") else Countries.label(cc), selected = langEff == cc) {
                                     lang = cc
                                     copyIdx = 0
                                 }
@@ -339,27 +339,27 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                     Spacer(Modifier.height(8.dp))
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 2.dp)) {
                         if (has4kHere && hasStdHere) {
-                            item(key = "q-std") { ChipItem(text = "Padrão", selected = !k4Eff) { k4 = false; copyIdx = 0 } }
+                            item(key = "q-std") { ChipItem(text = tr("Padrão"), selected = !k4Eff) { k4 = false; copyIdx = 0 } }
                             item(key = "q-4k") { ChipItem(text = "4K", selected = k4Eff) { k4 = true; copyIdx = 0 } }
                         } else if (has4kHere) {
-                            item(key = "q-only") { Text("Só 4K", color = Muted, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 6.dp, vertical = 7.dp)) }
+                            item(key = "q-only") { Text(tr("Só 4K"), color = Muted, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 6.dp, vertical = 7.dp)) }
                         }
                         if (copies.size > 1) {
                             items(copies.size, key = { "c|$it" }) { i ->
                                 val v = copies[i]
                                 ChipItem(
-                                    text = "Cópia ${i + 1}" + (if (v.cam) " (cinema)" else ""),
+                                    text = tr("Cópia {0}", i + 1) + (if (v.cam) tr(" (cinema)") else ""),
                                     selected = copyIdx.coerceIn(0, copies.lastIndex) == i,
                                 ) { copyIdx = i }
                             }
                         }
-                        item(key = "t-fit") { ChipItem(text = "Tela: ajustar", selected = !zoom) { zoom = false } }
-                        item(key = "t-fill") { ChipItem(text = "Tela: preencher", selected = zoom) { zoom = true } }
+                        item(key = "t-fit") { ChipItem(text = tr("Tela: ajustar"), selected = !zoom) { zoom = false } }
+                        item(key = "t-fill") { ChipItem(text = tr("Tela: preencher"), selected = zoom) { zoom = true } }
                     }
                     if (chosen != null && chosen.cam) {
                         Spacer(Modifier.height(4.dp))
                         Text(
-                            "Gravação de cinema: a imagem e o som podem ter qualidade menor.",
+                            tr("Gravação de cinema: a imagem e o som podem ter qualidade menor."),
                             color = Warn,
                             fontSize = 12.sp,
                         )
@@ -373,7 +373,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                         if (seasons.size > 1) {
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(vertical = 4.dp)) {
                                 items(seasons.distinctBy { it }, key = { it }) { s ->
-                                    ChipItem(text = if (s == 0) "Especiais" else "Temporada $s", selected = s == seasonSel) { season = s }
+                                    ChipItem(text = if (s == 0) tr("Especiais") else tr("Temporada {0}", s), selected = s == seasonSel) { season = s }
                                 }
                             }
                         }
@@ -386,7 +386,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                             Spacer(Modifier.height(10.dp))
                             Text(err, color = ErrorColor, fontSize = 14.sp)
                             Spacer(Modifier.height(8.dp))
-                            TvButton(text = "Tentar de novo") {
+                            TvButton(text = tr("Tentar de novo")) {
                                 if (chosen != null) vm.ensureInfo(title, chosen)
                             }
                         }
@@ -415,7 +415,7 @@ fun TitleScreen(vm: MainViewModel, title: Title) {
                 item(key = "similar") {
                     Column(modifier = Modifier.padding(top = 12.dp)) {
                         ShelfRow(
-                            shelf = Shelf("Parecidos", similar),
+                            shelf = Shelf(tr("Parecidos"), similar),
                             onOpen = { vm.open(it) },
                             onSeeAll = null,
                         )
@@ -478,7 +478,7 @@ private fun EpisodeCard(ep: Episode, resumeHere: Boolean, progress: Float?, onCl
         }
         Spacer(Modifier.height(6.dp))
         Text(
-            text = ep.title.ifEmpty { "Episódio " + ep.number },
+            text = ep.title.ifEmpty { tr("Episódio ") + ep.number },
             color = TextMain,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
@@ -486,7 +486,7 @@ private fun EpisodeCard(ep: Episode, resumeHere: Boolean, progress: Float?, onCl
             overflow = TextOverflow.Ellipsis,
         )
         Text(
-            text = if (resumeHere) "parou aqui" else "Episódio " + ep.number,
+            text = if (resumeHere) tr("parou aqui") else tr("Episódio ") + ep.number,
             color = if (resumeHere) Accent else Muted,
             fontSize = 12.sp,
             maxLines = 1,

@@ -99,12 +99,12 @@ private fun StatusPill(game: Game, now: Long) {
     val fg: Color
     when (game.state) {
         1 -> {
-            text = if (game.detail.isEmpty()) "AO VIVO" else "AO VIVO · " + game.detail
+            text = if (game.detail.isEmpty()) tr("AO VIVO") else tr("AO VIVO · ") + game.detail
             bg = Red
             fg = Color.White
         }
         2 -> {
-            text = "ENCERRADO"
+            text = tr("ENCERRADO")
             bg = PanelAlt
             fg = Muted
         }
@@ -200,10 +200,10 @@ fun GameCard(
             Spacer(Modifier.height(5.dp))
             Text(
                 text = when {
-                    reminded -> "⏰ Lembrete ligado"
-                    channelCount == 1 -> "▶ 1 canal na sua lista"
-                    channelCount > 1 -> "▶ $channelCount canais na sua lista"
-                    else -> "Toque para ver detalhes"
+                    reminded -> tr("⏰ Lembrete ligado")
+                    channelCount == 1 -> tr("▶ 1 canal na sua lista")
+                    channelCount > 1 -> tr("▶ {0} canais na sua lista", channelCount)
+                    else -> tr("Toque para ver detalhes")
                 },
                 color = if (reminded) Warn else if (channelCount > 0) Good else Muted,
                 fontSize = 12.sp,
@@ -262,7 +262,7 @@ private fun StripWhen(live: Boolean, done: Boolean, detail: String, startMs: Lon
             Box(modifier = Modifier.size(7.dp).clip(CircleShape).background(LiveRed))
             Spacer(Modifier.width(6.dp))
             Text(
-                text = if (detail.isEmpty()) "Ao vivo" else "Ao vivo · $detail",
+                text = if (detail.isEmpty()) tr("Ao vivo") else tr("Ao vivo · {0}", detail),
                 color = Accent,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
@@ -271,7 +271,7 @@ private fun StripWhen(live: Boolean, done: Boolean, detail: String, startMs: Lon
         }
     } else {
         Text(
-            text = if (done) "Encerrado" else SportsTime.dayLabel(startMs, now, tz) + " · " + SportsTime.clock(startMs, tz),
+            text = if (done) tr("Encerrado") else SportsTime.dayLabel(startMs, now, tz) + " · " + SportsTime.clock(startMs, tz),
             color = Muted,
             fontSize = 12.sp,
             maxLines = 1,
@@ -299,10 +299,10 @@ private fun StripSportItem(kind: SportKind, ev: SportEvent?, now: Long, tz: Time
                 .background(if (focused) PanelAlt else Color.Transparent)
                 .padding(horizontal = 12.dp, vertical = 5.dp),
         ) {
-            Text(kind.label, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+            Text(tr(kind.label), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1)
             Spacer(Modifier.height(1.dp))
             if (ev == null) {
-                Text("ver canais", color = Muted, fontSize = 12.sp, maxLines = 1)
+                Text(tr("ver canais"), color = Muted, fontSize = 12.sp, maxLines = 1)
             } else {
                 StripWhen(live = ev.state == 1, done = false, detail = "", startMs = ev.startMs, now = now, tz = tz)
             }
@@ -338,7 +338,7 @@ fun GamesStrip(vm: MainViewModel, now: Long) {
         Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(lineColor))
         Row(modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                "JOGOS",
+                tr("JOGOS"),
                 color = Accent,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.ExtraBold,
@@ -352,15 +352,15 @@ fun GamesStrip(vm: MainViewModel, now: Long) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (noPicks) {
-                    item(key = "__pick") { StripTextItem("Escolher meus times e ligas", onClick = { vm.openPicker() }) }
+                    item(key = "__pick") { StripTextItem(tr("Escolher meus times e ligas"), onClick = { vm.openPicker() }) }
                 } else if (shown.isEmpty()) {
                     item(key = "__none") {
                         val err = vm.gamesError
                         if (!vm.gamesLoading && err != null) {
-                            StripTextItem("Não foi possível buscar. Tentar de novo", onClick = { vm.refreshSports(force = true) })
+                            StripTextItem(tr("Não foi possível buscar. Tentar de novo"), onClick = { vm.refreshSports(force = true) })
                         } else {
                             Text(
-                                text = if (vm.gamesLoading) "Buscando os jogos..." else "Nenhum jogo dos seus times hoje ou amanhã",
+                                text = if (vm.gamesLoading) tr("Buscando os jogos...") else tr("Nenhum jogo dos seus times hoje ou amanhã"),
                                 color = Muted,
                                 fontSize = 13.sp,
                                 modifier = Modifier.padding(horizontal = 12.dp),
@@ -375,7 +375,7 @@ fun GamesStrip(vm: MainViewModel, now: Long) {
                     StripSportItem(k, events[k], now, tz, onClick = { vm.openSport(k) })
                 }
             }
-            StripTextItem("Ver todos ›", onClick = { vm.openAllGames() })
+            StripTextItem(tr("Ver todos ›"), onClick = { vm.openAllGames() })
         }
         Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(lineColor))
     }
@@ -447,9 +447,9 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             Spacer(Modifier.height(10.dp))
             Text(
                 text = when (g.state) {
-                    1 -> "AO VIVO" + (if (g.detail.isEmpty()) "" else " · " + g.detail)
-                    2 -> "Encerrado"
-                    else -> "Começa " + SportsTime.dayLabel(g.startMs, now, tz).lowercase() + " às " + SportsTime.clock(g.startMs, tz) + " (hora daqui)"
+                    1 -> tr("AO VIVO") + (if (g.detail.isEmpty()) "" else " · " + g.detail)
+                    2 -> tr("Encerrado")
+                    else -> tr("Começa ") + SportsTime.dayLabel(g.startMs, now, tz).lowercase() + tr(" às ") + SportsTime.clock(g.startMs, tz) + tr(" (hora daqui)")
                 },
                 color = if (g.state == 1) Good else TextMain,
                 fontSize = 14.sp,
@@ -462,9 +462,9 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             if (finished) {
                 Text(
                     text = when {
-                        replayList.isNotEmpty() -> "Jogo encerrado. Você pode rever: escolha o canal e o app abre no começo do jogo."
-                        canReplay -> "Jogo encerrado. Nenhum canal da sua lista guarda a programação passada para rever agora."
-                        else -> "Jogo encerrado há mais de 24 horas: não dá mais para rever."
+                        replayList.isNotEmpty() -> tr("Jogo encerrado. Você pode rever: escolha o canal e o app abre no começo do jogo.")
+                        canReplay -> tr("Jogo encerrado. Nenhum canal da sua lista guarda a programação passada para rever agora.")
+                        else -> tr("Jogo encerrado há mais de 24 horas: não dá mais para rever.")
                     },
                     color = Muted,
                     fontSize = 13.sp,
@@ -484,7 +484,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             } else if (bg != null) {
                 // o jogo está na tabela: mostra onde passa, e se foi confirmado por uma fonte do próprio jogo
                 Text(
-                    text = if (bg.confirmed) "Passa em (" + info.country + ")" else "Provavelmente passa em (" + info.country + ")",
+                    text = if (bg.confirmed) tr("Passa em (") + info.country + ")" else tr("Provavelmente passa em (") + info.country + ")",
                     color = if (bg.confirmed) Good else Warn,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
@@ -500,13 +500,13 @@ fun GameDialog(vm: MainViewModel, g: Game) {
                     Text(bg.obs, color = TextMain, fontSize = 12.sp)
                 }
                 Text(
-                    text = "✓ = tem na sua lista. " + (if (bg.confirmed) "Confirmado" else "Ainda não confirmado") +
-                        (if (bg.src.isNotEmpty()) " em " + bg.src else "") + " · tabela de " + info.tableDate + ".",
+                    text = tr("✓ = tem na sua lista. ") + (if (bg.confirmed) tr("Confirmado") else tr("Ainda não confirmado")) +
+                        (if (bg.src.isNotEmpty()) tr(" em ") + bg.src else "") + tr(" · tabela de ") + info.tableDate + ".",
                     color = Muted,
                     fontSize = 11.sp,
                 )
             } else if (comp != null) {
-                Text("Costuma passar em (" + info.country + ")", color = Muted, fontSize = 12.sp)
+                Text(tr("Costuma passar em (") + info.country + ")", color = Muted, fontSize = 12.sp)
                 Spacer(Modifier.height(2.dp))
                 Text(
                     text = Broadcasts.line(comp.options, info.inList),
@@ -518,17 +518,17 @@ fun GameDialog(vm: MainViewModel, g: Game) {
                     Text(comp.note, color = Muted, fontSize = 12.sp)
                 }
                 Text(
-                    text = "✓ = tem na sua lista. Este jogo ainda não foi confirmado na tabela de " + info.tableDate +
-                        ": pode variar por jogo e por região.",
+                    text = tr("✓ = tem na sua lista. Este jogo ainda não foi confirmado na tabela de ") + info.tableDate +
+                        tr(": pode variar por jogo e por região."),
                     color = Muted,
                     fontSize = 11.sp,
                 )
                 if (comp.options.size < 2) {
-                    Text("Só tenho uma opção registrada: confira também os canais de esporte da sua lista.", color = Warn, fontSize = 12.sp)
+                    Text(tr("Só tenho uma opção registrada: confira também os canais de esporte da sua lista."), color = Warn, fontSize = 12.sp)
                 }
             } else {
                 Text(
-                    "Ainda não tenho o registro de onde esse campeonato passa em " + info.country + ". Veja os canais de esporte da sua lista.",
+                    tr("Ainda não tenho o registro de onde esse campeonato passa em ") + info.country + tr(". Veja os canais de esporte da sua lista."),
                     color = Muted,
                     fontSize = 13.sp,
                 )
@@ -536,7 +536,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             if (!finished) {
                 Spacer(Modifier.height(6.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    ChipItem(text = if (checking) "Conferindo..." else "Conferir de novo", selected = false) {
+                    ChipItem(text = if (checking) tr("Conferindo...") else tr("Conferir de novo"), selected = false) {
                         if (!checking) {
                             checking = true
                             checkMsg = null
@@ -555,7 +555,7 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             if (!finished && info.matched.isNotEmpty()) {
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = if (info.matched.size == 1) "▶ Achei 1 canal desse jogo na sua lista" else "▶ Achei ${info.matched.size} canais desse jogo na sua lista",
+                    text = if (info.matched.size == 1) tr("▶ Achei 1 canal desse jogo na sua lista") else tr("▶ Achei {0} canais desse jogo na sua lista", info.matched.size),
                     color = Good,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
@@ -566,24 +566,24 @@ fun GameDialog(vm: MainViewModel, g: Game) {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                 if (finished) {
                     if (replayList.isNotEmpty()) {
-                        TvButton(text = "Fechar") { vm.closeGame() }
+                        TvButton(text = tr("Fechar")) { vm.closeGame() }
                     } else {
-                        TvButton(text = "Fechar", primary = true, focusRequester = first) { vm.closeGame() }
+                        TvButton(text = tr("Fechar"), primary = true, focusRequester = first) { vm.closeGame() }
                     }
                 } else {
                     if (info.matched.isNotEmpty()) {
-                        TvButton(text = "Assistir agora", primary = true, focusRequester = first) { vm.watchNow(g) }
-                        TvButton(text = "Ver canais") { vm.openGameChannels(g) }
+                        TvButton(text = tr("Assistir agora"), primary = true, focusRequester = first) { vm.watchNow(g) }
+                        TvButton(text = tr("Ver canais")) { vm.openGameChannels(g) }
                     } else {
-                        TvButton(text = "Ver canais", primary = true, focusRequester = first) { vm.openGameChannels(g) }
+                        TvButton(text = tr("Ver canais"), primary = true, focusRequester = first) { vm.openGameChannels(g) }
                     }
                     if (g.state == 0) {
-                        TvButton(text = "● Gravar") { vm.recordGame(g) }
-                        TvButton(text = if (reminded) "⏰ Lembrete ligado" else "⏰ Lembrar") {
+                        TvButton(text = tr("● Gravar")) { vm.recordGame(g) }
+                        TvButton(text = if (reminded) tr("⏰ Lembrete ligado") else tr("⏰ Lembrar")) {
                             notice = vm.toggleReminder(g)
                         }
                     }
-                    TvButton(text = "Fechar") { vm.closeGame() }
+                    TvButton(text = tr("Fechar")) { vm.closeGame() }
                 }
             }
             val n = notice
@@ -624,15 +624,15 @@ fun AllGamesScreen(vm: MainViewModel) {
         item(key = "head", span = { GridItemSpan(maxLineSpan) }) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    TvButton(text = "Voltar") { vm.back() }
+                    TvButton(text = tr("Voltar")) { vm.back() }
                     Spacer(Modifier.width(16.dp))
                     Column {
-                        Text("Próximos jogos", color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Próximos jogos"), color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
                         val parts = ArrayList<String>()
                         if (vm.favTeams.isNotEmpty()) parts.add("★ " + vm.favTeams.joinToString(", ") { it.short })
                         for (l in vm.favLeagues) parts.add(SportsData.leagueLabel(l, l))
                         Text(
-                            parts.joinToString(" · ").ifEmpty { "Escolha times e ligas para ver os jogos aqui." },
+                            parts.joinToString(" · ").ifEmpty { tr("Escolha times e ligas para ver os jogos aqui.") },
                             color = Muted,
                             fontSize = 13.sp,
                             maxLines = 1,
@@ -642,16 +642,16 @@ fun AllGamesScreen(vm: MainViewModel) {
                 }
                 if (loading) {
                     Spacer(Modifier.height(8.dp))
-                    Text("Buscando os jogos...", color = Muted, fontSize = 13.sp)
+                    Text(tr("Buscando os jogos..."), color = Muted, fontSize = 13.sp)
                 } else if (err != null) {
                     Spacer(Modifier.height(8.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(err, color = ErrorColor, fontSize = 13.sp)
-                        TvButton(text = "Tentar de novo") { vm.loadAllGames(force = true) }
+                        TvButton(text = tr("Tentar de novo")) { vm.loadAllGames(force = true) }
                     }
                 } else if (days.isEmpty()) {
                     Spacer(Modifier.height(8.dp))
-                    Text("Nenhum jogo nos próximos dias.", color = Muted, fontSize = 13.sp)
+                    Text(tr("Nenhum jogo nos próximos dias."), color = Muted, fontSize = 13.sp)
                 }
             }
         }
@@ -706,11 +706,11 @@ fun GamesTab(vm: MainViewModel) {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             items(offsets.distinctBy { it }, key = { it }) { o ->
-                val label = if (o == 0) "Hoje" else SportsTime.dayLabel(now + o * SportsTime.DAY, now, tz)
+                val label = if (o == 0) tr("Hoje") else SportsTime.dayLabel(now + o * SportsTime.DAY, now, tz)
                 ChipItem(text = label + " (" + perDay[o + 1].size + ")", selected = o == offset) { offset = o }
             }
             item(key = "__teams") {
-                ChipItem(text = "Meus times e ligas", selected = false) { vm.openPicker() }
+                ChipItem(text = tr("Meus times e ligas"), selected = false) { vm.openPicker() }
             }
         }
         Row(
@@ -720,16 +720,16 @@ fun GamesTab(vm: MainViewModel) {
         ) {
             Text(
                 text = when {
-                    list.isNotEmpty() -> "${list.size} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · toque para ver canais e lembrar"
-                    loading -> "Buscando os jogos..."
+                    list.isNotEmpty() -> tr("{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · toque para ver canais e lembrar", list.size)
+                    loading -> tr("Buscando os jogos...")
                     err != null -> err
-                    else -> "Nenhum jogo das principais ligas neste dia."
+                    else -> tr("Nenhum jogo das principais ligas neste dia.")
                 },
                 color = if (list.isEmpty() && err != null && !loading) ErrorColor else Muted,
                 fontSize = 12.sp,
             )
             if (err != null && !loading && list.isEmpty()) {
-                TvButton(text = "Tentar de novo") { vm.loadDayGames(force = true) }
+                TvButton(text = tr("Tentar de novo")) { vm.loadDayGames(force = true) }
             }
         }
         LazyVerticalGrid(
@@ -782,7 +782,7 @@ private fun CountryCard(c: Country, focusId: String, modifier: Modifier = Modifi
             Text(c.name, color = TextMain, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
             Spacer(Modifier.height(4.dp))
             Text(
-                text = c.leagues.joinToString(" · ") { it.label } + " · Seleção",
+                text = c.leagues.joinToString(" · ") { it.label } + tr(" · Seleção"),
                 color = Muted,
                 fontSize = 12.sp,
                 maxLines = 1,
@@ -815,7 +815,7 @@ private fun TeamCard(info: TeamInfo, selected: Boolean, modifier: Modifier = Mod
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
-                text = if (selected) "✓ Escolhido" else " ",
+                text = if (selected) tr("✓ Escolhido") else " ",
                 color = if (selected) Color.White else Muted,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.ExtraBold,
@@ -840,12 +840,12 @@ private fun CountryTeams(vm: MainViewModel, country: Country, onNotice: (String?
             } else {
                 SportsApi.teams(tab)
             }
-            if (list.isEmpty()) error = "Não encontrei times aqui."
+            if (list.isEmpty()) error = tr("Não encontrei times aqui.")
             teams = list
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            error = "Não consegui carregar os times. Confira a internet e tente de novo."
+            error = tr("Não consegui carregar os times. Confira a internet e tente de novo.")
         }
     }
 
@@ -864,7 +864,7 @@ private fun CountryTeams(vm: MainViewModel, country: Country, onNotice: (String?
     val list = teams
     if (list == null || error != null) {
         Box(modifier = Modifier.fillMaxWidth().padding(top = 30.dp), contentAlignment = Alignment.TopCenter) {
-            Text(error ?: "Carregando times...", color = if (error != null) ErrorColor else Muted, fontSize = 14.sp)
+            Text(error ?: tr("Carregando times..."), color = if (error != null) ErrorColor else Muted, fontSize = 14.sp)
         }
         return
     }
@@ -912,7 +912,7 @@ private fun LeagueCard(label: String, selected: Boolean, modifier: Modifier = Mo
         ) {
             Text(label, color = TextMain, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
-                text = if (selected) "✓ Escolhida" else " ",
+                text = if (selected) tr("✓ Escolhida") else " ",
                 color = if (selected) Color.White else Muted,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.ExtraBold,
@@ -964,40 +964,40 @@ fun TeamPickerScreen(vm: MainViewModel) {
                 .padding(horizontal = 40.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TvButton(text = "Voltar") { vm.back() }
+            TvButton(text = tr("Voltar")) { vm.back() }
             Spacer(Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = if (isLeagues) "Ligas favoritas" else "Times e ligas favoritos",
+                    text = if (isLeagues) tr("Ligas favoritas") else tr("Times e ligas favoritos"),
                     color = TextMain,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
                 )
                 Text(
                     text = when {
-                        isLeagues -> "Escolha até ${SportsData.MAX_LEAGUES} competições: todos os jogos delas de hoje e amanhã aparecem no Início."
-                        country == null -> "Escolha o país do seu time (até 5 times) ou escolha ligas (até ${SportsData.MAX_LEAGUES})."
-                        else -> country.name + " · aperte OK para escolher ou tirar um time."
+                        isLeagues -> tr("Escolha até {0} competições: todos os jogos delas de hoje e amanhã aparecem no Início.", SportsData.MAX_LEAGUES)
+                        country == null -> tr("Escolha o país do seu time (até 5 times) ou escolha ligas (até {0}).", SportsData.MAX_LEAGUES)
+                        else -> country.name + tr(" · aperte OK para escolher ou tirar um time.")
                     },
                     color = Muted,
                     fontSize = 13.sp,
                 )
             }
             Text(
-                text = "${chosen.size}/5 times · ${leagues.size}/${SportsData.MAX_LEAGUES} ligas",
+                text = tr("{0}/5 times · {1}/{2} ligas", chosen.size, leagues.size, SportsData.MAX_LEAGUES),
                 color = TextMain,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.ExtraBold,
             )
             Spacer(Modifier.width(14.dp))
             if (code == null) {
-                TvButton(text = "Escolher ligas") {
+                TvButton(text = tr("Escolher ligas")) {
                     notice = null
                     vm.pickCountry(LEAGUES)
                 }
                 Spacer(Modifier.width(10.dp))
             }
-            TvButton(text = "Concluir", primary = true) { vm.closePicker() }
+            TvButton(text = tr("Concluir"), primary = true) { vm.closePicker() }
         }
 
         if (chosen.isNotEmpty() || leagues.isNotEmpty()) {
@@ -1071,7 +1071,7 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
         item(key = "head", span = { GridItemSpan(maxLineSpan) }) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    TvButton(text = "Voltar") { vm.back() }
+                    TvButton(text = tr("Voltar")) { vm.back() }
                     Spacer(Modifier.width(16.dp))
                     Column {
                         Text(req.title, color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
@@ -1101,13 +1101,13 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
             item(key = "extra-head", span = { GridItemSpan(maxLineSpan) }) {
                 Column {
                     Text(
-                        "Canais que costumam passar",
+                        tr("Canais que costumam passar"),
                         color = TextMain,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.ExtraBold,
                     )
                     if (req.extraTitle.isNotEmpty()) {
-                        Text(req.extraTitle + " (pode variar por jogo)", color = Muted, fontSize = 12.sp)
+                        Text(req.extraTitle + tr(" (pode variar por jogo)"), color = Muted, fontSize = 12.sp)
                     }
                 }
             }
@@ -1126,14 +1126,14 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                TvButton(text = "Buscar \"" + req.searchQuery + "\" na lista") { vm.searchFor(req.searchQuery) }
+                TvButton(text = tr("Buscar \"") + req.searchQuery + tr("\" na lista")) { vm.searchFor(req.searchQuery) }
             }
         }
         if (cats.isNotEmpty()) {
             item(key = "chips", span = { GridItemSpan(maxLineSpan) }) {
                 Column {
                     Text(
-                        "Canais de esporte da sua lista",
+                        tr("Canais de esporte da sua lista"),
                         color = TextMain,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.ExtraBold,
@@ -1167,13 +1167,13 @@ fun ChannelListScreen(vm: MainViewModel, req: ChannelListRequest) {
 @Composable
 fun FavTeamsSettings(vm: MainViewModel) {
     Column {
-        Text("Times e ligas favoritos", color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Text(tr("Times e ligas favoritos"), color = TextMain, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.height(4.dp))
         Text(
             text = if (vm.favTeams.isEmpty() && vm.favLeagues.isEmpty()) {
-                "Nada escolhido. Os jogos de times e ligas aparecem no topo do Início."
+                tr("Nada escolhido. Os jogos de times e ligas aparecem no topo do Início.")
             } else {
-                "${vm.favTeams.size}/5 times · ${vm.favLeagues.size}/${SportsData.MAX_LEAGUES} ligas · os jogos aparecem no topo do Início."
+                tr("{0}/5 times · {1}/{2} ligas · os jogos aparecem no topo do Início.", vm.favTeams.size, vm.favLeagues.size, SportsData.MAX_LEAGUES)
             },
             color = Muted,
             fontSize = 14.sp,
@@ -1183,7 +1183,7 @@ fun FavTeamsSettings(vm: MainViewModel) {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            TvButton(text = if (vm.favTeams.isEmpty() && vm.favLeagues.isEmpty()) "Escolher times e ligas" else "Trocar times e ligas") { vm.openPicker() }
+            TvButton(text = if (vm.favTeams.isEmpty() && vm.favLeagues.isEmpty()) tr("Escolher times e ligas") else tr("Trocar times e ligas")) { vm.openPicker() }
             for (t in vm.favTeams) {
                 Text("★ " + t.short, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, softWrap = false)
             }
@@ -1193,7 +1193,7 @@ fun FavTeamsSettings(vm: MainViewModel) {
         }
         Spacer(Modifier.height(4.dp))
         Text(
-            "Onde passa: tabela " + BroadcastStore.countriesLine() + " de " + BroadcastStore.table.updatedPretty() + " (atualizada toda semana).",
+            tr("Onde passa: tabela ") + BroadcastStore.countriesLine() + tr(" de ") + BroadcastStore.table.updatedPretty() + tr(" (atualizada toda semana)."),
             color = Muted,
             fontSize = 12.sp,
         )

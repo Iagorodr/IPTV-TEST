@@ -35,7 +35,8 @@ object Tmdb {
         if (prefs == null) prefs = ctx.applicationContext.getSharedPreferences("iptv_tmdb", Context.MODE_PRIVATE)
     }
 
-    private fun keyOf(t: Title) = (if (t.series) "s|" else "m|") + t.fold + "|" + t.year
+    // capas e sinopses no idioma do app (português mantém a chave antiga, para não perder o que já foi baixado)
+    private fun keyOf(t: Title) = (if (t.series) "s|" else "m|") + t.fold + "|" + t.year + (if (I18n.lang == "pt") "" else "|" + I18n.lang)
 
     private fun fromDisk(k: String): Pair<Long, TmdbMeta?>? {
         val raw = prefs?.getString(k, null) ?: return null
@@ -101,7 +102,7 @@ object Tmdb {
                     val q = URLEncoder.encode(t.name, "UTF-8")
                     val yearArg = if (t.year.length == 4) (if (t.series) "&first_air_date_year=" else "&year=") + t.year else ""
                     val kind = if (t.series) "tv" else "movie"
-                    val res = call("search/$kind?query=$q$yearArg&language=pt-BR&include_adult=false")
+                    val res = call("search/$kind?query=$q$yearArg&language=" + I18n.bcp47() + "&include_adult=false")
                         ?: return@withContext null // erro de rede: não guarda, tenta de novo depois
                     val arr = res.optJSONArray("results")
                     var found: JSONObject? = null

@@ -214,7 +214,7 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
             conn.disconnect()
         }
         if (out.isEmpty()) {
-            throw IOException("Não encontrei canais, filmes ou séries nesse link. Confira se é mesmo uma lista M3U.")
+            throw IOException(tr("Não encontrei canais, filmes ou séries nesse link. Confira se é mesmo uma lista M3U."))
         }
         return out
     }
@@ -224,7 +224,7 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
         for (e in list) {
             if (e.seriesId.isEmpty()) continue
             val ext = e.ext.ifEmpty { "mp4" }
-            m.getOrPut(e.seriesId) { ArrayList() }.add(Episode(e.id, e.season, e.episode, "Episódio " + e.episode, ext))
+            m.getOrPut(e.seriesId) { ArrayList() }.add(Episode(e.id, e.season, e.episode, tr("Episódio ") + e.episode, ext))
         }
         val out = HashMap<String, List<Episode>>(m.size * 2)
         for ((k, v) in m) out[k] = v.sortedWith(compareBy<Episode>({ it.season }, { it.number }))
@@ -242,7 +242,7 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
                 Kind.SERIES -> series.add(e.seriesId)
             }
         }
-        return "Lista M3U • $live canais • $movies filmes • ${series.size} séries"
+        return tr("Lista M3U • {0} canais • {1} filmes • {2} séries", live, movies, series.size)
     }
 
     // ------------------------------------------------------------------ índice no aparelho (id → link)
@@ -289,7 +289,7 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
                     if (p[2].isNotEmpty()) {
                         val season = p[3].toIntOrNull() ?: 1
                         val num = p[4].toIntOrNull() ?: 1
-                        eps.getOrPut(p[2]) { ArrayList() }.add(Episode(id, season, num, "Episódio $num", p[5].ifEmpty { "mp4" }))
+                        eps.getOrPut(p[2]) { ArrayList() }.add(Episode(id, season, num, tr("Episódio {0}", num), p[5].ifEmpty { "mp4" }))
                     }
                 }
             }
@@ -311,7 +311,7 @@ class M3uApi(ctx: Context, private val link: String) : ListApi {
         return summary
     }
 
-    override suspend fun info(): String = summary.ifEmpty { "Lista M3U" }
+    override suspend fun info(): String = summary.ifEmpty { tr("Lista M3U") }
 
     /** "Filmes | Ação" vira "Ação" (o app reconhece gêneros e plataformas pelo nome da categoria). */
     private fun cleanGroup(g: String): String {

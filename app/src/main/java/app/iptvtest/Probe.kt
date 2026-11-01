@@ -86,7 +86,7 @@ object Probe {
                         }
                         i++
                     }
-                    if (bestUri == null) return ProbeResult(false, 0.05f, firstByteMs, 0f, "lista sem variantes")
+                    if (bestUri == null) return ProbeResult(false, 0.05f, firstByteMs, 0f, tr("lista sem variantes"))
                     playlistUrl = resolve(finalUrl, bestUri)
                     continue
                 }
@@ -98,7 +98,7 @@ object Probe {
             }
         }
 
-        val body = text ?: return ProbeResult(false, 0.05f, firstByteMs, 0f, "sem lista de vídeo")
+        val body = text ?: return ProbeResult(false, 0.05f, firstByteMs, 0f, tr("sem lista de vídeo"))
 
         // segmentos: #EXTINF:<duração>, seguido da linha com o endereço
         val segs = ArrayList<Pair<Double, String>>()
@@ -113,7 +113,7 @@ object Probe {
                 pendingDur = 0.0
             }
         }
-        if (segs.isEmpty()) return ProbeResult(false, 0.05f, firstByteMs, 0f, "sem segmentos")
+        if (segs.isEmpty()) return ProbeResult(false, 0.05f, firstByteMs, 0f, tr("sem segmentos"))
 
         val pick = if (segs.size > 3) segs.subList(segs.size - 3, segs.size) else segs
         var minHead = Float.MAX_VALUE
@@ -144,7 +144,7 @@ object Probe {
             kbpsSum += (bytes * 8.0) / seg.first / 1000.0
             count++
         }
-        if (count == 0) return ProbeResult(false, 0.1f, startup, 0f, "tempo esgotado")
+        if (count == 0) return ProbeResult(false, 0.1f, startup, 0f, tr("tempo esgotado"))
 
         val h = if (minHead == Float.MAX_VALUE) 0f else minHead
         // nota = 1 - exp(-(folga-1)*1.2); folga <= 1 significa que o vídeo não chega a tempo
@@ -171,10 +171,10 @@ object Probe {
             lastRead = now
             total += n
         }
-        if (total < 50_000L) return ProbeResult(false, 0.1f, startupMs, 0f, "quase sem dados")
+        if (total < 50_000L) return ProbeResult(false, 0.1f, startupMs, 0f, tr("quase sem dados"))
         var r = 0.8f
         if (maxGapMs > 2_500L) r = 0.4f else if (maxGapMs > 1_200L) r = 0.6f
         if (startupMs > 8_000L) r *= 0.6f else if (startupMs > 4_000L) r *= 0.8f
-        return ProbeResult(true, r, startupMs, 0f, "fluxo contínuo, pausa máx. ${maxGapMs} ms")
+        return ProbeResult(true, r, startupMs, 0f, tr("fluxo contínuo, pausa máx. {0} ms", maxGapMs))
     }
 }
