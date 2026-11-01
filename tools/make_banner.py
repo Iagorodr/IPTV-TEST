@@ -158,7 +158,7 @@ def main():
     use_mark = first.upper().endswith("D") and len(first) > 1
     letters = first[:-1] if use_mark else first
     max_w = 330 * S
-    size = 64 * S
+    size = 70 * S
 
     def measure(sz):
         f = ImageFont.truetype(BOLD, sz)
@@ -176,7 +176,7 @@ def main():
             break
         size -= 2 * S
 
-    base_y = 286 * S  # linha de base do nome
+    base_y = (H * S + cap) // 2  # nome centrado na altura do cartão
     x = 40 * S
     d.text((x, base_y - cap_top - cap), letters, font=f_name, fill=TEXT + (255,))
     x += f_name.getlength(letters)
@@ -193,11 +193,6 @@ def main():
         d.rounded_rectangle([x, ty, x + tag_w, ty + th], radius=5 * S, outline=SALMON + (255,), width=int(1.5 * S))
         tb = f_tag.getbbox(tag)
         draw_spaced(d, (x + 7 * S, ty + (th - (tb[3] - tb[1])) // 2 - tb[1]), tag, f_tag, SALMON + (255,), 1.5 * S)
-
-    # barrinha salmão + subtítulo
-    d.rounded_rectangle([40 * S, 306 * S, 40 * S + 44 * S, 306 * S + 4 * S], radius=2 * S, fill=SALMON + (255,))
-    f_sub = ImageFont.truetype(MEDIUM, 13 * S)
-    draw_spaced(d, (40 * S, 318 * S), "FILMES · SÉRIES · CANAIS", f_sub, MUTED + (255,), 3.2 * S)
 
     out = img.convert("RGB").resize((W, H), Image.LANCZOS)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Painel IAGO IPTV</title>
+<title>Painel IPTVROD PRO</title>
 <style>
 :root{--bg:#0e0f14;--panel:#171922;--line:#262a37;--fg:#ece8e4;--mut:#8f97ab;--acc:#e8465a;--ok:#3ddc84;--warn:#f2b84b;--bad:#ff8a8a;color-scheme:dark}
 *{box-sizing:border-box}
@@ -32,11 +32,18 @@ tr:last-child td{border-bottom:0}
 #err{color:var(--bad);min-height:20px}
 #login{max-width:340px;margin:12vh auto}
 #login input{width:100%;margin-bottom:10px}
+.fb{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px}
+.fb.nova{border-color:var(--acc)}
+.fb .h{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--mut);margin-bottom:6px}
+.fb .k{color:var(--fg);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.fb .tx{white-space:pre-wrap;word-break:break-word}
+.fb .rp{margin-top:8px;border-left:3px solid var(--ok);padding:6px 10px;color:var(--fg);white-space:pre-wrap}
+.fb textarea{width:100%;min-height:60px;margin-top:8px}
 </style>
 </head>
 <body>
 <main>
-<h1>Painel IAGO IPTV</h1>
+<h1>Painel IPTVROD PRO</h1>
 <section id="login">
   <input id="pw" type="password" placeholder="Senha do painel" autocomplete="current-password">
   <button class="p" id="go" style="width:100%">Entrar</button>
@@ -46,6 +53,10 @@ tr:last-child td{border-bottom:0}
   <div class="row" style="justify-content:space-between"><span class="mut" id="stamp"></span><span class="row"><button id="refresh">Atualizar</button><button id="out">Sair</button></span></div>
   <h2>Resumo</h2>
   <div class="tiles" id="tiles"></div>
+  <h2>Mensagens (Fale com a gente)</h2>
+  <div id="fbs"></div>
+  <div class="row" style="margin-top:6px"><input id="don" placeholder="Link de doação (ex.: https://paypal.me/seunome)" style="flex:1;min-width:220px"><button id="donSave">Salvar link</button></div>
+  <p class="mut" id="donMsg" style="font-size:12px;min-height:18px">Sem link, o botão de doação não aparece na página.</p>
   <h2>Pedidos de liberação</h2>
   <div class="wrap"><table id="reqs"></table></div>
   <h2>Aviso na tela</h2>
@@ -76,6 +87,7 @@ let data=null;
 async function load(){
   const d=await rpc('admin_overview');
   if(!d.ok)throw new Error('Senha incorreta');
+  try{const f=await rpc('admin_feedback');d.fb=f.ok?f:{items:[],donate_url:null}}catch(_){d.fb={items:[],donate_url:null}}
   data=d;render();
 }
 function render(){
@@ -84,7 +96,10 @@ function render(){
   $('to').innerHTML='<option value="">Para todos</option>'+d.aparelhos.map(a=>`<option value="${a.id}">${esc(a.nome||'sem nome')} (${esc(a.codigo)})</option>`).join('');
   $('to').value=cur;
   $('stamp').textContent='Atualizado '+new Date().toLocaleTimeString('pt-BR');
-  $('tiles').innerHTML=[['Baixados',d.baixados],['Ativos (7 dias)',d.ativos],['Frequentes',d.frequentes],['Bloqueados',d.bloqueados],['Pedidos em análise',d.pedidos]].map(([a,b])=>`<div class="t"><b>${b}</b><span>${a}</span></div>`).join('');
+  $('tiles').innerHTML=[['Baixados',d.baixados],['Ativos (7 dias)',d.ativos],['Frequentes',d.frequentes],['Bloqueados',d.bloqueados],['Pedidos em análise',d.pedidos],['Mensagens novas',d.fb.items.filter(i=>i.status==='nova').length]].map(([a,b])=>`<div class="t"><b>${b}</b><span>${a}</span></div>`).join('');
+  const kl={problema:'Problema',melhoria:'Melhoria',elogio:'Elogio',outro:'Outro'};
+  if(document.activeElement!==$('don'))$('don').value=d.fb.donate_url||'';
+  $('fbs').innerHTML=d.fb.items.length?d.fb.items.map(f=>`<div class="fb ${f.status}"><div class="h"><span class="k">${esc(kl[f.kind]||f.kind)}</span><span>${esc(f.nome||'sem nome')} (${esc(f.codigo)})</span><span>${esc(f.idioma||'')}</span><span>${fmt(f.created_at)}</span>${f.contact?`<span>Contato: ${esc(f.contact)}</span>`:''}<span>${f.status==='nova'?'<b style="color:var(--acc)">nova</b>':'respondida'}</span></div><div class="tx">${esc(f.message)}</div>${f.reply?`<div class="rp">${esc(f.reply)}<div class="mut" style="font-size:11px">respondida ${fmt(f.replied_at)}</div></div>`:''}<textarea id="r${f.id}" placeholder="${f.reply?'Responder de novo':'Sua resposta'}"></textarea><div class="row" style="margin-top:6px"><button class="s p" data-a="rp" data-r="${f.id}">Responder</button><label class="mut" style="font-size:12px"><input type="checkbox" id="tv${f.id}" checked> mostrar também na TV</label><span style="flex:1"></span><button class="s" data-a="ar" data-r="${f.id}">Arquivar</button></div></div>`).join(''):'<p class="mut">Nenhuma mensagem.</p>';
   $('reqs').innerHTML='<tr><th>Código</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Status</th><th>Data</th><th></th></tr>'+
     (d.solicitacoes.length?d.solicitacoes.map(q=>`<tr><td>${esc(q.codigo)}</td><td>${esc(q.nome)}</td><td>${esc(q.email)}</td><td>${esc(q.telefone)}</td><td>${esc(q.status)}</td><td>${fmt(q.created_at)}</td><td>${q.status==='em análise'?`<button class="s" data-a="ok" data-d="${q.device_id}" data-r="${q.id}">Liberar</button> <button class="s" data-a="no" data-r="${q.id}">Recusar</button>`:''}</td></tr>`).join(''):'<tr><td colspan="7" class="mut">Nenhum pedido.</td></tr>');
   $('devs').innerHTML='<tr><th>Código</th><th>Nome</th><th>Status</th><th>Aparelho</th><th>País</th><th>Idioma</th><th>Fuso</th><th>Versão</th><th>Desde</th><th>Último acesso</th><th>Aberturas</th><th>Min</th><th>Dias/14</th><th>Infantil</th><th>Ações</th></tr>'+
@@ -98,6 +113,8 @@ document.addEventListener('click',async e=>{
     else if(a==='ok'){await rpc('admin_set_status',{p_id:id,p_status:'active'});}
     else if(a==='no')await rpc('admin_decline',{p_request:Number(b.dataset.r)});
     else if(a==='nm'){const n=window.prompt?prompt('Nome:'):null;if(n==null)return;await rpc('admin_set_name',{p_id:id,p_name:n});}
+    else if(a==='rp'){const t=$('r'+b.dataset.r).value.trim();if(!t)return;const r=await rpc('admin_reply',{p_feedback:Number(b.dataset.r),p_reply:t,p_to_tv:$('tv'+b.dataset.r).checked});if(!r.ok)throw new Error('não salvou')}
+    else if(a==='ar'){await rpc('admin_feedback_status',{p_feedback:Number(b.dataset.r),p_status:'arquivada'})}
     else if(a==='nt'){$('to').value=id;$('msg').focus();window.scrollTo({top:$('msg').getBoundingClientRect().top+scrollY-120,behavior:'smooth'});return;}
     await load();
   }catch(x){alert('Erro: '+x.message)}
@@ -109,6 +126,7 @@ $('send').onclick=async()=>{
     $('sent').textContent='Enviado '+new Date().toLocaleTimeString('pt-BR')+'. Chega em até 20 segundos, com o app aberto.'}catch(x){$('sent').textContent='Erro: '+x.message}
 };
 $('clearAll').onclick=async()=>{try{await rpc('admin_notice2',{p_id:null,p_text:'',p_secs:0});$('sent').textContent='Avisos limpos.'}catch(x){$('sent').textContent='Erro: '+x.message}};
+$('donSave').onclick=async()=>{try{const r=await rpc('admin_set_config',{p_key:'donate_url',p_value:$('don').value.trim()});$('donMsg').textContent=r.ok?'Link salvo.':(r.error==='url'?'O link precisa começar com https://':'Não salvou.')}catch(x){$('donMsg').textContent='Erro: '+x.message}};
 $('refresh').onclick=()=>load().catch(x=>alert(x.message));
 $('out').onclick=()=>{pw='';try{sessionStorage.removeItem('pw')}catch(_){}$('app').hidden=true;$('login').hidden=false;$('pw').value=''};
 async function enter(){

@@ -1651,10 +1651,30 @@ private fun AboutSection(vm: MainViewModel) {
     }
 }
 
+/** Ajustes > Fale com a gente: QR code que abre, no celular, a página para mandar problema, ideia ou elogio (e doar). */
+@Composable
+private fun FeedbackSection(vm: MainViewModel) {
+    Column(modifier = Modifier.fillMaxSize().padding(end = 40.dp, top = 6.dp)) {
+        SectionTitle("Fale com a gente", "Problema, ideia, elogio ou apoio a quem fez o app.")
+        Spacer(Modifier.height(18.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
+            QrCode(text = vm.feedbackUrl(), modifier = Modifier.size(200.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.widthIn(max = 420.dp)) {
+                Text("1. Aponte a câmera do celular para o QR code.", color = TextMain, fontSize = 15.sp)
+                Text("2. Escreva sua mensagem e toque em Enviar.", color = TextMain, fontSize = 15.sp)
+                Text("3. A resposta aparece aqui na TV e na mesma página do celular.", color = TextMain, fontSize = 15.sp)
+                Spacer(Modifier.height(4.dp))
+                Text("Na página também dá para apoiar o app com uma doação, se quiser.", color = Muted, fontSize = 13.sp)
+                Text("Código deste aparelho: " + vm.deviceCode(), color = Muted, fontSize = 13.sp, letterSpacing = 1.sp)
+            }
+        }
+    }
+}
+
 @Composable
 fun SettingsTab(vm: MainViewModel) {
     var section by rememberSaveable { mutableIntStateOf(0) }
-    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo", "Perfil", "Sobre")
+    val names = listOf("Listas", "País e idioma", "Catálogo", "Esportes", "Canais ao vivo", "Perfil", "Fale com a gente", "Sobre")
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         Row(modifier = Modifier.fillMaxSize().padding(start = 40.dp, top = 8.dp)) {
@@ -1672,6 +1692,7 @@ fun SettingsTab(vm: MainViewModel) {
                     3 -> SportsSection(vm)
                     4 -> LiveSection(vm)
                     5 -> ProfileSection(vm)
+                    6 -> FeedbackSection(vm)
                     else -> AboutSection(vm)
                 }
             }

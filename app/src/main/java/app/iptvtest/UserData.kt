@@ -111,7 +111,7 @@ class UserData(ctx: Context) {
             bcCountry = sp.getString("bc", "BR") ?: "BR"
             bcCountries.addAll((sp.getString("bcs", "") ?: "").split(",").filter { it.isNotBlank() })
             profileName = sp.getString("pname", "") ?: ""
-            profileLang = sp.getString("plang", "") ?: ""
+            profileLang = (sp.getString("plang", "") ?: "").let { if (it.startsWith("pt")) "pt-BR" else it } // só português do Brasil
             onboarded = sp.getBoolean("onboarded", false)
             kidsMode = sp.getBoolean("kids", false)
             favGenres.clear()

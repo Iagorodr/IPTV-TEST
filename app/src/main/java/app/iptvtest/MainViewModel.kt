@@ -174,6 +174,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun deviceCode(): String = Control.shortCode(appCtx)
 
+    /** Página "Fale com a gente" deste aparelho (abre no celular pelo QR code; o id do aparelho identifica as mensagens). */
+    fun feedbackUrl(): String = "https://iagorodr.github.io/IPTV-TEST/fale/?d=" + Control.installId(appCtx)
+
     // ---- catálogo
     var catalog by mutableStateOf<Catalog?>(null)
         private set

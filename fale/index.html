@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#161E2F">
+<title>IPTVROD PRO</title>
+<style>
+:root{--bg:#161E2F;--panel:#242F49;--panel2:#34415F;--acc:#FFA586;--wine:#541A2E;--red:#B51A2B;--fg:#FFF3EC;--mut:#A9B1C4;--ok:#7EE2A8;--bad:#FF9A9A;color-scheme:dark}
+*{box-sizing:border-box}
+html{background:#161E2F}
+body{margin:0;min-height:100vh;background:linear-gradient(160deg,#161E2F 0%,#1d2740 55%,#3a1526 100%) fixed;color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:520px;margin:0 auto;padding:22px 16px 48px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+header b{font-size:20px;letter-spacing:.06em}
+header small{display:block;color:var(--mut);font-size:12px;letter-spacing:.08em}
+h1{font-size:26px;line-height:1.2;margin:0 0 6px}
+p.lead{color:var(--mut);margin:0 0 18px}
+.card{background:rgba(36,47,73,.72);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:18px;margin-bottom:16px}
+.kinds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.kinds button{display:flex;align-items:center;gap:8px;justify-content:center;font:inherit;font-size:15px;color:var(--fg);background:rgba(255,255,255,.06);border:1.5px solid transparent;border-radius:12px;padding:12px 8px;min-height:48px;cursor:pointer}
+.kinds button[aria-pressed="true"]{border-color:var(--acc);background:rgba(255,165,134,.14);font-weight:600}
+.kinds svg{color:var(--acc);flex:none}
+label{display:block;font-size:13px;color:var(--mut);margin:0 0 6px}
+textarea,input{width:100%;font:inherit;color:var(--fg);background:#121a29;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px}
+textarea{min-height:130px;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--acc);outline-offset:1px}
+.field{margin-bottom:14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;font:inherit;font-weight:700;color:#fff;background:var(--red);border:0;border-radius:12px;padding:14px;min-height:50px;cursor:pointer;text-decoration:none}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.pp{background:#FFC439;color:#0b1f4b}
+.msg{font-size:14px;min-height:20px;margin:10px 0 0}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:26px 0 10px;font-weight:600}
+.item{border-top:1px solid rgba(255,255,255,.08);padding:14px 0}
+.item:first-child{border-top:0;padding-top:0}
+.meta{font-size:12px;color:var(--mut);margin-bottom:4px}
+.tag{color:var(--acc);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
+.text{white-space:pre-wrap;word-break:break-word}
+.reply{margin-top:10px;background:rgba(255,165,134,.10);border-left:3px solid var(--acc);border-radius:8px;padding:10px 12px}
+.reply .meta{color:var(--acc)}
+.wait{font-size:13px;color:var(--mut);margin-top:6px}
+.code{font-size:12px;color:var(--mut);text-align:center;margin-top:22px;letter-spacing:.1em}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#541A2E"/><stop offset="1" stop-color="#B51A2B"/></linearGradient></defs><rect width="100" height="100" rx="24" fill="url(#g)"/><g transform="translate(9.125 12.5) scale(.75)"><path fill="#FFF3EC" fill-rule="evenodd" d="M25 10 H50 C72 10 86 30 91 50 C86 70 72 90 50 90 H25 Q18 90 18 83 V17 Q18 10 25 10 Z M38 31 Q35 29.5 35 33 V67 Q35 70.5 38 69 L64 52 Q66.5 50 64 48 Z"/></g></svg>
+  <div><b>IPTVROD</b><small>PRO</small></div>
+</header>
+
+<section id="bad" class="card center" hidden>
+  <p id="badText"></p>
+</section>
+
+<section id="app" hidden>
+  <h1 id="t_title"></h1>
+  <p class="lead" id="t_lead"></p>
+
+  <form class="card" id="form">
+    <div class="kinds" role="group" id="kinds"></div>
+    <div class="field">
+      <label for="text" id="t_msg"></label>
+      <textarea id="text" maxlength="2000" required></textarea>
+    </div>
+    <div class="field">
+      <label for="contact" id="t_contact"></label>
+      <input id="contact" maxlength="120" autocomplete="email">
+    </div>
+    <button class="btn" id="send" type="submit"></button>
+    <p class="msg" id="status" role="status"></p>
+  </form>
+
+  <section class="card" id="donate" hidden>
+    <h2 style="margin-top:0" id="t_don_h"></h2>
+    <p style="margin:0 0 14px;color:var(--mut)" id="t_don_p"></p>
+    <a class="btn pp" id="donateBtn" target="_blank" rel="noopener"></a>
+  </section>
+
+  <h2 id="t_hist"></h2>
+  <section class="card" id="hist"></section>
+
+  <p class="code" id="code"></p>
+</section>
+</main>
+<script>
+const BASE='https://zjbajnhnexsxthigokhg.supabase.co/rest/v1/rpc/';
+const KEY='sb_publishable_REBiG8eo1E96bSyY1ih1aQ_QxbXS2Li';
+const T={
+pt:{title:'Fale com a gente',lead:'Encontrou um problema, tem uma ideia ou quer deixar um elogio? Escreva aqui: a gente lê tudo e responde.',kinds:{problema:'Problema',melhoria:'Melhoria',elogio:'Elogio',outro:'Outro'},msg:'Sua mensagem',contact:'Seu e-mail ou WhatsApp (opcional)',send:'Enviar',sending:'Enviando...',ok:'Recebemos! A resposta aparece aqui e na sua TV.',short:'Escreva um pouco mais.',limit:'Você já mandou 5 mensagens hoje. Tente amanhã.',err:'Não consegui enviar. Confira a internet e tente de novo.',hist:'Suas mensagens',none:'Nenhuma mensagem ainda.',wait:'Aguardando resposta',reply:'Resposta',donH:'Gostou do app?',donP:'Ele é gratuito. Se quiser apoiar quem fez, qualquer valor ajuda a manter tudo funcionando.',donB:'Apoiar com PayPal',code:'Aparelho',badLink:'Este link não é válido. Abra de novo pelo QR code nos Ajustes do app.',badNet:'Não consegui carregar. Confira a internet e recarregue a página.'},
+en:{title:'Get in touch',lead:'Found a problem, have an idea or want to say thanks? Write here: we read everything and reply.',kinds:{problema:'Problem',melhoria:'Suggestion',elogio:'Praise',outro:'Other'},msg:'Your message',contact:'Your email or WhatsApp (optional)',send:'Send',sending:'Sending...',ok:'Got it! The reply will show up here and on your TV.',short:'Please write a bit more.',limit:'You have already sent 5 messages today. Try again tomorrow.',err:'Could not send. Check your connection and try again.',hist:'Your messages',none:'No messages yet.',wait:'Waiting for a reply',reply:'Reply',donH:'Enjoying the app?',donP:'It is free. If you want to support the person who made it, any amount helps keep it running.',donB:'Support with PayPal',code:'Device',badLink:'This link is not valid. Open it again from the QR code in the app settings.',badNet:'Could not load. Check your connection and reload the page.'},
+es:{title:'Escríbenos',lead:'¿Encontraste un problema, tienes una idea o quieres felicitarnos? Escribe aquí: leemos todo y respondemos.',kinds:{problema:'Problema',melhoria:'Sugerencia',elogio:'Felicitación',outro:'Otro'},msg:'Tu mensaje',contact:'Tu e-mail o WhatsApp (opcional)',send:'Enviar',sending:'Enviando...',ok:'¡Recibido! La respuesta aparecerá aquí y en tu TV.',short:'Escribe un poco más.',limit:'Ya enviaste 5 mensajes hoy. Inténtalo mañana.',err:'No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.',hist:'Tus mensajes',none:'Aún no hay mensajes.',wait:'Esperando respuesta',reply:'Respuesta',donH:'¿Te gusta la app?',donP:'Es gratuita. Si quieres apoyar a quien la hizo, cualquier cantidad ayuda a mantenerla.',donB:'Apoyar con PayPal',code:'Dispositivo',badLink:'Este enlace no es válido. Ábrelo de nuevo desde el código QR en los ajustes de la app.',badNet:'No se pudo cargar. Revisa tu conexión y recarga la página.'},
+fr:{title:'Nous écrire',lead:'Un problème, une idée ou un compliment ? Écrivez ici : nous lisons tout et répondons.',kinds:{problema:'Problème',melhoria:'Suggestion',elogio:'Compliment',outro:'Autre'},msg:'Votre message',contact:'Votre e-mail ou WhatsApp (facultatif)',send:'Envoyer',sending:'Envoi...',ok:'Bien reçu ! La réponse s’affichera ici et sur votre TV.',short:'Écrivez un peu plus.',limit:'Vous avez déjà envoyé 5 messages aujourd’hui. Réessayez demain.',err:'Envoi impossible. Vérifiez votre connexion et réessayez.',hist:'Vos messages',none:'Aucun message pour l’instant.',wait:'En attente de réponse',reply:'Réponse',donH:'Vous aimez l’app ?',donP:'Elle est gratuite. Pour soutenir son créateur, chaque contribution aide à la faire vivre.',donB:'Soutenir avec PayPal',code:'Appareil',badLink:'Ce lien n’est pas valide. Rouvrez-le depuis le QR code dans les réglages de l’app.',badNet:'Chargement impossible. Vérifiez votre connexion et rechargez la page.'},
+it:{title:'Scrivici',lead:'Hai trovato un problema, hai un’idea o vuoi farci un complimento? Scrivi qui: leggiamo tutto e rispondiamo.',kinds:{problema:'Problema',melhoria:'Suggerimento',elogio:'Complimento',outro:'Altro'},msg:'Il tuo messaggio',contact:'La tua e-mail o WhatsApp (facoltativo)',send:'Invia',sending:'Invio...',ok:'Ricevuto! La risposta comparirà qui e sulla tua TV.',short:'Scrivi un po’ di più.',limit:'Hai già inviato 5 messaggi oggi. Riprova domani.',err:'Invio non riuscito. Controlla la connessione e riprova.',hist:'I tuoi messaggi',none:'Ancora nessun messaggio.',wait:'In attesa di risposta',reply:'Risposta',donH:'Ti piace l’app?',donP:'È gratuita. Se vuoi sostenere chi l’ha creata, ogni importo aiuta a mantenerla.',donB:'Sostieni con PayPal',code:'Dispositivo',badLink:'Questo link non è valido. Riaprilo dal QR code nelle impostazioni dell’app.',badNet:'Caricamento non riuscito. Controlla la connessione e ricarica la pagina.'},
+de:{title:'Schreib uns',lead:'Ein Problem, eine Idee oder ein Lob? Schreib hier: Wir lesen alles und antworten.',kinds:{problema:'Problem',melhoria:'Vorschlag',elogio:'Lob',outro:'Sonstiges'},msg:'Deine Nachricht',contact:'Deine E-Mail oder WhatsApp (optional)',send:'Senden',sending:'Wird gesendet...',ok:'Erhalten! Die Antwort erscheint hier und auf deinem Fernseher.',short:'Bitte schreib etwas mehr.',limit:'Du hast heute schon 5 Nachrichten gesendet. Versuch es morgen wieder.',err:'Senden fehlgeschlagen. Prüfe die Verbindung und versuch es erneut.',hist:'Deine Nachrichten',none:'Noch keine Nachrichten.',wait:'Wartet auf Antwort',reply:'Antwort',donH:'Gefällt dir die App?',donP:'Sie ist kostenlos. Wenn du den Entwickler unterstützen willst, hilft jeder Betrag.',donB:'Mit PayPal unterstützen',code:'Gerät',badLink:'Dieser Link ist ungültig. Öffne ihn erneut über den QR-Code in den App-Einstellungen.',badNet:'Laden fehlgeschlagen. Prüfe die Verbindung und lade die Seite neu.'},
+nl:{title:'Neem contact op',lead:'Een probleem, een idee of een compliment? Schrijf het hier: we lezen alles en antwoorden.',kinds:{problema:'Probleem',melhoria:'Suggestie',elogio:'Compliment',outro:'Overig'},msg:'Je bericht',contact:'Je e-mail of WhatsApp (optioneel)',send:'Versturen',sending:'Versturen...',ok:'Ontvangen! Het antwoord verschijnt hier en op je tv.',short:'Schrijf iets meer.',limit:'Je hebt vandaag al 5 berichten gestuurd. Probeer het morgen opnieuw.',err:'Versturen mislukt. Controleer je verbinding en probeer opnieuw.',hist:'Je berichten',none:'Nog geen berichten.',wait:'Wacht op antwoord',reply:'Antwoord',donH:'Vind je de app goed?',donP:'Hij is gratis. Wil je de maker steunen, dan helpt elk bedrag.',donB:'Steunen met PayPal',code:'Apparaat',badLink:'Deze link is ongeldig. Open hem opnieuw via de QR-code in de app-instellingen.',badNet:'Laden mislukt. Controleer je verbinding en herlaad de pagina.'}
+};
+const ICONS={problema:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/>',melhoria:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z"/>',elogio:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',outro:'<path d="M4 5h16v11H8l-4 4z"/>'};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const id=new URLSearchParams(location.search).get('d')||'';
+let L=T.pt,lang='pt',kind='problema';
+function pick(tag){const t=String(tag||'').toLowerCase().slice(0,2);return T[t]?t:null}
+function setLang(tag){lang=pick(tag)||pick(navigator.language)||'en';L=T[lang];document.documentElement.lang=lang==='pt'?'pt-BR':lang;
+  $('t_title').textContent=L.title;$('t_lead').textContent=L.lead;$('t_msg').textContent=L.msg;$('t_contact').textContent=L.contact;
+  $('send').textContent=L.send;$('t_hist').textContent=L.hist;$('t_don_h').textContent=L.donH;$('t_don_p').textContent=L.donP;$('donateBtn').textContent=L.donB;
+  $('kinds').innerHTML=Object.keys(L.kinds).map(k=>`<button type="button" data-k="${k}" aria-pressed="${k===kind}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>${L.kinds[k]}</button>`).join('');
+}
+async function rpc(fn,body){const r=await fetch(BASE+fn,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
+const when=d=>new Date(d).toLocaleString(document.documentElement.lang,{dateStyle:'short',timeStyle:'short'});
+function render(d){
+  $('code').textContent=L.code+' '+d.code;
+  if(d.donate_url&&/^https:\/\//i.test(d.donate_url)){$('donateBtn').href=d.donate_url;$('donate').hidden=false}else $('donate').hidden=true;
+  $('hist').innerHTML=d.items.length?d.items.map(i=>`<div class="item"><div class="meta"><span class="tag">${esc(L.kinds[i.kind]||i.kind)}</span>${when(i.created_at)}</div><div class="text">${esc(i.message)}</div>${i.reply?`<div class="reply"><div class="meta">${L.reply} · ${when(i.replied_at)}</div><div class="text">${esc(i.reply)}</div></div>`:`<div class="wait">${L.wait}</div>`}</div>`).join(''):`<p style="margin:0;color:var(--mut)">${L.none}</p>`;
+}
+function bad(t){$('app').hidden=true;$('bad').hidden=false;$('badText').textContent=t}
+async function load(){const d=await rpc('my_feedback',{p_id:id});if(!d.ok){bad(L.badLink);return null}return d}
+$('kinds').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;kind=b.dataset.k;$('kinds').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
+$('form').addEventListener('submit',async e=>{
+  e.preventDefault();const st=$('status');st.className='msg';
+  const text=$('text').value.trim();if(text.length<3){st.className='msg bad';st.textContent=L.short;return}
+  $('send').disabled=true;$('send').textContent=L.sending;
+  try{const r=await rpc('send_feedback',{p_id:id,p_kind:kind,p_message:text,p_contact:$('contact').value.trim()});
+    if(r.ok){$('text').value='';st.className='msg ok';st.textContent=L.ok;const d=await load();if(d)render(d)}
+    else{st.className='msg bad';st.textContent=r.error==='limit'?L.limit:r.error==='invalid'?L.short:L.err}
+  }catch(_){st.className='msg bad';st.textContent=L.err}
+  $('send').disabled=false;$('send').textContent=L.send;
+});
+(async()=>{
+  setLang(null);
+  if(!/^[0-9a-f-]{36}$/i.test(id)){bad(L.badLink);return}
+  try{const d=await load();if(!d)return;setLang(d.lang);$('app').hidden=false;render(d)}catch(_){bad(L.badNet)}
+})();
+</script>
+</body>
+</html>

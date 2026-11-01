@@ -57,8 +57,7 @@ import androidx.compose.ui.unit.sp
 
 /** Idiomas oferecidos na primeira abertura (a etiqueta é a do Android, ex.: pt-BR). */
 val APP_LANGS: List<Pair<String, String>> = listOf(
-    "pt-BR" to "Português (Brasil)",
-    "pt-PT" to "Português (Portugal)",
+    "pt-BR" to "Português",
     "en" to "English",
     "es" to "Español",
     "fr" to "Français",
