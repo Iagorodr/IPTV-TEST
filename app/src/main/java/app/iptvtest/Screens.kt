@@ -392,33 +392,44 @@ fun LocalCountryChip(vm: MainViewModel, tab: Tab) {
     ChipItem(text = vm.localLabel(tab) + " ▾", selected = cc.isNotEmpty()) { vm.localPickFor = tab }
 }
 
-/** Logo da IPTIFY: duas setas de "play" sobrepostas, num selo com o degradê vinho -> vermelho da marca. */
+/**
+ * Logo da IPTVROD: o "D que aponta" (a curva do D fecha numa ponta, como um play, e o miolo vazado tem forma de play),
+ * num selo com o degradê vinho -> vermelho da marca. Mesmo desenho de tools/brandmark.py (ícone e capa da TV).
+ */
 @Composable
 fun AppLogoMark(sizeDp: Int = 32) {
     androidx.compose.foundation.Canvas(modifier = Modifier.size(sizeDp.dp)) {
         val w = size.minDimension
         val r = w * 0.24f
-        // fundo: vinho -> vermelho da marca
         drawRoundRect(
             brush = androidx.compose.ui.graphics.Brush.linearGradient(listOf(Wine, Red), start = androidx.compose.ui.geometry.Offset(0f, 0f), end = androidx.compose.ui.geometry.Offset(w, w)),
             cornerRadius = androidx.compose.ui.geometry.CornerRadius(r, r),
         )
-        // seta de trás: salmão translúcido, um pouco maior e deslocada
-        val back = androidx.compose.ui.graphics.Path().apply {
-            moveTo(w * 0.52f, w * 0.20f)
-            lineTo(w * 0.86f, w * 0.50f)
-            lineTo(w * 0.52f, w * 0.80f)
+        // o D é desenhado numa grade de 100x100 (caixa do D: x 18..91, y 10..90) e centralizado no selo
+        val k = w * 0.0075f
+        fun X(u: Float) = (u - 54.5f) * k + w / 2f
+        fun Y(v: Float) = (v - 50f) * k + w / 2f
+        val d = androidx.compose.ui.graphics.Path().apply {
+            fillType = androidx.compose.ui.graphics.PathFillType.EvenOdd
+            moveTo(X(25f), Y(10f))
+            lineTo(X(50f), Y(10f))
+            cubicTo(X(72f), Y(10f), X(86f), Y(30f), X(91f), Y(50f))
+            cubicTo(X(86f), Y(70f), X(72f), Y(90f), X(50f), Y(90f))
+            lineTo(X(25f), Y(90f))
+            quadraticBezierTo(X(18f), Y(90f), X(18f), Y(83f))
+            lineTo(X(18f), Y(17f))
+            quadraticBezierTo(X(18f), Y(10f), X(25f), Y(10f))
+            close()
+            // miolo em forma de play (vazado)
+            moveTo(X(38f), Y(31f))
+            quadraticBezierTo(X(35f), Y(29.5f), X(35f), Y(33f))
+            lineTo(X(35f), Y(67f))
+            quadraticBezierTo(X(35f), Y(70.5f), X(38f), Y(69f))
+            lineTo(X(64f), Y(52f))
+            quadraticBezierTo(X(66.5f), Y(50f), X(64f), Y(48f))
             close()
         }
-        drawPath(back, color = Accent.copy(alpha = 0.45f))
-        // seta da frente: sólida, cor do texto (máximo contraste num selo pequeno)
-        val front = androidx.compose.ui.graphics.Path().apply {
-            moveTo(w * 0.22f, w * 0.18f)
-            lineTo(w * 0.62f, w * 0.50f)
-            lineTo(w * 0.22f, w * 0.82f)
-            close()
-        }
-        drawPath(front, color = TextMain)
+        drawPath(d, color = TextMain)
     }
 }
 

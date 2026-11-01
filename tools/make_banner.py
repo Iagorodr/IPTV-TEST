@@ -16,6 +16,9 @@ import sys
 
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from brandmark import d_mask  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STRINGS = os.path.join(ROOT, "app/src/main/res/values/strings.xml")
 OUT = os.path.join(ROOT, "app/src/main/res/drawable-xhdpi/tv_banner.png")
@@ -116,7 +119,7 @@ def main():
     name = app_name()
     img = gradient_bg(W * S, H * S).convert("RGBA")
 
-    # selo da marca (duas setas de "play" sobrepostas), grande, vazando pela borda direita
+    # selo da marca (o "D que aponta"), grande, vazando pela borda direita
     # (estilo "hero graphic" dos cartões de app de streaming), com brilho atrás e um brilho de vidro por cima
     bs = 300 * S
     bx, by = 420 * S, (H * S - bs) // 2
@@ -133,42 +136,63 @@ def main():
     ImageDraw.Draw(mask).rounded_rectangle([0, 0, bs - 1, bs - 1], radius=int(bs * 0.22), fill=255)
     img.paste(badge, (bx, by), mask)
 
-    d = ImageDraw.Draw(img)
-
-    def tri(cx0, cy0, w0, h0):
-        return [(cx0, cy0 - h0 / 2), (cx0 + w0, cy0), (cx0, cy0 + h0 / 2)]
-
-    back_arrow = tri(bx + bs * 0.50, by + bs * 0.50, bs * 0.34, bs * 0.60)
-    d.polygon(back_arrow, fill=SALMON + (115,))
-    front_arrow = tri(bx + bs * 0.22, by + bs * 0.50, bs * 0.40, bs * 0.64)
-    d.polygon(front_arrow, fill=TEXT + (255,))
+    # o D no selo: 50% da altura, centrado na parte que aparece (o selo vaza pela direita)
+    dm = d_mask(int(bs * 0.50))
+    visible = W * S - bx
+    dx = bx + (visible - dm.width) // 2
+    img.paste(Image.new("RGBA", dm.size, TEXT + (255,)), (dx, by + (bs - dm.height) // 2), dm)
 
     # brilho de vidro (sheen) no selo: uma luz suave no canto superior esquerdo, recortada pelo mesmo arredondado
     sheen = Image.new("RGBA", (bs, bs), (0, 0, 0, 0))
-    ImageDraw.Draw(sheen).ellipse([-bs * 0.35, -bs * 0.55, bs * 0.70, bs * 0.55], fill=(255, 255, 255, 60))
+    ImageDraw.Draw(sheen).ellipse([-bs * 0.35, -bs * 0.55, bs * 0.70, bs * 0.55], fill=(255, 255, 255, 50))
     sheen.putalpha(ImageChops.multiply(sheen.split()[3], mask))
     img.paste(sheen, (bx, by), sheen)
 
-    # nome em duas cores: primeira palavra clara, o resto salmão. Encolhe se o nome for comprido.
+    d = ImageDraw.Draw(img)
+
+    # nome: a primeira palavra; se ela termina em "D", o D vira o símbolo da marca (em degradê salmão -> vermelho).
+    # As outras palavras (ex.: PRO) viram um selinho discreto ao lado. Encolhe se o nome for comprido.
     words = name.split()
     first = words[0] if words else name
-    rest = " ".join(words[1:])
+    tag = " ".join(words[1:]).upper()
+    use_mark = first.upper().endswith("D") and len(first) > 1
+    letters = first[:-1] if use_mark else first
     max_w = 330 * S
-    size = 68 * S
-    while size > 24 * S:
-        f_name = ImageFont.truetype(BOLD, size)
-        total = f_name.getlength(name)
-        if total <= max_w:
+    size = 64 * S
+
+    def measure(sz):
+        f = ImageFont.truetype(BOLD, sz)
+        cap_top, cap_bot = f.getbbox("H")[1], f.getbbox("H")[3]
+        cap = cap_bot - cap_top
+        mark_w = int(cap * 73 / 80) if use_mark else 0
+        ft = ImageFont.truetype(BOLD, max(10 * S, int(sz * 0.22)))
+        tag_w = int(ft.getlength(tag) + len(tag) * 1.5 * S + 14 * S) if tag else 0
+        total = f.getlength(letters) + (mark_w + int(sz * 0.04) if use_mark else 0) + (tag_w + 10 * S if tag else 0)
+        return f, ft, cap_top, cap, mark_w, tag_w, total
+
+    while True:
+        f_name, f_tag, cap_top, cap, mark_w, tag_w, total = measure(size)
+        if total <= max_w or size <= 24 * S:
             break
         size -= 2 * S
-    f_name = ImageFont.truetype(BOLD, size)
-    asc, desc = f_name.getmetrics()
-    base_y = 292 * S - asc  # a linha de base do nome fica a ~292 px
+
+    base_y = 286 * S  # linha de base do nome
     x = 40 * S
-    d.text((x, base_y), first, font=f_name, fill=TEXT + (255,))
-    if rest:
-        x += f_name.getlength(first + " ")
-        d.text((x, base_y), rest, font=f_name, fill=SALMON + (255,))
+    d.text((x, base_y - cap_top - cap), letters, font=f_name, fill=TEXT + (255,))
+    x += f_name.getlength(letters)
+    if use_mark:
+        x += int(size * 0.04)
+        mm = d_mask(cap)
+        fill = diagonal_gradient(mm.width, mm.height, SALMON, RED).convert("RGBA")
+        img.paste(fill, (int(x), base_y - cap), mm)
+        x += mm.width
+    if tag:
+        x += 10 * S
+        th = int(f_tag.size * 1.55)
+        ty = base_y - cap  # alinhado ao topo das letras, como um expoente
+        d.rounded_rectangle([x, ty, x + tag_w, ty + th], radius=5 * S, outline=SALMON + (255,), width=int(1.5 * S))
+        tb = f_tag.getbbox(tag)
+        draw_spaced(d, (x + 7 * S, ty + (th - (tb[3] - tb[1])) // 2 - tb[1]), tag, f_tag, SALMON + (255,), 1.5 * S)
 
     # barrinha salmão + subtítulo
     d.rounded_rectangle([40 * S, 306 * S, 40 * S + 44 * S, 306 * S + 4 * S], radius=2 * S, fill=SALMON + (255,))
