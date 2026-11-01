@@ -1,6 +1,7 @@
 package app.iptvtest
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -300,7 +301,7 @@ fun LoadingScreen(vm: MainViewModel) {
     val scale by pulse.animateFloat(
         initialValue = 0.92f,
         targetValue = 1.06f,
-        animationSpec = androidx.compose.animation.core.infiniteRepeatable(tween(900), androidx.compose.animation.core.RepeatMode.Reverse),
+        animationSpec = androidx.compose.animation.core.infiniteRepeatable(tween<Float>(900), androidx.compose.animation.core.RepeatMode.Reverse),
         label = "scale",
     )
     Box(modifier = Modifier.fillMaxSize().background(AppBackground)) {
@@ -309,6 +310,16 @@ fun LoadingScreen(vm: MainViewModel) {
                 Box(modifier = Modifier.graphicsLayer(scaleX = scale, scaleY = scale)) { AppLogoMark(40) }
                 Spacer(Modifier.width(14.dp))
                 Text(stringResource(R.string.app_name), color = TextMain, fontSize = 22.sp, fontWeight = FontWeight.Bold, letterSpacing = 3.sp)
+                Spacer(Modifier.width(8.dp))
+                // o "PRO" é só da logo, não do nome do app
+                Text(
+                    "PRO",
+                    color = Accent,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp,
+                    modifier = Modifier.border(1.dp, Accent, RoundedCornerShape(5.dp)).padding(horizontal = 6.dp, vertical = 1.dp),
+                )
             }
             val err = vm.loadError
             if (err != null) {

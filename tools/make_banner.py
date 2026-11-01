@@ -25,6 +25,8 @@ OUT = os.path.join(ROOT, "app/src/main/res/drawable-xhdpi/tv_banner.png")
 BOLD = os.path.join(ROOT, "tools/fonts/Poppins-Bold.ttf")
 MEDIUM = os.path.join(ROOT, "tools/fonts/Poppins-Medium.ttf")
 
+BRAND_TAG = "PRO"  # selinho que acompanha o nome só na logo
+
 W, H = 640, 360  # banner de TV: 320x180 dp em xhdpi
 S = 2  # desenha em dobro e reduz no fim (bordas lisas)
 
@@ -154,7 +156,7 @@ def main():
     # As outras palavras (ex.: PRO) viram um selinho discreto ao lado. Encolhe se o nome for comprido.
     words = name.split()
     first = words[0] if words else name
-    tag = " ".join(words[1:]).upper()
+    tag = " ".join(words[1:]).upper() or BRAND_TAG  # o selinho da logo (ex.: PRO) não faz parte do nome do app
     use_mark = first.upper().endswith("D") and len(first) > 1
     letters = first[:-1] if use_mark else first
     max_w = 330 * S
