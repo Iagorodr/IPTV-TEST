@@ -1,0 +1,690 @@
+0	No se encontraron canales en esta lista.
+1	Todos
+2	★ Favoritos
+3	Elige un canal en la lista y pulsa OK: se reproduce aquí. Pulsa OK de nuevo en el mismo canal para abrirlo en pantalla completa.
+4	Fuente {0} de {1}
+5	▶ Pantalla completa
+6	★ Favorito
+7	☆ Añadir a favoritos
+8	REGIÓN
+9	FUENTES
+10	Auto
+11	Fuente {0}
+12	{0} regiones
+13	1 fuente
+14	{0} fuentes
+15	Ver todo
+16	{0} títulos
+17	Seguir viendo
+18	Probando otra forma de conectar ({0})…
+19	Probando la lista M3U del proveedor…
+20	No se pudo iniciar sesión.
+21	Servidor no encontrado. Revisa la dirección y la conexión.
+22	El servidor tardó demasiado en responder.
+23	No se pudo conectar al servidor.
+24	La TV se quedó sin memoria al organizar el catálogo.
+25	Error desconocido.
+26	{0} (probé {1} formas de conectar)
+27	memoria: usada
+28	 MB de
+29	 MB
+30	 · build
+31	Entrar
+32	Faltan {0} minutos
+33	Lista {0}:
+34	Lista {0}: no respondió
+35	No encontré canales, películas ni series en ese enlace. Comprueba que sea realmente una lista M3U.
+36	Episodio
+37	Lista M3U • {0} canales • {1} películas • {2} series
+38	Episodio {0}
+39	Lista M3U
+40	¿Cerrar la app?
+41	Hay una grabación en curso. Continúa, pero la TV debe seguir encendida.
+42	Quedarme
+43	Salir
+44	La app se cerró sola la última vez
+45	Haz una foto de esta pantalla y envíala en Ajustes > Escríbenos: es lo que necesitamos para corregirlo.
+46	Cerrar
+47	⏰ Está por empezar
+48	Empieza ahora
+49	Empieza en {0} min
+50	Ver canales
+51	Descartar
+52	 está empezando
+53	 empieza en {0} min
+54	Esperando aprobación
+55	Acceso suspendido
+56	Recibimos tu solicitud. Está en revisión y te contactaremos.
+57	Este dispositivo aún no fue aprobado. Puedes solicitar acceso.
+58	El acceso de este dispositivo a la app fue pausado. Puedes solicitar acceso.
+59	Código:
+60	Solicitar acceso
+61	Reintentar
+62	¡Solicitud enviada! Está en revisión y te contactaremos.
+63	Volver
+64	Tus datos solo van al desarrollador de la app, para que pueda contactarte. Rellénalos aquí o desde el móvil.
+65	Nombre
+66	Teléfono
+67	O apunta con la cámara del móvil
+68	No se pudo enviar. Rellena todo y revisa la conexión.
+69	Enviando...
+70	Enviar solicitud
+71	Aviso
+72	Rellena servidor, usuario y contraseña.
+73	Pega el enlace de la lista.
+74	El enlace debe empezar por http:// o https://
+75	La TV no está en una red Wi-Fi/cable. Conéctala y abre esta pestaña de nuevo.
+76	No se pudo abrir la conexión con el móvil en esta TV. Usa las otras pestañas.
+77	Recibido del móvil. Entrando...
+78	No se pudo verificar la cuenta: {0}
+79	Preparando...
+80	Montando las pantallas
+81	Lista actualizada:
+82	 películas ·
+83	 series ·
+84	 canales
+85	Descargando la lista...
+86	Descargando categorías...
+87	Descargando películas
+88	Descargando series
+89	Descargando canales
+90	Organizando por género y país
+91	País: todos
+92	País:
+93	hace un momento
+94	hace {0} min
+95	hace {0} h
+96	hace {0} días
+97	No se encontraron episodios.
+98	Subtitulado
+99	Original
+100	Doblado
+101	copia
+102	Catálogo aún no cargado.
+103	Esta lista no ofrece catch-up (volver atrás en el tiempo).
+104	{0} canales guardan la programación pasada (hasta {1} día(s)).
+105	Ya tienes la versión más reciente (build
+106	No se pudo descargar. Revisa la conexión e inténtalo de nuevo.
+107	Elige el canal que va a grabar
+108	Elige el canal que quieres grabar
+109	Este canal no tiene dirección para grabar.
+110	Ya tienes una grabación programada en este canal a esta hora.
+111	No se pudieron obtener los partidos ahora.
+112	Ya elegiste 5 equipos. Quita uno para elegir otro.
+113	Ya elegiste {0} ligas. Quita una para elegir otra.
+114	No se pudo descargar ahora (¿sin internet?). Sigue la tabla del
+115	Tabla nueva cargada:
+116	Ya es la tabla más nueva:
+117	Elige el canal para grabar. Comprueba que el partido realmente se emite en él: la app puede equivocarse.
+118	Lo encontré en tu lista. Si se congela, vuelve y elige otra fuente.
+119	Este partido aún no está en "Partidos destacados" de tu lista. Abajo están los canales de quien suele emitirlo,
+120	los canales de deportes, o usa la búsqueda.
+121	Se emite en:
+122	Suele emitirse en:
+123	Recordatorio eliminado.
+124	Este partido ya empezó.
+125	¡Listo! Te aviso 10 minutos antes del partido.
+126	Sin fecha confirmada por ahora
+127	Canales de tu lista para {0}.
+128	No encontré canales de {0} por el nombre. Mira los canales de deportes abajo o usa la búsqueda.
+129	El servidor devolvió una respuesta no válida.
+130	Redirección no válida del servidor.
+131	El servidor rechazó el acceso (HTTP {0}). Revisa usuario y contraseña.
+132	Dirección no encontrada (HTTP 404).
+133	El servidor respondió HTTP {0}.
+134	Demasiadas redirecciones.
+135	Solicitud no válida.
+136	Esta página caducó. Apunta la cámara al código QR de la TV de nuevo.
+137	¡Solicitud enviada! Mira la TV.
+138	¡Listo! Mira la TV. Si hay algún error, la TV muestra el motivo y puedes enviar de nuevo.
+139	Apunta la cámara del móvil al código QR que aparece en la TV.
+140	Página no encontrada.
+141	Enviar otra lista
+142	Solicita el acceso a la app. Tus datos van al desarrollador de la app, solo para que pueda contactarte.
+143	Correo
+144	Escribe aquí los datos de tu lista. Van directo a la TV por tu Wi-Fi y no pasan por ningún servidor.
+145	Servidor, usuario y contraseña (Xtream)
+146	Servidor (ej.: http://ejemplo.com:8080)
+147	Usuario
+148	Contraseña
+149	Enviar a la TV
+150	Enlace de la lista (M3U)
+151	Pega el enlace
+152	En directo.
+153	Este canal no guarda la programación pasada.
+154	El proveedor guarda solo {0} día(s) de este canal.
+155	Volviendo a
+156	No se pudo volver atrás en este canal.
+157	 Cambiamos a
+158	Fuente:
+159	 (misma hora).
+160	Esta fuente no guarda la programación pasada.
+161	Fuente fijada:
+162	Automático:
+163	Prueba cancelada.
+164	Mejor fuente:
+165	Prueba terminada. Reproduciendo
+166	No se pudo abrir esa hora en este canal. Prueba otro canal o vuelve al directo.
+167	La fuente falló.
+168	Este canal no tiene fuentes disponibles.
+169	Este canal no guarda la programación pasada: abriendo en directo.
+170	La fuente tardó demasiado en abrir.
+171	La fuente se congeló.
+172	La fuente estaba inestable.
+173	{0} min
+174	{0} s
+175	No se pudo reproducir
+176	Abre "Fuentes" para elegir otra, o pulsa Volver para salir.
+177	Pulsa Volver para salir.
+178	Probando las fuentes de
+179	El vídeo queda en pausa mientras medimos. Volver cancela.
+180	  ·  fijada
+181	  ·  automática
+182	⏪ Repetición ·
+183	◀ ▶ para avanzar (pulsa seguido para saltar más)   ·   OK pausa
+184	Sube a la línea de tiempo para avanzar o retroceder
+185	⏪ 10 min
+186	⏪ 2 min
+187	2 min ⏩
+188	10 min ⏩
+189	EN DIRECTO
+190	Pausar
+191	Reproducir
+192	Fuentes ({0})
+193	Región:
+194	Audio
+195	✓ Favorito
+196	Favorito
+197	Pantalla negra
+198	Confirmar parar
+199	■ Parar grabación
+200	Grabación detenida. Está en la pestaña Grabaciones.
+201	● Grabar
+202	Siguiente episodio
+203	Idioma / versión
+204	Subtítulos
+205	Pantalla: rellenar
+206	Pantalla: ajustar
+207	Modo juego: activado
+208	Modo juego
+209	Modo juego activado: colores más vivos y más contraste.
+210	Modo juego desactivado.
+211	¿Grabar durante cuánto tiempo?
+212	Usa una conexión más de tu lista.
+213	30 minutos
+214	1 hora
+215	2 horas
+216	3 horas
+217	4 horas
+218	Grabando durante
+219	. Mírala en la pestaña Grabaciones.
+220	Calidad:
+221	Media y Baja solo valen para canales con más de una versión de la imagen.
+222	Buscar subtítulos: idioma
+223	Subtítulos en
+224	 · T{0} E{1}
+225	 ({0})
+226	Buscando...
+227	No se encontraron subtítulos en este idioma.
+228	No se pudo buscar ahora.
+229	‹ Otro idioma
+230	Descargando...
+231	Subtítulos en
+232	 activados.
+233	No se pudo descargar.
+234	Subtítulo
+235	{0} descargas
+236	 · para sordos
+237	Se guardan 7 días y luego se borran.
+238	🔎 Buscar subtítulos en otros idiomas...
+239	No se encontraron pistas en este vídeo.
+240	  (no compatible con este dispositivo)
+241	Fuentes ·
+242	Ordenadas por estabilidad (la mejor primero)
+243	Ordenadas por calidad de imagen
+244	Probando...
+245	Probar fuentes
+246	Volver a automático
+247	Mejor fuente (automático)
+248	Elige la más estable y de mejor calidad. Si alguna aún no se midió, la mide antes.
+249	probando ahora...
+250	sin respuesta:
+251	margen {0}x en la última medición
+252	se congeló {0}x la última vez
+253	  (fijada)
+254	Priorizar
+255	Estabilidad
+256	Calidad
+257	Cambiar solo si se congela
+258	Sí
+259	No
+260	Región ·
+261	Elige tu región. Queda guardada para la próxima vez.
+262	Idioma no indicado
+263	EAC3 (Dolby Digital+)
+264	Dolby Atmos
+265	 {0}ch
+266	Desactivados
+267	 (solo diálogos en otro idioma)
+268	 (para sordos)
+269	vídeo: ?
+270	{0}x{1}
+271	vídeo:
+272	Fallo de red al conectar.
+273	Tiempo de conexión agotado.
+274	Formato de archivo no compatible.
+275	El dispositivo no pudo decodificar este vídeo.
+276	El dispositivo no tiene decodificador para este vídeo.
+277	Error de reproducción.
+278	Esta fuente no abrió.⏎Elige otra en FUENTES o pulsa OK para abrir en pantalla completa.
+279	Este canal no tiene fuentes.
+280	Pulsa OK en un canal⏎para verlo aquí
+281	lista sin variantes
+282	sin lista de vídeo
+283	sin segmentos
+284	tiempo agotado
+285	casi sin datos
+286	flujo continuo, pausa máx. {0} ms
+287	Media
+288	Baja
+289	Poco espacio en el dispositivo (menos de 1 GB libre).
+290	Este canal ya se está grabando.
+291	Android no permitió iniciar la grabación en segundo plano.
+292	Grabación programada
+293	Grabando
+294	Grabando {0} canales
+295	Toca para abrir la app y ver las grabaciones
+296	Error al grabar:
+297	No se pudo grabar este canal.
+298	redirección sin destino
+299	el servidor respondió {0}
+300	demasiadas redirecciones
+301	Fallo de conexión:
+302	lista sin versiones
+303	Este canal está protegido y no se puede grabar.
+304	el canal dejó de enviar
+305	+ Programar grabación
+306	Consejo: para un partido, abre el partido y toca "● Grabar".
+307	Aún no hay grabaciones.⏎Abre un canal en directo y elige "Grabar", o programa una arriba.⏎La grabación sigue con la pantalla apagada.
+308	 · no se grabó:
+309	la TV estaba apagada o la app cerrada.
+310	Programada ·
+311	 hasta
+312	Confirmar
+313	Quitar
+314	Cancelar programación
+315	Grabando ·
+316	No funcionó
+317	Grabado
+318	Ver
+319	Parar
+320	Borrar
+321	Grabación no encontrada.
+322	● Grabando
+323	 a
+324	Faltan
+325	La grabación no funcionó.
+326	Grabación terminada
+327	Pulsa cualquier botón.
+328	Salir de la pantalla negra
+329	Parar grabación
+330	Apagar la TV después
+331	Ver grabaciones
+332	Volver al inicio
+333	Para que la TV se apague sola, activa el temporizador de apagado en sus ajustes.
+334	Empieza en 10 min: {0}
+335	 min
+336	¡Programado!
+337	Deja la TV (o el box) encendida y con internet. La app no necesita estar abierta en pantalla, pero si
+338	fuerzas el cierre de la app o la TV se apaga, la grabación no se hará.
+339	Ver programadas
+340	Programar grabación
+341	Canal:
+342	Comprueba que el partido realmente se emite en este canal. La app puede equivocarse: si el canal está emitiendo otra cosa,
+343	la grabación saldrá con el programa equivocado.
+344	Día
+345	◀ día
+346	día ▶
+347	Inicio
+348	Fin
+349	 (+1 día)
+350	Media y Baja solo funcionan en canales que ofrecen más de una versión de la imagen; en los demás, graba como lo envía el canal.
+351	Duración:
+352	 · espacio estimado: hasta
+353	 GB · libre en el dispositivo:
+354	 GB
+355	Programar
+356	El fin debe ser después del inicio.
+357	Esa hora ya pasó.
+358	El máximo es 6 horas por grabación.
+359	Cancelar
+360	  ·  Volver cancela
+361	Nueva versión disponible
+362	Tienes el build
+363	 · nuevo: build
+364	Novedades
+365	Hay una grabación en curso: se cortaría. Actualiza cuando termine.
+366	Descargando...
+367	Actualizar ahora
+368	Más tarde
+369	Al terminar la descarga, Android pide confirmar la instalación. La app se cierra y la vuelves a abrir.
+370	¿Qué países e idiomas quieres ver?
+371	Vale para películas, series y canales. Consejo: elige 2 o 3 y la lista queda mucho más ligera. Lo que no tiene país indicado aparece siempre.
+372	Mostrar todo
+373	 títulos,
+374	Aplicar
+375	El reloj de este dispositivo está mal
+376	El dispositivo muestra:
+377	Hora correcta:
+378	Con la fecha incorrecta, los partidos, las carátulas, las actualizaciones de la app y las grabaciones programadas dejan de funcionar.
+379	En los ajustes de la TV o del box, abre Fecha y hora y activa "Fecha y hora automáticas" (y revisa la zona horaria). Luego vuelve a abrir la app.
+380	Entendido
+381	Mostrar en esta pantalla
+382	Solo cambia esta pantalla. Los países de la app están en Ajustes.
+383	Todos los países
+384	Añade otra lista.⏎Se guardan solo en esta TV.
+385	Entra con tu lista.⏎Los datos se guardan solo en esta TV.
+386	Xtream
+387	Enlace M3U
+388	Desde el móvil (QR)
+389	Ocultar contraseña
+390	Mostrar contraseña
+391	Entrando...
+392	Enlace de la lista (ej.: http://ejemplo.com/lista.m3u)
+393	Los enlaces tipo get.php?username=...&password=... entran como Xtream (más completo, con sinopsis y episodios).
+394	Las listas M3U normales solo traen nombre, imagen y categoría.
+395	1. Conecta el móvil a la misma Wi-Fi que la TV.
+396	2. Apunta la cámara al código QR.
+397	3. Escribe los datos en el móvil y toca Enviar.
+398	O ábrelo en el navegador del móvil:
+399	Preparando el código QR...
+400	No se pudo cargar el catálogo
+401	Cerrar sesión
+402	 elementos
+403	Paso {0} de 6
+404	Las listas muy grandes pueden tardar unos minutos. Solo ocurre la primera vez: después el catálogo queda guardado y abre al instante, y las actualizaciones se hacen en segundo plano.
+405	Hola, {0}
+406	Salir del modo infantil
+407	Infantil
+408	Partidos
+409	Películas
+410	Series
+411	Canales
+412	Favoritos
+413	Grabaciones
+414	SERIE
+415	PELÍCULA
+416	Ver detalles
+417	{0} / {1}
+418	 títulos
+419	Tus canales
+420	Separando por país...
+421	Nada por aquí con este país.
+422	Buscar películas, series y canales
+423	Escribe al menos 2 letras.
+424	No se encontró nada.
+425	Mis películas y series
+426	Nada por aquí todavía.⏎Abre una película o serie y elige "+ Favoritos".⏎En los canales, usa la estrella ★ dentro del reproductor.
+427	Canales favoritos
+428	Zona horaria
+429	Los horarios de los partidos usan esta zona. Ahora, en la app:
+430	Si la hora está mal, elige tu zona horaria (o ajústala en la configuración de la TV).
+431	Países de búsqueda (dónde se emite)
+432	aún sin partidos confirmados
+433	 partidos de los próximos días
+434	Elige hasta 3 países de los que vienen las cadenas de cada partido. En "Automático" la app usa los países de los canales que tienes
+435	(o los marcados con el botón País). Ahora:
+436	, tabla del
+437	). Buscada en internet y actualizada cada semana.
+438	Automático
+439	Comprobando...
+440	Comprobar tablas ahora
+441	Lista {0}  ·  {1}
+442	  ·  {0}
+443	Tus listas
+444	Guarda todas las listas que quieras. Usa una a la vez o júntalas todas en un solo catálogo.
+445	Guardada
+446	Incluida en el catálogo conjunto
+447	En uso
+448	Usar esta
+449	¿Confirmar quitar?
+450	Añadir lista
+451	+ Añadir otra lista
+452	Juntar listas
+453	Junta las películas, series y canales de todas las listas en un solo catálogo. Los mismos títulos se convierten en una sola
+454	tarjeta, y los canales reciben las fuentes de todas las listas.
+455	Juntar todas
+456	Una a la vez
+457	¿Confirmar? Quita todas las listas
+458	Salir y quitar las listas
+459	País e idioma
+460	Para listas con contenido de varios países. Elige lo que quieres ver: lo demás queda oculto.
+461	Dentro de Canales, Películas y Series aún puedes elegir solo uno de estos países con el botón "País".
+462	Esta lista no indica país en las categorías: nada que filtrar.
+463	Sin filtro
+464	Mostrando:
+465	Catálogo
+466	Aún no cargado.
+467	{0} películas · {1} series · {2} canales · actualizado {3}
+468	Actualizando...
+469	Actualizar catálogo ahora
+470	Canales en directo
+471	Cuando un canal tiene varias fuentes, la app elige la mejor para ti.
+472	Máxima calidad
+473	Cambiar de fuente solo si se congela
+474	Borrar notas de estabilidad
+475	Volver atrás en el tiempo (catch-up)
+476	Te permite retroceder jugadas en directo y volver a ver partidos de hasta 24 h.
+477	Perfil
+478	Tu nombre, idioma y géneros preferidos.
+479	Tu nombre
+480	Idioma
+481	Guardar
+482	Guardado.
+483	Géneros preferidos (hasta 3)
+484	Equipos y ligas favoritos
+485	Elegir equipos
+486	Acerca de
+487	Información de este dispositivo.
+488	Código de este dispositivo
+489	Si necesitas ayuda, pasa este código a quien te dio la app. Solo sirve para contar cuántos dispositivos usan la app:
+490	no envía el enlace de tu lista, la contraseña ni lo que ves.
+491	Carátulas y sinopsis extra: este producto usa la API de TMDB, pero no está respaldado ni certificado por TMDB.
+492	Versión instalada: build
+493	Buscar actualización
+494	Escríbenos
+495	Un problema, una idea, un elogio o apoyo a quien hizo la app.
+496	1. Apunta la cámara del móvil al código QR.
+497	2. Escribe tu mensaje y toca Enviar.
+498	3. La respuesta aparece aquí en la TV y en la misma página del móvil.
+499	En esa página también puedes apoyar la app con una donación, si quieres.
+500	Código de este dispositivo:
+501	Listas
+502	Deportes
+503	Descanso
+504	Sin respuesta del servicio de partidos.
+505	Hoy
+506	Mañana
+507	Ayer
+508	EN DIRECTO ·
+509	FINALIZADO
+510	⏰ Recordatorio activado
+511	▶ 1 canal en tu lista
+512	▶ {0} canales en tu lista
+513	Toca para ver detalles
+514	En directo
+515	En directo · {0}
+516	Finalizado
+517	ver canales
+518	PARTIDOS
+519	Elegir mis equipos y ligas
+520	No se pudo buscar. Reintentar
+521	Buscando los partidos...
+522	No hay partidos de tus equipos hoy ni mañana
+523	Ver todos ›
+524	Empieza
+525	 (hora local)
+526	Partido terminado. Puedes volver a verlo: elige el canal y la app lo abre al inicio del partido.
+527	Partido terminado. Ningún canal de tu lista guarda la programación pasada para verlo ahora.
+528	El partido terminó hace más de 24 horas: ya no se puede volver a ver.
+529	Se emite en (
+530	Probablemente se emite en (
+531	✓ = está en tu lista.
+532	Confirmado
+533	Aún no confirmado
+534	 en
+535	 · tabla del
+536	Suele emitirse en (
+537	✓ = está en tu lista. Este partido aún no se confirmó en la tabla del
+538	: puede variar según el partido y la región.
+539	Solo tengo una opción registrada: revisa también los canales de deportes de tu lista.
+540	Aún no tengo registrado dónde se emite esta competición en
+541	. Mira los canales de deportes de tu lista.
+542	Comprobar de nuevo
+543	▶ Encontré 1 canal de este partido en tu lista
+544	▶ Encontré {0} canales de este partido en tu lista
+545	Ver ahora
+546	⏰ Recordar
+547	Próximos partidos
+548	Elige equipos y ligas para ver los partidos aquí.
+549	No hay partidos en los próximos días.
+550	Mis equipos y ligas
+551	{0} partidos · en directo primero, luego los más populares · ★ = partido de tu equipo · toca para ver canales y recordar
+552	No hay partidos de las ligas principales este día.
+553	 · Selección
+554	✓ Elegido
+555	No encontré equipos aquí.
+556	No se pudieron cargar los equipos. Revisa la conexión e inténtalo de nuevo.
+557	Cargando equipos...
+558	✓ Elegida
+559	Ligas favoritas
+560	Elige hasta {0} competiciones: todos sus partidos de hoy y mañana aparecen en Inicio.
+561	Elige el país de tu equipo (hasta 5 equipos) o elige ligas (hasta {0}).
+562	 · pulsa OK para elegir o quitar un equipo.
+563	{0}/5 equipos · {1}/{2} ligas
+564	Elegir ligas
+565	Listo
+566	Canales que suelen emitirlo
+567	 (puede variar según el partido)
+568	Buscar "
+569	" en la lista
+570	Canales de deportes de tu lista
+571	Nada elegido. Los partidos de equipos y ligas aparecen arriba en Inicio.
+572	{0}/5 equipos · {1}/{2} ligas · los partidos aparecen arriba en Inicio.
+573	Elegir equipos y ligas
+574	Cambiar equipos y ligas
+575	Dónde se emite: tabla
+576	 del
+577	 (actualizada cada semana).
+578	Límite diario de subtítulos alcanzado. Inténtalo mañana.
+579	Error {0} en OpenSubtitles.
+580	OpenSubtitles no envió el archivo.
+581	{0}h {1}min
+582	No disponible
+583	Seguir
+584	Ver
+585	Cargando episodios...
+586	Seguir desde
+587	‹ Volver
+588	1 temporada
+589	{0} temporadas
+590	Cargando sinopsis...
+591	Dirección:
+592	Reparto:
+593	Solo subtitulado
+594	Idioma: todos
+595	Otros
+596	Estándar
+597	Solo 4K
+598	Copia {0}
+599	 (cine)
+600	Grabación de cine: la imagen y el sonido pueden tener menos calidad.
+601	Especiales
+602	Temporada {0}
+603	Parecidos
+604	paraste aquí
+605	Permite "instalar apps desconocidas" para esta app, vuelve y toca Actualizar de nuevo.
+606	En los ajustes de la TV, permite instalar apps de fuentes desconocidas para esta app e inténtalo de nuevo.
+607	No se pudo abrir el instalador. Descárgala por el enlace de siempre (Downloader).
+608	Sin probar
+609	Estable
+610	Buena
+611	Inestable
+612	Mala
+613	¿Cómo te llamamos?
+614	Solo para que el desarrollador de la app sepa quién la usa. No se envía nada más.
+615	Escribe tu nombre para continuar.
+616	Continuar
+617	¿Qué idioma prefieres?
+618	Los menús cambian al momento al idioma elegido.
+619	¿Cuál es tu zona horaria?
+620	Los partidos aparecen en tu hora. Ahora, en esta zona, son las {0}.
+621	de la TV
+622	Tus equipos del corazón
+623	Opcional. Sus partidos aparecen arriba en Inicio.
+624	Saltar
+625	¿Qué es lo que más te gusta?
+626	Opcional. Elige hasta 3 géneros. Aparecen primero en los destacados.
+627	Empezar
+628	Ninguno elegido.
+629	 de 3:
+630	Respuesta inesperada del servidor.
+631	Usuario o contraseña no válidos.
+632	sin fecha
+633	Cuenta {0} • vence {1} • pantallas: {2}
+634	Categoría {0}
+635	Acción
+636	Aventura
+637	Animación
+638	Comedia
+639	Crimen
+640	Documentales
+641	Drama
+642	Familia
+643	Fantasía
+644	Ciencia ficción
+645	Bélicas
+646	Romance
+647	Suspense
+648	Terror
+649	Misterio
+650	Historia
+651	Biografía
+652	Policiaca
+653	Música
+654	Western
+655	Turcas
+656	Espectáculos
+657	Religiosas
+658	Brasileñas
+659	Dorama
+660	Clásicos
+661	Anime
+662	Estrenos
+663	Añadidos recientemente
+664	Sin categoría
+665	Dom
+666	Lun
+667	Mar
+668	Mié
+669	Jue
+670	Vie
+671	Sáb
+672	Portugués (Brasil)
+673	Portugués (Portugal)
+674	Inglés
+675	Español
+676	Francés
+677	Italiano
+678	Alemán
+679	Neerlandés
+680	Nuevo: Escríbenos
+681	Nuevo: Modo juego
+682	La app en tu idioma
+683	No te pierdas ningún partido
+684	¿Se congeló el canal? Lo cambiamos
+685	En Ajustes, apunta el móvil al código QR y envía un problema, una idea o un elogio. La respuesta aparece aquí en la TV.
+686	En el reproductor, toca Modo juego: colores más vivos y más contraste, ideal para el fútbol.
+687	Portugués, inglés, español, francés, italiano, alemán o neerlandés. Cámbialo cuando quieras en Ajustes > Perfil.
+688	Elige tus equipos y ligas: los partidos aparecen en Inicio con el día, la hora y el canal donde se emiten.
+689	Cuando un canal tiene varias fuentes, la app elige la más estable o la de mejor imagen (tú decides en Ajustes) y cambia sola si se congela.

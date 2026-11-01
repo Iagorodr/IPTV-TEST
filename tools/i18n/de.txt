@@ -1,0 +1,690 @@
+0	Keine Sender in dieser Liste gefunden.
+1	Alle
+2	★ Favoriten
+3	Wähle einen Sender in der Liste und drücke OK: Er läuft hier. Drücke noch einmal OK auf demselben Sender, um ihn im Vollbild zu öffnen.
+4	Quelle {0} von {1}
+5	▶ Vollbild
+6	★ Favorit
+7	☆ Zu Favoriten
+8	REGION
+9	QUELLEN
+10	Auto
+11	Quelle {0}
+12	{0} Regionen
+13	1 Quelle
+14	{0} Quellen
+15	Alle ansehen
+16	{0} Titel
+17	Weiterschauen
+18	Versuche eine andere Verbindungsart ({0})…
+19	Versuche die M3U-Liste des Anbieters…
+20	Anmeldung fehlgeschlagen.
+21	Server nicht gefunden. Prüfe die Adresse und das Internet.
+22	Der Server hat zu lange gebraucht.
+23	Verbindung zum Server nicht möglich.
+24	Dem Fernseher ging beim Sortieren des Katalogs der Speicher aus.
+25	Unbekannter Fehler.
+26	{0} ({1} Verbindungsarten versucht)
+27	Speicher: belegt
+28	 MB von
+29	 MB
+30	 · Build
+31	Anmelden
+32	Noch {0} Minuten
+33	Liste {0}:
+34	Liste {0}: keine Antwort
+35	Unter diesem Link wurden keine Sender, Filme oder Serien gefunden. Prüfe, ob es wirklich eine M3U-Liste ist.
+36	Folge
+37	M3U-Liste • {0} Sender • {1} Filme • {2} Serien
+38	Folge {0}
+39	M3U-Liste
+40	App schließen?
+41	Eine Aufnahme läuft. Sie geht weiter, aber der Fernseher muss an bleiben.
+42	Bleiben
+43	Beenden
+44	Die App hat sich letztes Mal von selbst geschlossen
+45	Mach ein Foto von diesem Bildschirm und schick es unter Einstellungen > Schreib uns: Das brauchen wir für die Korrektur.
+46	Schließen
+47	⏰ Geht gleich los
+48	Beginnt jetzt
+49	Beginnt in {0} Min.
+50	Sender ansehen
+51	Ausblenden
+52	 beginnt
+53	 beginnt in {0} Min.
+54	Warte auf Freigabe
+55	Zugang gesperrt
+56	Wir haben deine Anfrage erhalten. Sie wird geprüft und wir melden uns.
+57	Dieses Gerät wurde noch nicht freigegeben. Du kannst die Freigabe anfragen.
+58	Der Zugang dieses Geräts zur App wurde pausiert. Du kannst die Freigabe anfragen.
+59	Code:
+60	Freigabe anfragen
+61	Nochmal versuchen
+62	Anfrage gesendet! Sie wird geprüft und wir melden uns.
+63	Zurück
+64	Deine Daten gehen nur an den Entwickler der App, damit er dich kontaktieren kann. Fülle sie hier oder am Handy aus.
+65	Name
+66	Telefon
+67	Oder richte die Handykamera darauf
+68	Senden fehlgeschlagen. Fülle alles aus und prüfe das Internet.
+69	Wird gesendet...
+70	Anfrage senden
+71	Hinweis
+72	Fülle Server, Benutzername und Passwort aus.
+73	Füge den Link der Liste ein.
+74	Der Link muss mit http:// oder https:// beginnen
+75	Der Fernseher ist in keinem WLAN/Kabelnetz. Verbinde ihn und öffne diesen Tab erneut.
+76	Die Verbindung zum Handy konnte auf diesem Fernseher nicht geöffnet werden. Nutze die anderen Tabs.
+77	Vom Handy empfangen. Anmeldung...
+78	Konto konnte nicht geprüft werden: {0}
+79	Vorbereitung...
+80	Bildschirme werden aufgebaut
+81	Liste aktualisiert:
+82	 Filme ·
+83	 Serien ·
+84	 Sender
+85	Liste wird geladen...
+86	Kategorien werden geladen...
+87	Filme werden geladen
+88	Serien werden geladen
+89	Sender werden geladen
+90	Sortiere nach Genre und Land
+91	Land: alle
+92	Land:
+93	gerade eben
+94	vor {0} Min.
+95	vor {0} Std.
+96	vor {0} Tagen
+97	Keine Folgen gefunden.
+98	Mit Untertiteln
+99	Original
+100	Synchronisiert
+101	Kopie
+102	Katalog noch nicht geladen.
+103	Diese Liste bietet kein Catch-up (Zurückspulen) an.
+104	{0} Sender speichern vergangene Sendungen (bis zu {1} Tag(e)).
+105	Du hast schon die neueste Version (Build
+106	Download fehlgeschlagen. Prüfe das Internet und versuche es erneut.
+107	Wähle den Sender, der aufnehmen soll:
+108	Wähle den Sender, den du aufnehmen willst
+109	Dieser Sender hat keine Adresse zum Aufnehmen.
+110	Du hast auf diesem Sender zu dieser Zeit schon eine Aufnahme geplant.
+111	Die Spiele konnten gerade nicht geladen werden.
+112	Du hast schon 5 Teams gewählt. Entferne eines, um ein anderes zu wählen.
+113	Du hast schon {0} Ligen gewählt. Entferne eine, um eine andere zu wählen.
+114	Download gerade nicht möglich (kein Internet?). Es bleibt die Tabelle vom
+115	Neue Tabelle geladen:
+116	Schon die neueste Tabelle:
+117	Wähle den Sender zum Aufnehmen. Prüfe, ob das Spiel wirklich dort läuft: Die App kann sich irren.
+118	In deiner Liste gefunden. Wenn es hängt, geh zurück und wähle eine andere Quelle.
+119	Dieses Spiel ist noch nicht in den „Top-Spielen“ deiner Liste. Unten findest du die Sender, die es meist zeigen,
+120	die Sportsender, oder nutze die Suche.
+121	Läuft auf:
+122	Läuft meist auf:
+123	Erinnerung entfernt.
+124	Dieses Spiel hat schon begonnen.
+125	Erledigt! Ich erinnere dich 10 Minuten vor dem Spiel.
+126	Noch kein bestätigtes Datum
+127	Sender aus deiner Liste für {0}.
+128	Keine {0}-Sender per Namen gefunden. Sieh dir unten die Sportsender an oder nutze die Suche.
+129	Der Server hat eine ungültige Antwort geschickt.
+130	Ungültige Weiterleitung vom Server.
+131	Der Server hat den Zugang verweigert (HTTP {0}). Prüfe Benutzername und Passwort.
+132	Adresse nicht gefunden (HTTP 404).
+133	Der Server antwortete mit HTTP {0}.
+134	Zu viele Weiterleitungen.
+135	Ungültige Anfrage.
+136	Diese Seite ist abgelaufen. Richte die Kamera erneut auf den QR-Code des Fernsehers.
+137	Anfrage gesendet! Schau auf den Fernseher.
+138	Fertig! Schau auf den Fernseher. Bei einem Fehler zeigt er den Grund und du kannst erneut senden.
+139	Richte die Handykamera auf den QR-Code auf dem Fernseher.
+140	Seite nicht gefunden.
+141	Weitere Liste senden
+142	Frage die Freigabe der App an. Deine Daten gehen an den Entwickler der App, nur damit er dich kontaktieren kann.
+143	E-Mail
+144	Gib hier die Daten deiner Liste ein. Sie gehen direkt über dein WLAN an den Fernseher und über keinen Server.
+145	Server, Benutzername und Passwort (Xtream)
+146	Server (z. B. http://beispiel.com:8080)
+147	Benutzername
+148	Passwort
+149	An den Fernseher senden
+150	Link der Liste (M3U)
+151	Link einfügen
+152	Live.
+153	Dieser Sender speichert keine vergangenen Sendungen.
+154	Der Anbieter speichert nur {0} Tag(e) dieses Senders.
+155	Zurück zu
+156	Zurückspulen auf diesem Sender nicht möglich.
+157	 Gewechselt zu
+158	Quelle:
+159	 (gleiche Uhrzeit).
+160	Diese Quelle speichert keine vergangenen Sendungen.
+161	Quelle festgelegt:
+162	Automatisch:
+163	Test abgebrochen.
+164	Beste Quelle:
+165	Test beendet. Spiele
+166	Diese Uhrzeit ließ sich auf diesem Sender nicht öffnen. Versuche einen anderen Sender oder geh zurück zu live.
+167	Die Quelle ist ausgefallen.
+168	Dieser Sender hat keine verfügbaren Quellen.
+169	Dieser Sender speichert keine vergangenen Sendungen: öffne live.
+170	Die Quelle hat zu lange zum Öffnen gebraucht.
+171	Die Quelle hängt.
+172	Die Quelle war instabil.
+173	{0} Min.
+174	{0} s
+175	Wiedergabe nicht möglich
+176	Öffne „Quellen“, um eine andere zu wählen, oder drücke Zurück zum Beenden.
+177	Drücke Zurück zum Beenden.
+178	Teste die Quellen von
+179	Das Video bleibt angehalten, während wir messen. Zurück bricht ab.
+180	  ·  festgelegt
+181	  ·  automatisch
+182	⏪ Wiederholung ·
+183	◀ ▶ zum Spulen (mehrfach drücken für größere Sprünge)   ·   OK pausiert
+184	Geh hoch zur Zeitleiste, um vor- oder zurückzuspulen
+185	⏪ 10 Min.
+186	⏪ 2 Min.
+187	2 Min. ⏩
+188	10 Min. ⏩
+189	LIVE
+190	Pause
+191	Abspielen
+192	Quellen ({0})
+193	Region:
+194	Audio
+195	✓ Favorit
+196	Favorit
+197	Schwarzer Bildschirm
+198	Stopp bestätigen
+199	■ Aufnahme stoppen
+200	Aufnahme gestoppt. Sie ist im Tab Aufnahmen.
+201	● Aufnehmen
+202	Nächste Folge
+203	Sprache / Version
+204	Untertitel
+205	Bild: füllen
+206	Bild: anpassen
+207	Spielmodus: an
+208	Spielmodus
+209	Spielmodus an: kräftigere Farben und mehr Kontrast.
+210	Spielmodus aus.
+211	Wie lange aufnehmen?
+212	Nutzt eine weitere Verbindung deiner Liste.
+213	30 Minuten
+214	1 Stunde
+215	2 Stunden
+216	3 Stunden
+217	4 Stunden
+218	Aufnahme für
+219	. Sieh sie dir im Tab Aufnahmen an.
+220	Qualität:
+221	Mittel und Niedrig gelten nur für Sender mit mehr als einer Bildversion.
+222	Untertitel suchen: Sprache
+223	Untertitel auf
+224	 · S{0} F{1}
+225	 ({0})
+226	Suche...
+227	Keine Untertitel in dieser Sprache gefunden.
+228	Suche gerade nicht möglich.
+229	‹ Andere Sprache
+230	Wird geladen...
+231	Untertitel auf
+232	 aktiviert.
+233	Download fehlgeschlagen.
+234	Untertitel
+235	{0} Downloads
+236	 · für Hörgeschädigte
+237	Sie werden 7 Tage gespeichert und dann gelöscht.
+238	🔎 Untertitel in anderen Sprachen suchen...
+239	Keine Spuren in diesem Video gefunden.
+240	  (auf diesem Gerät nicht unterstützt)
+241	Quellen ·
+242	Nach Stabilität sortiert (die beste zuerst)
+243	Nach Bildqualität sortiert
+244	Teste...
+245	Quellen testen
+246	Zurück zu automatisch
+247	Beste Quelle (automatisch)
+248	Wählt die stabilste mit der besten Qualität. Wenn manche noch nicht gemessen wurden, misst sie sie zuerst.
+249	wird gerade getestet...
+250	keine Antwort:
+251	{0}x Reserve bei der letzten Messung
+252	hing beim letzten Mal {0}x
+253	  (festgelegt)
+254	Priorität
+255	Stabilität
+256	Qualität
+257	Automatisch wechseln, wenn es hängt
+258	Ja
+259	Nein
+260	Region ·
+261	Wähle deine Region. Sie wird für das nächste Mal gespeichert.
+262	Sprache nicht angegeben
+263	EAC3 (Dolby Digital+)
+264	Dolby Atmos
+265	 {0}ch
+266	Aus
+267	 (nur fremdsprachige Dialoge)
+268	 (für Hörgeschädigte)
+269	Video: ?
+270	{0}x{1}
+271	Video:
+272	Netzwerkfehler beim Verbinden.
+273	Zeitüberschreitung beim Verbinden.
+274	Dateiformat nicht unterstützt.
+275	Das Gerät konnte dieses Video nicht dekodieren.
+276	Das Gerät hat keinen Decoder für dieses Video.
+277	Wiedergabefehler.
+278	Diese Quelle ließ sich nicht öffnen.⏎Wähle eine andere unter QUELLEN oder drücke OK für Vollbild.
+279	Dieser Sender hat keine Quellen.
+280	Drücke OK auf einem Sender,⏎um ihn hier zu sehen
+281	Liste ohne Varianten
+282	keine Videoliste
+283	keine Segmente
+284	Zeitüberschreitung
+285	kaum Daten
+286	stabiler Stream, max. Pause {0} ms
+287	Mittel
+288	Niedrig
+289	Wenig Speicher auf dem Gerät (weniger als 1 GB frei).
+290	Dieser Sender wird schon aufgenommen.
+291	Android hat den Start der Aufnahme im Hintergrund nicht erlaubt.
+292	Aufnahme geplant
+293	Aufnahme läuft
+294	{0} Sender werden aufgenommen
+295	Tippe, um die App zu öffnen und die Aufnahmen zu sehen
+296	Aufnahmefehler:
+297	Dieser Sender ließ sich nicht aufnehmen.
+298	Weiterleitung ohne Ziel
+299	der Server antwortete {0}
+300	zu viele Weiterleitungen
+301	Verbindungsfehler:
+302	Liste ohne Versionen
+303	Dieser Sender ist geschützt und kann nicht aufgenommen werden.
+304	der Sender sendet nicht mehr
+305	+ Aufnahme planen
+306	Tipp: Für ein Spiel öffne das Spiel und tippe auf „● Aufnehmen“.
+307	Noch keine Aufnahmen.⏎Öffne einen Live-Sender und wähle „Aufnehmen“ oder plane oben eine.⏎Die Aufnahme läuft auch bei ausgeschaltetem Bildschirm weiter.
+308	 · nicht aufgenommen:
+309	der Fernseher war aus oder die App geschlossen.
+310	Geplant ·
+311	 bis
+312	Bestätigen
+313	Entfernen
+314	Planung abbrechen
+315	Aufnahme ·
+316	Hat nicht geklappt
+317	Aufgenommen
+318	Ansehen
+319	Stopp
+320	Löschen
+321	Aufnahme nicht gefunden.
+322	● Aufnahme
+323	 bis
+324	Noch
+325	Die Aufnahme hat nicht geklappt.
+326	Aufnahme fertig
+327	Drücke eine beliebige Taste.
+328	Schwarzen Bildschirm verlassen
+329	Aufnahme stoppen
+330	Fernseher danach ausschalten
+331	Aufnahmen ansehen
+332	Zurück zum Start
+333	Damit sich der Fernseher selbst ausschaltet, aktiviere den Ausschalt-Timer in seinen Einstellungen.
+334	Beginnt in 10 Min.: {0}
+335	 Min.
+336	Geplant!
+337	Lass den Fernseher (oder die Box) an und mit dem Internet verbunden. Die App muss nicht offen sein, aber wenn du
+338	die App zwangsweise schließt oder der Fernseher ausgeht, findet die Aufnahme nicht statt.
+339	Geplante ansehen
+340	Aufnahme planen
+341	Sender:
+342	Prüfe, ob das Spiel wirklich auf diesem Sender läuft. Die App kann sich irren: Wenn der Sender etwas anderes zeigt,
+343	enthält die Aufnahme die falsche Sendung.
+344	Tag
+345	◀ Tag
+346	Tag ▶
+347	Beginn
+348	Ende
+349	 (+1 Tag)
+350	Mittel und Niedrig funktionieren nur bei Sendern mit mehr als einer Bildversion; bei den anderen wird so aufgenommen, wie der Sender sendet.
+351	Dauer:
+352	 · geschätzter Platz: bis zu
+353	 GB · frei auf dem Gerät:
+354	 GB
+355	Planen
+356	Das Ende muss nach dem Beginn liegen.
+357	Diese Uhrzeit ist schon vorbei.
+358	Maximal 6 Stunden pro Aufnahme.
+359	Abbrechen
+360	  ·  Zurück bricht ab
+361	Neue Version verfügbar
+362	Du hast Build
+363	 · neu: Build
+364	Was ist neu
+365	Eine Aufnahme läuft: Sie würde abgebrochen. Aktualisiere, wenn sie fertig ist.
+366	Wird geladen...
+367	Jetzt aktualisieren
+368	Später
+369	Nach dem Download fragt Android nach einer Bestätigung der Installation. Die App schließt sich und du öffnest sie wieder.
+370	Welche Länder und Sprachen willst du sehen?
+371	Gilt für Filme, Serien und Sender. Tipp: Wähle 2 oder 3 und die Liste wird viel leichter. Was kein Land angibt, erscheint immer.
+372	Alles anzeigen
+373	 Titel,
+374	Anwenden
+375	Die Uhr dieses Geräts geht falsch
+376	Das Gerät zeigt:
+377	Richtige Uhrzeit:
+378	Mit falschem Datum funktionieren Spiele, Cover, App-Updates und geplante Aufnahmen nicht mehr.
+379	Öffne in den Einstellungen des Fernsehers oder der Box Datum und Uhrzeit und aktiviere „Automatisches Datum und Uhrzeit“ (und prüfe die Zeitzone). Öffne dann die App neu.
+380	Verstanden
+381	Auf diesem Bildschirm anzeigen
+382	Ändert nur diesen Bildschirm. Die Länder der App stehen in den Einstellungen.
+383	Alle Länder
+384	Weitere Liste hinzufügen.⏎Sie werden nur auf diesem Fernseher gespeichert.
+385	Melde dich mit deiner Liste an.⏎Die Daten werden nur auf diesem Fernseher gespeichert.
+386	Xtream
+387	M3U-Link
+388	Per Handy (QR)
+389	Passwort verbergen
+390	Passwort anzeigen
+391	Anmeldung...
+392	Link der Liste (z. B. http://beispiel.com/liste.m3u)
+393	Links wie get.php?username=...&password=... werden als Xtream behandelt (vollständiger, mit Handlung und Folgen).
+394	Normale M3U-Listen enthalten nur Name, Bild und Kategorie.
+395	1. Verbinde das Handy mit demselben WLAN wie den Fernseher.
+396	2. Richte die Kamera auf den QR-Code.
+397	3. Gib die Daten am Handy ein und tippe auf Senden.
+398	Oder im Browser des Handys öffnen:
+399	QR-Code wird vorbereitet...
+400	Katalog konnte nicht geladen werden
+401	Abmelden
+402	 Einträge
+403	Schritt {0} von 6
+404	Sehr große Listen können ein paar Minuten dauern. Das passiert nur beim ersten Mal: Danach ist der Katalog gespeichert, öffnet sofort, und Updates laufen im Hintergrund.
+405	Hallo, {0}
+406	Kindermodus verlassen
+407	Kinder
+408	Spiele
+409	Filme
+410	Serien
+411	Sender
+412	Favoriten
+413	Aufnahmen
+414	SERIE
+415	FILM
+416	Details ansehen
+417	{0} / {1}
+418	 Titel
+419	Deine Sender
+420	Sortiere nach Land...
+421	Hier gibt es nichts für dieses Land.
+422	Filme, Serien und Sender suchen
+423	Gib mindestens 2 Buchstaben ein.
+424	Nichts gefunden.
+425	Meine Filme und Serien
+426	Hier ist noch nichts.⏎Öffne einen Film oder eine Serie und wähle „+ Favoriten“.⏎Bei Sendern nutze den Stern ★ im Player.
+427	Lieblingssender
+428	Zeitzone
+429	Die Spielzeiten nutzen diese Zeitzone. Gerade in der App:
+430	Wenn die Uhrzeit falsch ist, wähle deine Zeitzone (oder korrigiere sie in den Einstellungen des Fernsehers).
+431	Suchländer (wo es läuft)
+432	noch keine bestätigten Spiele
+433	 Spiele in den nächsten Tagen
+434	Wähle bis zu 3 Länder, aus denen die Sender jedes Spiels kommen. Bei „Automatisch“ nutzt die App die Länder deiner Sender
+435	(oder die mit dem Länder-Button gewählten). Jetzt:
+436	, Tabelle vom
+437	). Im Internet recherchiert und jede Woche aktualisiert.
+438	Automatisch
+439	Prüfe...
+440	Tabellen jetzt prüfen
+441	Liste {0}  ·  {1}
+442	  ·  {0}
+443	Deine Listen
+444	Speichere so viele Listen, wie du willst. Nutze eine nach der anderen oder führe alle zu einem Katalog zusammen.
+445	Gespeichert
+446	Im gemeinsamen Katalog enthalten
+447	In Benutzung
+448	Diese nutzen
+449	Entfernen bestätigen?
+450	Liste hinzufügen
+451	+ Weitere Liste hinzufügen
+452	Listen zusammenführen
+453	Führt die Filme, Serien und Sender aller Listen zu einem Katalog zusammen. Gleiche Titel werden zu einer einzigen
+454	Karte, und die Sender bekommen die Quellen aller Listen.
+455	Alle zusammenführen
+456	Eine nach der anderen
+457	Bestätigen? Entfernt alle Listen
+458	Abmelden und Listen entfernen
+459	Land und Sprache
+460	Für Listen mit Inhalten aus mehreren Ländern. Wähle, was du sehen willst: Der Rest wird ausgeblendet.
+461	In Sender, Filme und Serien kannst du mit dem Button „Land“ trotzdem nur eines dieser Länder wählen.
+462	Diese Liste gibt in den Kategorien kein Land an: nichts zu filtern.
+463	Kein Filter
+464	Angezeigt:
+465	Katalog
+466	Noch nicht geladen.
+467	{0} Filme · {1} Serien · {2} Sender · aktualisiert {3}
+468	Wird aktualisiert...
+469	Katalog jetzt aktualisieren
+470	Live-Sender
+471	Wenn ein Sender mehrere Quellen hat, wählt die App die beste für dich.
+472	Beste Qualität
+473	Quelle automatisch wechseln, wenn es hängt
+474	Stabilitätswerte löschen
+475	Zurückspulen (Catch-up)
+476	Damit spulst du im Live-Bild zurück und siehst Spiele der letzten 24 Std. noch einmal.
+477	Profil
+478	Dein Name, deine Sprache und Lieblingsgenres.
+479	Dein Name
+480	Sprache
+481	Speichern
+482	Gespeichert.
+483	Lieblingsgenres (bis zu 3)
+484	Lieblingsteams und -ligen
+485	Teams wählen
+486	Info
+487	Informationen zu diesem Gerät.
+488	Code dieses Geräts
+489	Wenn du Hilfe brauchst, gib diesen Code der Person, die dir die App gegeben hat. Er dient nur zum Zählen, wie viele Geräte die App nutzen:
+490	Er sendet weder den Link deiner Liste noch das Passwort oder was du schaust.
+491	Zusätzliche Cover und Inhaltsangaben: Dieses Produkt nutzt die TMDB-API, wird aber nicht von TMDB unterstützt oder zertifiziert.
+492	Installierte Version: Build
+493	Nach Updates suchen
+494	Schreib uns
+495	Ein Problem, eine Idee, ein Lob oder Unterstützung für den Entwickler der App.
+496	1. Richte die Handykamera auf den QR-Code.
+497	2. Schreib deine Nachricht und tippe auf Senden.
+498	3. Die Antwort erscheint hier auf dem Fernseher und auf derselben Seite am Handy.
+499	Auf der Seite kannst du die App auch mit einer Spende unterstützen, wenn du magst.
+500	Code dieses Geräts:
+501	Listen
+502	Sport
+503	Halbzeit
+504	Keine Antwort vom Spieledienst.
+505	Heute
+506	Morgen
+507	Gestern
+508	LIVE ·
+509	BEENDET
+510	⏰ Erinnerung an
+511	▶ 1 Sender in deiner Liste
+512	▶ {0} Sender in deiner Liste
+513	Tippen für Details
+514	Live
+515	Live · {0}
+516	Beendet
+517	Sender ansehen
+518	SPIELE
+519	Meine Teams und Ligen wählen
+520	Suche fehlgeschlagen. Nochmal versuchen
+521	Suche Spiele...
+522	Keine Spiele deiner Teams heute oder morgen
+523	Alle ansehen ›
+524	Beginnt
+525	 (Ortszeit)
+526	Spiel beendet. Du kannst es nochmal sehen: Wähle den Sender und die App öffnet es am Anfang.
+527	Spiel beendet. Kein Sender deiner Liste speichert vergangene Sendungen, um es jetzt nochmal zu sehen.
+528	Spiel vor mehr als 24 Stunden beendet: Es kann nicht mehr angesehen werden.
+529	Läuft auf (
+530	Läuft wahrscheinlich auf (
+531	✓ = in deiner Liste.
+532	Bestätigt
+533	Noch nicht bestätigt
+534	 auf
+535	 · Tabelle vom
+536	Läuft meist auf (
+537	✓ = in deiner Liste. Dieses Spiel ist in der Tabelle noch nicht bestätigt, Stand
+538	: Es kann je nach Spiel und Region variieren.
+539	Ich habe nur eine Option gespeichert: Prüfe auch die Sportsender deiner Liste.
+540	Ich weiß noch nicht, wo dieser Wettbewerb läuft in
+541	. Sieh dir die Sportsender deiner Liste an.
+542	Erneut prüfen
+543	▶ 1 Sender für dieses Spiel in deiner Liste gefunden
+544	▶ {0} Sender für dieses Spiel in deiner Liste gefunden
+545	Jetzt ansehen
+546	⏰ Erinnern
+547	Nächste Spiele
+548	Wähle Teams und Ligen, um hier die Spiele zu sehen.
+549	Keine Spiele in den nächsten Tagen.
+550	Meine Teams und Ligen
+551	{0} Spiele · live zuerst, dann die beliebtesten · ★ = Spiel deines Teams · tippen für Sender und Erinnerung
+552	Keine Spiele der großen Ligen an diesem Tag.
+553	 · Nationalteam
+554	✓ Gewählt
+555	Hier keine Teams gefunden.
+556	Teams konnten nicht geladen werden. Prüfe das Internet und versuche es erneut.
+557	Lade Teams...
+558	✓ Gewählt
+559	Lieblingsligen
+560	Wähle bis zu {0} Wettbewerbe: Alle ihre Spiele von heute und morgen erscheinen auf der Startseite.
+561	Wähle das Land deines Teams (bis zu 5 Teams) oder wähle Ligen (bis zu {0}).
+562	 · drücke OK, um ein Team zu wählen oder zu entfernen.
+563	{0}/5 Teams · {1}/{2} Ligen
+564	Ligen wählen
+565	Fertig
+566	Sender, die es meist zeigen
+567	 (kann je nach Spiel variieren)
+568	„
+569	“ in der Liste suchen
+570	Sportsender deiner Liste
+571	Nichts gewählt. Spiele deiner Teams und Ligen erscheinen oben auf der Startseite.
+572	{0}/5 Teams · {1}/{2} Ligen · die Spiele erscheinen oben auf der Startseite.
+573	Teams und Ligen wählen
+574	Teams und Ligen ändern
+575	Wo es läuft: Tabelle
+576	 vom
+577	 (jede Woche aktualisiert).
+578	Tägliches Untertitel-Limit erreicht. Versuch es morgen.
+579	Fehler {0} bei OpenSubtitles.
+580	OpenSubtitles hat die Datei nicht geschickt.
+581	{0} Std. {1} Min.
+582	Nicht verfügbar
+583	Weiter
+584	Ansehen
+585	Lade Folgen...
+586	Weiter ab
+587	‹ Zurück
+588	1 Staffel
+589	{0} Staffeln
+590	Lade Inhaltsangabe...
+591	Regie:
+592	Besetzung:
+593	Nur mit Untertiteln
+594	Sprache: alle
+595	Andere
+596	Standard
+597	Nur 4K
+598	Kopie {0}
+599	 (Kino)
+600	Kinoaufnahme: Bild und Ton können schlechter sein.
+601	Specials
+602	Staffel {0}
+603	Ähnliche
+604	hier aufgehört
+605	Erlaube „Unbekannte Apps installieren“ für diese App, komm zurück und tippe erneut auf Aktualisieren.
+606	Erlaube in den Einstellungen des Fernsehers die Installation von Apps aus unbekannten Quellen für diese App und versuche es erneut.
+607	Der Installer ließ sich nicht öffnen. Lade sie über den gewohnten Link (Downloader).
+608	Nicht getestet
+609	Stabil
+610	Gut
+611	Schwankend
+612	Schlecht
+613	Wie sollen wir dich nennen?
+614	Nur damit der Entwickler der App weiß, wer sie nutzt. Sonst wird nichts gesendet.
+615	Gib deinen Namen ein, um fortzufahren.
+616	Weiter
+617	Welche Sprache möchtest du?
+618	Die Menüs wechseln sofort in die gewählte Sprache.
+619	Welche Zeitzone hast du?
+620	Die Spiele erscheinen in deiner Uhrzeit. In dieser Zeitzone ist es gerade {0}.
+621	vom Fernseher
+622	Deine Lieblingsteams
+623	Optional. Ihre Spiele erscheinen oben auf der Startseite.
+624	Überspringen
+625	Was magst du am liebsten?
+626	Optional. Wähle bis zu 3 Genres. Sie erscheinen zuerst bei den Highlights.
+627	Los geht's
+628	Nichts gewählt.
+629	 von 3:
+630	Unerwartete Antwort vom Server.
+631	Benutzername oder Passwort ungültig.
+632	ohne Datum
+633	Konto {0} • läuft ab {1} • Bildschirme: {2}
+634	Kategorie {0}
+635	Action
+636	Abenteuer
+637	Animation
+638	Komödie
+639	Krimi
+640	Dokumentationen
+641	Drama
+642	Familie
+643	Fantasy
+644	Science-Fiction
+645	Krieg
+646	Romantik
+647	Thriller
+648	Horror
+649	Mystery
+650	Historie
+651	Biografie
+652	Polizeifilm
+653	Musik
+654	Western
+655	Türkische
+656	Shows
+657	Religiöse
+658	Brasilianische
+659	K-Drama
+660	Klassiker
+661	Anime
+662	Neuerscheinungen
+663	Kürzlich hinzugefügt
+664	Ohne Kategorie
+665	So
+666	Mo
+667	Di
+668	Mi
+669	Do
+670	Fr
+671	Sa
+672	Portugiesisch (Brasilien)
+673	Portugiesisch (Portugal)
+674	Englisch
+675	Spanisch
+676	Französisch
+677	Italienisch
+678	Deutsch
+679	Niederländisch
+680	Neu: Schreib uns
+681	Neu: Spielmodus
+682	Die App in deiner Sprache
+683	Verpass kein Spiel
+684	Sender hängt? Wir wechseln
+685	Richte in den Einstellungen das Handy auf den QR-Code und schick ein Problem, eine Idee oder ein Lob. Die Antwort erscheint hier auf dem Fernseher.
+686	Tippe im Player auf Spielmodus: kräftigere Farben und mehr Kontrast, ideal für Fußball.
+687	Portugiesisch, Englisch, Spanisch, Französisch, Italienisch, Deutsch oder Niederländisch. Jederzeit änderbar unter Einstellungen > Profil.
+688	Wähle deine Teams und Ligen: Die Spiele erscheinen auf der Startseite mit Tag, Uhrzeit und dem Sender, der sie zeigt.
+689	Wenn ein Sender mehrere Quellen hat, wählt die App die stabilste oder die mit dem besten Bild (du entscheidest in den Einstellungen) und wechselt selbst, wenn es hängt.

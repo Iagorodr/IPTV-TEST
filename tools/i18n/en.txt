@@ -1,0 +1,690 @@
+0	No channels found in this list.
+1	All
+2	★ Favorites
+3	Pick a channel in the list and press OK: it plays here. Press OK again on the same channel to open it full screen.
+4	Source {0} of {1}
+5	▶ Full screen
+6	★ Favorite
+7	☆ Add to favorites
+8	REGION
+9	SOURCES
+10	Auto
+11	Source {0}
+12	{0} regions
+13	1 source
+14	{0} sources
+15	See all
+16	{0} titles
+17	Continue watching
+18	Trying another way to connect ({0})…
+19	Trying the provider's M3U list…
+20	Could not sign in.
+21	Server not found. Check the address and your internet.
+22	The server took too long to respond.
+23	Could not connect to the server.
+24	The TV ran out of memory while organizing the catalog.
+25	Unknown error.
+26	{0} (tried {1} ways to connect)
+27	memory: used
+28	 MB of
+29	 MB
+30	 · build
+31	Sign in
+32	{0} minutes left
+33	List {0}:
+34	List {0}: no response
+35	No channels, movies or series found at this link. Check that it really is an M3U list.
+36	Episode
+37	M3U list • {0} channels • {1} movies • {2} series
+38	Episode {0}
+39	M3U list
+40	Close the app?
+41	A recording is in progress. It keeps going, but the TV must stay on.
+42	Stay
+43	Exit
+44	The app closed by itself last time
+45	Take a photo of this screen and send it in Settings > Get in touch: that's what we need to fix it.
+46	Close
+47	⏰ Starting soon
+48	Starting now
+49	Starts in {0} min
+50	See channels
+51	Dismiss
+52	 is starting
+53	 starts in {0} min
+54	Waiting for approval
+55	Access suspended
+56	We got your request. It's under review and we'll get in touch.
+57	This device hasn't been approved yet. You can request access.
+58	This device's access to the app was paused. You can request access.
+59	Code:
+60	Request access
+61	Try again
+62	Request sent! It's under review and we'll get in touch.
+63	Back
+64	Your details go only to the app's developer, so he can contact you. Fill in here or from your phone.
+65	Name
+66	Phone
+67	Or point your phone's camera
+68	Could not send. Fill in everything and check your internet.
+69	Sending...
+70	Send request
+71	Notice
+72	Fill in server, username and password.
+73	Paste the list link.
+74	The link must start with http:// or https://
+75	The TV is not on a Wi-Fi/cable network. Connect it and open this tab again.
+76	Could not open the phone connection on this TV. Use the other tabs.
+77	Received from the phone. Signing in...
+78	Could not verify the account: {0}
+79	Getting ready...
+80	Building the screens
+81	List updated:
+82	 movies ·
+83	 series ·
+84	 channels
+85	Downloading the list...
+86	Downloading categories...
+87	Downloading movies
+88	Downloading series
+89	Downloading channels
+90	Organizing by genre and country
+91	Country: all
+92	Country:
+93	just now
+94	{0} min ago
+95	{0} h ago
+96	{0} days ago
+97	No episodes found.
+98	Subtitled
+99	Original
+100	Dubbed
+101	copy
+102	Catalog not loaded yet.
+103	This list doesn't offer catch-up (going back in time).
+104	{0} channels keep past programming (up to {1} day(s)).
+105	You already have the latest version (build
+106	Could not download. Check your internet and try again.
+107	Choose the channel to record
+108	Choose the channel you want to record
+109	This channel has no address to record.
+110	You already have a recording scheduled on this channel at this time.
+111	Could not fetch the games right now.
+112	You already picked 5 teams. Remove one to pick another.
+113	You already picked {0} leagues. Remove one to pick another.
+114	Could not download now (no internet?). Keeping the table from
+115	New table loaded:
+116	Already the newest table:
+117	Choose the channel to record. Check that the game really airs on it: the app can be wrong.
+118	Found it in your list. If it freezes, go back and choose another source.
+119	This game isn't in your list's "Featured Games" yet. Below are the channels that usually air it,
+120	the sports channels, or use search.
+121	Airs on:
+122	Usually airs on:
+123	Reminder removed.
+124	This game has already started.
+125	Done! I'll remind you 10 minutes before the game.
+126	No confirmed date right now
+127	Channels in your list for {0}.
+128	Couldn't find {0} channels by name. See the sports channels below or use search.
+129	The server sent an invalid response.
+130	Invalid redirect from the server.
+131	The server refused access (HTTP {0}). Check username and password.
+132	Address not found (HTTP 404).
+133	The server responded HTTP {0}.
+134	Too many redirects.
+135	Invalid request.
+136	This page has expired. Point the camera at the TV's QR code again.
+137	Request sent! Look at the TV.
+138	Done! Look at the TV. If something goes wrong, the TV shows why and you can send again.
+139	Point your phone's camera at the QR code on the TV.
+140	Page not found.
+141	Send another list
+142	Request access to the app. Your details go to the app's developer, only so he can contact you.
+143	Email
+144	Enter your list details here. They go straight to the TV over your Wi-Fi and don't pass through any server.
+145	Server, username and password (Xtream)
+146	Server (e.g. http://example.com:8080)
+147	Username
+148	Password
+149	Send to the TV
+150	List link (M3U)
+151	Paste the link
+152	Live.
+153	This channel doesn't keep past programming.
+154	The provider keeps only {0} day(s) of this channel.
+155	Going back to
+156	Couldn't go back in time on this channel.
+157	 Switched to
+158	Source:
+159	 (same time).
+160	This source doesn't keep past programming.
+161	Source pinned:
+162	Automatic:
+163	Test canceled.
+164	Best source:
+165	Test finished. Playing
+166	Couldn't open that time on this channel. Try another channel or go back to live.
+167	The source failed.
+168	This channel has no sources available.
+169	This channel doesn't keep past programming: opening live.
+170	The source took too long to open.
+171	The source froze.
+172	The source was unstable.
+173	{0} min
+174	{0} s
+175	Could not play
+176	Open "Sources" to choose another, or press Back to exit.
+177	Press Back to exit.
+178	Testing the sources of
+179	The video stays paused while we measure. Back cancels.
+180	  ·  pinned
+181	  ·  automatic
+182	⏪ Replay ·
+183	◀ ▶ to move (press repeatedly to skip more)   ·   OK pauses
+184	Go up to the timeline to skip forward or back
+185	⏪ 10 min
+186	⏪ 2 min
+187	2 min ⏩
+188	10 min ⏩
+189	LIVE
+190	Pause
+191	Play
+192	Sources ({0})
+193	Region:
+194	Audio
+195	✓ Favorite
+196	Favorite
+197	Black screen
+198	Confirm stop
+199	■ Stop recording
+200	Recording stopped. It's in the Recordings tab.
+201	● Record
+202	Next episode
+203	Language / version
+204	Subtitles
+205	Screen: fill
+206	Screen: fit
+207	Game mode: on
+208	Game mode
+209	Game mode on: more vivid colors and more contrast.
+210	Game mode off.
+211	Record for how long?
+212	Uses one more connection from your list.
+213	30 minutes
+214	1 hour
+215	2 hours
+216	3 hours
+217	4 hours
+218	Recording for
+219	. See it in the Recordings tab.
+220	Quality:
+221	Medium and Low only apply to channels with more than one picture version.
+222	Find subtitles: language
+223	Subtitles in
+224	 · S{0} E{1}
+225	 ({0})
+226	Searching...
+227	No subtitles found in this language.
+228	Couldn't search right now.
+229	‹ Another language
+230	Downloading...
+231	Subtitles in
+232	 enabled.
+233	Couldn't download.
+234	Subtitle
+235	{0} downloads
+236	 · for the hard of hearing
+237	They're kept for 7 days and then deleted.
+238	🔎 Find subtitles in other languages...
+239	No tracks found in this video.
+240	  (not supported on this device)
+241	Sources ·
+242	Sorted by stability (best first)
+243	Sorted by picture quality
+244	Testing...
+245	Test sources
+246	Back to automatic
+247	Best source (automatic)
+248	Picks the most stable, best-quality one. If some haven't been measured yet, it measures them first.
+249	testing now...
+250	no response:
+251	{0}x headroom in the last measurement
+252	froze {0}x last time
+253	  (pinned)
+254	Prioritize
+255	Stability
+256	Quality
+257	Switch automatically if it freezes
+258	Yes
+259	No
+260	Region ·
+261	Choose your region. It's saved for next time.
+262	Language not specified
+263	EAC3 (Dolby Digital+)
+264	Dolby Atmos
+265	 {0}ch
+266	Off
+267	 (foreign-language dialogue only)
+268	 (for the hard of hearing)
+269	video: ?
+270	{0}x{1}
+271	video:
+272	Network failure while connecting.
+273	Connection timed out.
+274	File format not supported.
+275	The device couldn't decode this video.
+276	The device has no decoder for this video.
+277	Playback error.
+278	This source didn't open.⏎Choose another in SOURCES or press OK to open full screen.
+279	This channel has no sources.
+280	Press OK on a channel⏎to watch it here
+281	list without variants
+282	no video list
+283	no segments
+284	timed out
+285	almost no data
+286	steady stream, max. gap {0} ms
+287	Medium
+288	Low
+289	Low storage on the device (less than 1 GB free).
+290	This channel is already being recorded.
+291	Android didn't allow starting the recording in the background.
+292	Recording scheduled
+293	Recording
+294	Recording {0} channels
+295	Tap to open the app and see your recordings
+296	Recording error:
+297	Couldn't record this channel.
+298	redirect without destination
+299	the server responded {0}
+300	too many redirects
+301	Connection failure:
+302	list without versions
+303	This channel is protected and can't be recorded.
+304	the channel stopped sending
+305	+ Schedule recording
+306	Tip: for a game, open the game and tap "● Record".
+307	No recordings yet.⏎Open a live channel and choose "Record", or schedule one above.⏎Recording continues with the screen off.
+308	 · not recorded:
+309	the TV was off or the app was closed.
+310	Scheduled ·
+311	 to
+312	Confirm
+313	Remove
+314	Cancel schedule
+315	Recording ·
+316	It didn't work
+317	Recorded
+318	Watch
+319	Stop
+320	Delete
+321	Recording not found.
+322	● Recording
+323	 to
+324	Remaining
+325	The recording didn't work.
+326	Recording finished
+327	Press any button.
+328	Leave black screen
+329	Stop recording
+330	Turn the TV off afterwards
+331	See recordings
+332	Back to home
+333	For the TV to turn off by itself, enable the sleep timer in its settings.
+334	Starts in 10 min: {0}
+335	 min
+336	Scheduled!
+337	Leave the TV (or the box) on and connected to the internet. The app doesn't need to be open on screen, but if you
+338	force-close the app or the TV turns off, the recording won't happen.
+339	See scheduled
+340	Schedule recording
+341	Channel:
+342	Check that the game really airs on this channel. The app can be wrong: if the channel is showing something else,
+343	the recording will have the wrong program.
+344	Day
+345	◀ day
+346	day ▶
+347	Start
+348	End
+349	 (+1 day)
+350	Medium and Low only work on channels that offer more than one picture version; on others, it records as the channel sends it.
+351	Duration:
+352	 · estimated space: up to
+353	 GB · free on the device:
+354	 GB
+355	Schedule
+356	The end must be after the start.
+357	That time has already passed.
+358	The maximum is 6 hours per recording.
+359	Cancel
+360	  ·  Back cancels
+361	New version available
+362	You have build
+363	 · new: build
+364	What's new
+365	A recording is in progress: it would be cut off. Update after it ends.
+366	Downloading...
+367	Update now
+368	Later
+369	When the download finishes, Android asks you to confirm the installation. The app closes and you open it again.
+370	Which countries and languages do you want to see?
+371	Applies to movies, series and channels. Tip: choose 2 or 3 and the list gets much lighter. Items without a country always show.
+372	Show everything
+373	 titles,
+374	Apply
+375	This device's clock is wrong
+376	The device shows:
+377	Correct time:
+378	With the wrong date, games, posters, app updates and scheduled recordings stop working.
+379	In the TV or box settings, open Date & time and turn on "Automatic date & time" (and check the time zone). Then reopen the app.
+380	Got it
+381	Show on this screen
+382	Only changes this screen. The app's countries are in Settings.
+383	All countries
+384	Add another list.⏎They're stored only on this TV.
+385	Sign in with your list.⏎Your details are stored only on this TV.
+386	Xtream
+387	M3U link
+388	From your phone (QR)
+389	Hide password
+390	Show password
+391	Signing in...
+392	List link (e.g. http://example.com/list.m3u)
+393	Links like get.php?username=...&password=... are treated as Xtream (more complete, with synopses and episodes).
+394	Regular M3U lists only include name, image and category.
+395	1. Connect your phone to the same Wi-Fi as the TV.
+396	2. Point the camera at the QR code.
+397	3. Enter the details on your phone and tap Send.
+398	Or open in your phone's browser:
+399	Preparing the QR code...
+400	Couldn't load the catalog
+401	Sign out
+402	 items
+403	Step {0} of 6
+404	Very large lists can take a few minutes. This only happens the first time: after that the catalog is saved and opens instantly, and updates happen in the background.
+405	Hi, {0}
+406	Exit kids mode
+407	Kids
+408	Games
+409	Movies
+410	Series
+411	Channels
+412	Favorites
+413	Recordings
+414	SERIES
+415	MOVIE
+416	See details
+417	{0} / {1}
+418	 titles
+419	Your channels
+420	Sorting by country...
+421	Nothing here for this country.
+422	Search movies, series and channels
+423	Type at least 2 letters.
+424	Nothing found.
+425	My movies and series
+426	Nothing here yet.⏎Open a movie or series and choose "+ Favorites".⏎For channels, use the ★ star inside the player.
+427	Favorite channels
+428	Time zone
+429	Game times use this time zone. Right now, in the app:
+430	If the time is wrong, choose your time zone (or fix the time zone in the TV settings).
+431	Countries to search (where it airs)
+432	no confirmed games yet
+433	 games in the coming days
+434	Choose up to 3 countries whose broadcasters are listed for each game. In "Automatic" the app uses the countries of the channels you have
+435	(or the ones picked with the Country button). Now:
+436	, table from
+437	). Researched online and updated every week.
+438	Automatic
+439	Checking...
+440	Check tables now
+441	List {0}  ·  {1}
+442	  ·  {0}
+443	Your lists
+444	Keep as many lists as you like. Use one at a time or merge them all into one catalog.
+445	Saved
+446	Included in the merged catalog
+447	In use
+448	Use this one
+449	Confirm removal?
+450	Add list
+451	+ Add another list
+452	Merge lists
+453	Merges the movies, series and channels from all lists into one catalog. The same titles become a single
+454	card, and channels get the sources from every list.
+455	Merge all
+456	One at a time
+457	Confirm? Removes all lists
+458	Sign out and remove the lists
+459	Country and language
+460	For lists with content from several countries. Choose what you want to see: the rest is hidden.
+461	Inside Channels, Movies and Series you can still pick just one of these countries with the "Country" button.
+462	This list doesn't show countries in its categories: nothing to filter.
+463	No filter
+464	Showing:
+465	Catalog
+466	Not loaded yet.
+467	{0} movies · {1} series · {2} channels · updated {3}
+468	Updating...
+469	Update catalog now
+470	Live channels
+471	When a channel has several sources, the app picks the best one for you.
+472	Best quality
+473	Switch source automatically if it freezes
+474	Clear stability scores
+475	Go back in time (catch-up)
+476	Lets you rewind live plays and rewatch games from up to 24 h ago.
+477	Profile
+478	Your name, language and favorite genres.
+479	Your name
+480	Language
+481	Save
+482	Saved.
+483	Favorite genres (up to 3)
+484	Favorite teams and leagues
+485	Choose teams
+486	About
+487	Information about this device.
+488	This device's code
+489	If you need help, give this code to whoever gave you the app. It's only used to count how many devices use the app:
+490	it doesn't send your list link, password or what you watch.
+491	Extra posters and synopses: this product uses the TMDB API but is not endorsed or certified by TMDB.
+492	Installed version: build
+493	Check for updates
+494	Get in touch
+495	A problem, an idea, praise or support for the app's creator.
+496	1. Point your phone's camera at the QR code.
+497	2. Write your message and tap Send.
+498	3. The reply shows up here on the TV and on the same page on your phone.
+499	On that page you can also support the app with a donation, if you like.
+500	This device's code:
+501	Lists
+502	Sports
+503	Half-time
+504	No response from the games service.
+505	Today
+506	Tomorrow
+507	Yesterday
+508	LIVE ·
+509	FINISHED
+510	⏰ Reminder on
+511	▶ 1 channel in your list
+512	▶ {0} channels in your list
+513	Tap to see details
+514	Live
+515	Live · {0}
+516	Finished
+517	see channels
+518	GAMES
+519	Choose my teams and leagues
+520	Couldn't fetch. Try again
+521	Fetching games...
+522	No games for your teams today or tomorrow
+523	See all ›
+524	Starts
+525	 (local time)
+526	Game finished. You can rewatch it: choose the channel and the app opens at the start of the game.
+527	Game finished. No channel in your list keeps past programming to rewatch now.
+528	Game finished more than 24 hours ago: it can no longer be rewatched.
+529	Airs on (
+530	Probably airs on (
+531	✓ = in your list.
+532	Confirmed
+533	Not confirmed yet
+534	 on
+535	 · table from
+536	Usually airs on (
+537	✓ = in your list. This game hasn't been confirmed yet in the table from
+538	: it may vary by game and region.
+539	I only have one option on record: also check your list's sports channels.
+540	I don't have a record yet of where this competition airs in
+541	. See your list's sports channels.
+542	Check again
+543	▶ Found 1 channel for this game in your list
+544	▶ Found {0} channels for this game in your list
+545	Watch now
+546	⏰ Remind me
+547	Upcoming games
+548	Choose teams and leagues to see games here.
+549	No games in the coming days.
+550	My teams and leagues
+551	{0} games · live first, then the most popular · ★ = your team's game · tap to see channels and set a reminder
+552	No games from the main leagues on this day.
+553	 · National team
+554	✓ Chosen
+555	No teams found here.
+556	Couldn't load the teams. Check your internet and try again.
+557	Loading teams...
+558	✓ Chosen
+559	Favorite leagues
+560	Choose up to {0} competitions: all their games today and tomorrow appear on Home.
+561	Choose your team's country (up to 5 teams) or choose leagues (up to {0}).
+562	 · press OK to add or remove a team.
+563	{0}/5 teams · {1}/{2} leagues
+564	Choose leagues
+565	Done
+566	Channels that usually air it
+567	 (may vary by game)
+568	Search "
+569	" in the list
+570	Sports channels in your list
+571	Nothing chosen. Games of your teams and leagues appear at the top of Home.
+572	{0}/5 teams · {1}/{2} leagues · games appear at the top of Home.
+573	Choose teams and leagues
+574	Change teams and leagues
+575	Where it airs: table
+576	 from
+577	 (updated every week).
+578	Daily subtitle limit reached. Try tomorrow.
+579	Error {0} from OpenSubtitles.
+580	OpenSubtitles didn't send the file.
+581	{0}h {1}min
+582	Unavailable
+583	Continue
+584	Watch
+585	Loading episodes...
+586	Continue from
+587	‹ Back
+588	1 season
+589	{0} seasons
+590	Loading synopsis...
+591	Director:
+592	Cast:
+593	Subtitled only
+594	Language: all
+595	Others
+596	Standard
+597	4K only
+598	Copy {0}
+599	 (cam)
+600	Cam recording: picture and sound may be of lower quality.
+601	Specials
+602	Season {0}
+603	Similar
+604	stopped here
+605	Allow "install unknown apps" for this app, come back and tap Update again.
+606	In the TV settings, allow installing apps from unknown sources for this app and try again.
+607	Couldn't open the installer. Download it from the usual link (Downloader).
+608	Not tested
+609	Stable
+610	Good
+611	Unsteady
+612	Poor
+613	What should we call you?
+614	Just so the app's developer knows who uses it. Nothing else is sent.
+615	Type your name to continue.
+616	Continue
+617	Which language do you prefer?
+618	The menus switch right away to the chosen language.
+619	What's your time zone?
+620	Games show in your local time. Right now, in this time zone, it's {0}.
+621	TV's
+622	Your favorite teams
+623	Optional. Their games show at the top of Home.
+624	Skip
+625	What do you enjoy most?
+626	Optional. Choose up to 3 genres. They show first in the highlights.
+627	Start
+628	None chosen.
+629	 of 3:
+630	Unexpected server response.
+631	Invalid username or password.
+632	no date
+633	Account {0} • expires {1} • screens: {2}
+634	Category {0}
+635	Action
+636	Adventure
+637	Animation
+638	Comedy
+639	Crime
+640	Documentaries
+641	Drama
+642	Family
+643	Fantasy
+644	Science Fiction
+645	War
+646	Romance
+647	Thriller
+648	Horror
+649	Mystery
+650	History
+651	Biography
+652	Police
+653	Music
+654	Western
+655	Turkish
+656	Shows
+657	Religious
+658	Brazilian
+659	K-Drama
+660	Classics
+661	Anime
+662	New releases
+663	Recently added
+664	Uncategorized
+665	Sun
+666	Mon
+667	Tue
+668	Wed
+669	Thu
+670	Fri
+671	Sat
+672	Portuguese (Brazil)
+673	Portuguese (Portugal)
+674	English
+675	Spanish
+676	French
+677	Italian
+678	German
+679	Dutch
+680	New: Get in touch
+681	New: Game mode
+682	The app in your language
+683	Never miss a game
+684	Channel froze? We switch it
+685	In Settings, point your phone at the QR code and send a problem, an idea or some praise. The reply shows up here on the TV.
+686	In the player, tap Game mode: more vivid colors and more contrast, great for football.
+687	Portuguese, English, Spanish, French, Italian, German or Dutch. Change it anytime in Settings > Profile.
+688	Choose your teams and leagues: games show on Home with the day, the time and the channel that airs them.
+689	When a channel has several sources, the app picks the most stable one or the one with the best picture (you decide in Settings) and switches by itself if it freezes.

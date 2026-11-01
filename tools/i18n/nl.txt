@@ -1,0 +1,690 @@
+0	Geen zenders gevonden in deze lijst.
+1	Alle
+2	★ Favorieten
+3	Kies een zender in de lijst en druk op OK: hij speelt hier. Druk nog een keer op OK op dezelfde zender om hem op volledig scherm te openen.
+4	Bron {0} van {1}
+5	▶ Volledig scherm
+6	★ Favoriet
+7	☆ Toevoegen aan favorieten
+8	REGIO
+9	BRONNEN
+10	Auto
+11	Bron {0}
+12	{0} regio's
+13	1 bron
+14	{0} bronnen
+15	Alles bekijken
+16	{0} titels
+17	Verder kijken
+18	Andere manier van verbinden proberen ({0})…
+19	De M3U-lijst van de provider proberen…
+20	Inloggen mislukt.
+21	Server niet gevonden. Controleer het adres en je internet.
+22	De server deed er te lang over om te antwoorden.
+23	Kan geen verbinding maken met de server.
+24	De tv had te weinig geheugen om de catalogus te ordenen.
+25	Onbekende fout.
+26	{0} ({1} manieren van verbinden geprobeerd)
+27	geheugen: gebruikt
+28	 MB van
+29	 MB
+30	 · build
+31	Inloggen
+32	Nog {0} minuten
+33	Lijst {0}:
+34	Lijst {0}: geen antwoord
+35	Geen zenders, films of series gevonden op deze link. Controleer of het echt een M3U-lijst is.
+36	Aflevering
+37	M3U-lijst • {0} zenders • {1} films • {2} series
+38	Aflevering {0}
+39	M3U-lijst
+40	App sluiten?
+41	Er loopt een opname. Die gaat door, maar de tv moet aan blijven.
+42	Blijven
+43	Afsluiten
+44	De app sloot de vorige keer vanzelf af
+45	Maak een foto van dit scherm en stuur hem via Instellingen > Neem contact op: dat hebben we nodig om het te verhelpen.
+46	Sluiten
+47	⏰ Begint zo
+48	Begint nu
+49	Begint over {0} min
+50	Zenders bekijken
+51	Negeren
+52	 begint
+53	 begint over {0} min
+54	Wachten op goedkeuring
+55	Toegang geschorst
+56	We hebben je aanvraag ontvangen. Hij wordt bekeken en we nemen contact op.
+57	Dit apparaat is nog niet goedgekeurd. Je kunt toegang aanvragen.
+58	De toegang van dit apparaat tot de app is gepauzeerd. Je kunt toegang aanvragen.
+59	Code:
+60	Toegang aanvragen
+61	Opnieuw proberen
+62	Aanvraag verstuurd! Hij wordt bekeken en we nemen contact op.
+63	Terug
+64	Je gegevens gaan alleen naar de ontwikkelaar van de app, zodat hij contact kan opnemen. Vul ze hier of op je telefoon in.
+65	Naam
+66	Telefoon
+67	Of richt de camera van je telefoon
+68	Versturen mislukt. Vul alles in en controleer je internet.
+69	Versturen...
+70	Aanvraag versturen
+71	Melding
+72	Vul server, gebruikersnaam en wachtwoord in.
+73	Plak de link van de lijst.
+74	De link moet beginnen met http:// of https://
+75	De tv zit niet op een wifi-/kabelnetwerk. Verbind hem en open dit tabblad opnieuw.
+76	Kan op deze tv geen verbinding met de telefoon openen. Gebruik de andere tabbladen.
+77	Ontvangen van de telefoon. Inloggen...
+78	Kan het account niet controleren: {0}
+79	Voorbereiden...
+80	Schermen opbouwen
+81	Lijst bijgewerkt:
+82	 films ·
+83	 series ·
+84	 zenders
+85	Lijst downloaden...
+86	Categorieën downloaden...
+87	Films downloaden
+88	Series downloaden
+89	Zenders downloaden
+90	Ordenen op genre en land
+91	Land: alle
+92	Land:
+93	zojuist
+94	{0} min geleden
+95	{0} u geleden
+96	{0} dagen geleden
+97	Geen afleveringen gevonden.
+98	Ondertiteld
+99	Origineel
+100	Nagesynchroniseerd
+101	kopie
+102	Catalogus nog niet geladen.
+103	Deze lijst biedt geen catch-up (terugkijken).
+104	{0} zenders bewaren eerdere uitzendingen (tot {1} dag(en)).
+105	Je hebt al de nieuwste versie (build
+106	Downloaden mislukt. Controleer je internet en probeer opnieuw.
+107	Kies de zender die opneemt:
+108	Kies de zender die je wilt opnemen
+109	Deze zender heeft geen adres om op te nemen.
+110	Je hebt al een opname gepland op deze zender op dit tijdstip.
+111	Kan de wedstrijden nu niet ophalen.
+112	Je hebt al 5 teams gekozen. Haal er een weg om een ander te kiezen.
+113	Je hebt al {0} competities gekozen. Haal er een weg om een andere te kiezen.
+114	Downloaden lukt nu niet (geen internet?). De tabel blijft die van
+115	Nieuwe tabel geladen:
+116	Dit is al de nieuwste tabel:
+117	Kies de zender om op te nemen. Controleer of de wedstrijd echt op die zender is: de app kan zich vergissen.
+118	Gevonden in je lijst. Als hij hapert, ga terug en kies een andere bron.
+119	Deze wedstrijd staat nog niet in "Uitgelichte wedstrijden" van je lijst. Hieronder de zenders die hem meestal uitzenden,
+120	de sportzenders, of gebruik zoeken.
+121	Te zien op:
+122	Meestal te zien op:
+123	Herinnering verwijderd.
+124	Deze wedstrijd is al begonnen.
+125	Klaar! Ik waarschuw je 10 minuten voor de wedstrijd.
+126	Nog geen bevestigde datum
+127	Zenders uit je lijst voor {0}.
+128	Geen {0}-zenders op naam gevonden. Bekijk de sportzenders hieronder of gebruik zoeken.
+129	De server gaf een ongeldig antwoord.
+130	Ongeldige doorverwijzing van de server.
+131	De server weigerde de toegang (HTTP {0}). Controleer gebruikersnaam en wachtwoord.
+132	Adres niet gevonden (HTTP 404).
+133	De server antwoordde HTTP {0}.
+134	Te veel doorverwijzingen.
+135	Ongeldige aanvraag.
+136	Deze pagina is verlopen. Richt de camera opnieuw op de QR-code van de tv.
+137	Aanvraag verstuurd! Kijk naar de tv.
+138	Klaar! Kijk naar de tv. Gaat er iets mis, dan toont de tv waarom en kun je het opnieuw versturen.
+139	Richt de camera van je telefoon op de QR-code op de tv.
+140	Pagina niet gevonden.
+141	Nog een lijst versturen
+142	Vraag toegang tot de app aan. Je gegevens gaan naar de ontwikkelaar van de app, alleen zodat hij contact kan opnemen.
+143	E-mail
+144	Vul hier de gegevens van je lijst in. Ze gaan via je wifi rechtstreeks naar de tv en gaan via geen enkele server.
+145	Server, gebruikersnaam en wachtwoord (Xtream)
+146	Server (bv. http://voorbeeld.com:8080)
+147	Gebruikersnaam
+148	Wachtwoord
+149	Naar de tv sturen
+150	Link van de lijst (M3U)
+151	Plak de link
+152	Live.
+153	Deze zender bewaart geen eerdere uitzendingen.
+154	De provider bewaart maar {0} dag(en) van deze zender.
+155	Terug naar
+156	Terugkijken lukt niet op deze zender.
+157	 Overgeschakeld naar
+158	Bron:
+159	 (zelfde tijd).
+160	Deze bron bewaart geen eerdere uitzendingen.
+161	Bron vastgezet:
+162	Automatisch:
+163	Test geannuleerd.
+164	Beste bron:
+165	Test klaar. Speelt nu
+166	Dat tijdstip kon op deze zender niet worden geopend. Probeer een andere zender of ga terug naar live.
+167	De bron werkte niet.
+168	Deze zender heeft geen beschikbare bronnen.
+169	Deze zender bewaart geen eerdere uitzendingen: live openen.
+170	De bron deed er te lang over om te openen.
+171	De bron liep vast.
+172	De bron was onstabiel.
+173	{0} min
+174	{0} s
+175	Afspelen niet mogelijk
+176	Open "Bronnen" om een andere te kiezen, of druk op Terug om te stoppen.
+177	Druk op Terug om te stoppen.
+178	Bronnen testen van
+179	De video staat stil terwijl we meten. Terug annuleert.
+180	  ·  vastgezet
+181	  ·  automatisch
+182	⏪ Herhaling ·
+183	◀ ▶ om te spoelen (meerdere keren drukken voor grotere sprongen)   ·   OK pauzeert
+184	Ga omhoog naar de tijdlijn om vooruit of terug te spoelen
+185	⏪ 10 min
+186	⏪ 2 min
+187	2 min ⏩
+188	10 min ⏩
+189	LIVE
+190	Pauzeren
+191	Afspelen
+192	Bronnen ({0})
+193	Regio:
+194	Audio
+195	✓ Favoriet
+196	Favoriet
+197	Zwart scherm
+198	Stoppen bevestigen
+199	■ Opname stoppen
+200	Opname gestopt. Hij staat in het tabblad Opnames.
+201	● Opnemen
+202	Volgende aflevering
+203	Taal / versie
+204	Ondertitels
+205	Scherm: vullen
+206	Scherm: passend
+207	Wedstrijdmodus: aan
+208	Wedstrijdmodus
+209	Wedstrijdmodus aan: levendigere kleuren en meer contrast.
+210	Wedstrijdmodus uit.
+211	Hoe lang opnemen?
+212	Gebruikt nog een verbinding van je lijst.
+213	30 minuten
+214	1 uur
+215	2 uur
+216	3 uur
+217	4 uur
+218	Opname van
+219	. Bekijk hem in het tabblad Opnames.
+220	Kwaliteit:
+221	Gemiddeld en Laag werken alleen bij zenders met meer dan één beeldversie.
+222	Ondertitels zoeken: taal
+223	Ondertitels in het
+224	 · S{0} A{1}
+225	 ({0})
+226	Zoeken...
+227	Geen ondertitels gevonden in deze taal.
+228	Zoeken lukt nu niet.
+229	‹ Andere taal
+230	Downloaden...
+231	Ondertitels in het
+232	 ingeschakeld.
+233	Downloaden mislukt.
+234	Ondertitel
+235	{0} downloads
+236	 · voor doven en slechthorenden
+237	Ze worden 7 dagen bewaard en daarna verwijderd.
+238	🔎 Ondertitels zoeken in andere talen...
+239	Geen sporen gevonden in deze video.
+240	  (niet ondersteund op dit apparaat)
+241	Bronnen ·
+242	Gesorteerd op stabiliteit (de beste eerst)
+243	Gesorteerd op beeldkwaliteit
+244	Testen...
+245	Bronnen testen
+246	Terug naar automatisch
+247	Beste bron (automatisch)
+248	Kiest de stabielste met de beste kwaliteit. Als sommige nog niet gemeten zijn, meet hij die eerst.
+249	nu aan het testen...
+250	geen antwoord:
+251	{0}x marge bij de laatste meting
+252	liep de vorige keer {0}x vast
+253	  (vastgezet)
+254	Voorrang
+255	Stabiliteit
+256	Kwaliteit
+257	Vanzelf wisselen als hij vastloopt
+258	Ja
+259	Nee
+260	Regio ·
+261	Kies je regio. Die wordt bewaard voor de volgende keer.
+262	Taal niet aangegeven
+263	EAC3 (Dolby Digital+)
+264	Dolby Atmos
+265	 {0}ch
+266	Uit
+267	 (alleen anderstalige dialogen)
+268	 (voor doven en slechthorenden)
+269	video: ?
+270	{0}x{1}
+271	video:
+272	Netwerkfout bij het verbinden.
+273	Verbinding duurde te lang.
+274	Bestandsformaat niet ondersteund.
+275	Het apparaat kon deze video niet decoderen.
+276	Het apparaat heeft geen decoder voor deze video.
+277	Afspeelfout.
+278	Deze bron ging niet open.⏎Kies een andere bij BRONNEN of druk op OK voor volledig scherm.
+279	Deze zender heeft geen bronnen.
+280	Druk op OK op een zender⏎om hem hier te zien
+281	lijst zonder varianten
+282	geen videolijst
+283	geen segmenten
+284	tijd verstreken
+285	bijna geen gegevens
+286	stabiele stream, max. pauze {0} ms
+287	Gemiddeld
+288	Laag
+289	Weinig ruimte op het apparaat (minder dan 1 GB vrij).
+290	Deze zender wordt al opgenomen.
+291	Android liet de opname niet op de achtergrond starten.
+292	Opname gepland
+293	Opname bezig
+294	{0} zenders worden opgenomen
+295	Tik om de app te openen en de opnames te zien
+296	Fout bij opnemen:
+297	Kon deze zender niet opnemen.
+298	doorverwijzing zonder bestemming
+299	de server antwoordde {0}
+300	te veel doorverwijzingen
+301	Verbindingsfout:
+302	lijst zonder versies
+303	Deze zender is beveiligd en kan niet worden opgenomen.
+304	de zender stopte met verzenden
+305	+ Opname plannen
+306	Tip: open voor een wedstrijd de wedstrijd en tik op "● Opnemen".
+307	Nog geen opnames.⏎Open een livezender en kies "Opnemen", of plan er hierboven een.⏎De opname gaat door met het scherm uit.
+308	 · niet opgenomen:
+309	de tv stond uit of de app was gesloten.
+310	Gepland ·
+311	 tot
+312	Bevestigen
+313	Verwijderen
+314	Planning annuleren
+315	Opname bezig ·
+316	Het is niet gelukt
+317	Opgenomen
+318	Kijken
+319	Stoppen
+320	Wissen
+321	Opname niet gevonden.
+322	● Opname bezig
+323	 tot
+324	Nog
+325	De opname is niet gelukt.
+326	Opname klaar
+327	Druk op een willekeurige knop.
+328	Zwart scherm verlaten
+329	Opname stoppen
+330	Tv daarna uitzetten
+331	Opnames bekijken
+332	Terug naar start
+333	Zet de slaaptimer aan in de instellingen van de tv om hem vanzelf uit te laten gaan.
+334	Begint over 10 min: {0}
+335	 min
+336	Gepland!
+337	Laat de tv (of de box) aan en verbonden met internet. De app hoeft niet open te staan, maar als je
+338	de app geforceerd sluit of de tv uitgaat, gaat de opname niet door.
+339	Geplande bekijken
+340	Opname plannen
+341	Zender:
+342	Controleer of de wedstrijd echt op deze zender is. De app kan zich vergissen: als de zender iets anders uitzendt,
+343	staat het verkeerde programma in de opname.
+344	Dag
+345	◀ dag
+346	dag ▶
+347	Start
+348	Einde
+349	 (+1 dag)
+350	Gemiddeld en Laag werken alleen bij zenders met meer dan één beeldversie; bij de rest wordt opgenomen zoals de zender uitzendt.
+351	Duur:
+352	 · geschatte ruimte: tot
+353	 GB · vrij op het apparaat:
+354	 GB
+355	Plannen
+356	Het einde moet na de start liggen.
+357	Dat tijdstip is al voorbij.
+358	Het maximum is 6 uur per opname.
+359	Annuleren
+360	  ·  Terug annuleert
+361	Nieuwe versie beschikbaar
+362	Je hebt build
+363	 · nieuw: build
+364	Wat is er nieuw
+365	Er loopt een opname: die zou worden afgebroken. Werk bij als hij klaar is.
+366	Downloaden...
+367	Nu bijwerken
+368	Later
+369	Na het downloaden vraagt Android om de installatie te bevestigen. De app sluit en je opent hem opnieuw.
+370	Welke landen en talen wil je zien?
+371	Geldt voor films, series en zenders. Tip: kies er 2 of 3 en de lijst wordt veel lichter. Wat geen land aangeeft, verschijnt altijd.
+372	Alles tonen
+373	 titels,
+374	Toepassen
+375	De klok van dit apparaat staat verkeerd
+376	Het apparaat toont:
+377	Juiste tijd:
+378	Met een verkeerde datum werken wedstrijden, covers, app-updates en geplande opnames niet meer.
+379	Open in de instellingen van de tv of box Datum en tijd en zet "Automatische datum en tijd" aan (en controleer de tijdzone). Open daarna de app opnieuw.
+380	Begrepen
+381	Tonen op dit scherm
+382	Verandert alleen dit scherm. De landen van de app staan in Instellingen.
+383	Alle landen
+384	Nog een lijst toevoegen.⏎Ze worden alleen op deze tv bewaard.
+385	Log in met je lijst.⏎De gegevens worden alleen op deze tv bewaard.
+386	Xtream
+387	M3U-link
+388	Via je telefoon (QR)
+389	Wachtwoord verbergen
+390	Wachtwoord tonen
+391	Inloggen...
+392	Link van de lijst (bv. http://voorbeeld.com/lijst.m3u)
+393	Links zoals get.php?username=...&password=... worden als Xtream behandeld (vollediger, met samenvattingen en afleveringen).
+394	Gewone M3U-lijsten hebben alleen naam, afbeelding en categorie.
+395	1. Verbind je telefoon met dezelfde wifi als de tv.
+396	2. Richt de camera op de QR-code.
+397	3. Vul de gegevens in op je telefoon en tik op Versturen.
+398	Of open in de browser van je telefoon:
+399	QR-code voorbereiden...
+400	Kan de catalogus niet laden
+401	Uitloggen
+402	 items
+403	Stap {0} van 6
+404	Hele grote lijsten kunnen een paar minuten duren. Dat gebeurt alleen de eerste keer: daarna is de catalogus bewaard en opent hij meteen, en updates gebeuren op de achtergrond.
+405	Hoi, {0}
+406	Kindermodus verlaten
+407	Kids
+408	Wedstrijden
+409	Films
+410	Series
+411	Zenders
+412	Favorieten
+413	Opnames
+414	SERIE
+415	FILM
+416	Details bekijken
+417	{0} / {1}
+418	 titels
+419	Jouw zenders
+420	Sorteren op land...
+421	Niets hier voor dit land.
+422	Films, series en zenders zoeken
+423	Typ minstens 2 letters.
+424	Niets gevonden.
+425	Mijn films en series
+426	Hier staat nog niets.⏎Open een film of serie en kies "+ Favorieten".⏎Gebruik bij zenders de ster ★ in de speler.
+427	Favoriete zenders
+428	Tijdzone
+429	De tijden van wedstrijden gebruiken deze tijdzone. Nu, in de app:
+430	Klopt de tijd niet, kies dan je tijdzone (of pas hem aan in de instellingen van de tv).
+431	Zoeklanden (waar het te zien is)
+432	nog geen bevestigde wedstrijden
+433	 wedstrijden in de komende dagen
+434	Kies tot 3 landen waar de zenders van elke wedstrijd vandaan komen. Bij "Automatisch" gebruikt de app de landen van de zenders die je hebt
+435	(of die gekozen met de knop Land). Nu:
+436	, tabel van
+437	). Online opgezocht en elke week bijgewerkt.
+438	Automatisch
+439	Controleren...
+440	Tabellen nu controleren
+441	Lijst {0}  ·  {1}
+442	  ·  {0}
+443	Jouw lijsten
+444	Bewaar zoveel lijsten als je wilt. Gebruik er één tegelijk of voeg ze allemaal samen tot één catalogus.
+445	Bewaard
+446	Opgenomen in de gezamenlijke catalogus
+447	In gebruik
+448	Deze gebruiken
+449	Verwijderen bevestigen?
+450	Lijst toevoegen
+451	+ Nog een lijst toevoegen
+452	Lijsten samenvoegen
+453	Voegt de films, series en zenders van alle lijsten samen tot één catalogus. Dezelfde titels worden één
+454	kaart, en zenders krijgen de bronnen van alle lijsten.
+455	Alles samenvoegen
+456	Eén tegelijk
+457	Bevestigen? Verwijdert alle lijsten
+458	Uitloggen en lijsten verwijderen
+459	Land en taal
+460	Voor lijsten met inhoud uit meerdere landen. Kies wat je wilt zien: de rest wordt verborgen.
+461	In Zenders, Films en Series kun je met de knop "Land" nog steeds één van deze landen kiezen.
+462	Deze lijst geeft geen land aan in de categorieën: niets om te filteren.
+463	Geen filter
+464	Getoond:
+465	Catalogus
+466	Nog niet geladen.
+467	{0} films · {1} series · {2} zenders · bijgewerkt {3}
+468	Bijwerken...
+469	Catalogus nu bijwerken
+470	Livezenders
+471	Als een zender meerdere bronnen heeft, kiest de app de beste voor je.
+472	Beste kwaliteit
+473	Vanzelf van bron wisselen als hij vastloopt
+474	Stabiliteitsscores wissen
+475	Terugkijken (catch-up)
+476	Zo spoel je terug in live en kijk je wedstrijden van tot 24 u geleden terug.
+477	Profiel
+478	Je naam, taal en favoriete genres.
+479	Je naam
+480	Taal
+481	Opslaan
+482	Opgeslagen.
+483	Favoriete genres (tot 3)
+484	Favoriete teams en competities
+485	Teams kiezen
+486	Over
+487	Informatie over dit apparaat.
+488	Code van dit apparaat
+489	Heb je hulp nodig, geef deze code dan aan wie je de app gaf. Hij dient alleen om te tellen hoeveel apparaten de app gebruiken:
+490	hij stuurt niet de link van je lijst, je wachtwoord of wat je kijkt.
+491	Extra covers en samenvattingen: dit product gebruikt de TMDB-API, maar wordt niet door TMDB onderschreven of gecertificeerd.
+492	Geïnstalleerde versie: build
+493	Naar updates zoeken
+494	Neem contact op
+495	Een probleem, een idee, een compliment of steun voor de maker van de app.
+496	1. Richt de camera van je telefoon op de QR-code.
+497	2. Schrijf je bericht en tik op Versturen.
+498	3. Het antwoord verschijnt hier op de tv en op dezelfde pagina op je telefoon.
+499	Op die pagina kun je de app ook steunen met een donatie, als je wilt.
+500	Code van dit apparaat:
+501	Lijsten
+502	Sport
+503	Rust
+504	Geen antwoord van de wedstrijdendienst.
+505	Vandaag
+506	Morgen
+507	Gisteren
+508	LIVE ·
+509	AFGELOPEN
+510	⏰ Herinnering aan
+511	▶ 1 zender in je lijst
+512	▶ {0} zenders in je lijst
+513	Tik voor details
+514	Live
+515	Live · {0}
+516	Afgelopen
+517	zenders bekijken
+518	WEDSTRIJDEN
+519	Mijn teams en competities kiezen
+520	Zoeken mislukt. Opnieuw proberen
+521	Wedstrijden zoeken...
+522	Geen wedstrijden van je teams vandaag of morgen
+523	Alles bekijken ›
+524	Begint
+525	 (lokale tijd)
+526	Wedstrijd afgelopen. Je kunt hem terugkijken: kies de zender en de app opent hem bij de aftrap.
+527	Wedstrijd afgelopen. Geen enkele zender in je lijst bewaart eerdere uitzendingen om hem nu terug te kijken.
+528	Wedstrijd meer dan 24 uur geleden afgelopen: terugkijken kan niet meer.
+529	Te zien op (
+530	Waarschijnlijk te zien op (
+531	✓ = in je lijst.
+532	Bevestigd
+533	Nog niet bevestigd
+534	 op
+535	 · tabel van
+536	Meestal te zien op (
+537	✓ = in je lijst. Deze wedstrijd is nog niet bevestigd in de tabel van
+538	: kan per wedstrijd en regio verschillen.
+539	Ik heb maar één optie geregistreerd: bekijk ook de sportzenders in je lijst.
+540	Ik weet nog niet waar deze competitie te zien is in
+541	. Bekijk de sportzenders in je lijst.
+542	Opnieuw controleren
+543	▶ 1 zender voor deze wedstrijd gevonden in je lijst
+544	▶ {0} zenders voor deze wedstrijd gevonden in je lijst
+545	Nu kijken
+546	⏰ Herinner me
+547	Komende wedstrijden
+548	Kies teams en competities om hier de wedstrijden te zien.
+549	Geen wedstrijden in de komende dagen.
+550	Mijn teams en competities
+551	{0} wedstrijden · eerst live, daarna de populairste · ★ = wedstrijd van je team · tik voor zenders en herinnering
+552	Geen wedstrijden van de grote competities op deze dag.
+553	 · Nationaal team
+554	✓ Gekozen
+555	Geen teams gevonden hier.
+556	Kan de teams niet laden. Controleer je internet en probeer opnieuw.
+557	Teams laden...
+558	✓ Gekozen
+559	Favoriete competities
+560	Kies tot {0} competities: al hun wedstrijden van vandaag en morgen verschijnen op Start.
+561	Kies het land van je team (tot 5 teams) of kies competities (tot {0}).
+562	 · druk op OK om een team te kiezen of weg te halen.
+563	{0}/5 teams · {1}/{2} competities
+564	Competities kiezen
+565	Klaar
+566	Zenders die het meestal uitzenden
+567	 (kan per wedstrijd verschillen)
+568	Zoek "
+569	" in de lijst
+570	Sportzenders in je lijst
+571	Niets gekozen. Wedstrijden van je teams en competities verschijnen bovenaan op Start.
+572	{0}/5 teams · {1}/{2} competities · de wedstrijden verschijnen bovenaan op Start.
+573	Teams en competities kiezen
+574	Teams en competities wijzigen
+575	Waar het te zien is: tabel
+576	 van
+577	 (elke week bijgewerkt).
+578	Dagelijkse limiet voor ondertitels bereikt. Probeer het morgen.
+579	Fout {0} bij OpenSubtitles.
+580	OpenSubtitles stuurde het bestand niet.
+581	{0}u {1}min
+582	Niet beschikbaar
+583	Verder
+584	Kijken
+585	Afleveringen laden...
+586	Verder vanaf
+587	‹ Terug
+588	1 seizoen
+589	{0} seizoenen
+590	Samenvatting laden...
+591	Regie:
+592	Cast:
+593	Alleen ondertiteld
+594	Taal: alle
+595	Overige
+596	Standaard
+597	Alleen 4K
+598	Kopie {0}
+599	 (bioscoop)
+600	Bioscoopopname: beeld en geluid kunnen van mindere kwaliteit zijn.
+601	Specials
+602	Seizoen {0}
+603	Vergelijkbaar
+604	hier gestopt
+605	Sta "onbekende apps installeren" toe voor deze app, kom terug en tik opnieuw op Bijwerken.
+606	Sta in de instellingen van de tv installeren van apps uit onbekende bronnen toe voor deze app en probeer opnieuw.
+607	Kan het installatieprogramma niet openen. Download via de gewone link (Downloader).
+608	Niet getest
+609	Stabiel
+610	Goed
+611	Wisselend
+612	Slecht
+613	Hoe mogen we je noemen?
+614	Alleen zodat de ontwikkelaar van de app weet wie hem gebruikt. Verder wordt niets verstuurd.
+615	Typ je naam om verder te gaan.
+616	Verder
+617	Welke taal heb je liever?
+618	De menu's schakelen meteen over naar de gekozen taal.
+619	Wat is je tijdzone?
+620	Wedstrijden verschijnen in jouw tijd. Nu, in deze tijdzone, is het {0}.
+621	van de tv
+622	Je favoriete teams
+623	Optioneel. Hun wedstrijden verschijnen bovenaan op Start.
+624	Overslaan
+625	Waar hou je het meest van?
+626	Optioneel. Kies tot 3 genres. Die verschijnen als eerste bij de uitgelichte titels.
+627	Beginnen
+628	Niets gekozen.
+629	 van 3:
+630	Onverwacht antwoord van de server.
+631	Ongeldige gebruikersnaam of wachtwoord.
+632	geen datum
+633	Account {0} • verloopt {1} • schermen: {2}
+634	Categorie {0}
+635	Actie
+636	Avontuur
+637	Animatie
+638	Komedie
+639	Misdaad
+640	Documentaires
+641	Drama
+642	Familie
+643	Fantasy
+644	Sciencefiction
+645	Oorlog
+646	Romantiek
+647	Thriller
+648	Horror
+649	Mysterie
+650	Geschiedenis
+651	Biografie
+652	Politie
+653	Muziek
+654	Western
+655	Turkse
+656	Shows
+657	Religieus
+658	Braziliaanse
+659	K-drama
+660	Klassiekers
+661	Anime
+662	Nieuw verschenen
+663	Recent toegevoegd
+664	Zonder categorie
+665	zo
+666	ma
+667	di
+668	wo
+669	do
+670	vr
+671	za
+672	Portugees (Brazilië)
+673	Portugees (Portugal)
+674	Engels
+675	Spaans
+676	Frans
+677	Italiaans
+678	Duits
+679	Nederlands
+680	Nieuw: Neem contact op
+681	Nieuw: Wedstrijdmodus
+682	De app in jouw taal
+683	Mis geen wedstrijd
+684	Zender loopt vast? Wij wisselen
+685	Richt in Instellingen je telefoon op de QR-code en stuur een probleem, een idee of een compliment. Het antwoord verschijnt hier op de tv.
+686	Tik in de speler op Wedstrijdmodus: levendigere kleuren en meer contrast, ideaal voor voetbal.
+687	Portugees, Engels, Spaans, Frans, Italiaans, Duits of Nederlands. Wijzig het wanneer je wilt in Instellingen > Profiel.
+688	Kies je teams en competities: de wedstrijden verschijnen op Start met de dag, het tijdstip en de zender die ze uitzendt.
+689	Als een zender meerdere bronnen heeft, kiest de app de stabielste of die met het beste beeld (jij kiest in Instellingen) en wisselt vanzelf als hij vastloopt.

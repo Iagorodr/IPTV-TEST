@@ -1,0 +1,690 @@
+0	Aucune chaîne trouvée dans cette liste.
+1	Tout
+2	★ Favoris
+3	Choisissez une chaîne dans la liste et appuyez sur OK : elle se lance ici. Appuyez de nouveau sur OK sur la même chaîne pour l’ouvrir en plein écran.
+4	Source {0} sur {1}
+5	▶ Plein écran
+6	★ Favori
+7	☆ Ajouter aux favoris
+8	RÉGION
+9	SOURCES
+10	Auto
+11	Source {0}
+12	{0} régions
+13	1 source
+14	{0} sources
+15	Tout voir
+16	{0} titres
+17	Reprendre la lecture
+18	Essai d’une autre façon de se connecter ({0})…
+19	Essai de la liste M3U du fournisseur…
+20	Connexion impossible.
+21	Serveur introuvable. Vérifiez l’adresse et la connexion.
+22	Le serveur a mis trop de temps à répondre.
+23	Impossible de se connecter au serveur.
+24	La TV a manqué de mémoire en organisant le catalogue.
+25	Erreur inconnue.
+26	{0} ({1} façons de se connecter essayées)
+27	mémoire : utilisée
+28	 Mo sur
+29	 Mo
+30	 · build
+31	Se connecter
+32	Encore {0} minutes
+33	Liste {0} :
+34	Liste {0} : pas de réponse
+35	Aucune chaîne, film ou série trouvé à ce lien. Vérifiez qu’il s’agit bien d’une liste M3U.
+36	Épisode
+37	Liste M3U • {0} chaînes • {1} films • {2} séries
+38	Épisode {0}
+39	Liste M3U
+40	Fermer l’app ?
+41	Un enregistrement est en cours. Il continue, mais la TV doit rester allumée.
+42	Rester
+43	Quitter
+44	L’app s’est fermée toute seule la dernière fois
+45	Prenez une photo de cet écran et envoyez-la dans Réglages > Nous écrire : c’est ce qu’il nous faut pour corriger.
+46	Fermer
+47	⏰ Ça va commencer
+48	Ça commence maintenant
+49	Commence dans {0} min
+50	Voir les chaînes
+51	Ignorer
+52	 commence
+53	 commence dans {0} min
+54	En attente d’autorisation
+55	Accès suspendu
+56	Nous avons reçu votre demande. Elle est en cours d’examen et nous vous contacterons.
+57	Cet appareil n’a pas encore été autorisé. Vous pouvez demander l’accès.
+58	L’accès de cet appareil à l’app a été mis en pause. Vous pouvez demander l’accès.
+59	Code :
+60	Demander l’accès
+61	Réessayer
+62	Demande envoyée ! Elle est en cours d’examen et nous vous contacterons.
+63	Retour
+64	Vos données vont uniquement au développeur de l’app, pour qu’il puisse vous contacter. Remplissez ici ou depuis votre téléphone.
+65	Nom
+66	Téléphone
+67	Ou visez avec l’appareil photo du téléphone
+68	Envoi impossible. Remplissez tout et vérifiez la connexion.
+69	Envoi...
+70	Envoyer la demande
+71	Message
+72	Remplissez serveur, utilisateur et mot de passe.
+73	Collez le lien de la liste.
+74	Le lien doit commencer par http:// ou https://
+75	La TV n’est pas sur un réseau Wi-Fi/câble. Connectez-la et rouvrez cet onglet.
+76	Impossible d’ouvrir la connexion avec le téléphone sur cette TV. Utilisez les autres onglets.
+77	Reçu du téléphone. Connexion...
+78	Impossible de vérifier le compte : {0}
+79	Préparation...
+80	Construction des écrans
+81	Liste mise à jour :
+82	 films ·
+83	 séries ·
+84	 chaînes
+85	Téléchargement de la liste...
+86	Téléchargement des catégories...
+87	Téléchargement des films
+88	Téléchargement des séries
+89	Téléchargement des chaînes
+90	Classement par genre et par pays
+91	Pays : tous
+92	Pays :
+93	à l’instant
+94	il y a {0} min
+95	il y a {0} h
+96	il y a {0} jours
+97	Aucun épisode trouvé.
+98	Sous-titré
+99	Original
+100	Doublé
+101	copie
+102	Catalogue pas encore chargé.
+103	Cette liste ne propose pas le replay (revenir en arrière).
+104	{0} chaînes gardent les programmes passés (jusqu’à {1} jour(s)).
+105	Vous avez déjà la version la plus récente (build
+106	Téléchargement impossible. Vérifiez la connexion et réessayez.
+107	Choisissez la chaîne qui va enregistrer
+108	Choisissez la chaîne à enregistrer
+109	Cette chaîne n’a pas d’adresse à enregistrer.
+110	Vous avez déjà un enregistrement programmé sur cette chaîne à cette heure.
+111	Impossible de récupérer les matchs pour le moment.
+112	Vous avez déjà choisi 5 équipes. Retirez-en une pour en choisir une autre.
+113	Vous avez déjà choisi {0} ligues. Retirez-en une pour en choisir une autre.
+114	Téléchargement impossible pour le moment (pas d’internet ?). On garde le tableau du
+115	Nouveau tableau chargé :
+116	C’est déjà le tableau le plus récent :
+117	Choisissez la chaîne à enregistrer. Vérifiez que le match passe vraiment dessus : l’app peut se tromper.
+118	Trouvé dans votre liste. Si ça bloque, revenez et choisissez une autre source.
+119	Ce match n’est pas encore dans les « Matchs à la une » de votre liste. Voici les chaînes qui le diffusent d’habitude,
+120	les chaînes de sport, ou utilisez la recherche.
+121	Diffusé sur :
+122	Diffusé d’habitude sur :
+123	Rappel supprimé.
+124	Ce match a déjà commencé.
+125	C’est noté ! Je vous préviens 10 minutes avant le match.
+126	Pas de date confirmée pour l’instant
+127	Chaînes de votre liste pour {0}.
+128	Aucune chaîne {0} trouvée par le nom. Voyez les chaînes de sport ci-dessous ou utilisez la recherche.
+129	Le serveur a renvoyé une réponse invalide.
+130	Redirection invalide du serveur.
+131	Le serveur a refusé l’accès (HTTP {0}). Vérifiez utilisateur et mot de passe.
+132	Adresse introuvable (HTTP 404).
+133	Le serveur a répondu HTTP {0}.
+134	Trop de redirections.
+135	Demande invalide.
+136	Cette page a expiré. Visez de nouveau le QR code de la TV.
+137	Demande envoyée ! Regardez la TV.
+138	C’est fait ! Regardez la TV. En cas d’erreur, la TV affiche la raison et vous pouvez renvoyer.
+139	Visez le QR code affiché sur la TV avec l’appareil photo du téléphone.
+140	Page introuvable.
+141	Envoyer une autre liste
+142	Demandez l’accès à l’app. Vos données vont au développeur de l’app, uniquement pour qu’il puisse vous contacter.
+143	E-mail
+144	Saisissez ici les données de votre liste. Elles vont directement à la TV par votre Wi-Fi et ne passent par aucun serveur.
+145	Serveur, utilisateur et mot de passe (Xtream)
+146	Serveur (ex. : http://exemple.com:8080)
+147	Utilisateur
+148	Mot de passe
+149	Envoyer à la TV
+150	Lien de la liste (M3U)
+151	Collez le lien
+152	En direct.
+153	Cette chaîne ne garde pas les programmes passés.
+154	Le fournisseur ne garde que {0} jour(s) de cette chaîne.
+155	Retour à
+156	Impossible de revenir en arrière sur cette chaîne.
+157	 On passe à
+158	Source :
+159	 (même heure).
+160	Cette source ne garde pas les programmes passés.
+161	Source fixée :
+162	Automatique :
+163	Test annulé.
+164	Meilleure source :
+165	Test terminé. Lecture de
+166	Impossible d’ouvrir cette heure sur cette chaîne. Essayez une autre chaîne ou revenez au direct.
+167	La source a échoué.
+168	Cette chaîne n’a pas de source disponible.
+169	Cette chaîne ne garde pas les programmes passés : ouverture en direct.
+170	La source a mis trop de temps à s’ouvrir.
+171	La source s’est bloquée.
+172	La source était instable.
+173	{0} min
+174	{0} s
+175	Lecture impossible
+176	Ouvrez « Sources » pour en choisir une autre, ou appuyez sur Retour pour quitter.
+177	Appuyez sur Retour pour quitter.
+178	Test des sources de
+179	La vidéo reste en pause pendant la mesure. Retour annule.
+180	  ·  fixée
+181	  ·  automatique
+182	⏪ Rediffusion ·
+183	◀ ▶ pour avancer (appuyez plusieurs fois pour aller plus loin)   ·   OK met en pause
+184	Montez à la barre de temps pour avancer ou reculer
+185	⏪ 10 min
+186	⏪ 2 min
+187	2 min ⏩
+188	10 min ⏩
+189	EN DIRECT
+190	Pause
+191	Lecture
+192	Sources ({0})
+193	Région :
+194	Audio
+195	✓ Favori
+196	Favori
+197	Écran noir
+198	Confirmer l’arrêt
+199	■ Arrêter l’enregistrement
+200	Enregistrement arrêté. Il est dans l’onglet Enregistrements.
+201	● Enregistrer
+202	Épisode suivant
+203	Langue / version
+204	Sous-titres
+205	Écran : remplir
+206	Écran : ajuster
+207	Mode match : activé
+208	Mode match
+209	Mode match activé : couleurs plus vives et plus de contraste.
+210	Mode match désactivé.
+211	Enregistrer pendant combien de temps ?
+212	Utilise une connexion de plus de votre liste.
+213	30 minutes
+214	1 heure
+215	2 heures
+216	3 heures
+217	4 heures
+218	Enregistrement pendant
+219	. Voir dans l’onglet Enregistrements.
+220	Qualité :
+221	Moyenne et Basse ne valent que pour les chaînes avec plus d’une version de l’image.
+222	Chercher des sous-titres : langue
+223	Sous-titres en
+224	 · S{0} E{1}
+225	 ({0})
+226	Recherche...
+227	Aucun sous-titre trouvé dans cette langue.
+228	Recherche impossible pour le moment.
+229	‹ Autre langue
+230	Téléchargement...
+231	Sous-titres en
+232	 activés.
+233	Téléchargement impossible.
+234	Sous-titre
+235	{0} téléchargements
+236	 · pour malentendants
+237	Ils sont gardés 7 jours puis supprimés.
+238	🔎 Chercher des sous-titres dans d’autres langues...
+239	Aucune piste trouvée dans cette vidéo.
+240	  (non pris en charge sur cet appareil)
+241	Sources ·
+242	Triées par stabilité (la meilleure d’abord)
+243	Triées par qualité d’image
+244	Test...
+245	Tester les sources
+246	Revenir en automatique
+247	Meilleure source (automatique)
+248	Choisit la plus stable et de meilleure qualité. Si certaines n’ont pas encore été mesurées, il les mesure d’abord.
+249	test en cours...
+250	pas de réponse :
+251	marge {0}x à la dernière mesure
+252	bloquée {0}x la dernière fois
+253	  (fixée)
+254	Priorité
+255	Stabilité
+256	Qualité
+257	Changer tout seul si ça bloque
+258	Oui
+259	Non
+260	Région ·
+261	Choisissez votre région. Elle est gardée pour la prochaine fois.
+262	Langue non indiquée
+263	EAC3 (Dolby Digital+)
+264	Dolby Atmos
+265	 {0}ch
+266	Désactivés
+267	 (dialogues en langue étrangère uniquement)
+268	 (pour malentendants)
+269	vidéo : ?
+270	{0}x{1}
+271	vidéo :
+272	Échec réseau à la connexion.
+273	Délai de connexion dépassé.
+274	Format de fichier non pris en charge.
+275	L’appareil n’a pas pu décoder cette vidéo.
+276	L’appareil n’a pas de décodeur pour cette vidéo.
+277	Erreur de lecture.
+278	Cette source ne s’est pas ouverte.⏎Choisissez-en une autre dans SOURCES ou appuyez sur OK pour ouvrir en plein écran.
+279	Cette chaîne n’a pas de source.
+280	Appuyez sur OK sur une chaîne⏎pour la voir ici
+281	liste sans variantes
+282	pas de liste vidéo
+283	pas de segments
+284	délai dépassé
+285	presque pas de données
+286	flux continu, pause max. {0} ms
+287	Moyenne
+288	Basse
+289	Peu d’espace sur l’appareil (moins de 1 Go libre).
+290	Cette chaîne est déjà en cours d’enregistrement.
+291	Android n’a pas permis de lancer l’enregistrement en arrière-plan.
+292	Enregistrement programmé
+293	Enregistrement
+294	Enregistrement de {0} chaînes
+295	Touchez pour ouvrir l’app et voir les enregistrements
+296	Erreur d’enregistrement :
+297	Impossible d’enregistrer cette chaîne.
+298	redirection sans destination
+299	le serveur a répondu {0}
+300	trop de redirections
+301	Échec de connexion :
+302	liste sans versions
+303	Cette chaîne est protégée et ne peut pas être enregistrée.
+304	la chaîne a arrêté d’envoyer
+305	+ Programmer un enregistrement
+306	Astuce : pour un match, ouvrez le match et touchez « ● Enregistrer ».
+307	Aucun enregistrement pour l’instant.⏎Ouvrez une chaîne en direct et choisissez « Enregistrer », ou programmez-en un ci-dessus.⏎L’enregistrement continue écran éteint.
+308	 · pas enregistré :
+309	la TV était éteinte ou l’app fermée.
+310	Programmé ·
+311	 jusqu’à
+312	Confirmer
+313	Retirer
+314	Annuler la programmation
+315	Enregistrement ·
+316	Ça n’a pas marché
+317	Enregistré
+318	Regarder
+319	Arrêter
+320	Supprimer
+321	Enregistrement introuvable.
+322	● Enregistrement
+323	 à
+324	Reste
+325	L’enregistrement n’a pas marché.
+326	Enregistrement terminé
+327	Appuyez sur n’importe quel bouton.
+328	Quitter l’écran noir
+329	Arrêter l’enregistrement
+330	Éteindre la TV ensuite
+331	Voir les enregistrements
+332	Retour à l’accueil
+333	Pour que la TV s’éteigne toute seule, activez la minuterie de mise en veille dans ses réglages.
+334	Commence dans 10 min : {0}
+335	 min
+336	Programmé !
+337	Laissez la TV (ou le boîtier) allumée et connectée à internet. L’app n’a pas besoin d’être ouverte à l’écran, mais si vous
+338	forcez la fermeture de l’app ou si la TV s’éteint, l’enregistrement n’aura pas lieu.
+339	Voir les programmés
+340	Programmer un enregistrement
+341	Chaîne :
+342	Vérifiez que le match passe vraiment sur cette chaîne. L’app peut se tromper : si la chaîne diffuse autre chose,
+343	l’enregistrement contiendra le mauvais programme.
+344	Jour
+345	◀ jour
+346	jour ▶
+347	Début
+348	Fin
+349	 (+1 jour)
+350	Moyenne et Basse ne fonctionnent que sur les chaînes qui proposent plus d’une version de l’image ; sur les autres, l’enregistrement est tel que la chaîne l’envoie.
+351	Durée :
+352	 · espace estimé : jusqu’à
+353	 Go · libre sur l’appareil :
+354	 Go
+355	Programmer
+356	La fin doit être après le début.
+357	Cette heure est déjà passée.
+358	Le maximum est de 6 heures par enregistrement.
+359	Annuler
+360	  ·  Retour annule
+361	Nouvelle version disponible
+362	Vous avez le build
+363	 · nouveau : build
+364	Nouveautés
+365	Un enregistrement est en cours : il serait coupé. Mettez à jour quand il sera fini.
+366	Téléchargement...
+367	Mettre à jour
+368	Plus tard
+369	À la fin du téléchargement, Android demande de confirmer l’installation. L’app se ferme et vous la rouvrez.
+370	Quels pays et quelles langues voulez-vous voir ?
+371	Vaut pour les films, séries et chaînes. Astuce : choisissez-en 2 ou 3 et la liste est bien plus légère. Ce qui n’a pas de pays indiqué apparaît toujours.
+372	Tout afficher
+373	 titres,
+374	Appliquer
+375	L’horloge de cet appareil est fausse
+376	L’appareil affiche :
+377	Heure exacte :
+378	Avec une mauvaise date, les matchs, les affiches, les mises à jour de l’app et les enregistrements programmés ne fonctionnent plus.
+379	Dans les réglages de la TV ou du boîtier, ouvrez Date et heure et activez « Date et heure automatiques » (et vérifiez le fuseau). Puis rouvrez l’app.
+380	Compris
+381	Afficher sur cet écran
+382	Ne change que cet écran. Les pays de l’app sont dans les Réglages.
+383	Tous les pays
+384	Ajouter une autre liste.⏎Elles sont gardées uniquement sur cette TV.
+385	Connectez-vous avec votre liste.⏎Les données sont gardées uniquement sur cette TV.
+386	Xtream
+387	Lien M3U
+388	Par téléphone (QR)
+389	Masquer le mot de passe
+390	Afficher le mot de passe
+391	Connexion...
+392	Lien de la liste (ex. : http://exemple.com/liste.m3u)
+393	Les liens du type get.php?username=...&password=... sont traités comme Xtream (plus complet, avec synopsis et épisodes).
+394	Les listes M3U classiques n’ont que le nom, l’image et la catégorie.
+395	1. Connectez le téléphone au même Wi-Fi que la TV.
+396	2. Visez le QR code avec l’appareil photo.
+397	3. Saisissez les données sur le téléphone et touchez Envoyer.
+398	Ou ouvrez dans le navigateur du téléphone :
+399	Préparation du QR code...
+400	Impossible de charger le catalogue
+401	Se déconnecter
+402	 éléments
+403	Étape {0} sur 6
+404	Les très grandes listes peuvent prendre quelques minutes. Cela n’arrive que la première fois : ensuite le catalogue est gardé et s’ouvre instantanément, et les mises à jour se font en arrière-plan.
+405	Bonjour, {0}
+406	Quitter le mode enfants
+407	Enfants
+408	Matchs
+409	Films
+410	Séries
+411	Chaînes
+412	Favoris
+413	Enregistrements
+414	SÉRIE
+415	FILM
+416	Voir les détails
+417	{0} / {1}
+418	 titres
+419	Vos chaînes
+420	Tri par pays...
+421	Rien ici pour ce pays.
+422	Rechercher des films, séries et chaînes
+423	Tapez au moins 2 lettres.
+424	Aucun résultat.
+425	Mes films et séries
+426	Rien ici pour l’instant.⏎Ouvrez un film ou une série et choisissez « + Favoris ».⏎Pour les chaînes, utilisez l’étoile ★ dans le lecteur.
+427	Chaînes favorites
+428	Fuseau horaire
+429	Les horaires des matchs utilisent ce fuseau. En ce moment, dans l’app :
+430	Si l’heure est fausse, choisissez votre fuseau (ou corrigez-le dans les réglages de la TV).
+431	Pays de recherche (où c’est diffusé)
+432	pas encore de matchs confirmés
+433	 matchs dans les prochains jours
+434	Choisissez jusqu’à 3 pays dont viennent les chaînes de chaque match. En « Automatique », l’app utilise les pays des chaînes que vous avez
+435	(ou ceux choisis avec le bouton Pays). Actuellement :
+436	, tableau du
+437	). Recherché sur internet et mis à jour chaque semaine.
+438	Automatique
+439	Vérification...
+440	Vérifier les tableaux
+441	Liste {0}  ·  {1}
+442	  ·  {0}
+443	Vos listes
+444	Gardez autant de listes que vous voulez. Utilisez-en une à la fois ou fusionnez-les en un seul catalogue.
+445	Gardée
+446	Incluse dans le catalogue fusionné
+447	Utilisée
+448	Utiliser celle-ci
+449	Confirmer la suppression ?
+450	Ajouter une liste
+451	+ Ajouter une autre liste
+452	Fusionner les listes
+453	Fusionne les films, séries et chaînes de toutes les listes en un seul catalogue. Les mêmes titres deviennent une seule
+454	carte, et les chaînes reçoivent les sources de toutes les listes.
+455	Tout fusionner
+456	Une à la fois
+457	Confirmer ? Supprime toutes les listes
+458	Se déconnecter et supprimer les listes
+459	Pays et langue
+460	Pour les listes avec du contenu de plusieurs pays. Choisissez ce que vous voulez voir : le reste est masqué.
+461	Dans Chaînes, Films et Séries, vous pouvez encore choisir un seul de ces pays avec le bouton « Pays ».
+462	Cette liste n’indique pas de pays dans ses catégories : rien à filtrer.
+463	Aucun filtre
+464	Affichage :
+465	Catalogue
+466	Pas encore chargé.
+467	{0} films · {1} séries · {2} chaînes · mis à jour {3}
+468	Mise à jour...
+469	Mettre à jour le catalogue
+470	Chaînes en direct
+471	Quand une chaîne a plusieurs sources, l’app choisit la meilleure pour vous.
+472	Qualité maximale
+473	Changer de source tout seul si ça bloque
+474	Effacer les notes de stabilité
+475	Revenir en arrière (replay)
+476	Permet de revoir des actions en direct et de revoir des matchs jusqu’à 24 h.
+477	Profil
+478	Votre nom, votre langue et vos genres préférés.
+479	Votre nom
+480	Langue
+481	Enregistrer
+482	Enregistré.
+483	Genres préférés (jusqu’à 3)
+484	Équipes et ligues favorites
+485	Choisir des équipes
+486	À propos
+487	Informations sur cet appareil.
+488	Code de cet appareil
+489	Si vous avez besoin d’aide, donnez ce code à la personne qui vous a donné l’app. Il sert seulement à compter combien d’appareils utilisent l’app :
+490	il n’envoie ni le lien de votre liste, ni le mot de passe, ni ce que vous regardez.
+491	Affiches et synopsis en plus : ce produit utilise l’API de TMDB, mais n’est ni approuvé ni certifié par TMDB.
+492	Version installée : build
+493	Rechercher une mise à jour
+494	Nous écrire
+495	Un problème, une idée, un compliment ou un soutien au créateur de l’app.
+496	1. Visez le QR code avec l’appareil photo du téléphone.
+497	2. Écrivez votre message et touchez Envoyer.
+498	3. La réponse s’affiche ici sur la TV et sur la même page du téléphone.
+499	Sur cette page, vous pouvez aussi soutenir l’app par un don, si vous le souhaitez.
+500	Code de cet appareil :
+501	Listes
+502	Sports
+503	Mi-temps
+504	Pas de réponse du service des matchs.
+505	Aujourd’hui
+506	Demain
+507	Hier
+508	EN DIRECT ·
+509	TERMINÉ
+510	⏰ Rappel activé
+511	▶ 1 chaîne dans votre liste
+512	▶ {0} chaînes dans votre liste
+513	Touchez pour voir les détails
+514	En direct
+515	En direct · {0}
+516	Terminé
+517	voir les chaînes
+518	MATCHS
+519	Choisir mes équipes et ligues
+520	Recherche impossible. Réessayer
+521	Recherche des matchs...
+522	Aucun match de vos équipes aujourd’hui ou demain
+523	Tout voir ›
+524	Commence
+525	 (heure locale)
+526	Match terminé. Vous pouvez le revoir : choisissez la chaîne et l’app l’ouvre au début du match.
+527	Match terminé. Aucune chaîne de votre liste ne garde les programmes passés pour le revoir maintenant.
+528	Match terminé il y a plus de 24 heures : impossible de le revoir.
+529	Diffusé sur (
+530	Probablement diffusé sur (
+531	✓ = dans votre liste.
+532	Confirmé
+533	Pas encore confirmé
+534	 sur
+535	 · tableau du
+536	Diffusé d’habitude sur (
+537	✓ = dans votre liste. Ce match n’a pas encore été confirmé dans le tableau du
+538	 : cela peut varier selon le match et la région.
+539	Je n’ai qu’une option enregistrée : vérifiez aussi les chaînes de sport de votre liste.
+540	Je ne sais pas encore où cette compétition est diffusée en
+541	. Voyez les chaînes de sport de votre liste.
+542	Vérifier à nouveau
+543	▶ 1 chaîne trouvée pour ce match dans votre liste
+544	▶ {0} chaînes trouvées pour ce match dans votre liste
+545	Regarder maintenant
+546	⏰ Me le rappeler
+547	Prochains matchs
+548	Choisissez des équipes et des ligues pour voir les matchs ici.
+549	Aucun match dans les prochains jours.
+550	Mes équipes et ligues
+551	{0} matchs · en direct d’abord, puis les plus populaires · ★ = match de votre équipe · touchez pour voir les chaînes et le rappel
+552	Aucun match des grandes ligues ce jour-là.
+553	 · Sélection
+554	✓ Choisie
+555	Aucune équipe trouvée ici.
+556	Impossible de charger les équipes. Vérifiez la connexion et réessayez.
+557	Chargement des équipes...
+558	✓ Choisie
+559	Ligues favorites
+560	Choisissez jusqu’à {0} compétitions : tous leurs matchs d’aujourd’hui et de demain apparaissent sur l’Accueil.
+561	Choisissez le pays de votre équipe (jusqu’à 5 équipes) ou choisissez des ligues (jusqu’à {0}).
+562	 · appuyez sur OK pour choisir ou retirer une équipe.
+563	{0}/5 équipes · {1}/{2} ligues
+564	Choisir des ligues
+565	Terminer
+566	Chaînes qui le diffusent d’habitude
+567	 (peut varier selon le match)
+568	Rechercher «
+569	 » dans la liste
+570	Chaînes de sport de votre liste
+571	Rien de choisi. Les matchs de vos équipes et ligues apparaissent en haut de l’Accueil.
+572	{0}/5 équipes · {1}/{2} ligues · les matchs apparaissent en haut de l’Accueil.
+573	Choisir des équipes et ligues
+574	Changer d’équipes et de ligues
+575	Où c’est diffusé : tableau
+576	 du
+577	 (mis à jour chaque semaine).
+578	Limite quotidienne de sous-titres atteinte. Réessayez demain.
+579	Erreur {0} sur OpenSubtitles.
+580	OpenSubtitles n’a pas envoyé le fichier.
+581	{0} h {1} min
+582	Indisponible
+583	Reprendre
+584	Regarder
+585	Chargement des épisodes...
+586	Reprendre à
+587	‹ Retour
+588	1 saison
+589	{0} saisons
+590	Chargement du synopsis...
+591	Réalisation :
+592	Distribution :
+593	Sous-titré uniquement
+594	Langue : toutes
+595	Autres
+596	Standard
+597	4K uniquement
+598	Copie {0}
+599	 (cinéma)
+600	Enregistrement en salle : l’image et le son peuvent être de moindre qualité.
+601	Spéciaux
+602	Saison {0}
+603	Similaires
+604	arrêté ici
+605	Autorisez « installer des applis inconnues » pour cette app, revenez et touchez Mettre à jour à nouveau.
+606	Dans les réglages de la TV, autorisez l’installation d’applis de sources inconnues pour cette app et réessayez.
+607	Impossible d’ouvrir l’installateur. Téléchargez par le lien habituel (Downloader).
+608	Pas testée
+609	Stable
+610	Bonne
+611	Instable
+612	Mauvaise
+613	Comment on vous appelle ?
+614	Juste pour que le développeur de l’app sache qui l’utilise. Rien d’autre n’est envoyé.
+615	Tapez votre nom pour continuer.
+616	Continuer
+617	Quelle langue préférez-vous ?
+618	Les menus passent tout de suite à la langue choisie.
+619	Quel est votre fuseau horaire ?
+620	Les matchs s’affichent à votre heure. En ce moment, dans ce fuseau, il est {0}.
+621	de la TV
+622	Vos équipes de cœur
+623	Facultatif. Leurs matchs apparaissent en haut de l’Accueil.
+624	Passer
+625	Qu’est-ce que vous aimez le plus ?
+626	Facultatif. Choisissez jusqu’à 3 genres. Ils apparaissent en premier dans les sélections.
+627	Commencer
+628	Aucun choisi.
+629	 sur 3 :
+630	Réponse inattendue du serveur.
+631	Utilisateur ou mot de passe invalide.
+632	sans date
+633	Compte {0} • expire le {1} • écrans : {2}
+634	Catégorie {0}
+635	Action
+636	Aventure
+637	Animation
+638	Comédie
+639	Crime
+640	Documentaires
+641	Drame
+642	Famille
+643	Fantastique
+644	Science-fiction
+645	Guerre
+646	Romance
+647	Thriller
+648	Horreur
+649	Mystère
+650	Histoire
+651	Biographie
+652	Policier
+653	Musique
+654	Western
+655	Turques
+656	Spectacles
+657	Religieux
+658	Brésiliens
+659	K-Drama
+660	Classiques
+661	Anime
+662	Nouveautés
+663	Ajoutés récemment
+664	Sans catégorie
+665	Dim
+666	Lun
+667	Mar
+668	Mer
+669	Jeu
+670	Ven
+671	Sam
+672	Portugais (Brésil)
+673	Portugais (Portugal)
+674	Anglais
+675	Espagnol
+676	Français
+677	Italien
+678	Allemand
+679	Néerlandais
+680	Nouveau : Nous écrire
+681	Nouveau : Mode match
+682	L’app dans votre langue
+683	Ne manquez aucun match
+684	La chaîne bloque ? On change
+685	Dans Réglages, visez le QR code avec votre téléphone et envoyez un problème, une idée ou un compliment. La réponse s’affiche ici sur la TV.
+686	Dans le lecteur, touchez Mode match : couleurs plus vives et plus de contraste, idéal pour le foot.
+687	Portugais, anglais, espagnol, français, italien, allemand ou néerlandais. Changez quand vous voulez dans Réglages > Profil.
+688	Choisissez vos équipes et ligues : les matchs apparaissent sur l’Accueil avec le jour, l’heure et la chaîne qui les diffuse.
+689	Quand une chaîne a plusieurs sources, l’app choisit la plus stable ou celle avec la meilleure image (vous décidez dans Réglages) et change toute seule si ça bloque.

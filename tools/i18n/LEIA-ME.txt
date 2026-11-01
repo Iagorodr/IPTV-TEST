@@ -1,0 +1,8 @@
+Traduções da interface (7 idiomas).
+
+1. python3 tools/i18n_keys.py > tools/i18n/keys.json   -> lista os textos marcados com tr("...") no app
+2. Cada <idioma>.txt tem uma linha por texto: número (posição em keys.json) <TAB> tradução. ⏎ = quebra de linha.
+3. python3 tools/i18n/build.py en es fr it de nl          -> gera app/src/main/assets/i18n/<idioma>.json
+
+Texto novo no app: envolva com tr("..."), rode o passo 1 e acrescente as linhas novas nos .txt (os números mudam
+se a ordem mudar: confira com keys.json). O que não tiver tradução aparece em português.
