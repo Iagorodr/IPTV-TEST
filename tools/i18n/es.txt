@@ -688,3 +688,5 @@
 687	Portugués, inglés, español, francés, italiano, alemán o neerlandés. Cámbialo cuando quieras en Ajustes > Perfil.
 688	Elige tus equipos y ligas: los partidos aparecen en Inicio con el día, la hora y el canal donde se emiten.
 689	Cuando un canal tiene varias fuentes, la app elige la más estable o la de mejor imagen (tú decides en Ajustes) y cambia sola si se congela.
+690	Este dispositivo no admite el modo juego.
+691	El modo juego hacía que el vídeo fuera a tirones en este dispositivo y se desactivó.

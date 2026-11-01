@@ -688,3 +688,5 @@
 687	Portugees, Engels, Spaans, Frans, Italiaans, Duits of Nederlands. Wijzig het wanneer je wilt in Instellingen > Profiel.
 688	Kies je teams en competities: de wedstrijden verschijnen op Start met de dag, het tijdstip en de zender die ze uitzendt.
 689	Als een zender meerdere bronnen heeft, kiest de app de stabielste of die met het beste beeld (jij kiest in Instellingen) en wisselt vanzelf als hij vastloopt.
+690	Dit apparaat ondersteunt de wedstrijdmodus niet.
+691	De wedstrijdmodus liet de video op dit apparaat haperen en is uitgezet.

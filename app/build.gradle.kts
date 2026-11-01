@@ -99,4 +99,6 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer:$media3")
     implementation("androidx.media3:media3-exoplayer-hls:$media3")
     implementation("androidx.media3:media3-ui:$media3")
+    // modo jogo: cor e contraste aplicados pela placa de vídeo, dentro do próprio player
+    implementation("androidx.media3:media3-effect:$media3")
 }

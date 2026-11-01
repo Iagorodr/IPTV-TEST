@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.key
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -177,6 +176,14 @@ fun PlayerScreen(
             .buildUpon()
             .setPreferredAudioLanguages("pt", "por")
             .build()
+        // modo jogo já ligado: o efeito precisa entrar antes de o vídeo começar
+        if (user.vivid) {
+            try {
+                player.setVideoEffects(vividEffects())
+            } catch (e: Throwable) {
+                user.setVivid(false)
+            }
+        }
         player
     }
 
@@ -253,6 +260,31 @@ fun PlayerScreen(
         exo.setMediaItem(liveItem(info.urlOf(s)))
         exo.prepare()
         exo.playWhenReady = true
+    }
+
+    /**
+     * Liga/desliga o modo jogo. O efeito de cor fica dentro do player (feito pela placa de vídeo); para ele entrar ou
+     * sair, o vídeo é recarregado no mesmo ponto (no ao vivo, volta ao ao vivo).
+     */
+    fun setVivid(on: Boolean) {
+        vivid = on
+        user.setVivid(on)
+        val item = exo.currentMediaItem
+        val pos = exo.currentPosition
+        try {
+            exo.setVideoEffects(if (on) vividEffects() else emptyList())
+        } catch (e: Throwable) {
+            vivid = false
+            user.setVivid(false)
+            note = tr("Este aparelho não aceita o modo jogo.")
+            return
+        }
+        if (item != null) {
+            exo.stop()
+            if (isLive && tsStart == 0L) exo.setMediaItem(item) else exo.setMediaItem(item, pos)
+            exo.prepare()
+            exo.playWhenReady = true
+        }
     }
 
     /** Toca o canal a partir de [startMs] (no passado), com a fonte [src]. [variant] escolhe qual formato de link tentar. */
@@ -534,8 +566,21 @@ fun PlayerScreen(
             }
         }
         exo.addListener(listener)
+        // modo jogo pesado demais para este aparelho (perdendo quadros): desliga sozinho e avisa
+        val frames = object : androidx.media3.exoplayer.analytics.AnalyticsListener {
+            override fun onDroppedVideoFrames(eventTime: androidx.media3.exoplayer.analytics.AnalyticsListener.EventTime, droppedFrames: Int, elapsedMs: Long) {
+                if (!vivid || elapsedMs <= 0L) return
+                val perSec = droppedFrames * 1000f / elapsedMs
+                if (perSec >= 2f) {
+                    setVivid(false)
+                    note = tr("O modo jogo deixou o vídeo pesado neste aparelho e foi desligado.")
+                }
+            }
+        }
+        exo.addAnalyticsListener(frames)
         onDispose {
             exo.removeListener(listener)
+            exo.removeAnalyticsListener(frames)
             try {
                 if (isLive) {
                     if (!testing) recordSession(0)
@@ -813,32 +858,23 @@ fun PlayerScreen(
             .focusRequester(rootFocus)
             .focusable(),
     ) {
-        // modo jogo: troca para a TextureView (a única que aceita filtro de cor) e aplica cores mais vivas e mais contraste
-        key(vivid) {
-            AndroidView(
-                factory = { ctx ->
-                    val pv = if (vivid) {
-                        android.view.LayoutInflater.from(ctx).inflate(R.layout.player_texture, null) as PlayerView
-                    } else {
-                        PlayerView(ctx)
-                    }
-                    pv.apply {
-                        useController = false
-                        player = exo
-                        isFocusable = false
-                        isFocusableInTouchMode = false
-                        descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
-                        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                        keepScreenOn = true
-                        if (vivid) (videoSurfaceView as? android.view.TextureView)?.let { applyVivid(it) }
-                    }
-                },
-                update = { view ->
-                    view.resizeMode = if (zoom) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
-                },
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
+        AndroidView(
+            factory = { ctx ->
+                PlayerView(ctx).apply {
+                    useController = false
+                    player = exo
+                    isFocusable = false
+                    isFocusableInTouchMode = false
+                    descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                    keepScreenOn = true
+                }
+            },
+            update = { view ->
+                view.resizeMode = if (zoom) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
 
         if (buffering && error == null && !testing) {
             CircularProgressIndicator(color = Accent, modifier = Modifier.align(Alignment.Center))
@@ -1078,8 +1114,7 @@ fun PlayerScreen(
                     }
                     TvButton(text = if (vivid) tr("Modo jogo: ligado") else tr("Modo jogo")) {
                         touch++
-                        vivid = !vivid
-                        user.setVivid(vivid)
+                        setVivid(!vivid)
                         note = if (vivid) tr("Modo jogo ligado: cores mais vivas e mais contraste.") else tr("Modo jogo desligado.")
                     }
                 }
@@ -1836,21 +1871,10 @@ private fun describeError(e: PlaybackException): String {
 
 
 /**
- * Modo jogo: cores mais vivas (saturação +35%) e um pouco mais de contraste (+12%), como as TVs fazem no modo
- * "esporte/vívido". Não é HDR de verdade (o canal manda a imagem comum), mas deixa o gramado e as camisas mais vivos.
+ * Modo jogo: cores mais vivas (saturação +30) e um pouco mais de contraste (+0,12), como as TVs fazem no modo
+ * "esporte/vívido". Aplicado pela placa de vídeo dentro do player. Não é HDR de verdade (o canal manda imagem comum).
  */
-private fun applyVivid(tv: android.view.TextureView) {
-    val cm = android.graphics.ColorMatrix()
-    cm.setSaturation(1.35f)
-    val c = 1.12f
-    val t = (1f - c) * 0.5f * 255f
-    cm.postConcat(android.graphics.ColorMatrix(floatArrayOf(
-        c, 0f, 0f, 0f, t,
-        0f, c, 0f, 0f, t,
-        0f, 0f, c, 0f, t,
-        0f, 0f, 0f, 1f, 0f,
-    )))
-    val p = android.graphics.Paint()
-    p.colorFilter = android.graphics.ColorMatrixColorFilter(cm)
-    tv.setLayerType(android.view.View.LAYER_TYPE_HARDWARE, p)
-}
+private fun vividEffects(): List<androidx.media3.common.Effect> = listOf(
+    androidx.media3.effect.HslAdjustment.Builder().adjustSaturation(30f).build(),
+    androidx.media3.effect.Contrast(0.12f),
+)

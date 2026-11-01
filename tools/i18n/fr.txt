@@ -688,3 +688,5 @@
 687	Portugais, anglais, espagnol, français, italien, allemand ou néerlandais. Changez quand vous voulez dans Réglages > Profil.
 688	Choisissez vos équipes et ligues : les matchs apparaissent sur l’Accueil avec le jour, l’heure et la chaîne qui les diffuse.
 689	Quand une chaîne a plusieurs sources, l’app choisit la plus stable ou celle avec la meilleure image (vous décidez dans Réglages) et change toute seule si ça bloque.
+690	Cet appareil ne prend pas en charge le mode match.
+691	Le mode match faisait saccader la vidéo sur cet appareil et a été désactivé.

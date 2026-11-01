@@ -688,3 +688,5 @@
 687	Portoghese, inglese, spagnolo, francese, italiano, tedesco o olandese. Cambiala quando vuoi in Impostazioni > Profilo.
 688	Scegli squadre e campionati: le partite appaiono in Home con il giorno, l’ora e il canale che le trasmette.
 689	Quando un canale ha più fonti, l’app sceglie la più stabile o quella con l’immagine migliore (decidi tu in Impostazioni) e cambia da sola se si blocca.
+690	Questo dispositivo non supporta la modalità partita.
+691	La modalità partita rendeva il video a scatti su questo dispositivo ed è stata disattivata.

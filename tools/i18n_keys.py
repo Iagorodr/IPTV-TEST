@@ -28,8 +28,11 @@ def unescape(s):
     return s.replace('\\"', '"').replace("\\n", "\n").replace("\\$", "$").replace("\\\\", "\\")
 
 
-keys = []
-seen = set()
+# a ordem antiga não muda (os .txt de tradução usam a posição): os textos novos entram no fim
+import os
+OLD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n", "keys.json")
+keys = json.load(open(OLD, encoding="utf-8")) if os.path.exists(OLD) else []
+seen = set(keys)
 for f in sorted(glob.glob(ROOT + "/*.kt")):
     for m in CALL.finditer(open(f, encoding="utf-8").read()):
         k = unescape(m.group(1))
