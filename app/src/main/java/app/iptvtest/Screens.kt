@@ -77,8 +77,9 @@ import androidx.compose.foundation.lazy.grid.items as gridItems
 // Login
 // =========================================================================
 
+/** Formulário de entrar com a lista (Xtream, link M3U ou pelo celular). Usado no login e no fim da primeira abertura. */
 @Composable
-fun LoginScreen(vm: MainViewModel) {
+fun ListEntryForm(vm: MainViewModel) {
     var mode by rememberSaveable { mutableStateOf(0) }
     var server by rememberSaveable { mutableStateOf("") }
     var user by rememberSaveable { mutableStateOf("") }
@@ -95,6 +96,138 @@ fun LoginScreen(vm: MainViewModel) {
         onDispose { vm.stopPhoneLogin() }
     }
 
+    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+        ChipItem(text = tr("Xtream"), selected = mode == 0) { mode = 0; vm.clearLoginError() }
+        ChipItem(text = tr("Link M3U"), selected = mode == 1) { mode = 1; vm.clearLoginError() }
+        ChipItem(text = tr("Pelo celular (QR)"), selected = mode == 2) { mode = 2; vm.clearLoginError() }
+    }
+    Spacer(Modifier.height(16.dp))
+
+    when (mode) {
+        0 -> {
+            OutlinedTextField(
+                value = server,
+                onValueChange = { server = it },
+                label = { Text(tr("Servidor (ex.: http://exemplo.com:8080)")) },
+                singleLine = true,
+                colors = fieldColors(),
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
+            )
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(
+                value = user,
+                onValueChange = { user = it },
+                label = { Text(tr("Usuário")) },
+                singleLine = true,
+                colors = fieldColors(),
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
+            )
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(
+                value = pass,
+                onValueChange = { pass = it },
+                label = { Text(tr("Senha")) },
+                singleLine = true,
+                colors = fieldColors(),
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = if (showPass) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    focus.clearFocus()
+                    vm.login(server, user, pass)
+                }),
+            )
+            Spacer(Modifier.height(18.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                TvButton(text = if (showPass) tr("Ocultar senha") else tr("Mostrar senha")) { showPass = !showPass }
+                TvButton(text = if (vm.loginBusy) tr("Entrando...") else tr("Entrar"), primary = true) {
+                    vm.login(server, user, pass)
+                }
+            }
+        }
+
+        1 -> {
+            OutlinedTextField(
+                value = link,
+                onValueChange = { link = it },
+                label = { Text(tr("Link da lista (ex.: http://exemplo.com/lista.m3u)")) },
+                singleLine = true,
+                colors = fieldColors(),
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    focus.clearFocus()
+                    vm.loginM3u(link)
+                }),
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                tr("Links do tipo get.php?username=...&password=... entram como Xtream (mais completo, com sinopse e episódios). ") +
+                    tr("Listas M3U comuns trazem só nome, imagem e categoria."),
+                color = Muted,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(Modifier.height(14.dp))
+            TvButton(text = if (vm.loginBusy) tr("Entrando...") else tr("Entrar"), primary = true) {
+                vm.loginM3u(link)
+            }
+        }
+
+        else -> {
+            val url = vm.phoneUrl
+            if (url != null) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                    QrCode(text = url, modifier = Modifier.size(170.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(tr("1. Conecte o celular no mesmo Wi-Fi da TV."), color = TextMain, fontSize = 13.sp)
+                        Spacer(Modifier.height(6.dp))
+                        Text(tr("2. Aponte a câmera para o QR code."), color = TextMain, fontSize = 13.sp)
+                        Spacer(Modifier.height(6.dp))
+                        Text(tr("3. Digite os dados no celular e toque em Enviar."), color = TextMain, fontSize = 13.sp)
+                        Spacer(Modifier.height(10.dp))
+                        Text(tr("Ou abra no navegador do celular:"), color = Muted, fontSize = 12.sp)
+                        Text(url, color = Accent, fontSize = 11.sp)
+                    }
+                }
+            } else {
+                Text(
+                    vm.phoneMsg ?: tr("Preparando o QR code..."),
+                    color = Muted,
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Center,
+                )
+            }
+            val pm = vm.phoneMsg
+            if (url != null && pm != null) {
+                Spacer(Modifier.height(10.dp))
+                Text(pm, color = Accent, fontSize = 14.sp, textAlign = TextAlign.Center)
+            }
+        }
+    }
+
+    val err = vm.loginError
+    if (err != null) {
+        Spacer(Modifier.height(14.dp))
+        Text(err, color = ErrorColor, fontSize = 14.sp, textAlign = TextAlign.Center)
+    }
+    if (vm.loginBusy) {
+        Spacer(Modifier.height(14.dp))
+        CircularProgressIndicator(color = Accent)
+        val st = vm.loginStatus
+        if (st != null) {
+            Spacer(Modifier.height(8.dp))
+            Text(st, color = Muted, fontSize = 12.sp, textAlign = TextAlign.Center)
+        }
+    }
+}
+
+@Composable
+fun LoginScreen(vm: MainViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         // o sol e as montanhas da marca ficam à esquerda, com o nome embaixo; o formulário vai num cartão à direita
         SunBackdrop(modifier = Modifier.fillMaxSize(), sunX = 0.23f, sunY = 0.36f, sunR = 0.19f)
@@ -135,134 +268,7 @@ fun LoginScreen(vm: MainViewModel) {
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                ChipItem(text = tr("Xtream"), selected = mode == 0) { mode = 0; vm.clearLoginError() }
-                ChipItem(text = tr("Link M3U"), selected = mode == 1) { mode = 1; vm.clearLoginError() }
-                ChipItem(text = tr("Pelo celular (QR)"), selected = mode == 2) { mode = 2; vm.clearLoginError() }
-            }
-            Spacer(Modifier.height(16.dp))
-
-            when (mode) {
-                0 -> {
-                    OutlinedTextField(
-                        value = server,
-                        onValueChange = { server = it },
-                        label = { Text(tr("Servidor (ex.: http://exemplo.com:8080)")) },
-                        singleLine = true,
-                        colors = fieldColors(),
-                        modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    OutlinedTextField(
-                        value = user,
-                        onValueChange = { user = it },
-                        label = { Text(tr("Usuário")) },
-                        singleLine = true,
-                        colors = fieldColors(),
-                        modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Next),
-                        keyboardActions = KeyboardActions(onNext = { focus.moveFocus(FocusDirection.Down) }),
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    OutlinedTextField(
-                        value = pass,
-                        onValueChange = { pass = it },
-                        label = { Text(tr("Senha")) },
-                        singleLine = true,
-                        colors = fieldColors(),
-                        modifier = Modifier.fillMaxWidth(),
-                        visualTransformation = if (showPass) VisualTransformation.None else PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(onDone = {
-                            focus.clearFocus()
-                            vm.login(server, user, pass)
-                        }),
-                    )
-                    Spacer(Modifier.height(18.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                        TvButton(text = if (showPass) tr("Ocultar senha") else tr("Mostrar senha")) { showPass = !showPass }
-                        TvButton(text = if (vm.loginBusy) tr("Entrando...") else tr("Entrar"), primary = true) {
-                            vm.login(server, user, pass)
-                        }
-                    }
-                }
-
-                1 -> {
-                    OutlinedTextField(
-                        value = link,
-                        onValueChange = { link = it },
-                        label = { Text(tr("Link da lista (ex.: http://exemplo.com/lista.m3u)")) },
-                        singleLine = true,
-                        colors = fieldColors(),
-                        modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(onDone = {
-                            focus.clearFocus()
-                            vm.loginM3u(link)
-                        }),
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        tr("Links do tipo get.php?username=...&password=... entram como Xtream (mais completo, com sinopse e episódios). ") +
-                            tr("Listas M3U comuns trazem só nome, imagem e categoria."),
-                        color = Muted,
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                    )
-                    Spacer(Modifier.height(14.dp))
-                    TvButton(text = if (vm.loginBusy) tr("Entrando...") else tr("Entrar"), primary = true) {
-                        vm.loginM3u(link)
-                    }
-                }
-
-                else -> {
-                    val url = vm.phoneUrl
-                    if (url != null) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
-                            QrCode(text = url, modifier = Modifier.size(170.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(tr("1. Conecte o celular no mesmo Wi-Fi da TV."), color = TextMain, fontSize = 13.sp)
-                                Spacer(Modifier.height(6.dp))
-                                Text(tr("2. Aponte a câmera para o QR code."), color = TextMain, fontSize = 13.sp)
-                                Spacer(Modifier.height(6.dp))
-                                Text(tr("3. Digite os dados no celular e toque em Enviar."), color = TextMain, fontSize = 13.sp)
-                                Spacer(Modifier.height(10.dp))
-                                Text(tr("Ou abra no navegador do celular:"), color = Muted, fontSize = 12.sp)
-                                Text(url, color = Accent, fontSize = 11.sp)
-                            }
-                        }
-                    } else {
-                        Text(
-                            vm.phoneMsg ?: tr("Preparando o QR code..."),
-                            color = Muted,
-                            fontSize = 14.sp,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-                    val pm = vm.phoneMsg
-                    if (url != null && pm != null) {
-                        Spacer(Modifier.height(10.dp))
-                        Text(pm, color = Accent, fontSize = 14.sp, textAlign = TextAlign.Center)
-                    }
-                }
-            }
-
-            val err = vm.loginError
-            if (err != null) {
-                Spacer(Modifier.height(14.dp))
-                Text(err, color = ErrorColor, fontSize = 14.sp, textAlign = TextAlign.Center)
-            }
-            if (vm.loginBusy) {
-                Spacer(Modifier.height(14.dp))
-                CircularProgressIndicator(color = Accent)
-                val st = vm.loginStatus
-                if (st != null) {
-                    Spacer(Modifier.height(8.dp))
-                    Text(st, color = Muted, fontSize = 12.sp, textAlign = TextAlign.Center)
-                }
-            }
+            ListEntryForm(vm)
         }
         }
     }
@@ -343,6 +349,8 @@ fun AppWordmark(capDp: Int, pulse: Float = 1f) {
 private class LoadTip(val image: Int, val title: String, val text: String)
 
 private val LOAD_TIPS = listOf(
+    LoadTip(R.drawable.load_genres, "Sua lista, organizada", "Filmes, séries e canais se organizam sozinhos por gênero, com visual de Netflix — não importa de onde vem a sua lista."),
+    LoadTip(R.drawable.load_unify, "Mais de uma lista? Junte tudo", "Tem mais de uma assinatura? Entre com as duas e o app mostra tudo junto, num catálogo só."),
     LoadTip(R.drawable.load_feedback, "Novo: Fale com a gente", "Em Ajustes, aponte o celular para o QR code e mande um problema, uma ideia ou um elogio. A resposta aparece aqui na TV."),
     LoadTip(R.drawable.load_vivid, "Novo: Modo jogo", "No player, toque em Modo jogo: cores mais vivas e mais contraste, ótimo para futebol."),
     LoadTip(R.drawable.load_langs, "O app no seu idioma", "Português, inglês, espanhol, francês, italiano, alemão ou holandês. Troque quando quiser em Ajustes > Perfil."),
@@ -383,7 +391,7 @@ fun LoadingScreen(vm: MainViewModel) {
             var tipIdx by remember { mutableIntStateOf(0) }
             LaunchedEffect(Unit) {
                 while (true) {
-                    kotlinx.coroutines.delay(10_000)
+                    kotlinx.coroutines.delay(5_000)
                     tipIdx = (tipIdx + 1) % LOAD_TIPS.size
                 }
             }

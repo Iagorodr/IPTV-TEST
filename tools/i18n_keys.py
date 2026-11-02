@@ -21,6 +21,9 @@ EXTRA = [
     "Português, inglês, espanhol, francês, italiano, alemão ou holandês. Troque quando quiser em Ajustes > Perfil.",
     "Escolha seus times e ligas: os jogos aparecem no Início, com o dia, a hora e o canal onde passam.",
     "Quando um canal tem várias fontes, o app escolhe a mais estável ou a de melhor imagem (você decide em Ajustes) e troca sozinho se travar.",
+    "Sua lista, organizada", "Mais de uma lista? Junte tudo",
+    "Filmes, séries e canais se organizam sozinhos por gênero, com visual de Netflix — não importa de onde vem a sua lista.",
+    "Tem mais de uma assinatura? Entre com as duas e o app mostra tudo junto, num catálogo só.",
 ]
 
 

@@ -690,3 +690,9 @@
 689	When a channel has several sources, the app picks the most stable one or the one with the best picture (you decide in Settings) and switches by itself if it freezes.
 690	This device does not support game mode.
 691	Game mode made the video stutter on this device and was turned off.
+692	Just one more thing: your list
+693	This is the last step. Paste the Xtream details or M3U link you received, or use your phone to type with a better keyboard.
+694	Your list, organized
+695	More than one list? Bring it all together
+696	Movies, shows and channels organize themselves by genre, Netflix-style — no matter where your list comes from.
+697	Have more than one subscription? Add both and the app shows everything together, in one catalog.

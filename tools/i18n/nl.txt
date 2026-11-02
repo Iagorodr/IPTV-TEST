@@ -690,3 +690,9 @@
 689	Als een zender meerdere bronnen heeft, kiest de app de stabielste of die met het beste beeld (jij kiest in Instellingen) en wisselt vanzelf als hij vastloopt.
 690	Dit apparaat ondersteunt de wedstrijdmodus niet.
 691	De wedstrijdmodus liet de video op dit apparaat haperen en is uitgezet.
+692	Nu nog je lijst
+693	Dit is de laatste stap. Plak hier de Xtream-gegevens of de M3U-link die je hebt gekregen, of gebruik je telefoon om met een beter toetsenbord te typen.
+694	Jouw lijst, georganiseerd
+695	Meer dan één lijst? Voeg alles samen
+696	Films, series en zenders ordenen zichzelf per genre, in Netflix-stijl — het maakt niet uit waar je lijst vandaan komt.
+697	Heb je meer dan één abonnement? Voeg ze allebei toe en de app toont alles samen, in één catalogus.

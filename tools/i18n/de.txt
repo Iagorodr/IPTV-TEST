@@ -690,3 +690,9 @@
 689	Wenn ein Sender mehrere Quellen hat, wählt die App die stabilste oder die mit dem besten Bild (du entscheidest in den Einstellungen) und wechselt selbst, wenn es hängt.
 690	Dieses Gerät unterstützt den Spielmodus nicht.
 691	Der Spielmodus hat das Video auf diesem Gerät ruckeln lassen und wurde ausgeschaltet.
+692	Es fehlt nur noch deine Liste
+693	Das ist der letzte Schritt. Füge hier die Xtream-Daten oder den M3U-Link ein, den du erhalten hast, oder nutze dein Handy, um mit einer besseren Tastatur zu tippen.
+694	Deine Liste, organisiert
+695	Mehr als eine Liste? Alles zusammenführen
+696	Filme, Serien und Sender ordnen sich von selbst nach Genre, im Netflix-Stil — egal, woher deine Liste kommt.
+697	Hast du mehr als ein Abo? Füge beide hinzu, und die App zeigt alles zusammen in einem einzigen Katalog.

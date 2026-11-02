@@ -690,3 +690,9 @@
 689	Quand une chaîne a plusieurs sources, l’app choisit la plus stable ou celle avec la meilleure image (vous décidez dans Réglages) et change toute seule si ça bloque.
 690	Cet appareil ne prend pas en charge le mode match.
 691	Le mode match faisait saccader la vidéo sur cet appareil et a été désactivé.
+692	Il ne manque que votre liste
+693	C'est la dernière étape. Collez ici le Xtream ou le lien M3U que vous avez reçu, ou utilisez votre téléphone pour taper avec un meilleur clavier.
+694	Votre liste, organisée
+695	Plus d'une liste ? Rassemblez tout
+696	Films, séries et chaînes s'organisent tout seuls par genre, avec un visuel Netflix — peu importe d'où vient votre liste.
+697	Vous avez plusieurs abonnements ? Ajoutez-les tous les deux et l'app affiche tout ensemble, dans un seul catalogue.

@@ -690,3 +690,9 @@
 689	Cuando un canal tiene varias fuentes, la app elige la más estable o la de mejor imagen (tú decides en Ajustes) y cambia sola si se congela.
 690	Este dispositivo no admite el modo juego.
 691	El modo juego hacía que el vídeo fuera a tirones en este dispositivo y se desactivó.
+692	Solo falta tu lista
+693	Es el último paso. Pega aquí el Xtream o el enlace M3U que recibiste, o usa el celular para escribir con un teclado mejor.
+694	Tu lista, organizada
+695	¿Más de una lista? Júntalo todo
+696	Películas, series y canales se organizan solos por género, con estilo Netflix, sin importar de dónde venga tu lista.
+697	¿Tienes más de una suscripción? Agrega las dos y la app muestra todo junto, en un solo catálogo.

@@ -87,7 +87,7 @@ fun detectLang(device: String): String =
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WelcomeScreen(vm: MainViewModel) {
-    // 0 nome, 1 idioma, 2 fuso | 3 times, 4 gêneros
+    // 0 nome, 1 idioma, 2 fuso | 3 times, 4 gêneros | 5 lista (fecha sozinho quando a lista entra)
     var step by remember { mutableIntStateOf(if (vm.welcomeStage == 2) 3 else 0) }
     var name by rememberSaveable { mutableStateOf(vm.user.profileName) }
     var lang by rememberSaveable { mutableStateOf(vm.user.profileLang.ifEmpty { detectLang(vm.deviceLang()) }) }
@@ -98,7 +98,12 @@ fun WelcomeScreen(vm: MainViewModel) {
     val primary = remember { FocusRequester() }
     val nameField = remember { FocusRequester() }
 
-    BackHandler(enabled = step in 1..2 || step == 4) { step -= 1 }
+    // assim que a lista entra com sucesso (conta pronta), a abertura termina e cai direto na tela principal
+    LaunchedEffect(vm.account) {
+        if (vm.account != null) vm.finishWelcome()
+    }
+
+    BackHandler(enabled = step in 1..2 || step == 4 || step == 5) { step -= 1 }
 
     LaunchedEffect(step) {
         delay(160)
@@ -121,7 +126,7 @@ fun WelcomeScreen(vm: MainViewModel) {
             Text(stringResource(R.string.app_name), color = TextMain, fontSize = 24.sp, fontWeight = FontWeight.Light, letterSpacing = 8.sp)
             Spacer(Modifier.height(14.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                for (i in 0..4) {
+                for (i in 0..5) {
                     val w by animateDpAsState(if (i == step) 26.dp else 8.dp, label = "dot")
                     Box(
                         Modifier
@@ -214,15 +219,31 @@ fun WelcomeScreen(vm: MainViewModel) {
                                 TvButton(text = if (n == 0) tr("Pular") else tr("Continuar"), primary = n > 0, minWidth = 140.dp) { step = 4 }
                             }
                         }
-                        else -> {
+                        4 -> {
                             StepHeader(tr("O que você mais curte?"), tr("Opcional. Escolha até 3 gêneros. Eles aparecem primeiro nos destaques."))
                             GenreChips(vm, centered = true)
                             Spacer(Modifier.height(22.dp))
                             val any = vm.user.favGenres.isNotEmpty()
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                 TvButton(text = tr("Voltar"), minWidth = 120.dp) { step = 3 }
-                                TvButton(text = if (any) tr("Começar") else tr("Pular"), primary = true, minWidth = 140.dp, focusRequester = primary) { vm.finishWelcome() }
+                                TvButton(text = if (any) tr("Continuar") else tr("Pular"), primary = true, minWidth = 140.dp, focusRequester = primary) { step = 5 }
                             }
+                        }
+                        else -> {
+                            StepHeader(tr("Falta só a sua lista"), tr("É a última etapa. Cole aqui o Xtream ou o link M3U que você recebeu, ou use o celular para digitar com um teclado melhor."))
+                            Spacer(Modifier.height(4.dp))
+                            Column(
+                                modifier = Modifier
+                                    .width(560.dp)
+                                    .clip(RoundedCornerShape(22.dp))
+                                    .background(Color(0xE6161E2F))
+                                    .padding(24.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                ListEntryForm(vm)
+                            }
+                            Spacer(Modifier.height(18.dp))
+                            TvButton(text = tr("Voltar"), minWidth = 120.dp) { step = 4 }
                         }
                     }
                 }
