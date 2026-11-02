@@ -696,3 +696,6 @@
 695	Plus d'une liste ? Rassemblez tout
 696	Films, séries et chaînes s'organisent tout seuls par genre, avec un visuel Netflix — peu importe d'où vient votre liste.
 697	Vous avez plusieurs abonnements ? Ajoutez-les tous les deux et l'app affiche tout ensemble, dans un seul catalogue.
+698	Soutenir
+699	Soutenir le projet
+700	Vous aimez l'app ? Scannez ici avec votre téléphone pour faire un don via PayPal. Chaque contribution aide à la faire vivre.

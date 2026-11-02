@@ -696,3 +696,6 @@
 695	¿Más de una lista? Júntalo todo
 696	Películas, series y canales se organizan solos por género, con estilo Netflix, sin importar de dónde venga tu lista.
 697	¿Tienes más de una suscripción? Agrega las dos y la app muestra todo junto, en un solo catálogo.
+698	Apoyar
+699	Apoyar el proyecto
+700	¿Te gusta la app? Apunta el celular aquí y dona por PayPal. Cualquier cantidad ayuda a mantenerla.

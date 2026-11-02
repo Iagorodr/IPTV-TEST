@@ -696,3 +696,6 @@
 695	Mehr als eine Liste? Alles zusammenführen
 696	Filme, Serien und Sender ordnen sich von selbst nach Genre, im Netflix-Stil — egal, woher deine Liste kommt.
 697	Hast du mehr als ein Abo? Füge beide hinzu, und die App zeigt alles zusammen in einem einzigen Katalog.
+698	Unterstützen
+699	Projekt unterstützen
+700	Gefällt dir die App? Scanne hier mit dem Handy und spende über PayPal. Jeder Betrag hilft, sie am Laufen zu halten.

@@ -696,3 +696,6 @@
 695	Meer dan één lijst? Voeg alles samen
 696	Films, series en zenders ordenen zichzelf per genre, in Netflix-stijl — het maakt niet uit waar je lijst vandaan komt.
 697	Heb je meer dan één abonnement? Voeg ze allebei toe en de app toont alles samen, in één catalogus.
+698	Steunen
+699	Project steunen
+700	Vind je de app goed? Scan hier met je telefoon en doneer via PayPal. Elk bedrag helpt om alles draaiende te houden.

@@ -348,6 +348,9 @@ fun AppWordmark(capDp: Int, pulse: Float = 1f) {
 /** Uma tela de dica/novidade do carregamento: ilustração (sem texto, vale para todos os idiomas) + título + explicação. */
 private class LoadTip(val image: Int, val title: String, val text: String)
 
+/** Link fixo de doação (PayPal). Usado no QR discreto do carregamento e no de Ajustes > Fale com a gente. */
+private const val DONATE_URL = "https://paypal.me/1GROD"
+
 private val LOAD_TIPS = listOf(
     LoadTip(R.drawable.load_genres, "Sua lista, organizada", "Filmes, séries e canais se organizam sozinhos por gênero, com visual de Netflix — não importa de onde vem a sua lista."),
     LoadTip(R.drawable.load_unify, "Mais de uma lista? Junte tudo", "Tem mais de uma assinatura? Entre com as duas e o app mostra tudo junto, num catálogo só."),
@@ -463,6 +466,15 @@ fun LoadingScreen(vm: MainViewModel) {
                     modifier = Modifier.widthIn(max = 720.dp),
                 )
             }
+        }
+        // QR discreto e fixo (não some com o carrossel de dicas) para quem quiser apoiar o projeto
+        Column(
+            modifier = Modifier.align(Alignment.BottomEnd).padding(18.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            QrCode(text = DONATE_URL, modifier = Modifier.size(56.dp))
+            Spacer(Modifier.height(4.dp))
+            Text(tr("Apoiar"), color = Muted, fontSize = 10.sp)
         }
     }
 }
@@ -1807,8 +1819,15 @@ private fun FeedbackSection(vm: MainViewModel) {
                 Text(tr("2. Escreva sua mensagem e toque em Enviar."), color = TextMain, fontSize = 15.sp)
                 Text(tr("3. A resposta aparece aqui na TV e na mesma página do celular."), color = TextMain, fontSize = 15.sp)
                 Spacer(Modifier.height(4.dp))
-                Text(tr("Na página também dá para apoiar o app com uma doação, se quiser."), color = Muted, fontSize = 13.sp)
                 Text(tr("Código deste aparelho: ") + vm.deviceCode(), color = Muted, fontSize = 13.sp, letterSpacing = 1.sp)
+            }
+        }
+        Spacer(Modifier.height(28.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
+            QrCode(text = DONATE_URL, modifier = Modifier.size(130.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.widthIn(max = 420.dp)) {
+                Text(tr("Apoiar o projeto"), color = Accent, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Curtiu o app? Aponte o celular aqui e doe pelo PayPal. Qualquer valor ajuda a manter tudo no ar."), color = Muted, fontSize = 13.sp)
             }
         }
     }

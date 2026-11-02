@@ -696,3 +696,6 @@
 695	Più di una lista? Unisci tutto
 696	Film, serie e canali si organizzano da soli per genere, con un look stile Netflix, non importa da dove viene la tua lista.
 697	Hai più di un abbonamento? Aggiungili entrambi e l'app mostra tutto insieme, in un unico catalogo.
+698	Sostieni
+699	Sostieni il progetto
+700	Ti piace l'app? Inquadra qui con il cellulare e fai una donazione con PayPal. Ogni importo aiuta a mantenerla attiva.

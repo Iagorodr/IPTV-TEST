@@ -696,3 +696,6 @@
 695	More than one list? Bring it all together
 696	Movies, shows and channels organize themselves by genre, Netflix-style — no matter where your list comes from.
 697	Have more than one subscription? Add both and the app shows everything together, in one catalog.
+698	Support
+699	Support the project
+700	Enjoying the app? Scan here with your phone to donate via PayPal. Any amount helps keep it running.
