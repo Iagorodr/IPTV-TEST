@@ -1871,10 +1871,12 @@ private fun describeError(e: PlaybackException): String {
 
 
 /**
- * Modo jogo: cores mais vivas (saturação +30) e um pouco mais de contraste (+0,12), como as TVs fazem no modo
+ * Modo jogo: cores mais vivas (saturação +30) e um pouco mais de contraste (+0,07), como as TVs fazem no modo
  * "esporte/vívido". Aplicado pela placa de vídeo dentro do player. Não é HDR de verdade (o canal manda imagem comum).
+ * Só esses dois ajustes de cor (sem nitidez): um filtro de nitidez de verdade amostra os pixels vizinhos, o que pesa
+ * bem mais na placa de vídeo — é o tipo de efeito que já deixou o Modo jogo travando antes, então não vale o risco.
  */
 private fun vividEffects(): List<androidx.media3.common.Effect> = listOf(
     androidx.media3.effect.HslAdjustment.Builder().adjustSaturation(30f).build(),
-    androidx.media3.effect.Contrast(0.12f),
+    androidx.media3.effect.Contrast(0.07f),
 )

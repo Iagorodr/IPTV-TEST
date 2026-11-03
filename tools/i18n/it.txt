@@ -699,3 +699,13 @@
 698	Sostieni
 699	Sostieni il progetto
 700	Ti piace l'app? Inquadra qui con il cellulare e fai una donazione con PayPal. Ogni importo aiuta a mantenerla attiva.
+701	Paese
+702	Problema
+703	Suggerimento
+704	Complimento
+705	Altro
+706	I tuoi messaggi
+707	Aggiorna
+708	Ancora nessun messaggio.
+709	Risposta
+710	In attesa di risposta

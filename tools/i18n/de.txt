@@ -699,3 +699,13 @@
 698	Unterstützen
 699	Projekt unterstützen
 700	Gefällt dir die App? Scanne hier mit dem Handy und spende über PayPal. Jeder Betrag hilft, sie am Laufen zu halten.
+701	Land
+702	Problem
+703	Vorschlag
+704	Lob
+705	Sonstiges
+706	Deine Nachrichten
+707	Aktualisieren
+708	Noch keine Nachrichten.
+709	Antwort
+710	Wartet auf Antwort

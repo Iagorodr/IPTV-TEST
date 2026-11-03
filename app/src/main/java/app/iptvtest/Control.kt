@@ -24,6 +24,19 @@ object Control {
     /** [status]: "active" (liberado), "pending" (esperando liberação) ou "blocked" (suspenso). */
     class Reply(val status: String, val notice: String?, val noticeId: Int, val noticeSecs: Int = 0)
 
+    /** Uma mensagem já mandada por este aparelho no Fale com a gente, com a resposta se já tiver. */
+    class FeedbackItem(val kind: String, val message: String, val reply: String?, val createdAt: Long, val repliedAt: Long)
+
+    /** "2026-11-03T20:49:12.345+00:00" -> milissegundos (ignora frações e fuso: o servidor sempre manda UTC). */
+    private fun parseIsoUtc(s: String): Long = try {
+        val core = s.substringBefore('.').substringBefore('+')
+        val fmt = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)
+        fmt.timeZone = java.util.TimeZone.getTimeZone("UTC")
+        fmt.parse(core)?.time ?: 0L
+    } catch (e: Exception) {
+        0L
+    }
+
     private fun prefs(ctx: Context) = ctx.getSharedPreferences("iptv_control", Context.MODE_PRIVATE)
 
     fun installId(ctx: Context): String {
@@ -135,6 +148,46 @@ object Control {
             }
         } catch (e: Exception) {
             null
+        }
+    }
+
+    /** Até 20 mensagens que este aparelho já mandou no Fale com a gente, mais novas primeiro, com a resposta se já tiver. */
+    suspend fun myFeedback(ctx: Context): List<FeedbackItem> = withContext(Dispatchers.IO) {
+        try {
+            val body = JSONObject().put("p_id", installId(ctx))
+            val conn = URL(BASE + "my_feedback").openConnection() as HttpURLConnection
+            try {
+                conn.connectTimeout = 8_000
+                conn.readTimeout = 10_000
+                conn.requestMethod = "POST"
+                conn.doOutput = true
+                conn.setRequestProperty("apikey", KEY)
+                conn.setRequestProperty("Content-Type", "application/json")
+                conn.outputStream.use { it.write(body.toString().toByteArray(Charsets.UTF_8)) }
+                if (conn.responseCode !in 200..299) return@withContext emptyList()
+                val o = JSONObject(conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() })
+                if (!o.optBoolean("ok", false)) return@withContext emptyList()
+                val arr = o.optJSONArray("items") ?: return@withContext emptyList()
+                val out = ArrayList<FeedbackItem>(arr.length())
+                for (i in 0 until arr.length()) {
+                    val f = arr.optJSONObject(i) ?: continue
+                    val reply = if (f.isNull("reply")) null else f.optString("reply").ifEmpty { null }
+                    out.add(
+                        FeedbackItem(
+                            kind = f.optString("kind"),
+                            message = f.optString("message"),
+                            reply = reply,
+                            createdAt = parseIsoUtc(f.optString("created_at")),
+                            repliedAt = if (f.isNull("replied_at")) 0L else parseIsoUtc(f.optString("replied_at")),
+                        ),
+                    )
+                }
+                out
+            } finally {
+                conn.disconnect()
+            }
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 

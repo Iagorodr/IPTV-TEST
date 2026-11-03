@@ -182,6 +182,21 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     /** Página "Fale com a gente" deste aparelho (abre no celular pelo QR code; o id do aparelho identifica as mensagens). */
     fun feedbackUrl(): String = "https://iagorodr.github.io/IPTV-TEST/fale/?d=" + Control.installId(appCtx)
 
+    /** Mensagens já mandadas por este aparelho (com a resposta, se já tiver): mantém o contexto na tela de Fale com a gente. */
+    var feedbackHistory by mutableStateOf<List<Control.FeedbackItem>>(emptyList())
+        private set
+    var feedbackHistoryLoading by mutableStateOf(false)
+        private set
+
+    fun loadFeedbackHistory() {
+        if (feedbackHistoryLoading) return
+        feedbackHistoryLoading = true
+        viewModelScope.launch {
+            feedbackHistory = Control.myFeedback(appCtx)
+            feedbackHistoryLoading = false
+        }
+    }
+
     // ---- catálogo
     var catalog by mutableStateOf<Catalog?>(null)
         private set

@@ -699,3 +699,13 @@
 698	Support
 699	Support the project
 700	Enjoying the app? Scan here with your phone to donate via PayPal. Any amount helps keep it running.
+701	Country
+702	Problem
+703	Suggestion
+704	Praise
+705	Other
+706	Your messages
+707	Refresh
+708	No messages yet.
+709	Reply
+710	Waiting for a reply

@@ -1590,7 +1590,7 @@ private fun CountrySection(vm: MainViewModel) {
         item {
             Column {
                 SectionTitle(
-                    tr("País e idioma"),
+                    tr("País"),
                     tr("Para listas com conteúdo de vários países. Escolha o que quer ver: o resto fica escondido. ") +
                         tr("Dentro de Canais, Filmes e Séries ainda dá para escolher um só destes países pelo botão \"País\"."),
                 )
@@ -1803,25 +1803,6 @@ private fun AboutSection(vm: MainViewModel) {
             Spacer(Modifier.height(6.dp))
             Text(um, color = Muted, fontSize = 12.sp)
         }
-    }
-}
-
-/** Ajustes > Fale com a gente: QR code que abre, no celular, a página para mandar problema, ideia ou elogio (e doar). */
-@Composable
-private fun FeedbackSection(vm: MainViewModel) {
-    Column(modifier = Modifier.fillMaxSize().padding(end = 40.dp, top = 6.dp)) {
-        SectionTitle(tr("Fale com a gente"), tr("Problema, ideia, elogio ou apoio a quem fez o app."))
-        Spacer(Modifier.height(18.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
-            QrCode(text = vm.feedbackUrl(), modifier = Modifier.size(200.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.widthIn(max = 420.dp)) {
-                Text(tr("1. Aponte a câmera do celular para o QR code."), color = TextMain, fontSize = 15.sp)
-                Text(tr("2. Escreva sua mensagem e toque em Enviar."), color = TextMain, fontSize = 15.sp)
-                Text(tr("3. A resposta aparece aqui na TV e na mesma página do celular."), color = TextMain, fontSize = 15.sp)
-                Spacer(Modifier.height(4.dp))
-                Text(tr("Código deste aparelho: ") + vm.deviceCode(), color = Muted, fontSize = 13.sp, letterSpacing = 1.sp)
-            }
-        }
         Spacer(Modifier.height(28.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
             QrCode(text = DONATE_URL, modifier = Modifier.size(130.dp))
@@ -1833,10 +1814,93 @@ private fun FeedbackSection(vm: MainViewModel) {
     }
 }
 
+/** Rótulo mostrado para cada tipo de mensagem do Fale com a gente. */
+private fun feedbackKindLabel(kind: String): String = when (kind) {
+    "problema" -> tr("Problema")
+    "melhoria" -> tr("Melhoria")
+    "elogio" -> tr("Elogio")
+    else -> tr("Outro")
+}
+
+/** "03/11 20:49" na hora do aparelho, a partir de milissegundos UTC. */
+private fun feedbackWhen(ms: Long): String {
+    if (ms <= 0L) return ""
+    val fmt = java.text.SimpleDateFormat("dd/MM HH:mm", java.util.Locale.getDefault())
+    return fmt.format(java.util.Date(ms))
+}
+
+/** Ajustes > Fale com a gente: QR code que abre, no celular, a página para mandar problema, ideia ou elogio, e o
+ * histórico do que este aparelho já mandou (com a resposta, se já tiver), para não perder o contexto. */
+@Composable
+private fun FeedbackSection(vm: MainViewModel) {
+    LaunchedEffect(Unit) { vm.loadFeedbackHistory() }
+    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(end = 40.dp, top = 6.dp, bottom = 30.dp)) {
+        item {
+            SectionTitle(tr("Fale com a gente"), tr("Problema, ideia, elogio ou apoio a quem fez o app."))
+            Spacer(Modifier.height(18.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(28.dp), verticalAlignment = Alignment.CenterVertically) {
+                QrCode(text = vm.feedbackUrl(), modifier = Modifier.size(200.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.widthIn(max = 420.dp)) {
+                    Text(tr("1. Aponte a câmera do celular para o QR code."), color = TextMain, fontSize = 15.sp)
+                    Text(tr("2. Escreva sua mensagem e toque em Enviar."), color = TextMain, fontSize = 15.sp)
+                    Text(tr("3. A resposta aparece aqui na TV e na mesma página do celular."), color = TextMain, fontSize = 15.sp)
+                    Spacer(Modifier.height(4.dp))
+                    Text(tr("Código deste aparelho: ") + vm.deviceCode(), color = Muted, fontSize = 13.sp, letterSpacing = 1.sp)
+                }
+            }
+            Spacer(Modifier.height(30.dp))
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.width(600.dp)) {
+                Text(tr("Suas mensagens"), color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.weight(1f))
+                TvButton(text = tr("Atualizar")) { vm.loadFeedbackHistory() }
+            }
+            Spacer(Modifier.height(10.dp))
+            if (vm.feedbackHistory.isEmpty() && !vm.feedbackHistoryLoading) {
+                Text(tr("Nenhuma mensagem ainda."), color = Muted, fontSize = 13.sp)
+            }
+        }
+        items(vm.feedbackHistory) { f ->
+            Column(
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .width(600.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Panel)
+                    .padding(16.dp),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(feedbackKindLabel(f.kind), color = Accent, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                    Spacer(Modifier.weight(1f))
+                    Text(feedbackWhen(f.createdAt), color = Muted, fontSize = 12.sp)
+                }
+                Spacer(Modifier.height(6.dp))
+                Text(f.message, color = TextMain, fontSize = 14.sp)
+                val reply = f.reply
+                if (reply != null) {
+                    Spacer(Modifier.height(10.dp))
+                    Column(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(Accent.copy(alpha = 0.12f))
+                            .padding(10.dp),
+                    ) {
+                        Text(tr("Resposta") + " · " + feedbackWhen(f.repliedAt), color = Accent, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                        Spacer(Modifier.height(4.dp))
+                        Text(reply, color = TextMain, fontSize = 13.sp)
+                    }
+                } else {
+                    Spacer(Modifier.height(6.dp))
+                    Text(tr("Aguardando resposta"), color = Muted, fontSize = 12.sp)
+                }
+            }
+        }
+    }
+}
+
 @Composable
 fun SettingsTab(vm: MainViewModel) {
     var section by rememberSaveable { mutableIntStateOf(0) }
-    val names = listOf(tr("Listas"), tr("País e idioma"), tr("Catálogo"), tr("Esportes"), tr("Canais ao vivo"), tr("Perfil"), tr("Fale com a gente"), tr("Sobre"))
+    val names = listOf(tr("Listas"), tr("País"), tr("Catálogo"), tr("Esportes"), tr("Canais ao vivo"), tr("Perfil"), tr("Fale com a gente"), tr("Sobre"))
     Column(modifier = Modifier.fillMaxSize()) {
         TopNav(vm)
         Row(modifier = Modifier.fillMaxSize().padding(start = 40.dp, top = 8.dp)) {
