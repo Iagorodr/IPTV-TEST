@@ -28,6 +28,16 @@ val AppBackground: Brush = Brush.linearGradient(
     colorStops = arrayOf(0f to Bg, 0.42f to Color(0xFF242F49), 1f to Wine),
 )
 
+/**
+ * Fundo do modo infantil: mesma forma do AppBackground (mesmos pontos de parada), mas em tons quentes
+ * (âmbar → rosa escuro), ecoando as cores do avatar infantil (kidA/kidB em Screens.kt), para quem está
+ * usando a TV perceber de cara que está na área infantil, sem mexer no resto das cores do app (painéis,
+ * texto) para não arriscar contraste ou pesar na renderização.
+ */
+val KidsAppBackground: Brush = Brush.linearGradient(
+    colorStops = arrayOf(0f to Color(0xFF2E2111), 0.42f to Color(0xFF3A2A1C), 1f to Color(0xFF4A1E33)),
+)
+
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
     // visual minimalista: todo o texto do app um pouco menor

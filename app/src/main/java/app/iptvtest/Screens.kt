@@ -371,7 +371,7 @@ fun LoadingScreen(vm: MainViewModel) {
         animationSpec = androidx.compose.animation.core.infiniteRepeatable(tween<Float>(900), androidx.compose.animation.core.RepeatMode.Reverse),
         label = "scale",
     )
-    Box(modifier = Modifier.fillMaxSize().background(AppBackground)) {
+    Box(modifier = Modifier.fillMaxSize().background(if (vm.user.kidsMode) KidsAppBackground else AppBackground)) {
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 64.dp, vertical = 36.dp)) {
             // a logo escrita (IPTVRO + o D que aponta + PRO), com o D pulsando enquanto carrega
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { AppWordmark(capDp = 30, pulse = scale) }

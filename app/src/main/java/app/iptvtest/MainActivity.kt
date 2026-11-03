@@ -264,7 +264,7 @@ fun App(vm: MainViewModel = viewModel()) {
         }
     }
 
-    Surface(modifier = Modifier.fillMaxSize().background(AppBackground), color = Color.Transparent, contentColor = TextMain) {
+    Surface(modifier = Modifier.fillMaxSize().background(if (vm.user.kidsMode) KidsAppBackground else AppBackground), color = Color.Transparent, contentColor = TextMain) {
         when {
             vm.blocked -> BlockedScreen(vm)
             vm.recMode != null -> RecordingModeScreen(vm)
