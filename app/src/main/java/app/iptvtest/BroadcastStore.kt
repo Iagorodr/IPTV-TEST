@@ -25,6 +25,7 @@ object BroadcastStore {
     val COUNTRIES: List<Pair<String, String>> = listOf(
         "BR" to "Brasil", "PT" to "Portugal", "BE" to "Bélgica", "ES" to "Espanha",
         "UK" to "Reino Unido", "FR" to "França", "US" to "EUA",
+        "DE" to "Alemanha", "IT" to "Itália", "NL" to "Holanda",
     )
 
     /** Países cujas tabelas estão ativas agora (até 3), na ordem de prioridade. */
@@ -66,6 +67,9 @@ object BroadcastStore {
         "UK" -> "Europe/London"
         "FR" -> "Europe/Paris"
         "US" -> "America/New_York"
+        "DE" -> "Europe/Berlin"
+        "IT" -> "Europe/Rome"
+        "NL" -> "Europe/Amsterdam"
         else -> "America/Sao_Paulo"
     }
 

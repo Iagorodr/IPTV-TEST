@@ -709,3 +709,4 @@
 708	Ancora nessun messaggio.
 709	Risposta
 710	In attesa di risposta
+711	Assistenza

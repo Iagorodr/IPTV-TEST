@@ -77,6 +77,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     /** 0 = fica na tela até a pessoa fechar; maior que 0 = some sozinho depois desses segundos. */
     var noticeSecs by mutableIntStateOf(0)
         private set
+
+    /** "aviso" (mensagem geral) ou "suporte" (resposta de uma mensagem do Fale com a gente): decide o rótulo na tela. */
+    var noticeKind by mutableStateOf("aviso")
+        private set
     @Volatile private var foreground = true
     private var controlJob: Job? = null
 
@@ -110,6 +114,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             if (notice?.first != r.noticeId) {
                 notice = r.noticeId to n
                 noticeSecs = r.noticeSecs
+                noticeKind = r.noticeKind
             }
         } else if (notice != null && n == null) {
             notice = null

@@ -312,7 +312,7 @@ fun App(vm: MainViewModel = viewModel()) {
         // aviso de quem desenvolve o app (aparece uma vez por aviso)
         val note = vm.notice
         if (note != null && !vm.blocked) {
-            if (vm.noticeSecs > 0) NoticeBanner(vm, note.first, note.second, vm.noticeSecs) else NoticeDialog(vm, note.second)
+            if (vm.noticeSecs > 0) NoticeBanner(vm, note.first, note.second, vm.noticeSecs, vm.noticeKind) else NoticeDialog(vm, note.second)
         }
 
         // relógio do aparelho errado
@@ -613,7 +613,7 @@ private fun NoticeDialog(vm: MainViewModel, text: String) {
 
 /** Aviso com tempo: faixa no topo, sem tirar o controle do filme ou canal; some sozinho. */
 @Composable
-private fun NoticeBanner(vm: MainViewModel, id: Int, text: String, secs: Int) {
+private fun NoticeBanner(vm: MainViewModel, id: Int, text: String, secs: Int, kind: String = "aviso") {
     LaunchedEffect(id) {
         delay(secs * 1000L)
         vm.dismissNotice()
@@ -629,7 +629,10 @@ private fun NoticeBanner(vm: MainViewModel, id: Int, text: String, secs: Int) {
                 .padding(horizontal = 24.dp, vertical = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(tr("Aviso"), color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+            Text(
+                if (kind == "suporte") tr("Suporte") else tr("Aviso"),
+                color = Accent, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp,
+            )
             Spacer(Modifier.height(4.dp))
             Text(text, color = TextMain, fontSize = 16.sp, textAlign = TextAlign.Center)
         }

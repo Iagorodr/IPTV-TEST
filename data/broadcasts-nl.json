@@ -1,0 +1,33 @@
+{
+  "updated": "2026-11-03",
+  "country": "NL",
+  "tz": "Europe/Amsterdam",
+  "comps": {
+    "ned.1": {
+      "label": "Eredivisie",
+      "options": ["ESPN"],
+      "note": "ESPN transmite os jogos; a NOS mostra só os melhores momentos (fonte: vi.nl, 2026)."
+    },
+    "uefa.champions": {
+      "label": "Champions League",
+      "options": ["Ziggo Sport"],
+      "note": "Ziggo Sport; jogos de clube holandês e as finais europeias são de graça no Ziggo Sport Free, o resto precisa de assinatura (fonte: vi.nl, 2026)."
+    },
+    "uefa.europa": {
+      "label": "Europa League",
+      "options": ["Ziggo Sport"],
+      "note": "Mesma regra da Champions League (fonte: vi.nl, 2026)."
+    },
+    "uefa.europa.conf": {
+      "label": "Conference League",
+      "options": ["Ziggo Sport"],
+      "note": "Mesma regra da Champions League (fonte: vi.nl, 2026)."
+    },
+    "eng.1": { "label": "Premier League", "options": ["ESPN", "Ziggo Sport"], "note": "Não verificado nesta semana." },
+    "esp.1": { "label": "LaLiga", "options": ["ESPN"], "note": "Não verificado nesta semana." },
+    "ita.1": { "label": "Serie A", "options": ["ESPN"], "note": "Não verificado nesta semana." },
+    "ger.1": { "label": "Bundesliga", "options": ["ESPN", "Ziggo Sport"], "note": "Não verificado nesta semana." },
+    "fra.1": { "label": "Ligue 1", "options": ["ESPN"], "note": "Não verificado nesta semana." }
+  },
+  "games": []
+}

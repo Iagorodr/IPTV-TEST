@@ -1,0 +1,37 @@
+{
+  "updated": "2026-11-03",
+  "country": "IT",
+  "tz": "Europe/Rome",
+  "comps": {
+    "ita.1": {
+      "label": "Serie A",
+      "options": ["DAZN", "Sky Italia"],
+      "note": "DAZN mostra todas as 380 partidas da temporada (até 5 de graça); Sky tem 3 jogos co-exclusivos por rodada, no satélite e no NOW (fonte: calcioefinanza.it, jun/2026)."
+    },
+    "ita.coppa_italia": {
+      "label": "Coppa Italia",
+      "options": ["Mediaset"],
+      "note": "Coppa Italia e Supercoppa com a Mediaset (Canale 5/Italia 1/Infinity+). Canal exato não verificado nesta semana."
+    },
+    "uefa.champions": {
+      "label": "Champions League",
+      "options": ["Sky Italia", "Prime Video"],
+      "note": "Sky com 185 dos 203 jogos (satélite e NOW); Prime Video com o jogo de quarta-feira (18 partidas) (fonte: calcioefinanza.it, jun/2026)."
+    },
+    "uefa.europa": {
+      "label": "Europa League",
+      "options": ["Sky Italia"],
+      "note": "Sky, satélite e streaming (fonte: calcioefinanza.it, jun/2026)."
+    },
+    "uefa.europa.conf": {
+      "label": "Conference League",
+      "options": ["Sky Italia"],
+      "note": "Sky, satélite e streaming (fonte: calcioefinanza.it, jun/2026)."
+    },
+    "eng.1": { "label": "Premier League", "options": ["Sky Italia", "DAZN"], "note": "Não verificado nesta semana." },
+    "esp.1": { "label": "LaLiga", "options": ["DAZN"], "note": "Não verificado nesta semana." },
+    "ger.1": { "label": "Bundesliga", "options": ["DAZN"], "note": "Não verificado nesta semana." },
+    "fra.1": { "label": "Ligue 1", "options": ["DAZN"], "note": "Não verificado nesta semana." }
+  },
+  "games": []
+}

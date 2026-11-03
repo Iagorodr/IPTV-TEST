@@ -115,6 +115,14 @@ object Broadcasts {
         "Fox" to listOf("fox"),
         "ESPN+" to listOf("espn"),
         "Univision" to listOf("univision"),
+        // Alemanha
+        "Sky Deutschland" to listOf("sky sport", "sky bundesliga", "sky deutschland"),
+        "RTL+" to listOf("rtl+", "rtl plus"),
+        // Itália
+        "Sky Italia" to listOf("sky sport", "sky calcio", "sky italia"),
+        "Mediaset" to listOf("mediaset", "canale 5", "italia 1", "infinity+"),
+        // Holanda
+        "Ziggo Sport" to listOf("ziggo sport", "ziggo"),
     )
 
     /** [words] aparece em [hay] como palavra(s) inteira(s). Sem criar textos novos: roda dezenas de milhares de vezes. */

@@ -1,0 +1,37 @@
+{
+  "updated": "2026-11-03",
+  "country": "DE",
+  "tz": "Europe/Berlin",
+  "comps": {
+    "ger.1": {
+      "label": "Bundesliga",
+      "options": ["DAZN", "Sky Deutschland"],
+      "note": "DAZN: conferência de sábado 15:30 e os jogos de domingo. Sky: jogos avulsos de sábado 15:30, sexta à noite, sábado 18:30 e a Supercopa (fonte: kicker, nov/2026, pacotes 2025/26-2028/29)."
+    },
+    "ger.dfb_pokal": {
+      "label": "DFB-Pokal",
+      "options": ["Sky Deutschland", "RTL+"],
+      "note": "Sky mostra os 63 jogos ao vivo; RTL+ também tem os jogos no pacote premium; parte das primeiras rodadas vai pro RTL aberto. Não verificado nesta semana."
+    },
+    "uefa.champions": {
+      "label": "Champions League",
+      "options": ["DAZN", "Prime Video"],
+      "note": "Temporada 2026/27: DAZN exclusivo na maioria dos jogos; Prime Video com o jogo de terça-feira em destaque. Última temporada da DAZN antes da troca pra Paramount+/Amazon em 2027/28 (fonte: monsterdealz.de, nov/2026)."
+    },
+    "uefa.europa": {
+      "label": "Europa League",
+      "options": ["Sky Deutschland", "RTL+"],
+      "note": "Sky com os principais jogos (geralmente com clube alemão); RTL+ com uma conferência extra. Contrato só vale esta temporada. Não verificado nesta semana."
+    },
+    "uefa.europa.conf": {
+      "label": "Conference League",
+      "options": ["Sky Deutschland", "RTL+"],
+      "note": "Mesmo pacote da Europa League. Não verificado nesta semana."
+    },
+    "eng.1": { "label": "Premier League", "options": ["Sky Deutschland", "DAZN"], "note": "Não verificado nesta semana." },
+    "esp.1": { "label": "LaLiga", "options": ["DAZN"], "note": "Não verificado nesta semana." },
+    "ita.1": { "label": "Serie A", "options": ["DAZN"], "note": "Não verificado nesta semana." },
+    "fra.1": { "label": "Ligue 1", "options": ["DAZN"], "note": "Não verificado nesta semana." }
+  },
+  "games": []
+}

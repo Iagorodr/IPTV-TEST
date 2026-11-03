@@ -21,8 +21,9 @@ object Control {
     // chave pública (publishable) do projeto: só deixa chamar a função "ping", não lê nem altera tabelas
     private const val KEY = "sb_publishable_REBiG8eo1E96bSyY1ih1aQ_QxbXS2Li"
 
-    /** [status]: "active" (liberado), "pending" (esperando liberação) ou "blocked" (suspenso). */
-    class Reply(val status: String, val notice: String?, val noticeId: Int, val noticeSecs: Int = 0)
+    /** [status]: "active" (liberado), "pending" (esperando liberação) ou "blocked" (suspenso).
+     * [noticeKind]: "aviso" (mensagem geral) ou "suporte" (resposta de uma mensagem do Fale com a gente). */
+    class Reply(val status: String, val notice: String?, val noticeId: Int, val noticeSecs: Int = 0, val noticeKind: String = "aviso")
 
     /** Uma mensagem já mandada por este aparelho no Fale com a gente, com a resposta se já tiver. */
     class FeedbackItem(val kind: String, val message: String, val reply: String?, val createdAt: Long, val repliedAt: Long)
@@ -142,7 +143,7 @@ object Control {
                 val status = o.optString("status").ifEmpty { "pending" }
                 val notice = if (o.isNull("notice")) null else o.optString("notice").trim().ifEmpty { null }
                 prefs(ctx).edit().putString("status", status).apply()
-                Reply(status, notice, o.optInt("notice_id", 0), o.optInt("notice_secs", 0))
+                Reply(status, notice, o.optInt("notice_id", 0), o.optInt("notice_secs", 0), o.optString("notice_kind", "aviso"))
             } finally {
                 conn.disconnect()
             }
@@ -210,7 +211,7 @@ object Control {
                 val status = o.optString("status").ifEmpty { "pending" }
                 val notice = if (o.isNull("notice")) null else o.optString("notice").trim().ifEmpty { null }
                 prefs(ctx).edit().putString("status", status).apply()
-                Reply(status, notice, o.optInt("notice_id", 0), o.optInt("notice_secs", 0))
+                Reply(status, notice, o.optInt("notice_id", 0), o.optInt("notice_secs", 0), o.optString("notice_kind", "aviso"))
             } finally {
                 conn.disconnect()
             }
