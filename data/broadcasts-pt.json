@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-11-05",
   "country": "PT",
   "tz": "Europe/Lisbon",
   "note": "Onde costuma passar em Portugal. Pesquisado em agendas públicas e pode estar desatualizado; jogos 'prováveis' vêm de uma agenda de TV agregadora.",
@@ -36,7 +36,7 @@
         "Sporting TV",
         "FC Porto Canal"
       ],
-      "note": "Sport TV (1, 2, 6) passa a maioria; jogos em casa do Benfica podem ser só na Benfica TV (ex.: Benfica x Alverca, 2/11)."
+      "note": "Sport TV tem quase todos os jogos; jogos do Benfica na Luz vão na BTV (Benfica TV); alguns jogos do Moreirense em casa na TVI ou V+."
     },
     "por.taca": {
       "label": "Taça de Portugal",
@@ -114,89 +114,6 @@
   },
   "games": [
     {
-      "d": "2026-10-28",
-      "comp": "por.taca_liga",
-      "h": "FC Porto",
-      "a": "Académico de Viseu",
-      "tv": [
-        "Sport TV"
-      ],
-      "ok": 0,
-      "src": "futebolnatv.pt"
-    },
-    {
-      "d": "2026-10-29",
-      "comp": "por.taca_liga",
-      "h": "Sporting Braga",
-      "a": "Famalicão",
-      "tv": [
-        "Sport TV"
-      ],
-      "ok": 0,
-      "obs": "Sport TV 2",
-      "src": "ondebola.com"
-    },
-    {
-      "d": "2026-10-29",
-      "comp": "por.taca_liga",
-      "h": "Benfica",
-      "a": "Gil Vicente",
-      "tv": [
-        "Sport TV"
-      ],
-      "ok": 0,
-      "obs": "Sport TV 1",
-      "src": "ondebola.com"
-    },
-    {
-      "d": "2026-10-30",
-      "comp": "por.1",
-      "h": "Casa Pia",
-      "a": "Sporting CP",
-      "tv": [
-        "Sport TV"
-      ],
-      "ok": 0,
-      "obs": "Sport TV 1",
-      "src": "ondebola.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "por.1",
-      "h": "FC Porto",
-      "a": "Estoril",
-      "tv": [
-        "Sport TV"
-      ],
-      "ok": 0,
-      "obs": "Sport TV 1",
-      "src": "ondebola.com"
-    },
-    {
-      "d": "2026-11-02",
-      "comp": "por.1",
-      "h": "Benfica",
-      "a": "Alverca",
-      "tv": [
-        "Benfica TV"
-      ],
-      "ok": 0,
-      "obs": "Só Benfica TV segundo a agenda; confirmar se a Sport TV também passa",
-      "src": "ondebola.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Shakhtar Donetsk",
-      "a": "Sporting CP",
-      "tv": [
-        "Sport TV"
-      ],
-      "ok": 0,
-      "obs": "Sport TV 5",
-      "src": "ondebola.com"
-    },
-    {
       "d": "2026-11-04",
       "comp": "uefa.champions",
       "h": "AEK Atenas",
@@ -220,27 +137,173 @@
       "src": "ondebola.com"
     },
     {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "AZ Alkmaar",
+      "a": "Juventus",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 3",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Bayer Leverkusen",
+      "a": "Olympique de Marselha",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 2",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Benfica",
+      "a": "Lech Poznan",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Sport TV 5, 19h50",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Hoffenheim",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 4",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Milan",
+      "a": "Ferencváros",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 2",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Real Sociedad",
+      "a": "Lyon",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 3",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Torreense",
+      "a": "Ararat-Armenia",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa.conf",
+      "h": "AGF",
+      "a": "Sporting Braga",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 1, 17h01",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa.conf",
+      "h": "Mónaco",
+      "a": "Nordsjælland",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "DAZN 4",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-06",
+      "comp": "por.1",
+      "h": "Famalicão",
+      "a": "Arouca",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Sport TV 1, 20h35",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "por.1",
+      "h": "Alverca",
+      "a": "Casa Pia",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Sport TV 2, 17h45",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "por.1",
+      "h": "Nacional",
+      "a": "Académico de Viseu",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Sport TV 1, 15h20",
+      "src": "tudonumclick.com"
+    },
+    {
       "d": "2026-11-07",
       "comp": "por.1",
       "h": "Sporting CP",
       "a": "Moreirense",
       "tv": [
-        "Sport TV"
+        "Sport TV",
+        "Sporting TV"
       ],
-      "ok": 0,
-      "obs": "Sport TV 1",
-      "src": "ondebola.com"
+      "ok": 1,
+      "obs": "Sport TV 1 e Sporting TV, ~20h20",
+      "src": "tudonumclick.com"
     },
     {
       "d": "2026-11-08",
       "comp": "por.1",
-      "h": "Vitória SC",
-      "a": "FC Porto",
+      "h": "Estoril",
+      "a": "Marítimo",
       "tv": [
         "Sport TV"
       ],
-      "ok": 0,
-      "src": "ondebola.com"
+      "ok": 1,
+      "obs": "Sport TV 2, 15h20",
+      "src": "tudonumclick.com"
     },
     {
       "d": "2026-11-08",
@@ -250,8 +313,45 @@
       "tv": [
         "Sport TV"
       ],
-      "ok": 0,
-      "src": "ondebola.com"
+      "ok": 1,
+      "obs": "Sport TV 2, 20h20",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "por.1",
+      "h": "Rio Ave",
+      "a": "Sporting Braga",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Sport TV 3, 20h20",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "por.1",
+      "h": "Santa Clara",
+      "a": "Gil Vicente",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Sport TV 3, 15h20",
+      "src": "tudonumclick.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "por.1",
+      "h": "Vitória SC",
+      "a": "FC Porto",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Sport TV 1, 17h50",
+      "src": "tudonumclick.com"
     }
   ]
 }

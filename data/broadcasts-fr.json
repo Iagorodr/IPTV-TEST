@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-11-05",
   "country": "FR",
   "tz": "Europe/Paris",
   "note": "Ligue 1: Ligue 1+ (e beIN Sports/Canal+ em parte). Itens 'não verificado' vêm de conhecimento geral.",
@@ -100,114 +100,6 @@
   },
   "games": [
     {
-      "d": "2026-10-30",
-      "comp": "fra.1",
-      "h": "Nice",
-      "a": "Rennes",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-10-30",
-      "comp": "fra.1",
-      "h": "Le Havre",
-      "a": "PSG",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-10-30",
-      "comp": "fra.1",
-      "h": "Lille",
-      "a": "Lens",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "fra.1",
-      "h": "Lyon",
-      "a": "Angers",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "fra.1",
-      "h": "Lorient",
-      "a": "Brest",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "fra.1",
-      "h": "Troyes",
-      "a": "Le Mans",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "fra.1",
-      "h": "Strasbourg",
-      "a": "Auxerre",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "fra.1",
-      "h": "Paris FC",
-      "a": "Monaco",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "fra.1",
-      "h": "Marseille",
-      "a": "Toulouse",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
       "d": "2026-11-06",
       "comp": "fra.1",
       "h": "Toulouse",
@@ -246,8 +138,8 @@
     {
       "d": "2026-11-08",
       "comp": "fra.1",
-      "h": "Rennes",
-      "a": "Lille",
+      "h": "Angers",
+      "a": "Nice",
       "tv": [
         "Ligue 1+"
       ],
@@ -294,8 +186,8 @@
     {
       "d": "2026-11-08",
       "comp": "fra.1",
-      "h": "Angers",
-      "a": "Nice",
+      "h": "Lens",
+      "a": "Marseille",
       "tv": [
         "Ligue 1+"
       ],
@@ -306,8 +198,8 @@
     {
       "d": "2026-11-08",
       "comp": "fra.1",
-      "h": "Lens",
-      "a": "Marseille",
+      "h": "Rennes",
+      "a": "Lille",
       "tv": [
         "Ligue 1+"
       ],
