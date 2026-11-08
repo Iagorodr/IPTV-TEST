@@ -151,7 +151,12 @@ fun PlayerScreen(
     val brand = liveInfo?.brand
     val favKey = brand?.key ?: channel?.key
 
-    val exo = remember {
+    // Modo jogo: os efeitos de vídeo só entram/saem de forma confiável num player NOVO (e numa tela de vídeo nova):
+    // trocar com o player vivo deixava a saída de vídeo presa ao efeito e o decodificador parado em "carregando".
+    var exoGen by remember { mutableIntStateOf(0) }
+    var resume by remember { mutableStateOf<ResumePoint?>(null) }
+
+    val exo = remember(exoGen) {
         val http = DefaultHttpDataSource.Factory()
             .setUserAgent(USER_AGENT)
             .setAllowCrossProtocolRedirects(true)
@@ -266,55 +271,33 @@ fun PlayerScreen(
     }
 
     /**
-     * Recarrega o que está passando agora (mesma fonte, mesmo ponto; no ao vivo, volta ao ao vivo) já com os efeitos de
-     * vídeo certos. Ordem importante: o player é PARADO antes de trocar os efeitos (trocar com ele tocando deixava o
-     * decodificador preso em "carregando" em alguns aparelhos), e só depois recebe o vídeo de novo.
-     * Devolve false se o aparelho não aceitou os efeitos.
+     * Troca o player por um novo (o modo jogo já vem decidido em user.vivid) e reabre o que estava passando:
+     * mesma fonte e mesmo ponto (no ao vivo, volta ao ao vivo), com as faixas de áudio/legenda escolhidas.
      */
-    fun reloadWithEffects(on: Boolean): Boolean {
-        val item = exo.currentMediaItem ?: return true
-        val pos = exo.currentPosition
-        val live = isLive && tsStart == 0L
-        return try {
-            exo.stop()
-            exo.setVideoEffects(if (on) vividEffects() else emptyList())
-            if (live) exo.setMediaItem(item) else exo.setMediaItem(item, pos)
-            exo.prepare()
-            exo.playWhenReady = true
-            true
-        } catch (e: Throwable) {
-            false
-        }
+    fun swapPlayer() {
+        val item = exo.currentMediaItem
+        resume = if (item != null) ResumePoint(item, exo.currentPosition, isLive && tsStart == 0L, exo.trackSelectionParameters) else null
+        exoGen++
     }
 
-    /** Desliga o modo jogo à força (aparelho não aguenta/ deu erro) e volta a tocar normalmente o que estava passando. */
+    /** Desliga o modo jogo à força (aparelho não aguenta/deu erro) e volta a tocar normalmente o que estava passando. */
     fun vividFallback() {
         vivid = false
         user.setVivid(false)
         note = tr("Este aparelho não aceita o modo jogo.")
         error = null
         buffering = true
-        if (!reloadWithEffects(false)) {
-            // último recurso: abre a fonte de novo do zero
-            val c = current
-            if (c != null) playSource(c, null)
-        }
+        swapPlayer()
     }
 
-    /** Liga/desliga o modo jogo: o efeito de cor roda dentro do player (placa de vídeo); o vídeo é recarregado no mesmo ponto. */
+    /** Liga/desliga o modo jogo: o efeito de cor roda dentro do player (placa de vídeo); o vídeo reabre no mesmo ponto. */
     fun setVivid(on: Boolean) {
         vivid = on
         user.setVivid(on)
         vividAt = SystemClock.elapsedRealtime()
         error = null
         buffering = true
-        if (!reloadWithEffects(on)) {
-            if (on) vividFallback() else {
-                val c = current
-                if (c != null) playSource(c, null)
-            }
-            return
-        }
+        swapPlayer()
         vividWatch++
     }
 
@@ -634,6 +617,16 @@ fun PlayerScreen(
         }
     }
 
+    // player novo (troca do modo jogo): retoma de onde estava
+    LaunchedEffect(exo) {
+        val r = resume ?: return@LaunchedEffect
+        resume = null
+        exo.trackSelectionParameters = r.params
+        if (r.live) exo.setMediaItem(r.item) else exo.setMediaItem(r.item, r.pos)
+        exo.prepare()
+        exo.playWhenReady = true
+    }
+
     // vigia do modo jogo: se 10 s depois de ligar/desligar o vídeo ainda não voltou a tocar, desliga o efeito e reabre a fonte
     LaunchedEffect(vividWatch) {
         if (vividWatch == 0) return@LaunchedEffect
@@ -912,6 +905,7 @@ fun PlayerScreen(
             .focusRequester(rootFocus)
             .focusable(),
     ) {
+        androidx.compose.runtime.key(exoGen) {
         AndroidView(
             factory = { ctx ->
                 PlayerView(ctx).apply {
@@ -929,6 +923,7 @@ fun PlayerScreen(
             },
             modifier = Modifier.fillMaxSize(),
         )
+        }
 
         if (buffering && error == null && !testing) {
             CircularProgressIndicator(color = Accent, modifier = Modifier.align(Alignment.Center))
@@ -1937,6 +1932,14 @@ private fun describeError(e: PlaybackException): String {
  * bem mais na placa de vídeo — é o tipo de efeito que já deixou o Modo jogo travando antes, então não vale o risco.
  */
 private fun vividEffects(): List<androidx.media3.common.Effect> = listOf(
-    androidx.media3.effect.HslAdjustment.Builder().adjustSaturation(30f).build(),
-    androidx.media3.effect.Contrast(0.07f),
+    androidx.media3.effect.HslAdjustment.Builder().adjustSaturation(24f).build(),
+    androidx.media3.effect.Contrast(0.03f),
+)
+
+/** Onde retomar quando o player é trocado (modo jogo): o item, o ponto, se era ao vivo e as faixas escolhidas. */
+private class ResumePoint(
+    val item: MediaItem,
+    val pos: Long,
+    val live: Boolean,
+    val params: androidx.media3.common.TrackSelectionParameters,
 )
