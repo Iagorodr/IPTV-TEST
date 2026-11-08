@@ -1932,7 +1932,7 @@ private fun describeError(e: PlaybackException): String {
  * bem mais na placa de vídeo — é o tipo de efeito que já deixou o Modo jogo travando antes, então não vale o risco.
  */
 private fun vividEffects(): List<androidx.media3.common.Effect> = listOf(
-    androidx.media3.effect.HslAdjustment.Builder().adjustSaturation(24f).build(),
+    androidx.media3.effect.HslAdjustment.Builder().adjustSaturation(10f).build(),
     androidx.media3.effect.Contrast(0.03f),
 )
 
