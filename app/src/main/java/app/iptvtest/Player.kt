@@ -617,6 +617,22 @@ fun PlayerScreen(
         }
     }
 
+    // som do modo jogo (voz clara + volume parelho): liga junto com o modo jogo e acompanha a troca de player/sessão de áudio
+    DisposableEffect(exo, vivid) {
+        val fx = GameAudio()
+        if (vivid) fx.attach(exo.audioSessionId)
+        val l = object : Player.Listener {
+            override fun onAudioSessionIdChanged(audioSessionId: Int) {
+                if (vivid) fx.attach(audioSessionId)
+            }
+        }
+        exo.addListener(l)
+        onDispose {
+            exo.removeListener(l)
+            fx.release()
+        }
+    }
+
     // player novo (troca do modo jogo): retoma de onde estava
     LaunchedEffect(exo) {
         val r = resume ?: return@LaunchedEffect
