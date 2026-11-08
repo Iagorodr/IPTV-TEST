@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-11-05",
   "country": "US",
   "tz": "America/New_York",
   "note": "MLS na Apple TV; Premier League na NBC/Peacock (e USA Network); Europa na CBS/Paramount+. Itens 'não verificado' vêm de conhecimento geral. 'USA Network' é nome fora da lista padrão.",
@@ -10,7 +10,7 @@
         "Apple TV",
         "Fox"
       ],
-      "note": "Apple TV passa todos os jogos; FS1/FOX One em jogos escolhidos."
+      "note": "Apple TV passa todos os jogos, incluindo os playoffs: Decision Day 7/11, Wild Card 18/11, 1ª fase 20/11 a 2/12; jogos selecionados também na Fox. Final 18/12."
     },
     "usa.nwsl": {
       "label": "NWSL",
@@ -129,289 +129,6 @@
   },
   "games": [
     {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Chelsea",
-      "a": "Manchester United",
-      "tv": [
-        "NBC",
-        "Peacock"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "AFC Bournemouth",
-      "a": "Leeds United",
-      "tv": [
-        "Peacock"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Brentford",
-      "a": "Nottingham Forest",
-      "tv": [
-        "Peacock"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Coventry City",
-      "a": "Sunderland",
-      "tv": [
-        "Peacock"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Hull City",
-      "a": "Ipswich Town",
-      "tv": [
-        "Peacock"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Manchester City",
-      "a": "Brighton & Hove Albion",
-      "tv": [
-        "Peacock",
-        "NBC"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Tottenham Hotspur",
-      "a": "Crystal Palace",
-      "tv": [
-        "NBC",
-        "Peacock"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Aston Villa",
-      "a": "Fulham",
-      "tv": [
-        "Peacock",
-        "NBC"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "Real Salt Lake",
-      "a": "San Jose Earthquakes",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "Orlando City",
-      "a": "Charlotte FC",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "Philadelphia Union",
-      "a": "FC Cincinnati",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "D.C. United",
-      "a": "Columbus Crew",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "FC Dallas",
-      "a": "Sporting Kansas City",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "CF Montréal",
-      "a": "New York City FC",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "San Diego FC",
-      "a": "St. Louis City SC",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "Austin FC",
-      "a": "LA Galaxy",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "Minnesota United",
-      "a": "Los Angeles FC",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "usa.1",
-      "h": "Chicago Fire",
-      "a": "Colorado Rapids",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "eng.1",
-      "h": "Liverpool",
-      "a": "Arsenal",
-      "tv": [
-        "Peacock",
-        "NBC"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "usa.1",
-      "h": "New York Red Bulls",
-      "a": "Nashville SC",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "usa.1",
-      "h": "Seattle Sounders",
-      "a": "Vancouver Whitecaps",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "usa.1",
-      "h": "Toronto FC",
-      "a": "Atlanta United",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "usa.1",
-      "h": "Inter Miami",
-      "a": "New England Revolution",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "usa.1",
-      "h": "Houston Dynamo",
-      "a": "Portland Timbers",
-      "tv": [
-        "Apple TV",
-        "Fox"
-      ],
-      "ok": 1,
-      "obs": "Também na FS1/FOX One",
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-02",
-      "comp": "eng.1",
-      "h": "Newcastle United",
-      "a": "Everton",
-      "tv": [
-        "USA Network"
-      ],
-      "ok": 1,
-      "obs": "Canal exato (NBC, USA Network ou só Peacock) conforme agenda; 'USA Network' é fora da lista padrão",
-      "src": "sportsmediawatch.com"
-    },
-    {
       "d": "2026-11-04",
       "comp": "usa.1",
       "h": "Los Angeles FC",
@@ -423,52 +140,253 @@
       "src": "sportsmediawatch.com"
     },
     {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "AZ Alkmaar",
+      "a": "Juventus",
+      "tv": [
+        "Paramount+",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Anderlecht",
+      "a": "RB Salzburg",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Bayer Leverkusen",
+      "a": "Marseille",
+      "tv": [
+        "Paramount+",
+        "CBS Sports Network",
+        "UniMás",
+        "TUDN",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Benfica",
+      "a": "Lech Poznań",
+      "tv": [
+        "Paramount+",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Celta Vigo",
+      "a": "Union SG",
+      "tv": [
+        "Paramount+",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Celtic",
+      "a": "Besiktas",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Hoffenheim",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Hapoel Beer-Sheva",
+      "a": "OFI Crete",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Levski Sofia",
+      "a": "Jagiellonia Białystok",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Lillestrøm",
+      "a": "Viktoria Plzeň",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Milan",
+      "a": "Ferencváros",
+      "tv": [
+        "Paramount+",
+        "TUDN",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "NEC Nijmegen",
+      "a": "Omonia Nicosia",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Real Sociedad",
+      "a": "Lyon",
+      "tv": [
+        "Paramount+",
+        "CBS Sports Network"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Sparta Prague",
+      "a": "Bournemouth",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Sturm Graz",
+      "a": "Celje",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Sunderland",
+      "a": "Dinamo Zagreb",
+      "tv": [
+        "Paramount+",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Torreense",
+      "a": "Ararat-Armenia",
+      "tv": [
+        "Paramount+",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Paramount+ tem todos os jogos da Europa League",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-06",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Coventry City",
+      "tv": [
+        "Peacock",
+        "NBC",
+        "USA Network"
+      ],
+      "ok": 0,
+      "obs": "Peacock tem todos os jogos; NBC ou USA Network por jogo (a definir)",
+      "src": "sportsmediawatch.com"
+    },
+    {
       "d": "2026-11-07",
       "comp": "eng.1",
       "h": "Arsenal",
       "a": "Hull City",
       "tv": [
         "Peacock",
-        "NBC"
-      ],
-      "ok": 0,
-      "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "eng.1",
-      "h": "Brighton & Hove Albion",
-      "a": "Brentford",
-      "tv": [
-        "Peacock",
-        "NBC"
-      ],
-      "ok": 0,
-      "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "eng.1",
-      "h": "Crystal Palace",
-      "a": "Liverpool",
-      "tv": [
-        "Peacock",
-        "NBC"
-      ],
-      "ok": 0,
-      "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "eng.1",
-      "h": "Everton",
-      "a": "Coventry City",
-      "tv": [
-        "Peacock",
-        "NBC"
+        "NBC",
+        "USA Network"
       ],
       "ok": 0,
       "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
@@ -481,20 +399,8 @@
       "a": "Newcastle United",
       "tv": [
         "Peacock",
-        "NBC"
-      ],
-      "ok": 0,
-      "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "eng.1",
-      "h": "Ipswich Town",
-      "a": "AFC Bournemouth",
-      "tv": [
-        "Peacock",
-        "NBC"
+        "NBC",
+        "USA Network"
       ],
       "ok": 0,
       "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
@@ -507,20 +413,8 @@
       "a": "Tottenham Hotspur",
       "tv": [
         "Peacock",
-        "NBC"
-      ],
-      "ok": 0,
-      "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "eng.1",
-      "h": "Manchester United",
-      "a": "Aston Villa",
-      "tv": [
-        "Peacock",
-        "NBC"
+        "NBC",
+        "USA Network"
       ],
       "ok": 0,
       "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
@@ -533,20 +427,8 @@
       "a": "Manchester City",
       "tv": [
         "Peacock",
-        "NBC"
-      ],
-      "ok": 0,
-      "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "eng.1",
-      "h": "Sunderland",
-      "a": "Chelsea",
-      "tv": [
-        "Peacock",
-        "NBC"
+        "NBC",
+        "USA Network"
       ],
       "ok": 0,
       "obs": "Horário e canal exato ainda a definir (Peacock/NBC ou USA Network)",
@@ -555,30 +437,8 @@
     {
       "d": "2026-11-07",
       "comp": "usa.1",
-      "h": "Columbus Crew",
-      "a": "Chicago Fire",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
-      "h": "Nashville SC",
-      "a": "FC Cincinnati",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
-      "h": "New York City FC",
-      "a": "D.C. United",
+      "h": "Atlanta United",
+      "a": "New York Red Bulls",
       "tv": [
         "Apple TV"
       ],
@@ -599,61 +459,6 @@
     {
       "d": "2026-11-07",
       "comp": "usa.1",
-      "h": "Vancouver Whitecaps",
-      "a": "CF Montréal",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
-      "h": "Atlanta United",
-      "a": "New York Red Bulls",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
-      "h": "New England Revolution",
-      "a": "Orlando City",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
-      "h": "Toronto FC",
-      "a": "Philadelphia Union",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
-      "h": "Portland Timbers",
-      "a": "Austin FC",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
       "h": "Colorado Rapids",
       "a": "FC Dallas",
       "tv": [
@@ -665,19 +470,8 @@
     {
       "d": "2026-11-07",
       "comp": "usa.1",
-      "h": "St. Louis City SC",
-      "a": "Houston Dynamo",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "src": "sportsmediawatch.com"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "usa.1",
-      "h": "San Jose Earthquakes",
-      "a": "Minnesota United",
+      "h": "Columbus Crew",
+      "a": "Chicago Fire",
       "tv": [
         "Apple TV"
       ],
@@ -698,6 +492,72 @@
     {
       "d": "2026-11-07",
       "comp": "usa.1",
+      "h": "Los Angeles FC",
+      "a": "Seattle Sounders",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
+      "h": "Nashville SC",
+      "a": "FC Cincinnati",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
+      "h": "New England Revolution",
+      "a": "Orlando City",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
+      "h": "New York City FC",
+      "a": "D.C. United",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
+      "h": "Portland Timbers",
+      "a": "Austin FC",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
+      "h": "San Jose Earthquakes",
+      "a": "Minnesota United",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
       "h": "Sporting Kansas City",
       "a": "San Diego FC",
       "tv": [
@@ -709,12 +569,104 @@
     {
       "d": "2026-11-07",
       "comp": "usa.1",
-      "h": "Los Angeles FC",
-      "a": "Seattle Sounders",
+      "h": "St. Louis City SC",
+      "a": "Houston Dynamo",
       "tv": [
         "Apple TV"
       ],
       "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
+      "h": "Toronto FC",
+      "a": "Philadelphia Union",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "usa.1",
+      "h": "Vancouver Whitecaps",
+      "a": "CF Montréal",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "eng.1",
+      "h": "Brighton & Hove Albion",
+      "a": "Brentford",
+      "tv": [
+        "Peacock",
+        "NBC",
+        "USA Network"
+      ],
+      "ok": 0,
+      "obs": "Peacock tem todos os jogos; NBC ou USA Network por jogo (a definir)",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "eng.1",
+      "h": "Crystal Palace",
+      "a": "Liverpool",
+      "tv": [
+        "Peacock",
+        "NBC",
+        "USA Network"
+      ],
+      "ok": 0,
+      "obs": "Peacock tem todos os jogos; NBC ou USA Network por jogo (a definir)",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "eng.1",
+      "h": "Ipswich Town",
+      "a": "AFC Bournemouth",
+      "tv": [
+        "Peacock",
+        "NBC",
+        "USA Network"
+      ],
+      "ok": 0,
+      "obs": "Peacock tem todos os jogos; NBC ou USA Network por jogo (a definir)",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Aston Villa",
+      "tv": [
+        "Peacock",
+        "NBC",
+        "USA Network"
+      ],
+      "ok": 0,
+      "obs": "Peacock tem todos os jogos; NBC ou USA Network por jogo (a definir)",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "eng.1",
+      "h": "Sunderland",
+      "a": "Chelsea",
+      "tv": [
+        "Peacock",
+        "NBC",
+        "USA Network"
+      ],
+      "ok": 0,
+      "obs": "Peacock tem todos os jogos; NBC ou USA Network por jogo (a definir)",
       "src": "sportsmediawatch.com"
     }
   ]

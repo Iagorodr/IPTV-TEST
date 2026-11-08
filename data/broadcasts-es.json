@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-11-05",
   "country": "ES",
   "tz": "Europe/Madrid",
   "note": "LaLiga dividida entre DAZN e Movistar+; só jogos com canal confirmado têm entrada. Demais direitos não verificados nesta semana.",
@@ -101,40 +101,124 @@
   },
   "games": [
     {
-      "d": "2026-10-31",
+      "d": "2026-11-06",
       "comp": "esp.1",
-      "h": "Real Betis",
-      "a": "Málaga",
+      "h": "Sevilla",
+      "a": "Alavés",
       "tv": [
         "DAZN"
       ],
       "ok": 1,
-      "obs": "Jornada 11, ao vivo na DAZN",
-      "src": "dazn.com"
+      "obs": "21h; DAZN LaLiga",
+      "src": "futbolenlatv.es"
     },
     {
-      "d": "2026-11-01",
+      "d": "2026-11-07",
       "comp": "esp.1",
-      "h": "Racing Santander",
+      "h": "Espanyol",
+      "a": "Deportivo La Coruña",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "16h15; DAZN LaLiga",
+      "src": "futbolenlatv.es"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "esp.1",
+      "h": "Málaga",
+      "a": "Racing Santander",
+      "tv": [
+        "Movistar+"
+      ],
+      "ok": 1,
+      "obs": "14h; LaLiga TV/Movistar+ LaLiga",
+      "src": "futbolenlatv.es"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "esp.1",
+      "h": "Osasuna",
+      "a": "Athletic Club",
+      "tv": [
+        "Movistar+"
+      ],
+      "ok": 1,
+      "obs": "18h30; LaLiga TV/Movistar+ LaLiga",
+      "src": "futbolenlatv.es"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "esp.1",
+      "h": "Valencia",
       "a": "Real Madrid",
       "tv": [
         "DAZN"
       ],
       "ok": 1,
-      "obs": "Jornada 11, ao vivo na DAZN",
-      "src": "dazn.com"
+      "obs": "21h; DAZN LaLiga",
+      "src": "futbolenlatv.es"
     },
     {
-      "d": "2026-11-01",
+      "d": "2026-11-08",
       "comp": "esp.1",
-      "h": "Athletic Club",
-      "a": "Real Sociedad",
+      "h": "Atlético Madrid",
+      "a": "Barcelona",
+      "tv": [
+        "Movistar+"
+      ],
+      "ok": 1,
+      "obs": "21h; LaLiga TV/Movistar+ LaLiga",
+      "src": "futbolenlatv.es"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "esp.1",
+      "h": "Celta Vigo",
+      "a": "Levante",
+      "tv": [
+        "Movistar+"
+      ],
+      "ok": 1,
+      "obs": "18h30; LaLiga TV/Movistar+ LaLiga",
+      "src": "futbolenlatv.es"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "esp.1",
+      "h": "Elche",
+      "a": "Real Betis",
       "tv": [
         "DAZN"
       ],
       "ok": 1,
-      "obs": "Jornada 11, ao vivo na DAZN",
-      "src": "dazn.com"
+      "obs": "14h; DAZN LaLiga",
+      "src": "futbolenlatv.es"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Rayo Vallecano",
+      "tv": [
+        "Movistar+"
+      ],
+      "ok": 1,
+      "obs": "16h15; LaLiga TV/Movistar+ LaLiga",
+      "src": "futbolenlatv.es"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "esp.1",
+      "h": "Villarreal",
+      "a": "Getafe",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18h30; DAZN LaLiga",
+      "src": "futbolenlatv.es"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-11-05",
   "country": "UK",
   "tz": "Europe/London",
   "note": "Premier League: Sky Sports e TNT Sports. Champions: TNT Sports (um jogo na Prime). Itens marcados 'não verificado' vêm de conhecimento geral.",
@@ -113,177 +113,17 @@
         "Amazon Prime"
       ],
       "note": "Não verificado nesta semana."
+    },
+    "uefa.nations": {
+      "label": "UEFA Nations League",
+      "options": [
+        "ITV",
+        "BBC"
+      ],
+      "note": "Inglaterra na ITV1/ITVX; Escócia e País de Gales na BBC."
     }
   },
   "games": [
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Chelsea",
-      "a": "Manchester United",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 1",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Tottenham Hotspur",
-      "a": "Crystal Palace",
-      "tv": [
-        "Sky Sports"
-      ],
-      "ok": 1,
-      "obs": "Sky Sports Main Event",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-10-31",
-      "comp": "eng.1",
-      "h": "Aston Villa",
-      "a": "Fulham",
-      "tv": [
-        "Sky Sports"
-      ],
-      "ok": 1,
-      "obs": "Sky Sports Main Event",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-01",
-      "comp": "eng.1",
-      "h": "Liverpool",
-      "a": "Arsenal",
-      "tv": [
-        "Sky Sports"
-      ],
-      "ok": 1,
-      "obs": "Sky Sports Main Event",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-02",
-      "comp": "eng.1",
-      "h": "Newcastle United",
-      "a": "Everton",
-      "tv": [
-        "Sky Sports"
-      ],
-      "ok": 1,
-      "obs": "Sky Sports Main Event",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Shakhtar Donetsk",
-      "a": "Sporting CP",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 4",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Galatasaray",
-      "a": "VfB Stuttgart",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 2",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Manchester United",
-      "a": "Roma",
-      "tv": [
-        "Amazon Prime"
-      ],
-      "ok": 1,
-      "obs": "Prime Video",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Barcelona",
-      "a": "Aston Villa",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 1",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Atlético de Madrid",
-      "a": "Bayern de Munique",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 2",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Villarreal",
-      "a": "PSG",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 4",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Feyenoord",
-      "a": "Inter de Milão",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 5",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "Bodø/Glimt",
-      "a": "Lille",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 6",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-03",
-      "comp": "uefa.champions",
-      "h": "LASK Linz",
-      "a": "Slovan Bratislava",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 7",
-      "src": "live-footballontv.com"
-    },
     {
       "d": "2026-11-04",
       "comp": "uefa.champions",
@@ -294,18 +134,6 @@
       ],
       "ok": 1,
       "obs": "TNT Sports 3",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Fenerbahçe",
-      "a": "Liverpool",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 1",
       "src": "live-footballontv.com"
     },
     {
@@ -323,37 +151,13 @@
     {
       "d": "2026-11-04",
       "comp": "uefa.champions",
-      "h": "Slavia Praga",
-      "a": "Arsenal",
+      "h": "Fenerbahçe",
+      "a": "Liverpool",
       "tv": [
         "TNT Sports UK"
       ],
       "ok": 1,
       "obs": "TNT Sports 1",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "RB Leipzig",
-      "a": "Manchester City",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 2",
-      "src": "live-footballontv.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Porto",
-      "a": "Napoli",
-      "tv": [
-        "TNT Sports UK"
-      ],
-      "ok": 1,
-      "obs": "TNT Sports 6",
       "src": "live-footballontv.com"
     },
     {
@@ -383,6 +187,42 @@
     {
       "d": "2026-11-04",
       "comp": "uefa.champions",
+      "h": "Porto",
+      "a": "Napoli",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 6",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "RB Leipzig",
+      "a": "Manchester City",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 2",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
+      "h": "Slavia Praga",
+      "a": "Arsenal",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-04",
+      "comp": "uefa.champions",
       "h": "Viking",
       "a": "Sabah",
       "tv": [
@@ -390,6 +230,78 @@
       ],
       "ok": 1,
       "obs": "TNT Sports 8",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Celtic",
+      "a": "Besiktas",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 3, 20:00",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Hoffenheim",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 1, 17:45",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Sparta Prague",
+      "a": "AFC Bournemouth",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 2, 17:45",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa",
+      "h": "Sunderland",
+      "a": "Dinamo Zagreb",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 1, 20:00",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa.conf",
+      "h": "Getafe",
+      "a": "Brighton & Hove Albion",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 2, 20:00",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-05",
+      "comp": "uefa.europa.conf",
+      "h": "Thun",
+      "a": "Hearts",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "TNT Sports 3, 17:45",
       "src": "live-footballontv.com"
     },
     {
@@ -402,6 +314,18 @@
       ],
       "ok": 1,
       "obs": "Sky Sports Main Event",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-06",
+      "comp": "eng.2",
+      "h": "Derby County",
+      "a": "Bolton Wanderers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "Sky Sports Football, 20:00",
       "src": "live-footballontv.com"
     },
     {
@@ -426,6 +350,66 @@
       ],
       "ok": 1,
       "obs": "Sky Sports Main Event",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "eng.2",
+      "h": "Bristol City",
+      "a": "Norwich City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "Sky Sports+, 12:30",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "eng.2",
+      "h": "Portsmouth",
+      "a": "Stoke City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "Sky Sports+, 12:30",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "eng.2",
+      "h": "Wrexham",
+      "a": "Wolverhampton Wanderers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "Sky Sports Football, 12:30",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "sco.1",
+      "h": "Aberdeen",
+      "a": "Hibernian",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "Premier Sports 1, 17:45",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-07",
+      "comp": "sco.1",
+      "h": "St Mirren",
+      "a": "Rangers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "Sky Sports Football, 20:00",
       "src": "live-footballontv.com"
     },
     {
@@ -467,6 +451,18 @@
     {
       "d": "2026-11-08",
       "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Aston Villa",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "Sky Sports Main Event",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-08",
+      "comp": "eng.1",
       "h": "Sunderland",
       "a": "Chelsea",
       "tv": [
@@ -477,15 +473,15 @@
       "src": "live-footballontv.com"
     },
     {
-      "d": "2026-11-08",
-      "comp": "eng.1",
-      "h": "Manchester United",
-      "a": "Aston Villa",
+      "d": "2026-11-15",
+      "comp": "uefa.nations",
+      "h": "Spain",
+      "a": "England",
       "tv": [
-        "Sky Sports"
+        "ITV"
       ],
       "ok": 1,
-      "obs": "Sky Sports Main Event",
+      "obs": "ITV1 e ITVX, 19:45",
       "src": "live-footballontv.com"
     }
   ]
