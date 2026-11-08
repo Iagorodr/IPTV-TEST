@@ -119,6 +119,7 @@ class UserData(ctx: Context) {
             profileLang = (sp.getString("plang", "") ?: "").let { if (it.startsWith("pt")) "pt-BR" else it } // só português do Brasil
             onboarded = sp.getBoolean("onboarded", false)
             kidsMode = sp.getBoolean("kids", false)
+            KidsTheme.on = kidsMode
             favGenres.clear()
             readStrings("favgen", favGenres)
             countryFilter.clear()
@@ -441,6 +442,7 @@ class UserData(ctx: Context) {
 
     fun setKids(on: Boolean) {
         kidsMode = on
+        KidsTheme.on = on
         sp.edit().putBoolean("kids", on).apply()
     }
 
@@ -492,7 +494,16 @@ class UserData(ctx: Context) {
         sp.edit().remove("stats").apply()
     }
 
+    private val statsHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val statsTask = Runnable { persistStatsNow() }
+
+    /** Agenda a gravação das medições (junta várias seguidas numa só: o teste de fontes gravava tudo a cada fonte). */
     private fun persistStats() {
+        statsHandler.removeCallbacks(statsTask)
+        statsHandler.postDelayed(statsTask, 2_000L)
+    }
+
+    private fun persistStatsNow() {
         val cutoff = System.currentTimeMillis() - 30L * 86_400_000L
         val o = JSONObject()
         for ((k, list) in stats) {

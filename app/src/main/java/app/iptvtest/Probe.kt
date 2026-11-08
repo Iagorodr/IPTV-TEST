@@ -17,11 +17,11 @@ class ProbeResult(
 
 /**
  * Teste rápido de uma fonte de canal (poucos segundos): baixa os segmentos mais recentes do HLS e compara
- * o tempo de download com a duração de cada segmento. Folga alta = a conexão aguenta o vídeo sem travar.
+ * o tempo de download com a duração de cada segmento. Folga alta (o "x") = a conexão aguenta o vídeo sem travar.
  */
 object Probe {
 
-    private const val DEADLINE_MS = 16_000L
+    private const val DEADLINE_MS = 12_000L
 
     suspend fun run(url: String): ProbeResult = withContext(Dispatchers.IO) {
         try {
@@ -143,6 +143,10 @@ object Probe {
             if (head < minHead) minHead = head
             kbpsSum += (bytes * 8.0) / seg.first / 1000.0
             count++
+            // já dá para concluir: fonte claramente ruim (nem o 1º pedaço chegou a tempo) ou claramente ótima
+            // (2 pedaços com folga grande) — não gasta tempo nem dados medindo o resto
+            if (minHead < 0.9f) break
+            if (count >= 2 && minHead >= 5f) break
         }
         if (count == 0) return ProbeResult(false, 0.1f, startup, 0f, tr("tempo esgotado"))
 
@@ -151,7 +155,11 @@ object Probe {
         var r = if (h <= 1f) 0.05f else (1.0 - Math.exp(-(h - 1.0) * 1.2)).toFloat()
         if (startup > 8_000L) r *= 0.6f else if (startup > 4_000L) r *= 0.8f
         val mbps = kbpsSum / count / 1000.0
-        val note = String.format(java.util.Locale.US, "~%.1f Mbps, folga %.1fx", mbps, h)
+        val note = tr(
+            "Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário",
+            String.format(java.util.Locale.US, "%.1f", mbps),
+            String.format(java.util.Locale.US, "%.1f", h),
+        )
         return ProbeResult(true, r.coerceIn(0f, 1f), startup, h, note)
     }
 

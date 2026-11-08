@@ -710,3 +710,6 @@
 709	Antwoord
 710	Wacht op antwoord
 711	Ondersteuning
+712	Beeld = videokwaliteit (Mbps). De "x" toont hoeveel snelheid er overblijft: boven 3x is goed, onder 1x haperen.
+713	verbinding {0}x sneller dan nodig (laatste test)
+714	Beeld ~{0} Mbps · verbinding {1}x sneller dan nodig

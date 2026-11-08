@@ -710,3 +710,6 @@
 709	Respuesta
 710	Esperando respuesta
 711	Soporte
+712	Imagen = calidad del vídeo (Mbps). La "x" muestra cuánta velocidad de conexión sobra: por encima de 3x es buena, por debajo de 1x se corta.
+713	conexión {0}x más rápida de lo necesario (última prueba)
+714	Imagen ~{0} Mbps · conexión {1}x más rápida de lo necesario

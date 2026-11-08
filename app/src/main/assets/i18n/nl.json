@@ -710,5 +710,8 @@
 "Nenhuma mensagem ainda.": "Nog geen berichten.",
 "Resposta": "Antwoord",
 "Aguardando resposta": "Wacht op antwoord",
-"Suporte": "Ondersteuning"
+"Suporte": "Ondersteuning",
+"Imagem = qualidade do vídeo (Mbps). O \"x\" mostra quanto a conexão sobra: acima de 3x já é bom, abaixo de 1x trava.": "Beeld = videokwaliteit (Mbps). De \"x\" toont hoeveel snelheid er overblijft: boven 3x is goed, onder 1x haperen.",
+"conexão {0}x mais rápida que o necessário (última medição)": "verbinding {0}x sneller dan nodig (laatste test)",
+"Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Beeld ~{0} Mbps · verbinding {1}x sneller dan nodig"
 }

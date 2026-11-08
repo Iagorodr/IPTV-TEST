@@ -710,5 +710,8 @@
 "Nenhuma mensagem ainda.": "No messages yet.",
 "Resposta": "Reply",
 "Aguardando resposta": "Waiting for a reply",
-"Suporte": "Support"
+"Suporte": "Support",
+"Imagem = qualidade do vídeo (Mbps). O \"x\" mostra quanto a conexão sobra: acima de 3x já é bom, abaixo de 1x trava.": "Image = video quality (Mbps). The \"x\" shows how much connection speed is left over: above 3x is good, below 1x will stall.",
+"conexão {0}x mais rápida que o necessário (última medição)": "connection {0}x faster than needed (last test)",
+"Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Image ~{0} Mbps · connection {1}x faster than needed"
 }

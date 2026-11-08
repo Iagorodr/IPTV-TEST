@@ -371,7 +371,7 @@ fun LoadingScreen(vm: MainViewModel) {
         animationSpec = androidx.compose.animation.core.infiniteRepeatable(tween<Float>(900), androidx.compose.animation.core.RepeatMode.Reverse),
         label = "scale",
     )
-    Box(modifier = Modifier.fillMaxSize().background(if (vm.user.kidsMode) KidsAppBackground else AppBackground)) {
+    Box(modifier = Modifier.fillMaxSize().background(AppBackground)) {
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 64.dp, vertical = 36.dp)) {
             // a logo escrita (IPTVRO + o D que aponta + PRO), com o D pulsando enquanto carrega
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { AppWordmark(capDp = 30, pulse = scale) }
@@ -603,49 +603,31 @@ fun AppLogo(name: String = "") {
     }
 }
 
-/** Modo infantil: um círculo pequeno com carinha, como o avatar de perfil dos apps de streaming. Ligado = colorido. */
+/** Modo infantil: uma etiqueta escrita ("Infantil" / "Kids"), para ninguém ficar sem saber o que é. Ligado = colorida e cheia. */
 @Composable
 private fun KidsAvatar(on: Boolean, onClick: () -> Unit) {
     val kidA = Color(0xFFFFC145)
     val kidB = Color(0xFFFF7A9C)
-    FocusBox(shape = CircleShape, focusScale = 1.08f, onClick = onClick) { focused ->
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(34.dp)
-                    .clip(CircleShape)
-                    .background(
-                        if (on) androidx.compose.ui.graphics.Brush.linearGradient(listOf(kidA, kidB))
-                        else androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0x33FFFFFF), Color(0x22FFFFFF))),
-                    )
-                    .border(2.dp, if (focused) TextMain else Color.Transparent, CircleShape),
-                contentAlignment = Alignment.Center,
-            ) {
-                val face = if (on) Color(0xFF3A1A00) else if (focused) TextMain else Muted
-                androidx.compose.foundation.Canvas(modifier = Modifier.size(18.dp)) {
-                    val w = size.minDimension
-                    val st = w * 0.11f
-                    drawCircle(color = face, radius = w * 0.07f, center = androidx.compose.ui.geometry.Offset(w * 0.33f, w * 0.38f))
-                    drawCircle(color = face, radius = w * 0.07f, center = androidx.compose.ui.geometry.Offset(w * 0.67f, w * 0.38f))
-                    drawArc(
-                        color = face, startAngle = 15f, sweepAngle = 150f, useCenter = false,
-                        topLeft = androidx.compose.ui.geometry.Offset(w * 0.24f, w * 0.30f),
-                        size = androidx.compose.ui.geometry.Size(w * 0.52f, w * 0.42f),
-                        style = androidx.compose.ui.graphics.drawscope.Stroke(width = st, cap = androidx.compose.ui.graphics.StrokeCap.Round),
-                    )
-                }
-            }
-            // o nome só aparece com o foco ou com o modo ligado (fica discreto no resto do tempo)
-            if (focused || on) {
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    if (on) (if (focused) tr("Sair do infantil") else tr("Infantil")) else tr("Infantil"),
-                    color = if (on) kidA else TextMain,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
+    FocusBox(shape = RoundedCornerShape(16.dp), focusScale = 1.06f, onClick = onClick) { focused ->
+        Box(
+            modifier = Modifier
+                .background(
+                    if (on) androidx.compose.ui.graphics.Brush.horizontalGradient(listOf(kidA, kidB))
+                    else androidx.compose.ui.graphics.Brush.horizontalGradient(
+                        listOf(kidA.copy(alpha = if (focused) 0.30f else 0.16f), kidB.copy(alpha = if (focused) 0.30f else 0.16f)),
+                    ),
                 )
-            }
+                .border(1.5.dp, if (on) Color.Transparent else kidA.copy(alpha = if (focused) 0.95f else 0.6f), RoundedCornerShape(16.dp))
+                .padding(horizontal = 14.dp, vertical = 6.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                if (on && focused) tr("Sair do infantil") else tr("Infantil"),
+                color = if (on) Color(0xFF3A1A00) else kidA,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.ExtraBold,
+                maxLines = 1,
+            )
         }
     }
 }

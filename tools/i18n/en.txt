@@ -710,3 +710,6 @@
 709	Reply
 710	Waiting for a reply
 711	Support
+712	Image = video quality (Mbps). The "x" shows how much connection speed is left over: above 3x is good, below 1x will stall.
+713	connection {0}x faster than needed (last test)
+714	Image ~{0} Mbps · connection {1}x faster than needed

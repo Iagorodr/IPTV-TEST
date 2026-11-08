@@ -710,5 +710,8 @@
 "Nenhuma mensagem ainda.": "Noch keine Nachrichten.",
 "Resposta": "Antwort",
 "Aguardando resposta": "Wartet auf Antwort",
-"Suporte": "Support"
+"Suporte": "Support",
+"Imagem = qualidade do vídeo (Mbps). O \"x\" mostra quanto a conexão sobra: acima de 3x já é bom, abaixo de 1x trava.": "Bild = Videoqualität (Mbps). Das \"x\" zeigt, wie viel Geschwindigkeit übrig bleibt: über 3x ist gut, unter 1x ruckelt es.",
+"conexão {0}x mais rápida que o necessário (última medição)": "Verbindung {0}x schneller als nötig (letzter Test)",
+"Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Bild ~{0} Mbps · Verbindung {1}x schneller als nötig"
 }

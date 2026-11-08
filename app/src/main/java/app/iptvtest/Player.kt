@@ -199,6 +199,9 @@ fun PlayerScreen(
     var touch by remember { mutableIntStateOf(0) }
     var zoom by remember { mutableStateOf(req.zoom) }
     var vivid by remember { mutableStateOf(user.vivid) }
+    // quando o modo jogo foi ligado/desligado pela última vez, e um contador que arma o vigia ("travou depois de trocar?")
+    var vividAt by remember { mutableLongStateOf(0L) }
+    var vividWatch by remember { mutableIntStateOf(0) }
     var panel by remember { mutableStateOf<String?>(null) }
 
     // ---- canal ao vivo
@@ -263,28 +266,56 @@ fun PlayerScreen(
     }
 
     /**
-     * Liga/desliga o modo jogo. O efeito de cor fica dentro do player (feito pela placa de vídeo); para ele entrar ou
-     * sair, o vídeo é recarregado no mesmo ponto (no ao vivo, volta ao ao vivo).
+     * Recarrega o que está passando agora (mesma fonte, mesmo ponto; no ao vivo, volta ao ao vivo) já com os efeitos de
+     * vídeo certos. Ordem importante: o player é PARADO antes de trocar os efeitos (trocar com ele tocando deixava o
+     * decodificador preso em "carregando" em alguns aparelhos), e só depois recebe o vídeo de novo.
+     * Devolve false se o aparelho não aceitou os efeitos.
      */
+    fun reloadWithEffects(on: Boolean): Boolean {
+        val item = exo.currentMediaItem ?: return true
+        val pos = exo.currentPosition
+        val live = isLive && tsStart == 0L
+        return try {
+            exo.stop()
+            exo.setVideoEffects(if (on) vividEffects() else emptyList())
+            if (live) exo.setMediaItem(item) else exo.setMediaItem(item, pos)
+            exo.prepare()
+            exo.playWhenReady = true
+            true
+        } catch (e: Throwable) {
+            false
+        }
+    }
+
+    /** Desliga o modo jogo à força (aparelho não aguenta/ deu erro) e volta a tocar normalmente o que estava passando. */
+    fun vividFallback() {
+        vivid = false
+        user.setVivid(false)
+        note = tr("Este aparelho não aceita o modo jogo.")
+        error = null
+        buffering = true
+        if (!reloadWithEffects(false)) {
+            // último recurso: abre a fonte de novo do zero
+            val c = current
+            if (c != null) playSource(c, null)
+        }
+    }
+
+    /** Liga/desliga o modo jogo: o efeito de cor roda dentro do player (placa de vídeo); o vídeo é recarregado no mesmo ponto. */
     fun setVivid(on: Boolean) {
         vivid = on
         user.setVivid(on)
-        val item = exo.currentMediaItem
-        val pos = exo.currentPosition
-        try {
-            exo.setVideoEffects(if (on) vividEffects() else emptyList())
-        } catch (e: Throwable) {
-            vivid = false
-            user.setVivid(false)
-            note = tr("Este aparelho não aceita o modo jogo.")
+        vividAt = SystemClock.elapsedRealtime()
+        error = null
+        buffering = true
+        if (!reloadWithEffects(on)) {
+            if (on) vividFallback() else {
+                val c = current
+                if (c != null) playSource(c, null)
+            }
             return
         }
-        if (item != null) {
-            exo.stop()
-            if (isLive && tsStart == 0L) exo.setMediaItem(item) else exo.setMediaItem(item, pos)
-            exo.prepare()
-            exo.playWhenReady = true
-        }
+        vividWatch++
     }
 
     /** Toca o canal a partir de [startMs] (no passado), com a fonte [src]. [variant] escolhe qual formato de link tentar. */
@@ -535,6 +566,14 @@ fun PlayerScreen(
             }
 
             override fun onPlayerError(e: PlaybackException) {
+                // erro logo depois de ligar o modo jogo (ou do próprio efeito de cor): a culpa é do efeito, não da fonte.
+                // Desliga o modo jogo e reabre a mesma fonte, em vez de trocar de canal ou ficar travado.
+                if (vivid && (e.errorCode == PlaybackException.ERROR_CODE_VIDEO_FRAME_PROCESSING_FAILED ||
+                        SystemClock.elapsedRealtime() - vividAt < 15_000L)
+                ) {
+                    vividFallback()
+                    return
+                }
                 if (tsStart > 0L) {
                     // reprise que não abriu: outro formato de link, depois outra fonte que guarde o passado
                     if (playTimeshift(tsStart, tsSrc, tsVariant + 1)) return
@@ -592,6 +631,21 @@ fun PlayerScreen(
                 // sem importância: só deixa de guardar a nota/posição desta vez
             }
             exo.release()
+        }
+    }
+
+    // vigia do modo jogo: se 10 s depois de ligar/desligar o vídeo ainda não voltou a tocar, desliga o efeito e reabre a fonte
+    LaunchedEffect(vividWatch) {
+        if (vividWatch == 0) return@LaunchedEffect
+        delay(10_000)
+        if (exo.playbackState != Player.STATE_READY && error == null && !testing) {
+            if (vivid) vividFallback() else {
+                val c = current
+                if (c != null) playSource(c, null) else {
+                    exo.prepare()
+                    exo.playWhenReady = true
+                }
+            }
         }
     }
 
@@ -1446,6 +1500,12 @@ private fun SourcesPanel(
             color = Muted,
             fontSize = 12.sp,
         )
+        Text(
+            tr("Imagem = qualidade do vídeo (Mbps). O \"x\" mostra quanto a conexão sobra: acima de 3x já é bom, abaixo de 1x trava."),
+            color = Muted,
+            fontSize = 11.sp,
+            modifier = Modifier.padding(top = 3.dp),
+        )
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
             TvButton(
@@ -1480,7 +1540,7 @@ private fun SourcesPanel(
                     else -> {
                         val ob = user.lastObs(s.id)
                         if (ob != null && ob.headroom > 0f) {
-                            tr("folga {0}x na última medição", String.format(Locale.US, "%.1f", ob.headroom))
+                            tr("conexão {0}x mais rápida que o necessário (última medição)", String.format(Locale.US, "%.1f", ob.headroom))
                         } else if (ob != null && ob.stalls > 0) {
                             tr("travou {0}x na última vez", ob.stalls)
                         } else {

@@ -710,3 +710,6 @@
 709	Antwort
 710	Wartet auf Antwort
 711	Support
+712	Bild = Videoqualität (Mbps). Das "x" zeigt, wie viel Geschwindigkeit übrig bleibt: über 3x ist gut, unter 1x ruckelt es.
+713	Verbindung {0}x schneller als nötig (letzter Test)
+714	Bild ~{0} Mbps · Verbindung {1}x schneller als nötig
