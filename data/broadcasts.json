@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-12",
   "country": "BR",
   "tz": "America/Sao_Paulo",
   "note": "Onde costuma passar no Brasil. Pesquisado em fontes públicas e pode estar desatualizado: contratos mudam. Atualizado toda semana; a seção games traz jogo a jogo dos próximos 14 dias.",
@@ -15,7 +15,7 @@
         "CazéTV",
         "GE TV"
       ],
-      "note": "Premiere passa todos os jogos. Globo e GE TV por praça (1 jogo por rodada); SporTV 2 a 3; Record e CazéTV (YouTube) o mesmo jogo; Prime Video 1 exclusivo."
+      "note": "Premiere passa todos os jogos. Globo e GE TV por praça (1 jogo por rodada); SporTV 2 a 3; Record e CazéTV (YouTube) o mesmo jogo; Prime Video 1 jogo exclusivo por rodada."
     },
     "bra.2": {
       "label": "Brasileirão Série B",
@@ -42,7 +42,7 @@
         "Premiere",
         "GE TV"
       ],
-      "note": "Nem todo jogo passa em todos. Semifinais em 1º e 7-8/11; final em 6/12."
+      "note": "Nem todo jogo passa em todos. Final em 6/12."
     },
     "conmebol.libertadores": {
       "label": "Libertadores",
@@ -53,7 +53,7 @@
         "Paramount+",
         "GE TV"
       ],
-      "note": "Globo passa 1 jogo por rodada no mata-mata. Final em 28/11 em Montevidéu: Globo, GE TV, ESPN, Disney+ e Paramount+."
+      "note": "Globo passa 1 jogo por rodada no mata-mata. Final em 28/11 em Montevidéu (Palmeiras x Estudiantes): Globo, GE TV, ESPN, Disney+ e Paramount+."
     },
     "conmebol.sudamericana": {
       "label": "Sul-Americana",
@@ -63,7 +63,7 @@
         "Disney+",
         "Paramount+"
       ],
-      "note": "SBT na TV aberta; ESPN, Disney+ e Paramount+ na assinatura. Canal da final ainda não confirmado."
+      "note": "Final em 21/11 (Atlético-MG x Boca Juniors, 19h30) no Disney+ Premium; SBT, ESPN e Paramount+ passaram fases anteriores. Canal da final na TV aberta não confirmado."
     },
     "uefa.champions": {
       "label": "Champions League",
@@ -180,497 +180,22 @@
   },
   "games": [
     {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "AEK Atenas",
-      "a": "Real Madrid",
-      "tv": [
-        "HBO Max",
-        "TNT Sports"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Borussia Dortmund",
-      "a": "Real Betis",
-      "tv": [
-        "HBO Max",
-        "TNT Sports",
-        "Space"
-      ],
-      "ok": 1,
-      "obs": "Também no YouTube da TNT Sports (grátis)",
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Fenerbahçe",
-      "a": "Liverpool",
-      "tv": [
-        "HBO Max",
-        "Space"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Lens",
-      "a": "Como",
-      "tv": [
-        "HBO Max"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "PSV",
-      "a": "Club Brugge",
-      "tv": [
-        "HBO Max"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Porto",
-      "a": "Napoli",
-      "tv": [
-        "HBO Max"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "RB Leipzig",
-      "a": "Manchester City",
-      "tv": [
-        "HBO Max"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Slavia Praga",
-      "a": "Arsenal",
-      "tv": [
-        "HBO Max",
-        "TNT Sports"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Viking",
-      "a": "Sabah",
-      "tv": [
-        "HBO Max"
-      ],
-      "ok": 1,
-      "src": "portalmidiaesporte.com"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "arg.1",
-      "h": "Aldosivi",
-      "a": "River Plate",
-      "tv": [
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "15h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
+      "d": "2026-11-14",
       "comp": "bra.1",
-      "h": "Cruzeiro",
-      "a": "Bahia",
+      "h": "Mirassol",
+      "a": "Atlético-MG",
       "tv": [
         "Prime Video"
       ],
       "ok": 1,
-      "obs": "21h30; exclusivo no streaming",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "bra.1",
-      "h": "Palmeiras",
-      "a": "Remo",
-      "tv": [
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "19h30",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "bra.2",
-      "h": "Botafogo-SP",
-      "a": "Londrina",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "19h30",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "esp.copa_del_rey",
-      "h": "Tarancón",
-      "a": "Levante",
-      "tv": [
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "15h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "AZ Alkmaar",
-      "a": "Juventus",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "Anderlecht",
-      "a": "RB Salzburg",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "14h45",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "Bayer Leverkusen",
-      "a": "Olympique de Marselha",
-      "tv": [
-        "CNN Esportes"
-      ],
-      "ok": 1,
-      "obs": "17h; só no YouTube da CNN Esportes",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "Benfica",
-      "a": "Lech Poznan",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "Celtic",
-      "a": "Besiktas",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "Milan",
-      "a": "Ferencváros",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "14h45",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "Sparta Praga",
-      "a": "Bournemouth",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "14h45",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa",
-      "h": "Sunderland",
-      "a": "Dinamo Zagreb",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "AGF",
-      "a": "Braga",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "14h45",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "Atalanta",
-      "a": "Kairat",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "14h45",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "Copenhagen",
-      "a": "Iberia Tbilisi",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "Getafe",
-      "a": "Brighton",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "Midtjylland",
-      "a": "Ajax",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "14h45",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "Mônaco",
-      "a": "Nordsjaelland",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "Panathinaikos",
-      "a": "CSKA Sofia",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "17h",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-05",
-      "comp": "uefa.europa.conf",
-      "h": "Trabzonspor",
-      "a": "Freiburg",
-      "tv": [
-        "CazéTV"
-      ],
-      "ok": 1,
-      "obs": "14h45",
-      "src": "trivela.com.br"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "bra.copa_do_brazil",
-      "h": "Atlético-MG",
-      "a": "Grêmio",
-      "tv": [
-        "SporTV",
-        "Premiere",
-        "Prime Video"
-      ],
-      "ok": 1,
-      "obs": "Semifinal, volta; sem TV aberta",
-      "src": "portaldesports.com.br"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "f1",
-      "h": "GP de São Paulo",
-      "a": "Classificação",
-      "tv": [
-        "SporTV"
-      ],
-      "ok": 1,
-      "obs": "Quali 15h (Brasília); sem TV aberta",
-      "src": "atletapro.com.br"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "bra.copa_do_brazil",
-      "h": "Vasco da Gama",
-      "a": "Palmeiras",
-      "tv": [
-        "Globo",
-        "SporTV",
-        "Premiere",
-        "Prime Video",
-        "GE TV"
-      ],
-      "ok": 1,
-      "obs": "Semifinal, volta",
-      "src": "portaldesports.com.br"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "f1",
-      "h": "GP de São Paulo",
-      "a": "Corrida",
-      "tv": [
-        "Globo",
-        "SporTV"
-      ],
-      "ok": 1,
-      "obs": "Corrida 14h (Brasília), Globo aberta",
-      "src": "atletapro.com.br"
-    },
-    {
-      "d": "2026-11-18",
-      "comp": "bra.1",
-      "h": "Corinthians",
-      "a": "Botafogo",
-      "tv": [
-        "SporTV",
-        "Premiere"
-      ],
-      "ok": 0,
-      "obs": "35ª rodada; divisão Globo/SporTV por praça ainda pode mudar",
-      "src": "claro.com.br"
-    },
-    {
-      "d": "2026-11-18",
-      "comp": "bra.1",
-      "h": "Coritiba",
-      "a": "Santos",
-      "tv": [
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "35ª rodada; Premiere passa todos os jogos, outra emissora pode ser definida depois",
-      "src": "claro.com.br"
-    },
-    {
-      "d": "2026-11-18",
-      "comp": "bra.1",
-      "h": "Cruzeiro",
-      "a": "Palmeiras",
-      "tv": [
-        "Globo",
-        "Premiere"
-      ],
-      "ok": 0,
-      "obs": "35ª rodada; divisão Globo/SporTV por praça ainda pode mudar",
-      "src": "claro.com.br"
-    },
-    {
-      "d": "2026-11-18",
-      "comp": "bra.1",
-      "h": "Flamengo",
-      "a": "Athletico-PR",
-      "tv": [
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "35ª rodada; Premiere passa todos os jogos, outra emissora pode ser definida depois",
-      "src": "claro.com.br"
-    },
-    {
-      "d": "2026-11-18",
-      "comp": "bra.1",
-      "h": "Grêmio",
-      "a": "Bahia",
-      "tv": [
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "35ª rodada; Premiere passa todos os jogos, outra emissora pode ser definida depois",
-      "src": "claro.com.br"
+      "obs": "35ª rodada, 18h30; exclusivo no streaming (jogo antecipado de 18/11)",
+      "src": "gameoverdrive.com.br"
     },
     {
       "d": "2026-11-18",
       "comp": "bra.1",
       "h": "Mirassol",
       "a": "Atlético-MG",
-      "tv": [
-        "Premiere"
-      ],
-      "ok": 1,
-      "obs": "35ª rodada; Premiere passa todos os jogos, outra emissora pode ser definida depois",
-      "src": "claro.com.br"
-    },
-    {
-      "d": "2026-11-18",
-      "comp": "bra.1",
-      "h": "Remo",
-      "a": "Chapecoense",
       "tv": [
         "Premiere"
       ],
@@ -714,6 +239,474 @@
       "ok": 1,
       "obs": "35ª rodada; Premiere passa todos os jogos, outra emissora pode ser definida depois",
       "src": "claro.com.br"
+    },
+    {
+      "d": "2026-11-18",
+      "comp": "bra.1",
+      "h": "Coritiba",
+      "a": "Santos",
+      "tv": [
+        "Record",
+        "CazéTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 19h30; Record e CazéTV (YouTube) no mesmo jogo",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-18",
+      "comp": "bra.1",
+      "h": "Remo",
+      "a": "Chapecoense",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 20h",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-18",
+      "comp": "bra.1",
+      "h": "Flamengo",
+      "a": "Athletico-PR",
+      "tv": [
+        "SporTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 20h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-18",
+      "comp": "bra.1",
+      "h": "Cruzeiro",
+      "a": "Palmeiras",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 20h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-18",
+      "comp": "bra.1",
+      "h": "Corinthians",
+      "a": "Botafogo",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 21h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-18",
+      "comp": "bra.1",
+      "h": "Grêmio",
+      "a": "Bahia",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 21h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-19",
+      "comp": "bra.1",
+      "h": "Vasco da Gama",
+      "a": "Internacional",
+      "tv": [
+        "SporTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 19h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-19",
+      "comp": "bra.1",
+      "h": "São Paulo",
+      "a": "Fluminense",
+      "tv": [
+        "Globo",
+        "GE TV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "35ª rodada, 21h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-19",
+      "comp": "bra.1",
+      "h": "Vitória",
+      "a": "Bragantino",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 0,
+      "obs": "35ª rodada, 19h30; fonte agregadora não lista emissora; Premiere passa todos os jogos",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-21",
+      "comp": "bra.1",
+      "h": "Palmeiras",
+      "a": "Flamengo",
+      "tv": [
+        "Globo",
+        "GE TV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 16h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-21",
+      "comp": "bra.1",
+      "h": "Bahia",
+      "a": "Coritiba",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 17h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-21",
+      "comp": "bra.1",
+      "h": "Chapecoense",
+      "a": "Cruzeiro",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 21h",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-21",
+      "comp": "conmebol.sudamericana",
+      "h": "Atlético-MG",
+      "a": "Boca Juniors",
+      "tv": [
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Final, 19h30; Disney+ Premium",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-22",
+      "comp": "bra.1",
+      "h": "Athletico-PR",
+      "a": "Remo",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 16h",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-22",
+      "comp": "bra.1",
+      "h": "Fluminense",
+      "a": "Mirassol",
+      "tv": [
+        "Record",
+        "CazéTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 18h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-22",
+      "comp": "bra.1",
+      "h": "Bragantino",
+      "a": "Vasco da Gama",
+      "tv": [
+        "SporTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 19h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-23",
+      "comp": "bra.1",
+      "h": "Internacional",
+      "a": "Vitória",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 19h30",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-23",
+      "comp": "bra.1",
+      "h": "Botafogo",
+      "a": "São Paulo",
+      "tv": [
+        "Prime Video"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 20h; exclusivo no streaming",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-23",
+      "comp": "bra.1",
+      "h": "Santos",
+      "a": "Grêmio",
+      "tv": [
+        "SporTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 21h",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Bodø/Glimt",
+      "a": "LASK",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "14h45; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Galatasaray",
+      "a": "Aston Villa",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "14h45; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Arsenal",
+      "a": "Borussia Dortmund",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Como",
+      "a": "AEK Atenas",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Feyenoord",
+      "a": "Porto",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Manchester City",
+      "a": "Napoli",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "RB Leipzig",
+      "a": "Lens",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Real Madrid",
+      "a": "PSV",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-24",
+      "comp": "uefa.champions",
+      "h": "Slovan Bratislava",
+      "a": "Real Betis",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "bra.1",
+      "h": "Atlético-MG",
+      "a": "Corinthians",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "36ª rodada, 20h",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Sabah",
+      "a": "Barcelona",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "14h45; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Slavia Praga",
+      "a": "Villarreal",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "14h45; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Atlético de Madrid",
+      "a": "Viking",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Club Brugge",
+      "a": "Liverpool",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Inter de Milão",
+      "a": "Stuttgart",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Lille",
+      "a": "Bayern de Munique",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "PSG",
+      "a": "Roma",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Shakhtar Donetsk",
+      "a": "Fenerbahçe",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Sporting",
+      "a": "Manchester United",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
+      "src": "gameoverdrive.com.br"
     }
   ]
 }

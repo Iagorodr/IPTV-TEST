@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-12",
   "country": "FR",
   "tz": "Europe/Paris",
   "note": "Ligue 1: Ligue 1+ (e beIN Sports/Canal+ em parte). Itens 'não verificado' vêm de conhecimento geral.",
@@ -11,7 +11,7 @@
         "beIN Sports",
         "Canal+"
       ],
-      "note": "Ligue 1+ lista todos os jogos; beIN Sports, Canal+ e M6 também aparecem como parceiros (foot-actu.com)."
+      "note": "Ligue 1+ lista todos os jogos das jornadas 11 a 18 (ligue1.com); beIN Sports e Canal+ aparecem só como parceiros de distribuição. Jornada 12 em 27-29/11."
     },
     "fra.2": {
       "label": "Ligue 2",
@@ -100,112 +100,112 @@
   },
   "games": [
     {
-      "d": "2026-11-06",
+      "d": "2026-11-20",
       "comp": "fra.1",
-      "h": "Toulouse",
-      "a": "Strasbourg",
+      "h": "Troyes",
+      "a": "Le Havre",
       "tv": [
         "Ligue 1+"
       ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
+      "ok": 1,
+      "obs": "20h45; 11ª rodada",
+      "src": "ligue1.com"
     },
     {
-      "d": "2026-11-07",
+      "d": "2026-11-21",
       "comp": "fra.1",
-      "h": "Auxerre",
-      "a": "Paris FC",
+      "h": "Nice",
+      "a": "PSG",
       "tv": [
         "Ligue 1+"
       ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
+      "ok": 1,
+      "obs": "17h15; 11ª rodada",
+      "src": "ligue1.com"
     },
     {
-      "d": "2026-11-07",
+      "d": "2026-11-21",
       "comp": "fra.1",
-      "h": "PSG",
-      "a": "Troyes",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "fra.1",
-      "h": "Angers",
-      "a": "Nice",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "fra.1",
-      "h": "Brest",
+      "h": "Lille",
       "a": "Lyon",
       "tv": [
         "Ligue 1+"
       ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
+      "ok": 1,
+      "obs": "20h45; 11ª rodada",
+      "src": "ligue1.com"
     },
     {
-      "d": "2026-11-08",
-      "comp": "fra.1",
-      "h": "Le Havre",
-      "a": "Lorient",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "fra.1",
-      "h": "Le Mans",
-      "a": "Monaco",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
-    },
-    {
-      "d": "2026-11-08",
+      "d": "2026-11-21",
       "comp": "fra.1",
       "h": "Lens",
-      "a": "Marseille",
+      "a": "Toulouse",
       "tv": [
         "Ligue 1+"
       ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
+      "ok": 1,
+      "obs": "20h45; 11ª rodada",
+      "src": "ligue1.com"
     },
     {
-      "d": "2026-11-08",
+      "d": "2026-11-21",
       "comp": "fra.1",
-      "h": "Rennes",
-      "a": "Lille",
+      "h": "Monaco",
+      "a": "Auxerre",
       "tv": [
         "Ligue 1+"
       ],
-      "ok": 0,
-      "obs": "Fonte agregadora; confirmar se algum jogo vai na beIN Sports/Canal+",
-      "src": "foot-actu.com"
+      "ok": 1,
+      "obs": "20h45; 11ª rodada",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-21",
+      "comp": "fra.1",
+      "h": "Strasbourg",
+      "a": "Brest",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 11ª rodada",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-22",
+      "comp": "fra.1",
+      "h": "Paris FC",
+      "a": "Angers",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "15h; 11ª rodada",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-22",
+      "comp": "fra.1",
+      "h": "Lorient",
+      "a": "Rennes",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "17h15; 11ª rodada",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-22",
+      "comp": "fra.1",
+      "h": "Marseille",
+      "a": "Le Mans",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 11ª rodada",
+      "src": "ligue1.com"
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-12",
   "country": "BE",
   "tz": "Europe/Brussels",
-  "note": "Jupiler Pro League na DAZN (canais DAZN Pro League, também no Pickx); Champions no Pickx+ Sports. Demais direitos a confirmar.",
+  "note": "Jupiler Pro League: DAZN tem os direitos de todos os jogos, vendida também por Proximus (Pickx Sports), Telenet e Orange. Demais direitos a confirmar.",
   "comps": {
     "bel.1": {
       "label": "Jupiler Pro League",
@@ -11,15 +11,16 @@
         "Pickx",
         "Telenet"
       ],
-      "note": "Jupiler Pro League na DAZN (canais DAZN Pro League 1 e 2), vendida também pelos pacotes de Pickx/Proximus, Telenet e Orange/VOO."
+      "note": "DAZN tem os direitos de todos os jogos (confirmado na Sporza, jul/2026); acesso também pelo Pickx Sports (Proximus), Telenet (DAZN Total) e Orange. Speeldag 14 em 11-13/12."
     },
     "bel.cup": {
       "label": "Croky Cup",
       "options": [
+        "Telenet",
         "DAZN",
         "Pickx"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Play Sports (Telenet) tem a Croky Cup; em Flandres, jogos a partir das oitavas de 32 são exclusivos; a final também passa em TV aberta (Sporza, jul/2026)."
     },
     "uefa.champions": {
       "label": "Champions League",
@@ -102,222 +103,5 @@
       "note": "Não verificado nesta semana."
     }
   },
-  "games": [
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "AEK Atenas",
-      "a": "Real Madrid",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 3",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Borussia Dortmund",
-      "a": "Real Betis",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 5",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Fenerbahçe",
-      "a": "Liverpool",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 2",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Lens",
-      "a": "Como",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 7",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "PSV",
-      "a": "Club Brugge",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 2",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Porto",
-      "a": "Napoli",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 3",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "RB Leipzig",
-      "a": "Manchester City",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 4",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Slavia Praga",
-      "a": "Arsenal",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 6",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-04",
-      "comp": "uefa.champions",
-      "h": "Viking",
-      "a": "Sabah",
-      "tv": [
-        "Pickx"
-      ],
-      "ok": 1,
-      "obs": "Pickx+ Sports 8",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-06",
-      "comp": "bel.1",
-      "h": "Standard Liège",
-      "a": "Beveren",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 1, 20h45; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "bel.1",
-      "h": "Antwerp",
-      "a": "Lommel",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 1, 20h45; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "bel.1",
-      "h": "OH Leuven",
-      "a": "Mechelen",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 1, 18h15; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "bel.1",
-      "h": "RAAL La Louvière",
-      "a": "Cercle Brugge",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 2, 20h45; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-07",
-      "comp": "bel.1",
-      "h": "Westerlo",
-      "a": "Charleroi",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 1, 16h; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "bel.1",
-      "h": "Club Brugge",
-      "a": "Anderlecht",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 1, 13h30; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "bel.1",
-      "h": "Gent",
-      "a": "Kortrijk",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 1, 16h; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "bel.1",
-      "h": "Sint-Truiden",
-      "a": "Zulte Waregem",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 2, 19h15; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    },
-    {
-      "d": "2026-11-08",
-      "comp": "bel.1",
-      "h": "Union Saint-Gilloise",
-      "a": "Genk",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "DAZN Pro League 1, 18h30; DAZN também via Pickx, Telenet, Orange",
-      "src": "sports.pickx.be"
-    }
-  ]
+  "games": []
 }
