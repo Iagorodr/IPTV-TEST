@@ -192,6 +192,8 @@ object SportsData {
         "uefa.euro" to "Eurocopa",
         "conmebol.america" to "Copa América",
         "concacaf.gold" to "Copa Ouro",
+        "uefa.euroq" to "Eliminatórias da Euro",
+        "caf.nations" to "Copa Africana",
     )
 
     fun leagueLabel(slug: String, fallback: String): String = LABELS[slug] ?: fallback.ifEmpty { slug }
@@ -206,13 +208,15 @@ object SportsData {
         ),
         "Copas nacionais" to listOf("eng.fa", "eng.league_cup", "esp.copa_del_rey", "ita.coppa_italia", "ger.dfb_pokal", "fra.coupe_de_france"),
         "Américas" to listOf("usa.1", "mex.1"),
-        "Seleções" to listOf("fifa.world", "uefa.nations", "uefa.euro", "conmebol.america", "concacaf.gold", "fifa.friendly"),
+        "Seleções" to listOf("fifa.world", "uefa.nations", "uefa.euro", "uefa.euroq", "conmebol.america", "concacaf.gold", "caf.nations", "fifa.friendly"),
     )
 
     /** Ligas olhadas para montar "jogos de hoje" quando a pessoa não escolheu nada (as mais populares). */
     val popularLeagues: List<String> = listOf(
         "bra.1", "conmebol.libertadores", "uefa.champions", "eng.1", "esp.1", "ita.1", "ger.1", "fra.1",
         "uefa.europa", "conmebol.sudamericana", "bra.copa_do_brazil", "bra.2", "por.1",
+        // seleções: nas datas FIFA são os jogos que mais interessam
+        "fifa.world", "uefa.nations", "uefa.euro", "uefa.euroq", "conmebol.america", "concacaf.gold", "caf.nations", "fifa.friendly",
     )
 
     const val MAX_LEAGUES = 5
@@ -581,8 +585,10 @@ object Popularity {
         "mex.1" to 30,
         "fra.coupe_de_france" to 30,
         "concacaf.gold" to 30,
+        "uefa.euroq" to 58,
+        "caf.nations" to 45,
         "sco.1" to 25,
-        "fifa.friendly" to 20,
+        "fifa.friendly" to 34,
     )
 
     /** Clubes e seleções que levam mais gente a assistir (nomes sem acento). */
@@ -599,6 +605,23 @@ object Popularity {
     private fun big(side: Side): Boolean {
         for (n in side.names) for (b in BIG) {
             if (n == b || n.startsWith("$b ") || n.endsWith(" $b")) return true
+        }
+        return false
+    }
+
+    /** Seleções de peso: nos amistosos só aparecem jogos com pelo menos uma delas (senão a lista vira centenas de jogos). */
+    private val MAIN_NATIONAL = listOf(
+        "brazil", "argentina", "france", "england", "portugal", "spain", "germany", "italy", "uruguay", "netherlands",
+        "belgium", "croatia", "colombia", "mexico", "united states", "usa", "japan", "morocco", "senegal", "switzerland",
+        "denmark", "norway", "sweden", "poland", "turkey", "turkiye", "ecuador", "chile", "paraguay", "peru", "south korea",
+        "korea republic", "austria", "scotland", "ukraine", "serbia", "czechia", "czech republic", "wales", "ireland",
+        "republic of ireland", "nigeria", "egypt", "algeria", "ivory coast", "cote d ivoire", "cameroon", "australia",
+        "iran", "canada", "venezuela", "hungary", "greece", "romania", "slovakia", "slovenia",
+    )
+
+    fun mainNational(g: Game): Boolean {
+        for (side in listOf(g.home, g.away)) for (n in side.names) for (b in MAIN_NATIONAL) {
+            if (n == b) return true
         }
         return false
     }

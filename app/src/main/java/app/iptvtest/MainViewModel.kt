@@ -1750,7 +1750,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         val slugs = (SportsData.popularLeagues + favLeagues + favTeams.flatMap { it.leagues }).distinct()
         viewModelScope.launch {
             try {
-                popGames = SportsApi.leagueGames(slugs, now - 2L * SportsTime.DAY, now + 6L * SportsTime.DAY)
+                val favIds = favTeams.map { it.id }.toSet()
+                val picked = favLeagues.toSet()
+                popGames = SportsApi.leagueGames(slugs, now - 2L * SportsTime.DAY, now + 6L * SportsTime.DAY).filter { g ->
+                    // amistosos: só os de seleções grandes (ou os que a pessoa escolheu seguir)
+                    g.leagueSlug != "fifa.friendly" || "fifa.friendly" in picked || Popularity.mainNational(g) ||
+                        g.home.id in favIds || g.away.id in favIds
+                }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
