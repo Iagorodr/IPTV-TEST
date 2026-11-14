@@ -97,6 +97,69 @@
         "Eurosport"
       ],
       "note": "Não verificado nesta semana."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "TVE",
+        "Movistar+",
+        "Teledeporte"
+      ],
+      "note": "La Roja: TVE (La 1) e Movistar+. Outras seleções: varia por jogo."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "TVE",
+        "Movistar+",
+        "Teledeporte"
+      ],
+      "note": "La Roja: TVE (La 1) e Movistar+. Outras seleções: varia por jogo."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "TVE",
+        "Movistar+",
+        "Teledeporte"
+      ],
+      "note": "La Roja: TVE (La 1) e Movistar+. Outras seleções: varia por jogo."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "TVE",
+        "Movistar+",
+        "Teledeporte"
+      ],
+      "note": "La Roja: TVE (La 1) e Movistar+. Outras seleções: varia por jogo."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "TVE",
+        "Movistar+",
+        "Teledeporte"
+      ],
+      "note": "La Roja: TVE (La 1) e Movistar+. Outras seleções: varia por jogo."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "TVE",
+        "Movistar+",
+        "Teledeporte"
+      ],
+      "note": "La Roja: TVE (La 1) e Movistar+. Outras seleções: varia por jogo."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "TVE",
+        "Movistar+",
+        "Teledeporte"
+      ],
+      "note": "La Roja: TVE (La 1) e Movistar+. Outras seleções: varia por jogo."
     }
   },
   "games": [

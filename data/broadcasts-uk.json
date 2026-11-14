@@ -121,6 +121,60 @@
         "BBC"
       ],
       "note": "Inglaterra na ITV1/ITVX; Escócia e País de Gales na BBC."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "ITV",
+        "BBC",
+        "Sky Sports"
+      ],
+      "note": "Inglaterra: ITV ou BBC conforme o jogo (Sky Sports em alguns). Outras seleções: varia."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "ITV",
+        "BBC",
+        "Sky Sports"
+      ],
+      "note": "Inglaterra: ITV ou BBC conforme o jogo (Sky Sports em alguns). Outras seleções: varia."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "ITV",
+        "BBC",
+        "Sky Sports"
+      ],
+      "note": "Inglaterra: ITV ou BBC conforme o jogo (Sky Sports em alguns). Outras seleções: varia."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "ITV",
+        "BBC",
+        "Sky Sports"
+      ],
+      "note": "Inglaterra: ITV ou BBC conforme o jogo (Sky Sports em alguns). Outras seleções: varia."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "ITV",
+        "BBC",
+        "Sky Sports"
+      ],
+      "note": "Inglaterra: ITV ou BBC conforme o jogo (Sky Sports em alguns). Outras seleções: varia."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "ITV",
+        "BBC",
+        "Sky Sports"
+      ],
+      "note": "Inglaterra: ITV ou BBC conforme o jogo (Sky Sports em alguns). Outras seleções: varia."
     }
   },
   "games": [
