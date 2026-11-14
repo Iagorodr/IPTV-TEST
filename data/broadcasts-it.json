@@ -5,33 +5,139 @@
   "comps": {
     "ita.1": {
       "label": "Serie A",
-      "options": ["DAZN", "Sky Italia"],
+      "options": [
+        "DAZN",
+        "Sky Italia"
+      ],
       "note": "DAZN mostra todas as 380 partidas da temporada (até 5 de graça); Sky tem 3 jogos co-exclusivos por rodada, no satélite e no NOW (fonte: calcioefinanza.it, jun/2026)."
     },
     "ita.coppa_italia": {
       "label": "Coppa Italia",
-      "options": ["Mediaset"],
+      "options": [
+        "Mediaset"
+      ],
       "note": "Coppa Italia e Supercoppa com a Mediaset (Canale 5/Italia 1/Infinity+). Canal exato não verificado nesta semana."
     },
     "uefa.champions": {
       "label": "Champions League",
-      "options": ["Sky Italia", "Prime Video"],
+      "options": [
+        "Sky Italia",
+        "Prime Video"
+      ],
       "note": "Sky com 185 dos 203 jogos (satélite e NOW); Prime Video com o jogo de quarta-feira (18 partidas) (fonte: calcioefinanza.it, jun/2026)."
     },
     "uefa.europa": {
       "label": "Europa League",
-      "options": ["Sky Italia"],
+      "options": [
+        "Sky Italia"
+      ],
       "note": "Sky, satélite e streaming (fonte: calcioefinanza.it, jun/2026)."
     },
     "uefa.europa.conf": {
       "label": "Conference League",
-      "options": ["Sky Italia"],
+      "options": [
+        "Sky Italia"
+      ],
       "note": "Sky, satélite e streaming (fonte: calcioefinanza.it, jun/2026)."
     },
-    "eng.1": { "label": "Premier League", "options": ["Sky Italia", "DAZN"], "note": "Não verificado nesta semana." },
-    "esp.1": { "label": "LaLiga", "options": ["DAZN"], "note": "Não verificado nesta semana." },
-    "ger.1": { "label": "Bundesliga", "options": ["DAZN"], "note": "Não verificado nesta semana." },
-    "fra.1": { "label": "Ligue 1", "options": ["DAZN"], "note": "Não verificado nesta semana." }
+    "eng.1": {
+      "label": "Premier League",
+      "options": [
+        "Sky Italia",
+        "DAZN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "esp.1": {
+      "label": "LaLiga",
+      "options": [
+        "DAZN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "ger.1": {
+      "label": "Bundesliga",
+      "options": [
+        "DAZN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "fra.1": {
+      "label": "Ligue 1",
+      "options": [
+        "DAZN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "Rai",
+        "Sky Italia"
+      ],
+      "note": "Itália: Rai 1 (gratuito, também RaiPlay) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "Rai",
+        "Sky Italia"
+      ],
+      "note": "Itália: Rai 1 (gratuito, também RaiPlay) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "Rai",
+        "Sky Italia"
+      ],
+      "note": "Itália: Rai 1 (gratuito, também RaiPlay) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "Rai",
+        "Sky Italia"
+      ],
+      "note": "Itália: Rai 1 (gratuito, também RaiPlay) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "Rai",
+        "Sky Italia"
+      ],
+      "note": "Itália: Rai 1 (gratuito, também RaiPlay) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "Rai",
+        "Sky Italia"
+      ],
+      "note": "Itália: Rai 1 (gratuito, também RaiPlay) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "Rai",
+        "Sky Italia"
+      ],
+      "note": "Itália: Rai 1 (gratuito, também RaiPlay) para a maioria dos jogos. Outras seleções: varia por jogo."
+    }
   },
-  "games": []
+  "games": [
+    {
+      "d": "2026-11-15",
+      "comp": "uefa.nations",
+      "h": "Belgium",
+      "a": "Italy",
+      "tv": [
+        "Rai"
+      ],
+      "ok": 1,
+      "obs": "20h45; Rai 1 e RaiPlay",
+      "src": "oasport.it"
+    }
+  ]
 }

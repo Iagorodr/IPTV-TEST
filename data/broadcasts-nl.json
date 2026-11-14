@@ -5,29 +5,146 @@
   "comps": {
     "ned.1": {
       "label": "Eredivisie",
-      "options": ["ESPN"],
+      "options": [
+        "ESPN"
+      ],
       "note": "ESPN transmite os jogos; a NOS mostra só os melhores momentos (fonte: vi.nl, 2026)."
     },
     "uefa.champions": {
       "label": "Champions League",
-      "options": ["Ziggo Sport"],
+      "options": [
+        "Ziggo Sport"
+      ],
       "note": "Ziggo Sport; jogos de clube holandês e as finais europeias são de graça no Ziggo Sport Free, o resto precisa de assinatura (fonte: vi.nl, 2026)."
     },
     "uefa.europa": {
       "label": "Europa League",
-      "options": ["Ziggo Sport"],
+      "options": [
+        "Ziggo Sport"
+      ],
       "note": "Mesma regra da Champions League (fonte: vi.nl, 2026)."
     },
     "uefa.europa.conf": {
       "label": "Conference League",
-      "options": ["Ziggo Sport"],
+      "options": [
+        "Ziggo Sport"
+      ],
       "note": "Mesma regra da Champions League (fonte: vi.nl, 2026)."
     },
-    "eng.1": { "label": "Premier League", "options": ["ESPN", "Ziggo Sport"], "note": "Não verificado nesta semana." },
-    "esp.1": { "label": "LaLiga", "options": ["ESPN"], "note": "Não verificado nesta semana." },
-    "ita.1": { "label": "Serie A", "options": ["ESPN"], "note": "Não verificado nesta semana." },
-    "ger.1": { "label": "Bundesliga", "options": ["ESPN", "Ziggo Sport"], "note": "Não verificado nesta semana." },
-    "fra.1": { "label": "Ligue 1", "options": ["ESPN"], "note": "Não verificado nesta semana." }
+    "eng.1": {
+      "label": "Premier League",
+      "options": [
+        "ESPN",
+        "Ziggo Sport"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "esp.1": {
+      "label": "LaLiga",
+      "options": [
+        "ESPN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "ita.1": {
+      "label": "Serie A",
+      "options": [
+        "ESPN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "ger.1": {
+      "label": "Bundesliga",
+      "options": [
+        "ESPN",
+        "Ziggo Sport"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "fra.1": {
+      "label": "Ligue 1",
+      "options": [
+        "ESPN"
+      ],
+      "note": "Não verificado nesta semana."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "NPO 3",
+        "NOS",
+        "Ziggo Sport"
+      ],
+      "note": "Oranje: NPO/NOS (gratuito). Outras seleções: Ziggo Sport e outros, varia por jogo."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "NPO 3",
+        "NOS",
+        "Ziggo Sport"
+      ],
+      "note": "Oranje: NPO/NOS (gratuito). Outras seleções: Ziggo Sport e outros, varia por jogo."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "NPO 3",
+        "NOS",
+        "Ziggo Sport"
+      ],
+      "note": "Oranje: NPO/NOS (gratuito). Outras seleções: Ziggo Sport e outros, varia por jogo."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "NPO 3",
+        "NOS",
+        "Ziggo Sport"
+      ],
+      "note": "Oranje: NPO/NOS (gratuito). Outras seleções: Ziggo Sport e outros, varia por jogo."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "NPO 3",
+        "NOS",
+        "Ziggo Sport"
+      ],
+      "note": "Oranje: NPO/NOS (gratuito). Outras seleções: Ziggo Sport e outros, varia por jogo."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "NPO 3",
+        "NOS",
+        "Ziggo Sport"
+      ],
+      "note": "Oranje: NPO/NOS (gratuito). Outras seleções: Ziggo Sport e outros, varia por jogo."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "NPO 3",
+        "NOS",
+        "Ziggo Sport"
+      ],
+      "note": "Oranje: NPO/NOS (gratuito). Outras seleções: Ziggo Sport e outros, varia por jogo."
+    }
   },
-  "games": []
+  "games": [
+    {
+      "d": "2026-11-16",
+      "comp": "uefa.nations",
+      "h": "Germany",
+      "a": "Netherlands",
+      "tv": [
+        "NPO 3",
+        "NOS"
+      ],
+      "ok": 1,
+      "obs": "20h45; NPO 3, NOS live e app NOS",
+      "src": "ziggo.nl"
+    }
+  ]
 }

@@ -303,9 +303,9 @@
     },
     {
       "d": "2026-11-15",
-      "comp": "fifa.friendly",
+      "comp": "uefa.nations",
       "h": "France",
-      "a": "Turkey",
+      "a": "Türkiye",
       "tv": [
         "Disney+"
       ],
@@ -315,7 +315,7 @@
     },
     {
       "d": "2026-11-15",
-      "comp": "fifa.friendly",
+      "comp": "uefa.nations",
       "h": "Belgium",
       "a": "Italy",
       "tv": [
@@ -328,7 +328,7 @@
     },
     {
       "d": "2026-11-15",
-      "comp": "fifa.friendly",
+      "comp": "uefa.nations",
       "h": "Spain",
       "a": "England",
       "tv": [
@@ -353,7 +353,7 @@
     },
     {
       "d": "2026-11-16",
-      "comp": "fifa.friendly",
+      "comp": "uefa.nations",
       "h": "Germany",
       "a": "Netherlands",
       "tv": [

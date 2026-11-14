@@ -125,6 +125,76 @@
         "Prime Video"
       ],
       "note": "Não verificado nesta semana."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "TNT Sports",
+        "Telemundo",
+        "Fox",
+        "Peacock"
+      ],
+      "note": "EUA em inglês: TBS/Max (TNT Sports); em espanhol: Telemundo/Universo. Outras seleções: Fox, Peacock, Paramount+ conforme o jogo; varia."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "TNT Sports",
+        "Telemundo",
+        "Fox",
+        "Peacock"
+      ],
+      "note": "EUA em inglês: TBS/Max (TNT Sports); em espanhol: Telemundo/Universo. Outras seleções: Fox, Peacock, Paramount+ conforme o jogo; varia."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "TNT Sports",
+        "Telemundo",
+        "Fox",
+        "Peacock"
+      ],
+      "note": "EUA em inglês: TBS/Max (TNT Sports); em espanhol: Telemundo/Universo. Outras seleções: Fox, Peacock, Paramount+ conforme o jogo; varia."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "TNT Sports",
+        "Telemundo",
+        "Fox",
+        "Peacock"
+      ],
+      "note": "EUA em inglês: TBS/Max (TNT Sports); em espanhol: Telemundo/Universo. Outras seleções: Fox, Peacock, Paramount+ conforme o jogo; varia."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "TNT Sports",
+        "Telemundo",
+        "Fox",
+        "Peacock"
+      ],
+      "note": "EUA em inglês: TBS/Max (TNT Sports); em espanhol: Telemundo/Universo. Outras seleções: Fox, Peacock, Paramount+ conforme o jogo; varia."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "TNT Sports",
+        "Telemundo",
+        "Fox",
+        "Peacock"
+      ],
+      "note": "EUA em inglês: TBS/Max (TNT Sports); em espanhol: Telemundo/Universo. Outras seleções: Fox, Peacock, Paramount+ conforme o jogo; varia."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "TNT Sports",
+        "Telemundo",
+        "Fox",
+        "Peacock"
+      ],
+      "note": "EUA em inglês: TBS/Max (TNT Sports); em espanhol: Telemundo/Universo. Outras seleções: Fox, Peacock, Paramount+ conforme o jogo; varia."
     }
   },
   "games": [

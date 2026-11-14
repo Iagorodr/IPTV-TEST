@@ -52,7 +52,7 @@ object Broadcasts {
         "ESPN" to listOf("espn"),
         "Record" to listOf("record"),
         "SBT" to listOf("sbt"),
-        "TNT Sports" to listOf("tnt", "tnt sports"),
+        "TNT Sports" to listOf("tnt", "tnt sports", "tbs"),
         "Space" to listOf("space"),
         "RedeTV" to listOf("redetv", "rede tv"),
         "CazéTV" to listOf("caze tv", "cazetv"),
@@ -123,6 +123,15 @@ object Broadcasts {
         "Mediaset" to listOf("mediaset", "canale 5", "italia 1", "infinity+"),
         // Holanda
         "Ziggo Sport" to listOf("ziggo sport", "ziggo"),
+        "NPO 3" to listOf("npo 3", "npo3"),
+        "NOS" to listOf("nos", "npo"),
+        // seleções (gratuitas): Alemanha, França, Itália, EUA
+        "ARD" to listOf("das erste", "ard"),
+        "ZDF" to listOf("zdf"),
+        "TF1" to listOf("tf1"),
+        "M6" to listOf("m6"),
+        "Rai" to listOf("rai 1", "rai 2", "rai sport", "rai"),
+        "Telemundo" to listOf("telemundo", "universo"),
     )
 
     /** [words] aparece em [hay] como palavra(s) inteira(s). Sem criar textos novos: roda dezenas de milhares de vezes. */

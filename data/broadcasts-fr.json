@@ -96,9 +96,84 @@
         "beIN Sports"
       ],
       "note": "Não verificado nesta semana."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "TF1",
+        "M6",
+        "beIN Sports"
+      ],
+      "note": "Les Bleus: TF1 (gratuito, também TF1+) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "TF1",
+        "M6",
+        "beIN Sports"
+      ],
+      "note": "Les Bleus: TF1 (gratuito, também TF1+) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "TF1",
+        "M6",
+        "beIN Sports"
+      ],
+      "note": "Les Bleus: TF1 (gratuito, também TF1+) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "TF1",
+        "M6",
+        "beIN Sports"
+      ],
+      "note": "Les Bleus: TF1 (gratuito, também TF1+) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "TF1",
+        "M6",
+        "beIN Sports"
+      ],
+      "note": "Les Bleus: TF1 (gratuito, também TF1+) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "TF1",
+        "M6",
+        "beIN Sports"
+      ],
+      "note": "Les Bleus: TF1 (gratuito, também TF1+) para a maioria dos jogos. Outras seleções: varia por jogo."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "TF1",
+        "M6",
+        "beIN Sports"
+      ],
+      "note": "Les Bleus: TF1 (gratuito, também TF1+) para a maioria dos jogos. Outras seleções: varia por jogo."
     }
   },
   "games": [
+    {
+      "d": "2026-11-15",
+      "comp": "uefa.nations",
+      "h": "France",
+      "a": "Türkiye",
+      "tv": [
+        "TF1"
+      ],
+      "ok": 1,
+      "obs": "20h45; também TF1+",
+      "src": "sortiraparis.com"
+    },
     {
       "d": "2026-11-20",
       "comp": "fra.1",
