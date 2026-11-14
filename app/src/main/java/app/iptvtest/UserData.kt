@@ -503,6 +503,12 @@ class UserData(ctx: Context) {
         statsHandler.postDelayed(statsTask, 2_000L)
     }
 
+    /** Grava já o que estiver pendente (usado ao sair do app). */
+    fun flushNow() {
+        statsHandler.removeCallbacks(statsTask)
+        persistStatsNow()
+    }
+
     private fun persistStatsNow() {
         val cutoff = System.currentTimeMillis() - 30L * 86_400_000L
         val o = JSONObject()

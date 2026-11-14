@@ -58,6 +58,28 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
 
+/**
+ * "Sair" de verdade: grava o que falta, fecha a tela e encerra o processo do app, para a próxima abertura começar do zero
+ * (só o finish() deixava o app vivo em segundo plano e a abertura seguinte reaproveitava o estado velho).
+ * Se tem gravação em andamento, só fecha a tela: o processo fica vivo até a gravação acabar.
+ */
+fun quitApp(ctx: android.content.Context, vm: MainViewModel? = null) {
+    try { vm?.user?.flushNow() } catch (e: Exception) { }
+    val recording = try { RecStore.all(ctx).any { it.recording } } catch (e: Exception) { false }
+    val act = ctx as? android.app.Activity
+    if (act == null) {
+        if (!recording) android.os.Process.killProcess(android.os.Process.myPid())
+        return
+    }
+    act.finishAndRemoveTask()
+    if (!recording) {
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            android.os.Process.killProcess(android.os.Process.myPid())
+            System.exit(0)
+        }, 400L)
+    }
+}
+
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 class MainActivity : ComponentActivity() {
     private var stoppedAt = 0L
@@ -202,7 +224,7 @@ fun App(vm: MainViewModel = viewModel()) {
                     TvButton(text = tr("Ficar"), primary = true, focusRequester = stay, minWidth = 120.dp) { askExit = false }
                     TvButton(text = tr("Sair"), focusRequester = leave, minWidth = 120.dp) {
                         askExit = false
-                        (ctx as? android.app.Activity)?.finish()
+                        quitApp(ctx, vm)
                     }
                 }
             }
@@ -511,7 +533,7 @@ private fun BlockedScreen(vm: MainViewModel) {
                     } else {
                         TvButton(text = tr("Tentar de novo"), primary = true, focusRequester = first) { vm.retryControl() }
                     }
-                    TvButton(text = tr("Sair")) { (ctx as? android.app.Activity)?.finish() }
+                    TvButton(text = tr("Sair")) { quitApp(ctx, vm) }
                 }
             } else if (vm.requestState == 2) {
                 Text(tr("Pedido enviado! Ele está em análise e a gente entra em contato."), color = TextMain, fontSize = 15.sp, textAlign = TextAlign.Center)
