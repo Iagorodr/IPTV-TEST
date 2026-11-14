@@ -101,6 +101,69 @@
         "Telenet"
       ],
       "note": "Não verificado nesta semana."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "VRT",
+        "RTBF",
+        "Pickx"
+      ],
+      "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "VRT",
+        "RTBF",
+        "Pickx"
+      ],
+      "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "VRT",
+        "RTBF",
+        "Pickx"
+      ],
+      "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "VRT",
+        "RTBF",
+        "Pickx"
+      ],
+      "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "VRT",
+        "RTBF",
+        "Pickx"
+      ],
+      "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "VRT",
+        "RTBF",
+        "Pickx"
+      ],
+      "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "VRT",
+        "RTBF",
+        "Pickx"
+      ],
+      "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
     }
   },
   "games": []

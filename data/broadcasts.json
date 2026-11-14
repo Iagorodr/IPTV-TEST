@@ -176,6 +176,77 @@
         "Disney+"
       ],
       "note": "Nitto ATP Finals em Turim de 15 a 22/11."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "Globo",
+        "SporTV",
+        "GE TV",
+        "ESPN",
+        "Disney+"
+      ],
+      "note": "Jogos do Brasil: Globo, SporTV e ge (confirmado para nov/2026). Outras seleções: ESPN e Disney+, às vezes SporTV/Globoplay (Argentina, Alemanha)."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "Globo",
+        "SporTV",
+        "CazéTV",
+        "GE TV"
+      ],
+      "note": "Direitos variam por edição; confira o jogo."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "ESPN",
+        "Disney+",
+        "SporTV",
+        "Globo"
+      ],
+      "note": "Seleções: ESPN e Disney+ passam a maioria dos jogos; SporTV/Globoplay alguns."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "ESPN",
+        "Disney+",
+        "SporTV",
+        "Globo"
+      ],
+      "note": "Seleções: ESPN e Disney+ passam a maioria dos jogos; SporTV/Globoplay alguns."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "ESPN",
+        "Disney+",
+        "SporTV",
+        "Globo"
+      ],
+      "note": "Seleções: ESPN e Disney+ passam a maioria dos jogos; SporTV/Globoplay alguns."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "Globo",
+        "SporTV",
+        "ESPN",
+        "Disney+"
+      ],
+      "note": "Direitos variam por edição; confira o jogo."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "ESPN",
+        "Disney+",
+        "SporTV",
+        "Globo"
+      ],
+      "note": "Seleções: ESPN e Disney+ passam a maioria dos jogos; SporTV/Globoplay alguns."
     }
   },
   "games": [
@@ -190,6 +261,161 @@
       "ok": 1,
       "obs": "35ª rodada, 18h30; exclusivo no streaming (jogo antecipado de 18/11)",
       "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-14",
+      "comp": "fifa.friendly",
+      "h": "Norway",
+      "a": "Wales",
+      "tv": [
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-14",
+      "comp": "fifa.friendly",
+      "h": "Portugal",
+      "a": "Denmark",
+      "tv": [
+        "ESPN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-14",
+      "comp": "fifa.friendly",
+      "h": "Japan",
+      "a": "Brazil",
+      "tv": [
+        "Globo",
+        "SporTV",
+        "GE TV"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-15",
+      "comp": "fifa.friendly",
+      "h": "France",
+      "a": "Turkey",
+      "tv": [
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-15",
+      "comp": "fifa.friendly",
+      "h": "Belgium",
+      "a": "Italy",
+      "tv": [
+        "ESPN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-15",
+      "comp": "fifa.friendly",
+      "h": "Spain",
+      "a": "England",
+      "tv": [
+        "ESPN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-15",
+      "comp": "fifa.friendly",
+      "h": "Croatia",
+      "a": "Czech Republic",
+      "tv": [
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-16",
+      "comp": "fifa.friendly",
+      "h": "Germany",
+      "a": "Netherlands",
+      "tv": [
+        "SporTV",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-17",
+      "comp": "fifa.friendly",
+      "h": "Singapore",
+      "a": "Brazil",
+      "tv": [
+        "Globo",
+        "SporTV",
+        "GE TV"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-17",
+      "comp": "fifa.friendly",
+      "h": "Japan",
+      "a": "Paraguay",
+      "tv": [
+        "ESPN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-17",
+      "comp": "fifa.friendly",
+      "h": "Wales",
+      "a": "Portugal",
+      "tv": [
+        "ESPN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
+    },
+    {
+      "d": "2026-11-17",
+      "comp": "fifa.friendly",
+      "h": "Uruguay",
+      "a": "Dominican Republic",
+      "tv": [
+        "ESPN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "Data FIFA",
+      "src": "otempo.com.br"
     },
     {
       "d": "2026-11-18",

@@ -110,6 +110,69 @@
         "Canal 11"
       ],
       "note": "Canal 11 passa jogos escolhidos (ex.: Cruzeiro x Remo, Palmeiras x Bragantino)."
+    },
+    "fifa.friendly": {
+      "label": "Amistosos de seleções",
+      "options": [
+        "Sport TV",
+        "RTP1",
+        "DAZN"
+      ],
+      "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
+    },
+    "fifa.world": {
+      "label": "Copa do Mundo",
+      "options": [
+        "Sport TV",
+        "RTP1",
+        "DAZN"
+      ],
+      "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
+    },
+    "uefa.nations": {
+      "label": "Liga das Nações",
+      "options": [
+        "Sport TV",
+        "RTP1",
+        "DAZN"
+      ],
+      "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
+    },
+    "uefa.euro": {
+      "label": "Eurocopa",
+      "options": [
+        "Sport TV",
+        "RTP1",
+        "DAZN"
+      ],
+      "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
+    },
+    "uefa.euroq": {
+      "label": "Eliminatórias da Euro",
+      "options": [
+        "Sport TV",
+        "RTP1",
+        "DAZN"
+      ],
+      "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
+    },
+    "conmebol.america": {
+      "label": "Copa América",
+      "options": [
+        "Sport TV",
+        "RTP1",
+        "DAZN"
+      ],
+      "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
+    },
+    "concacaf.gold": {
+      "label": "Copa Ouro",
+      "options": [
+        "Sport TV",
+        "RTP1",
+        "DAZN"
+      ],
+      "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
     }
   },
   "games": [
