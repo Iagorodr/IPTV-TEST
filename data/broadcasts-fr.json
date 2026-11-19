@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-19",
   "country": "FR",
   "tz": "Europe/Paris",
   "note": "Ligue 1: Ligue 1+ (e beIN Sports/Canal+ em parte). Itens 'não verificado' vêm de conhecimento geral.",
@@ -162,18 +162,6 @@
     }
   },
   "games": [
-    {
-      "d": "2026-11-15",
-      "comp": "uefa.nations",
-      "h": "France",
-      "a": "Türkiye",
-      "tv": [
-        "TF1"
-      ],
-      "ok": 1,
-      "obs": "20h45; também TF1+",
-      "src": "sortiraparis.com"
-    },
     {
       "d": "2026-11-20",
       "comp": "fra.1",

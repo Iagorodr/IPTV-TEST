@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-19",
   "country": "BR",
   "tz": "America/Sao_Paulo",
   "note": "Onde costuma passar no Brasil. Pesquisado em fontes públicas e pode estar desatualizado: contratos mudam. Atualizado toda semana; a seção games traz jogo a jogo dos próximos 14 dias.",
@@ -250,173 +250,6 @@
     }
   },
   "games": [
-    {
-      "d": "2026-11-14",
-      "comp": "bra.1",
-      "h": "Mirassol",
-      "a": "Atlético-MG",
-      "tv": [
-        "Prime Video"
-      ],
-      "ok": 1,
-      "obs": "35ª rodada, 18h30; exclusivo no streaming (jogo antecipado de 18/11)",
-      "src": "gameoverdrive.com.br"
-    },
-    {
-      "d": "2026-11-14",
-      "comp": "fifa.friendly",
-      "h": "Norway",
-      "a": "Wales",
-      "tv": [
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-14",
-      "comp": "fifa.friendly",
-      "h": "Portugal",
-      "a": "Denmark",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-14",
-      "comp": "fifa.friendly",
-      "h": "Japan",
-      "a": "Brazil",
-      "tv": [
-        "Globo",
-        "SporTV",
-        "GE TV"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-15",
-      "comp": "uefa.nations",
-      "h": "France",
-      "a": "Türkiye",
-      "tv": [
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-15",
-      "comp": "uefa.nations",
-      "h": "Belgium",
-      "a": "Italy",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-15",
-      "comp": "uefa.nations",
-      "h": "Spain",
-      "a": "England",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-15",
-      "comp": "fifa.friendly",
-      "h": "Croatia",
-      "a": "Czech Republic",
-      "tv": [
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-16",
-      "comp": "uefa.nations",
-      "h": "Germany",
-      "a": "Netherlands",
-      "tv": [
-        "SporTV",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-17",
-      "comp": "fifa.friendly",
-      "h": "Singapore",
-      "a": "Brazil",
-      "tv": [
-        "Globo",
-        "SporTV",
-        "GE TV"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-17",
-      "comp": "fifa.friendly",
-      "h": "Japan",
-      "a": "Paraguay",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-17",
-      "comp": "fifa.friendly",
-      "h": "Wales",
-      "a": "Portugal",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
-    {
-      "d": "2026-11-17",
-      "comp": "fifa.friendly",
-      "h": "Uruguay",
-      "a": "Dominican Republic",
-      "tv": [
-        "ESPN",
-        "Disney+"
-      ],
-      "ok": 1,
-      "obs": "Data FIFA",
-      "src": "otempo.com.br"
-    },
     {
       "d": "2026-11-18",
       "comp": "bra.1",
@@ -815,6 +648,20 @@
       "src": "gameoverdrive.com.br"
     },
     {
+      "d": "2026-11-24",
+      "comp": "bra.1",
+      "h": "Chapecoense",
+      "a": "Palmeiras",
+      "tv": [
+        "Record",
+        "CazéTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 18h",
+      "src": "midiaesportiva.com"
+    },
+    {
       "d": "2026-11-25",
       "comp": "bra.1",
       "h": "Atlético-MG",
@@ -933,6 +780,134 @@
       "ok": 1,
       "obs": "17h; TNT Sports/Space/SBT podem ter jogos selecionados (não confirmado)",
       "src": "gameoverdrive.com.br"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "bra.1",
+      "h": "São Paulo",
+      "a": "Remo",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 20h",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "bra.1",
+      "h": "Fluminense",
+      "a": "Cruzeiro",
+      "tv": [
+        "SporTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 20h",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "bra.1",
+      "h": "Botafogo",
+      "a": "Bahia",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 21h",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "conmebol.libertadores",
+      "h": "Palmeiras",
+      "a": "Estudiantes",
+      "tv": [
+        "Globo",
+        "ESPN",
+        "Disney+",
+        "GE TV"
+      ],
+      "ok": 1,
+      "obs": "Final em Montevidéu; horário (17h) segundo dgabc.com.br",
+      "src": "acritica.net"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Coritiba",
+      "a": "Flamengo",
+      "tv": [
+        "Globo",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 16h",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Vitória",
+      "a": "Santos",
+      "tv": [
+        "Globo",
+        "GE TV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 16h",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Corinthians",
+      "a": "Grêmio",
+      "tv": [
+        "Prime Video"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 18h30; exclusivo no streaming",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Mirassol",
+      "a": "Athletico-PR",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 18h30",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Internacional",
+      "a": "Bragantino",
+      "tv": [
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 18h30",
+      "src": "midiaesportiva.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Atlético-MG",
+      "a": "Vasco da Gama",
+      "tv": [
+        "SporTV",
+        "Premiere"
+      ],
+      "ok": 1,
+      "obs": "37ª rodada, 19h30",
+      "src": "midiaesportiva.com"
     }
   ]
 }

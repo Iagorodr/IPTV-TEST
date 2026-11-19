@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-19",
   "country": "UK",
   "tz": "Europe/London",
   "note": "Premier League: Sky Sports e TNT Sports. Champions: TNT Sports (um jogo na Prime). Itens marcados 'não verificado' vêm de conhecimento geral.",
@@ -179,18 +179,6 @@
   },
   "games": [
     {
-      "d": "2026-11-15",
-      "comp": "uefa.nations",
-      "h": "Spain",
-      "a": "England",
-      "tv": [
-        "ITV"
-      ],
-      "ok": 1,
-      "obs": "ITV1 e ITVX, 19:45",
-      "src": "live-footballontv.com"
-    },
-    {
       "d": "2026-11-21",
       "comp": "eng.1",
       "h": "Manchester City",
@@ -249,6 +237,102 @@
       "ok": 1,
       "obs": "20:00; Sky Sports Main Event",
       "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Chelsea",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20h00",
+      "src": "soccergraph.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Ipswich Town",
+      "a": "Aston Villa",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "17h30",
+      "src": "soccergraph.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Liverpool",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "12h00",
+      "src": "soccergraph.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Brighton & Hove Albion",
+      "a": "Newcastle United",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "14h05 (horário alterado)",
+      "src": "soccergraph.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Crystal Palace",
+      "a": "Hull City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "14h05 (horário alterado)",
+      "src": "soccergraph.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Fulham",
+      "a": "Bournemouth",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "14h05",
+      "src": "soccergraph.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Sunderland",
+      "a": "Tottenham Hotspur",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "14h05 (horário alterado)",
+      "src": "soccergraph.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Arsenal",
+      "a": "Manchester City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "16h30",
+      "src": "soccergraph.com"
     }
   ]
 }
