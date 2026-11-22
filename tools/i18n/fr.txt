@@ -713,3 +713,6 @@
 712	Image = qualité de la vidéo (Mbps). Le « x » indique la marge de débit : au-dessus de 3x c’est bon, en dessous de 1x ça saccade.
 713	connexion {0}x plus rapide que nécessaire (dernier test)
 714	Image ~{0} Mbps · connexion {1}x plus rapide que nécessaire
+715	La liste est arrivée incomplète cette fois ; j'ai gardé la version précédente.
+716	La liste est arrivée vide. Réessayez dans un instant.
+717	Le serveur a refusé (HTTP {0}). Ce peut être la limite d'écrans de l'abonnement : fermez l'autre appareil qui regarde et réessayez.

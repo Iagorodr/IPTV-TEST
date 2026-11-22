@@ -247,14 +247,8 @@ class XtreamApi(private val account: Account) : ListApi {
         )
     }
 
-    private suspend fun getText(url: String): String = withContext(Dispatchers.IO) {
-        val conn = Net.open(url, readTimeoutMs = 60_000, accept = "application/json")
-        try {
-            conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
-        } finally {
-            conn.disconnect()
-        }
-    }
+    private suspend fun getText(url: String): String =
+        Net.call(url, 60_000, "application/json") { conn -> conn.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() } }
 
     private fun parseArray(text: String): JSONArray {
         val t = text.trim()
@@ -294,18 +288,15 @@ class XtreamApi(private val account: Account) : ListApi {
     }
 
     /** Baixa o catálogo inteiro de um tipo, lendo em fluxo. Repetidos (mesmo id) são descartados. */
-    override suspend fun fetchItems(kind: Kind): List<RawItem> = withContext(Dispatchers.IO) {
+    override suspend fun fetchItems(kind: Kind): List<RawItem> {
         val action = when (kind) {
             Kind.MOVIES -> "get_vod_streams"
             Kind.SERIES -> "get_series"
             Kind.LIVE -> "get_live_streams"
         }
-        val conn = Net.open(apiUrl(action), readTimeoutMs = 120_000, accept = "application/json")
-        try {
+        return Net.call(apiUrl(action), 120_000, "application/json") { conn ->
             val reader = JsonReader(InputStreamReader(conn.inputStream, Charsets.UTF_8).buffered(64 * 1024))
             reader.use { RawParser.readItems(it) }
-        } finally {
-            conn.disconnect()
         }
     }
 

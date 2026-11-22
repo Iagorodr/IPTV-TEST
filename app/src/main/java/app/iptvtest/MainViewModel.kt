@@ -673,8 +673,31 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             }
             try {
                 a.prepare()
-                val fresh = downloadAndBuild(a)
-                withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
+                var fresh = downloadAndBuild(a)
+                var incomplete = (a as? MergedApi)?.partial == true
+                // resposta vazia ou muito menor que a anterior = provedor sobrecarregado: espera um pouco e tenta de novo
+                if (incomplete || looksBroken(fresh, catalog)) {
+                    delay(4_000L)
+                    val again = downloadAndBuild(a)
+                    if (catalogSize(again) >= catalogSize(fresh)) fresh = again
+                    incomplete = (a as? MergedApi)?.partial == true
+                }
+                val prev = catalog
+                if (looksBroken(fresh, prev)) {
+                    if (prev != null) {
+                        // não troca uma lista boa por uma incompleta (e não grava no cache)
+                        listNotice = tr("A lista veio incompleta agora; mantive a versão anterior.")
+                        launch {
+                            delay(9_000L)
+                            listNotice = null
+                        }
+                        return@launch
+                    }
+                    if (catalogSize(fresh) == 0) throw java.io.IOException(tr("A lista veio vazia. Tente de novo em instantes."))
+                    incomplete = true
+                }
+                // incompleta e sem versão anterior: mostra, mas não guarda, para a próxima abertura tentar de novo
+                if (!incomplete) withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
                 if (catalog == null) loadMsg = tr("Montando as telas")
                 val wasShowing = catalog != null
                 applyCatalog(fresh)
@@ -696,6 +719,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 refreshing = false
             }
         }
+    }
+
+    private fun catalogSize(c: Catalog): Int = c.movies.size + c.series.size + c.channels.size
+
+    /** Catálogo vazio, sem canais, ou muito menor que o que já tínhamos: sinal de download falho, não de lista nova. */
+    private fun looksBroken(f: Catalog, prev: Catalog?): Boolean {
+        if (catalogSize(f) == 0 || f.channels.isEmpty() && prev != null && prev.channels.isNotEmpty()) return true
+        if (prev == null) return false
+        fun low(n: Int, p: Int) = p >= 50 && n * 2 < p
+        return low(f.channels.size, prev.channels.size) || low(f.movies.size, prev.movies.size) || low(f.series.size, prev.series.size)
     }
 
     private suspend fun downloadAndBuild(a: ListApi): Catalog {

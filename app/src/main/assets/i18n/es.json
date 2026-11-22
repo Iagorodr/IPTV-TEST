@@ -713,5 +713,8 @@
 "Suporte": "Soporte",
 "Imagem = qualidade do vídeo (Mbps). O \"x\" mostra quanto a conexão sobra: acima de 3x já é bom, abaixo de 1x trava.": "Imagen = calidad del vídeo (Mbps). La \"x\" muestra cuánta velocidad de conexión sobra: por encima de 3x es buena, por debajo de 1x se corta.",
 "conexão {0}x mais rápida que o necessário (última medição)": "conexión {0}x más rápida de lo necesario (última prueba)",
-"Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Imagen ~{0} Mbps · conexión {1}x más rápida de lo necesario"
+"Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Imagen ~{0} Mbps · conexión {1}x más rápida de lo necesario",
+"A lista veio incompleta agora; mantive a versão anterior.": "La lista llegó incompleta esta vez; mantuve la versión anterior.",
+"A lista veio vazia. Tente de novo em instantes.": "La lista llegó vacía. Inténtalo de nuevo en un momento.",
+"O servidor recusou (HTTP {0}). Pode ser o limite de telas da assinatura: feche o outro aparelho que estiver assistindo e tente de novo.": "El servidor rechazó (HTTP {0}). Puede ser el límite de pantallas de la suscripción: cierra el otro dispositivo que esté viendo e inténtalo de nuevo."
 }

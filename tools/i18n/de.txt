@@ -713,3 +713,6 @@
 712	Bild = Videoqualität (Mbps). Das "x" zeigt, wie viel Geschwindigkeit übrig bleibt: über 3x ist gut, unter 1x ruckelt es.
 713	Verbindung {0}x schneller als nötig (letzter Test)
 714	Bild ~{0} Mbps · Verbindung {1}x schneller als nötig
+715	Die Liste kam diesmal unvollständig an; ich habe die vorherige Version behalten.
+716	Die Liste kam leer an. Versuche es gleich noch einmal.
+717	Der Server hat abgelehnt (HTTP {0}). Möglicherweise ist das Bildschirmlimit des Abos erreicht: Schließe das andere Gerät, das gerade schaut, und versuche es erneut.
