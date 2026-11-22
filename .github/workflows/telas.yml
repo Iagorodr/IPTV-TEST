@@ -8,6 +8,9 @@ on:
       - "tools/shots/**"
       - ".github/workflows/telas.yml"
 
+permissions:
+  contents: write
+
 jobs:
   telas:
     runs-on: ubuntu-latest
@@ -42,3 +45,15 @@ jobs:
         with:
           name: telas
           path: shots
+      # o ambiente de trabalho não alcança o armazenamento de artefatos: as imagens também vão para um ramo à parte
+      - name: Enviar capturas para o ramo telas-img
+        if: always()
+        run: |
+          rm -rf /tmp/img && mkdir /tmp/img && cp -r shots/. /tmp/img/ || true
+          cd /tmp/img
+          git init -q -b telas-img
+          git config user.name "telas-bot"
+          git config user.email "telas-bot@users.noreply.github.com"
+          git add -A
+          git commit -q -m "capturas ${{ github.sha }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" telas-img
