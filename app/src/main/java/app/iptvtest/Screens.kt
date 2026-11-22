@@ -1316,12 +1316,19 @@ fun FavoritesTab(vm: MainViewModel) {
         TopNav(vm)
         if (mine.isEmpty() && favs.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    tr("Nada por aqui ainda.\nAbra um filme ou série e escolha \"+ Favoritos\".\nNos canais, use a estrela ★ dentro do player."),
-                    color = Muted,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.Center,
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        tr("Nada por aqui ainda.\nAbra um filme ou série e escolha \"+ Favoritos\".\nNos canais, use a estrela ★ dentro do player."),
+                        color = Muted,
+                        fontSize = 15.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                    Spacer(Modifier.height(18.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        TvButton(text = tr("Ir para Filmes")) { vm.selectTab(Tab.MOVIES) }
+                        TvButton(text = tr("Ir para Canais")) { vm.selectTab(Tab.CHANNELS) }
+                    }
+                }
             }
             return@Column
         }
@@ -1546,9 +1553,12 @@ private fun ListsSection(vm: MainViewModel) {
         }
         item {
             Column {
-                SectionTitle(tr("Sair"))
+                val ctx = androidx.compose.ui.platform.LocalContext.current
+                SectionTitle(tr("Fechar o app ou sair da conta"))
                 Spacer(Modifier.height(6.dp))
-                TvButton(text = if (confirmLogout) tr("Confirmar? Remove todas as listas") else tr("Sair e remover as listas")) {
+                TvButton(text = tr("Fechar o app")) { quitApp(ctx, vm) }
+                Spacer(Modifier.height(8.dp))
+                TvButton(text = if (confirmLogout) tr("Confirmar? Remove todas as listas") else tr("Remover listas e sair da conta")) {
                     if (confirmLogout) vm.logout() else confirmLogout = true
                 }
             }

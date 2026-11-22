@@ -308,7 +308,7 @@ fun UpdateDialog(vm: MainViewModel, u: UpdateInfo) {
                 color = Muted,
                 fontSize = 13.sp,
             )
-            if (u.notes.isNotBlank()) {
+            if (u.notes.isNotBlank() && I18n.lang == "pt") { // as novidades vêm só em português: nos outros idiomas ficam de fora
                 Spacer(Modifier.height(10.dp))
                 Text(tr("O que mudou"), color = Accent, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                 Text(u.notes, color = TextMain, fontSize = 14.sp)

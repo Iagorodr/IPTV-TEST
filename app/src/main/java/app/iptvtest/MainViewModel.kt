@@ -1829,6 +1829,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         FocusMemory.arm()
     }
 
+    /** Emissoras do "onde passa" para mostrar no cartão do jogo (as do jogo, ou as da competição); vazio se não souber ou já acabou. */
+    fun gameWhere(g: Game): String {
+        if (g.state == 2) return ""
+        val table = BroadcastStore.table
+        val opts = Broadcasts.gameFor(table, g)?.tv ?: table.forKey(g.leagueSlug)?.options ?: return ""
+        return opts.take(3).joinToString(" · ")
+    }
+
     fun gameInfo(g: Game): GameInfo {
         val now = System.currentTimeMillis()
         val matched = SportsChannels.displayMerged(SportsChannels.matchGame(g, eventIdx), now, tz)

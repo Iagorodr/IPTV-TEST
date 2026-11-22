@@ -716,5 +716,15 @@
 "Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Beeld ~{0} Mbps · verbinding {1}x sneller dan nodig",
 "A lista veio incompleta agora; mantive a versão anterior.": "De lijst kwam dit keer onvolledig binnen; ik heb de vorige versie behouden.",
 "A lista veio vazia. Tente de novo em instantes.": "De lijst kwam leeg binnen. Probeer het zo opnieuw.",
-"O servidor recusou (HTTP {0}). Pode ser o limite de telas da assinatura: feche o outro aparelho que estiver assistindo e tente de novo.": "De server weigerde (HTTP {0}). Mogelijk is de schermlimiet van het abonnement bereikt: sluit het andere apparaat dat kijkt en probeer opnieuw."
+"O servidor recusou (HTTP {0}). Pode ser o limite de telas da assinatura: feche o outro aparelho que estiver assistindo e tente de novo.": "De server weigerde (HTTP {0}). Mogelijk is de schermlimiet van het abonnement bereikt: sluit het andere apparaat dat kijkt en probeer opnieuw.",
+"Dica: para um jogo, abra o jogo e aperte OK em \"● Gravar\".": "Tip: open voor een wedstrijd de wedstrijd en druk op OK bij \"● Opnemen\".",
+"Ir para Filmes": "Naar Films",
+"Ir para Canais": "Naar Zenders",
+"Fechar o app ou sair da conta": "App sluiten of uitloggen",
+"Fechar o app": "App sluiten",
+"Remover listas e sair da conta": "Lijsten verwijderen en uitloggen",
+"Passa em {0}": "Op {0}",
+"Aperte OK para ver detalhes": "Druk op OK voor details",
+"{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar": "{0} wedstrijden · eerst live, dan de populairste · ★ = wedstrijd van een van je teams · druk op OK voor zenders en een herinnering",
+"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Sta \"onbekende apps installeren\" toe voor deze app, ga terug en druk opnieuw op OK bij Bijwerken."
 }

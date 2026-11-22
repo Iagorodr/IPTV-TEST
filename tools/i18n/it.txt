@@ -716,3 +716,13 @@
 715	La lista è arrivata incompleta questa volta; ho mantenuto la versione precedente.
 716	La lista è arrivata vuota. Riprova tra un momento.
 717	Il server ha rifiutato (HTTP {0}). Potrebbe essere il limite di schermi dell'abbonamento: chiudi l'altro dispositivo che sta guardando e riprova.
+718	Suggerimento: per una partita, apri la partita e premi OK su "● Registra".
+719	Vai a Film
+720	Vai a Canali
+721	Chiudi l'app o esci dall'account
+722	Chiudi l'app
+723	Rimuovi le liste ed esci dall'account
+724	Su {0}
+725	Premi OK per i dettagli
+726	{0} partite · prima quelle in diretta, poi le più popolari · ★ = partita di una tua squadra · premi OK per vedere i canali e impostare un promemoria
+727	Consenti "installa app sconosciute" per questa app, torna indietro e premi di nuovo OK su Aggiorna.
