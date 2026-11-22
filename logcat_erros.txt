@@ -1,0 +1,135 @@
+--------- beginning of main
+11-22 11:54:06.260  5121  5121 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:06.260  5121  5121 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:07.383   996  1544 E JavaBinder: !!! FAILED BINDER TRANSACTION !!!  (parcel size = 536)
+11-22 11:54:07.403  1864  1930 E JavaBinder: !!! FAILED BINDER TRANSACTION !!!  (parcel size = 556)
+11-22 11:54:07.776  5134  5134 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:07.776  5134  5134 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:07.776  5134  5134 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:07.776  5134  5134 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:09.288  5147  5147 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:09.288  5147  5147 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:09.288  5147  5147 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:09.288  5147  5147 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:12.418   996  1544 E JavaBinder: !!! FAILED BINDER TRANSACTION !!!  (parcel size = 536)
+11-22 11:54:12.439  1864  1930 E JavaBinder: !!! FAILED BINDER TRANSACTION !!!  (parcel size = 556)
+11-22 11:54:16.049  5164  5164 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:16.049  5164  5164 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:16.049  5164  5164 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:16.049  5164  5164 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: Task 255 failed or timed out. Client 8199754045001853 disconnecting from SearchService!
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: java.util.concurrent.CancellationException: Task was cancelled.
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at agnp.c(PG:3)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at agnp.get(PG:4)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at agrs.a(PG:1)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at agqi.p(PG:2)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at agqb.run(PG:4)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at jbz.run(PG:1)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at android.os.Looper.loop(Looper.java:223)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at java.lang.reflect.Method.invoke(Native Method)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-22 11:54:16.428  1864  1864 E katniss_search_SearchServiceStarter: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: EXCLUSIVE background task SEND_GSA_HOME_REQUEST was cancelled.
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: java.util.concurrent.CancellationException: Task was cancelled.
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at agnp.c(PG:3)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at agnp.get(PG:4)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at agrs.a(PG:1)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at agqi.p(PG:2)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at agqb.run(PG:4)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at jdc.b(PG:1)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at jdf.run(PG:1)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at tjh.run(PG:1)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at til.run(PG:2)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at tit.run(PG:3)
+11-22 11:54:16.430  1864  3521 E katniss_search_BgTaskExecutorImpl: 	at java.lang.Thread.run(Thread.java:923)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: Task 156 failed or timed out. Client 8199754045001773 disconnecting from SearchService!
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: java.util.concurrent.CancellationException: Task was cancelled.
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at agnp.c(PG:3)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at agnp.get(PG:4)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at agrs.a(PG:1)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at agqi.p(PG:2)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at agqb.run(PG:4)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at jbz.run(PG:1)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at android.os.Handler.handleCallback(Handler.java:938)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at android.os.Looper.loop(Looper.java:223)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at android.app.ActivityThread.main(ActivityThread.java:7656)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at java.lang.reflect.Method.invoke(Native Method)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+11-22 11:54:16.466  1864  1864 E katniss_search_SearchServiceStarter: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: Internal logging error
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: java.lang.NullPointerException: Null eventBuilder
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at ahmr.b(PG:17)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at achl.b(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at ahmv.b(PG:3)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at afqd.S(PG:15)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at afqd.s(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at lga.a(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at acrm.a(PG:3)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at agnn.c(PG:2)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at agno.run(PG:11)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at tjh.run(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at tin.run(PG:2)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at tit.run(PG:3)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at java.lang.Thread.run(Thread.java:923)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: Internal logging error
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: java.lang.NullPointerException: Null eventBuilder
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at ahmr.b(PG:17)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at achl.b(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at ahmv.b(PG:3)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at afqd.S(PG:15)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at afqd.s(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at lga.a(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at acrm.a(PG:3)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at agnn.c(PG:2)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at agno.run(PG:11)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at tjh.run(PG:1)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at tin.run(PG:2)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at tit.run(PG:3)
+11-22 11:54:16.741  1864  2000 E AbstractAndroidBackend: 	at java.lang.Thread.run(Thread.java:923)
+11-22 11:54:17.432   996  1544 E JavaBinder: !!! FAILED BINDER TRANSACTION !!!  (parcel size = 536)
+11-22 11:54:17.564  5219  5219 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:17.564  5219  5219 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:17.564  5219  5219 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:17.564  5219  5219 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:19.077  5232  5232 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:19.077  5232  5232 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:19.077  5232  5232 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:19.077  5232  5232 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:20.585  5245  5245 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:20.585  5245  5245 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:20.585  5245  5245 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:20.585  5245  5245 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:22.094  5258  5258 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:22.094  5258  5258 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:22.094  5258  5258 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:22.094  5258  5258 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:22.466   996  1544 E JavaBinder: !!! FAILED BINDER TRANSACTION !!!  (parcel size = 536)
+11-22 11:54:23.604  5271  5271 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:23.604  5271  5271 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:23.604  5271  5271 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:23.604  5271  5271 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:25.141  5284  5284 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:25.141  5284  5284 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:25.141  5284  5284 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:25.141  5284  5284 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:26.653  5299  5299 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.profilebootclasspath"
+11-22 11:54:26.653  5299  5299 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-22 11:54:26.653  5299  5299 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-22 11:54:26.653  5299  5299 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-22 11:54:27.052  2010  2224 E libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-22 11:54:27.052  2010  2224 E libc    : Access denied finding property "service.adb.tls.port"
+11-22 11:54:27.208   996  1562 E GmsTaskScheduler: sendWakeUpEvent called on SchedulerClientBroadcastStrategy
+11-22 11:54:27.510   442   442 E netmgr  : qemu_pipe_open_ns:62: Could not connect to the 'pipe:qemud:network' service: Invalid argument
+11-22 11:54:27.510   442   442 E netmgr  : Failed to open QEMU pipe 'qemud:network': Invalid argument
+11-22 11:54:27.571   455   455 E wifi_forwarder: qemu_pipe_open_ns:62: Could not connect to the 'pipe:qemud:wififorward' service: Invalid argument
+11-22 11:54:27.571   455   455 E wifi_forwarder: RemoteConnection failed to initialize: RemoteConnection failed to open pipe
