@@ -726,3 +726,5 @@
 725	OK drücken für Details
 726	{0} Spiele · zuerst live, dann die beliebtesten · ★ = Spiel eines deiner Teams · OK drücken für Kanäle und Erinnerung
 727	Erlaube "Unbekannte Apps installieren" für diese App, gehe zurück und drücke erneut OK auf Aktualisieren.
+728	Liste {0} hat nicht geantwortet ({1}); ich habe die vorherige Version behalten.
+729	Liste {0} hat nicht geantwortet ({1}); es werden nur die anderen angezeigt.

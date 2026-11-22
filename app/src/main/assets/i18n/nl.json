@@ -726,5 +726,7 @@
 "Passa em {0}": "Op {0}",
 "Aperte OK para ver detalhes": "Druk op OK voor details",
 "{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar": "{0} wedstrijden · eerst live, dan de populairste · ★ = wedstrijd van een van je teams · druk op OK voor zenders en een herinnering",
-"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Sta \"onbekende apps installeren\" toe voor deze app, ga terug en druk opnieuw op OK bij Bijwerken."
+"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Sta \"onbekende apps installeren\" toe voor deze app, ga terug en druk opnieuw op OK bij Bijwerken.",
+"A lista {0} não respondeu ({1}); mantive a versão anterior.": "Lijst {0} reageerde niet ({1}); ik heb de vorige versie behouden.",
+"A lista {0} não respondeu ({1}); mostrando só as outras.": "Lijst {0} reageerde niet ({1}); alleen de andere worden getoond."
 }

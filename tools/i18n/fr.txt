@@ -726,3 +726,5 @@
 725	Appuyez sur OK pour les détails
 726	{0} matchs · en direct d'abord, puis les plus populaires · ★ = match d'une de vos équipes · appuyez sur OK pour voir les chaînes et programmer un rappel
 727	Autorisez « installer des applis inconnues » pour cette appli, revenez et appuyez de nouveau sur OK sur Mettre à jour.
+728	La liste {0} n’a pas répondu ({1}) ; j’ai gardé la version précédente.
+729	La liste {0} n’a pas répondu ({1}) ; affichage des autres uniquement.

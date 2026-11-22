@@ -726,3 +726,5 @@
 725	Druk op OK voor details
 726	{0} wedstrijden · eerst live, dan de populairste · ★ = wedstrijd van een van je teams · druk op OK voor zenders en een herinnering
 727	Sta "onbekende apps installeren" toe voor deze app, ga terug en druk opnieuw op OK bij Bijwerken.
+728	Lijst {0} reageerde niet ({1}); ik heb de vorige versie behouden.
+729	Lijst {0} reageerde niet ({1}); alleen de andere worden getoond.

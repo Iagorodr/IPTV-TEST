@@ -726,3 +726,5 @@
 725	Press OK for details
 726	{0} games · live first, then the most popular · ★ = a game of your team · press OK to see channels and set a reminder
 727	Allow "install unknown apps" for this app, go back and press OK on Update again.
+728	List {0} did not respond ({1}); I kept the previous version.
+729	List {0} did not respond ({1}); showing only the others.

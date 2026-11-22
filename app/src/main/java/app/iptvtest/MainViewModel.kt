@@ -674,27 +674,41 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 a.prepare()
                 var fresh = downloadAndBuild(a)
-                var incomplete = (a as? MergedApi)?.partial == true
+                val merged = a as? MergedApi
+                var incomplete = merged?.partial == true
                 // resposta vazia ou muito menor que a anterior = provedor sobrecarregado: espera um pouco e tenta de novo
-                if (incomplete || looksBroken(fresh, catalog)) {
+                if (!incomplete && looksBroken(fresh, catalog)) {
                     delay(4_000L)
                     val again = downloadAndBuild(a)
                     if (catalogSize(again) >= catalogSize(fresh)) fresh = again
-                    incomplete = (a as? MergedApi)?.partial == true
+                    incomplete = merged?.partial == true
                 }
                 val prev = catalog
-                if (looksBroken(fresh, prev)) {
+                if (incomplete || looksBroken(fresh, prev)) {
                     if (prev != null) {
                         // não troca uma lista boa por uma incompleta (e não grava no cache)
-                        listNotice = tr("A lista veio incompleta agora; mantive a versão anterior.")
+                        val bad = merged?.failures?.entries?.minByOrNull { it.key }
+                        listNotice = if (bad != null) {
+                            tr("A lista {0} não respondeu ({1}); mantive a versão anterior.", bad.key + 1, friendly(bad.value))
+                        } else {
+                            tr("A lista veio incompleta agora; mantive a versão anterior.")
+                        }
                         launch {
-                            delay(9_000L)
+                            delay(12_000L)
                             listNotice = null
                         }
                         return@launch
                     }
                     if (catalogSize(fresh) == 0) throw java.io.IOException(tr("A lista veio vazia. Tente de novo em instantes."))
                     incomplete = true
+                    val bad = merged?.failures?.entries?.minByOrNull { it.key }
+                    if (bad != null) {
+                        listNotice = tr("A lista {0} não respondeu ({1}); mostrando só as outras.", bad.key + 1, friendly(bad.value))
+                        launch {
+                            delay(12_000L)
+                            listNotice = null
+                        }
+                    }
                 }
                 // incompleta e sem versão anterior: mostra, mas não guarda, para a próxima abertura tentar de novo
                 if (!incomplete) withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }

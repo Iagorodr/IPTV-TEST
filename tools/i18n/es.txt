@@ -726,3 +726,5 @@
 725	Pulsa OK para ver detalles
 726	{0} partidos · en vivo primero, luego los más populares · ★ = partido de un equipo tuyo · pulsa OK para ver canales y activar recordatorio
 727	Permite "instalar apps desconocidas" para esta app, vuelve y pulsa OK en Actualizar de nuevo.
+728	La lista {0} no respondió ({1}); mantuve la versión anterior.
+729	La lista {0} no respondió ({1}); mostrando solo las otras.

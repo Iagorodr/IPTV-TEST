@@ -726,5 +726,7 @@
 "Passa em {0}": "On {0}",
 "Aperte OK para ver detalhes": "Press OK for details",
 "{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar": "{0} games · live first, then the most popular · ★ = a game of your team · press OK to see channels and set a reminder",
-"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Allow \"install unknown apps\" for this app, go back and press OK on Update again."
+"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Allow \"install unknown apps\" for this app, go back and press OK on Update again.",
+"A lista {0} não respondeu ({1}); mantive a versão anterior.": "List {0} did not respond ({1}); I kept the previous version.",
+"A lista {0} não respondeu ({1}); mostrando só as outras.": "List {0} did not respond ({1}); showing only the others."
 }

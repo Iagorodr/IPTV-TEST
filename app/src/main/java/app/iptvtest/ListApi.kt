@@ -51,6 +51,7 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
     }
 
     override suspend fun prepare() {
+        failures.clear()
         for (a in apis) {
             try {
                 a.prepare()
@@ -106,20 +107,22 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
                 throw e
             } catch (e: Exception) {
                 if (apis.size == 1) throw e
+                failures[i] = e
             }
         }
         return out
     }
 
+    /** Listas (posição → erro) que não responderam no último download; vazio = tudo veio. */
+    val failures = java.util.concurrent.ConcurrentHashMap<Int, Exception>()
+
     /** Verdadeiro se, no último download, alguma das listas juntas não respondeu (o catálogo veio incompleto). */
-    @Volatile
-    var partial = false
+    val partial: Boolean get() = failures.isNotEmpty()
 
     override suspend fun fetchItems(kind: Kind): List<RawItem> {
         val out = ArrayList<RawItem>()
         var ok = 0
         var last: Exception? = null
-        if (kind == Kind.MOVIES) partial = false
         for ((i, a) in apis.withIndex()) {
             try {
                 val l = a.fetchItems(kind)
@@ -140,7 +143,7 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
                 throw e
             } catch (e: Exception) {
                 last = e
-                partial = true
+                failures[i] = e
             }
         }
         if (ok == 0 && last != null) throw last

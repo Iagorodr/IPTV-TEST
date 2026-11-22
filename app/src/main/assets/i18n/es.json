@@ -726,5 +726,7 @@
 "Passa em {0}": "En {0}",
 "Aperte OK para ver detalhes": "Pulsa OK para ver detalles",
 "{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar": "{0} partidos · en vivo primero, luego los más populares · ★ = partido de un equipo tuyo · pulsa OK para ver canales y activar recordatorio",
-"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Permite \"instalar apps desconocidas\" para esta app, vuelve y pulsa OK en Actualizar de nuevo."
+"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Permite \"instalar apps desconocidas\" para esta app, vuelve y pulsa OK en Actualizar de nuevo.",
+"A lista {0} não respondeu ({1}); mantive a versão anterior.": "La lista {0} no respondió ({1}); mantuve la versión anterior.",
+"A lista {0} não respondeu ({1}); mostrando só as outras.": "La lista {0} no respondió ({1}); mostrando solo las otras."
 }
