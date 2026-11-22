@@ -24,3 +24,4 @@ for i in 2 3 4 5 6 7; do key 22 1; key 23 6; shot "0${i}_aba"; for j in 1 2 3 4 
 # ajustes (engrenagem) e busca
 key 22 1; key 22 1; key 23 5; shot 08_ajustes
 adb logcat -d -t 400 *:E > shots/logcat_erros.txt || true
+# 1795348007
