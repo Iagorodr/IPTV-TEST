@@ -2,6 +2,11 @@ name: Capturar telas
 
 on:
   workflow_dispatch:
+  push:
+    branches: [dev]
+    paths:
+      - "tools/shots/**"
+      - ".github/workflows/telas.yml"
 
 jobs:
   telas:
