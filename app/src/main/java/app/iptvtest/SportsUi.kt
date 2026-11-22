@@ -158,6 +158,7 @@ fun GameCard(
     modifier: Modifier = Modifier,
     fav: Boolean = false,
     reminded: Boolean = false,
+    where: String = "",
     onClick: () -> Unit,
 ) {
     val fr = restoringRequester(focusId)
@@ -203,7 +204,8 @@ fun GameCard(
                     reminded -> tr("⏰ Lembrete ligado")
                     channelCount == 1 -> tr("▶ 1 canal na sua lista")
                     channelCount > 1 -> tr("▶ {0} canais na sua lista", channelCount)
-                    else -> tr("Toque para ver detalhes")
+                    where.isNotEmpty() -> tr("Passa em {0}", where)
+                    else -> tr("Aperte OK para ver detalhes")
                 },
                 color = if (reminded) Warn else if (channelCount > 0) Good else Muted,
                 fontSize = 12.sp,
@@ -669,6 +671,7 @@ fun AllGamesScreen(vm: MainViewModel) {
                     modifier = Modifier.fillMaxWidth(),
                     fav = sg.fav,
                     reminded = vm.isReminded(sg.game),
+                    where = remember(sg.game.key, BroadcastStore.rev) { vm.gameWhere(sg.game) },
                     onClick = { vm.showGame(sg.game) },
                 )
             }
@@ -720,7 +723,7 @@ fun GamesTab(vm: MainViewModel) {
         ) {
             Text(
                 text = when {
-                    list.isNotEmpty() -> tr("{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · toque para ver canais e lembrar", list.size)
+                    list.isNotEmpty() -> tr("{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar", list.size)
                     loading -> tr("Buscando os jogos...")
                     err != null -> err
                     else -> tr("Nenhum jogo das principais ligas neste dia.")
@@ -749,6 +752,7 @@ fun GamesTab(vm: MainViewModel) {
                     modifier = Modifier.fillMaxWidth(),
                     fav = sg.fav,
                     reminded = vm.isReminded(sg.game),
+                    where = remember(sg.game.key, BroadcastStore.rev) { vm.gameWhere(sg.game) },
                     onClick = { vm.showGame(sg.game) },
                 )
             }

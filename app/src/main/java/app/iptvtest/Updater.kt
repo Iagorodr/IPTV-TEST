@@ -115,7 +115,7 @@ object Updater {
                     Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + ctx.packageName))
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 )
-                tr("Permita \"instalar apps desconhecidos\" para este app, volte e toque em Atualizar de novo.")
+                tr("Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.")
             } catch (e: Exception) {
                 tr("Nas configurações da TV, permita instalar apps de fontes desconhecidas para este app e tente de novo.")
             }

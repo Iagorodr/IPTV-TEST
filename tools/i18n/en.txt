@@ -713,3 +713,16 @@
 712	Image = video quality (Mbps). The "x" shows how much connection speed is left over: above 3x is good, below 1x will stall.
 713	connection {0}x faster than needed (last test)
 714	Image ~{0} Mbps · connection {1}x faster than needed
+715	The list came back incomplete this time; I kept the previous version.
+716	The list came back empty. Try again in a moment.
+717	The server refused (HTTP {0}). It may be your subscription's screen limit: close the other device that is watching and try again.
+718	Tip: for a game, open the game and press OK on "● Record".
+719	Go to Movies
+720	Go to Channels
+721	Close the app or sign out
+722	Close the app
+723	Remove lists and sign out
+724	On {0}
+725	Press OK for details
+726	{0} games · live first, then the most popular · ★ = a game of your team · press OK to see channels and set a reminder
+727	Allow "install unknown apps" for this app, go back and press OK on Update again.

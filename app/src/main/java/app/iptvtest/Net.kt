@@ -2,6 +2,7 @@ package app.iptvtest
 
 import java.io.IOException
 import java.net.HttpURLConnection
+import kotlinx.coroutines.launch
 import java.net.URL
 
 /** Quantos itens já foram lidos no download em andamento (a tela de carregamento mostra). */
@@ -49,4 +50,34 @@ object Net {
         }
         throw IOException(tr("Redirecionamentos demais."))
     }
+
+    /**
+     * Abre [url] e roda [body] numa thread de rede; se a tarefa for cancelada (trocou de lista, saiu da tela), a conexão é
+     * derrubada na hora. Antes a leitura em andamento seguia até o fim em segundo plano, e baixar a lista velha e a nova
+     * ao mesmo tempo fazia o provedor recusar ou devolver resposta vazia.
+     */
+    suspend fun <T> call(url: String, readTimeoutMs: Int, accept: String, body: (HttpURLConnection) -> T): T =
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            kotlinx.coroutines.coroutineScope {
+                var opened: HttpURLConnection? = null
+                val watcher = launch {
+                    try {
+                        kotlinx.coroutines.awaitCancellation()
+                    } finally {
+                        try { opened?.disconnect() } catch (e: Exception) { }
+                    }
+                }
+                try {
+                    val conn = open(url, readTimeoutMs = readTimeoutMs, accept = accept)
+                    opened = conn
+                    try {
+                        body(conn)
+                    } finally {
+                        conn.disconnect()
+                    }
+                } finally {
+                    watcher.cancel()
+                }
+            }
+        }
 }

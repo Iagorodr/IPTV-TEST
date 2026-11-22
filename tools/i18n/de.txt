@@ -713,3 +713,16 @@
 712	Bild = Videoqualität (Mbps). Das "x" zeigt, wie viel Geschwindigkeit übrig bleibt: über 3x ist gut, unter 1x ruckelt es.
 713	Verbindung {0}x schneller als nötig (letzter Test)
 714	Bild ~{0} Mbps · Verbindung {1}x schneller als nötig
+715	Die Liste kam diesmal unvollständig an; ich habe die vorherige Version behalten.
+716	Die Liste kam leer an. Versuche es gleich noch einmal.
+717	Der Server hat abgelehnt (HTTP {0}). Möglicherweise ist das Bildschirmlimit des Abos erreicht: Schließe das andere Gerät, das gerade schaut, und versuche es erneut.
+718	Tipp: Öffne für ein Spiel das Spiel und drücke OK auf "● Aufnehmen".
+719	Zu Filmen
+720	Zu Kanälen
+721	App schließen oder abmelden
+722	App schließen
+723	Listen entfernen und abmelden
+724	Auf {0}
+725	OK drücken für Details
+726	{0} Spiele · zuerst live, dann die beliebtesten · ★ = Spiel eines deiner Teams · OK drücken für Kanäle und Erinnerung
+727	Erlaube "Unbekannte Apps installieren" für diese App, gehe zurück und drücke erneut OK auf Aktualisieren.

@@ -713,3 +713,16 @@
 712	Imagen = calidad del vídeo (Mbps). La "x" muestra cuánta velocidad de conexión sobra: por encima de 3x es buena, por debajo de 1x se corta.
 713	conexión {0}x más rápida de lo necesario (última prueba)
 714	Imagen ~{0} Mbps · conexión {1}x más rápida de lo necesario
+715	La lista llegó incompleta esta vez; mantuve la versión anterior.
+716	La lista llegó vacía. Inténtalo de nuevo en un momento.
+717	El servidor rechazó (HTTP {0}). Puede ser el límite de pantallas de la suscripción: cierra el otro dispositivo que esté viendo e inténtalo de nuevo.
+718	Consejo: para un partido, abre el partido y pulsa OK en "● Grabar".
+719	Ir a Películas
+720	Ir a Canales
+721	Cerrar la app o salir de la cuenta
+722	Cerrar la app
+723	Quitar listas y salir de la cuenta
+724	En {0}
+725	Pulsa OK para ver detalles
+726	{0} partidos · en vivo primero, luego los más populares · ★ = partido de un equipo tuyo · pulsa OK para ver canales y activar recordatorio
+727	Permite "instalar apps desconocidas" para esta app, vuelve y pulsa OK en Actualizar de nuevo.

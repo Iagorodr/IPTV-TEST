@@ -1,7 +1,5 @@
-O app agora fala 7 idiomas: escolha em Ajustes > Perfil.
-Novo Modo jogo no player: cores mais vivas e mais contraste.
-Continuar assistindo também em Filmes e Séries.
-Destaques mudam a cada abertura; Lançamentos vêm do mais novo para o mais antigo.
-Notas dos filmes mais confiáveis (vêm do TMDB).
-A escolha de fonte respeita estabilidade ou qualidade, como você marcou.
-Tela de carregamento nova, com dicas e novidades.
+Jogos: agora aparecem as seleções (Liga das Nações, Eurocopa, Copa América, amistosos das principais seleções) e cada jogo mostra onde passa.
+Botão "Fechar o app" nos Ajustes: fecha de verdade e recarrega tudo na próxima abertura.
+Trocar de lista ficou mais firme: o app não guarda mais uma lista vinda incompleta.
+Modo infantil com visual próprio e o aviso "Infantil" no topo.
+Modo jogo mais suave e com som de voz mais clara.

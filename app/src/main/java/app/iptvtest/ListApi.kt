@@ -111,10 +111,15 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
         return out
     }
 
+    /** Verdadeiro se, no último download, alguma das listas juntas não respondeu (o catálogo veio incompleto). */
+    @Volatile
+    var partial = false
+
     override suspend fun fetchItems(kind: Kind): List<RawItem> {
         val out = ArrayList<RawItem>()
         var ok = 0
         var last: Exception? = null
+        if (kind == Kind.MOVIES) partial = false
         for ((i, a) in apis.withIndex()) {
             try {
                 val l = a.fetchItems(kind)
@@ -135,6 +140,7 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
                 throw e
             } catch (e: Exception) {
                 last = e
+                partial = true
             }
         }
         if (ok == 0 && last != null) throw last

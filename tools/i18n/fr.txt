@@ -713,3 +713,16 @@
 712	Image = qualité de la vidéo (Mbps). Le « x » indique la marge de débit : au-dessus de 3x c’est bon, en dessous de 1x ça saccade.
 713	connexion {0}x plus rapide que nécessaire (dernier test)
 714	Image ~{0} Mbps · connexion {1}x plus rapide que nécessaire
+715	La liste est arrivée incomplète cette fois ; j'ai gardé la version précédente.
+716	La liste est arrivée vide. Réessayez dans un instant.
+717	Le serveur a refusé (HTTP {0}). Ce peut être la limite d'écrans de l'abonnement : fermez l'autre appareil qui regarde et réessayez.
+718	Astuce : pour un match, ouvrez le match et appuyez sur OK sur « ● Enregistrer ».
+719	Aller aux Films
+720	Aller aux Chaînes
+721	Fermer l'appli ou se déconnecter
+722	Fermer l'appli
+723	Retirer les listes et se déconnecter
+724	Sur {0}
+725	Appuyez sur OK pour les détails
+726	{0} matchs · en direct d'abord, puis les plus populaires · ★ = match d'une de vos équipes · appuyez sur OK pour voir les chaînes et programmer un rappel
+727	Autorisez « installer des applis inconnues » pour cette appli, revenez et appuyez de nouveau sur OK sur Mettre à jour.

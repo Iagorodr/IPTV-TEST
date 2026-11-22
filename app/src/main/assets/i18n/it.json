@@ -713,5 +713,18 @@
 "Suporte": "Assistenza",
 "Imagem = qualidade do vídeo (Mbps). O \"x\" mostra quanto a conexão sobra: acima de 3x já é bom, abaixo de 1x trava.": "Immagine = qualità del video (Mbps). La \"x\" indica quanta velocità resta: sopra 3x va bene, sotto 1x si blocca.",
 "conexão {0}x mais rápida que o necessário (última medição)": "connessione {0}x più veloce del necessario (ultimo test)",
-"Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Immagine ~{0} Mbps · connessione {1}x più veloce del necessario"
+"Imagem ~{0} Mbps · conexão {1}x mais rápida que o necessário": "Immagine ~{0} Mbps · connessione {1}x più veloce del necessario",
+"A lista veio incompleta agora; mantive a versão anterior.": "La lista è arrivata incompleta questa volta; ho mantenuto la versione precedente.",
+"A lista veio vazia. Tente de novo em instantes.": "La lista è arrivata vuota. Riprova tra un momento.",
+"O servidor recusou (HTTP {0}). Pode ser o limite de telas da assinatura: feche o outro aparelho que estiver assistindo e tente de novo.": "Il server ha rifiutato (HTTP {0}). Potrebbe essere il limite di schermi dell'abbonamento: chiudi l'altro dispositivo che sta guardando e riprova.",
+"Dica: para um jogo, abra o jogo e aperte OK em \"● Gravar\".": "Suggerimento: per una partita, apri la partita e premi OK su \"● Registra\".",
+"Ir para Filmes": "Vai a Film",
+"Ir para Canais": "Vai a Canali",
+"Fechar o app ou sair da conta": "Chiudi l'app o esci dall'account",
+"Fechar o app": "Chiudi l'app",
+"Remover listas e sair da conta": "Rimuovi le liste ed esci dall'account",
+"Passa em {0}": "Su {0}",
+"Aperte OK para ver detalhes": "Premi OK per i dettagli",
+"{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar": "{0} partite · prima quelle in diretta, poi le più popolari · ★ = partita di una tua squadra · premi OK per vedere i canali e impostare un promemoria",
+"Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Consenti \"installa app sconosciute\" per questa app, torna indietro e premi di nuovo OK su Aggiorna."
 }

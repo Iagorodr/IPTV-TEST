@@ -115,7 +115,7 @@ fun RecordingsTab(vm: MainViewModel) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                     TvButton(text = tr("+ Agendar gravação"), primary = vm.recs.isEmpty() && vm.scheds.isEmpty()) { vm.recordManual() }
                     Text(
-                        tr("Dica: para um jogo, abra o jogo e toque em \"● Gravar\"."),
+                        tr("Dica: para um jogo, abra o jogo e aperte OK em \"● Gravar\"."),
                         color = Muted,
                         fontSize = 12.sp,
                     )

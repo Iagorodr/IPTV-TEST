@@ -1929,6 +1929,8 @@ private fun describeError(e: PlaybackException): String {
         cause = cause.cause
     }
     val base = when {
+        http == 401 || http == 403 || http == 429 || http == 458 || http == 509 || http == 884 ->
+            tr("O servidor recusou (HTTP {0}). Pode ser o limite de telas da assinatura: feche o outro aparelho que estiver assistindo e tente de novo.", http)
         http != null -> tr("O servidor respondeu HTTP {0}.", http)
         e.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED -> tr("Falha de rede ao conectar.")
         e.errorCode == PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT -> tr("Tempo esgotado ao conectar.")

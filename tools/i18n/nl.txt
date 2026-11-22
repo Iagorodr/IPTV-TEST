@@ -713,3 +713,16 @@
 712	Beeld = videokwaliteit (Mbps). De "x" toont hoeveel snelheid er overblijft: boven 3x is goed, onder 1x haperen.
 713	verbinding {0}x sneller dan nodig (laatste test)
 714	Beeld ~{0} Mbps · verbinding {1}x sneller dan nodig
+715	De lijst kwam dit keer onvolledig binnen; ik heb de vorige versie behouden.
+716	De lijst kwam leeg binnen. Probeer het zo opnieuw.
+717	De server weigerde (HTTP {0}). Mogelijk is de schermlimiet van het abonnement bereikt: sluit het andere apparaat dat kijkt en probeer opnieuw.
+718	Tip: open voor een wedstrijd de wedstrijd en druk op OK bij "● Opnemen".
+719	Naar Films
+720	Naar Zenders
+721	App sluiten of uitloggen
+722	App sluiten
+723	Lijsten verwijderen en uitloggen
+724	Op {0}
+725	Druk op OK voor details
+726	{0} wedstrijden · eerst live, dan de populairste · ★ = wedstrijd van een van je teams · druk op OK voor zenders en een herinnering
+727	Sta "onbekende apps installeren" toe voor deze app, ga terug en druk opnieuw op OK bij Bijwerken.
