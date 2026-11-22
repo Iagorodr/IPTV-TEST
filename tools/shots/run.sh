@@ -15,7 +15,12 @@ adb shell monkey -p app.iptvtest -c android.intent.category.LEANBACK_LAUNCHER 1 
 sleep 40
 shot() { adb exec-out screencap -p > "shots/$1.png"; }
 key() { adb shell input keyevent "$1"; sleep "${2:-2}"; }
+# fecha o aviso de "nova versão" (o build de teste tem número baixo): Direita = "Depois", Enter
+key 22 1; key 23 3
 shot 01_inicio
-key 19 3; shot 02_menu_topo
-for i in 2 3 4 5 6 7 8; do key 22 4; shot "0${i}_aba$i"; done
+# sobe até o menu do topo e percorre as abas (Direita + Enter)
+for i in 1 2 3 4 5; do key 19 1; done
+for i in 2 3 4 5 6 7; do key 22 1; key 23 6; shot "0${i}_aba"; for j in 1 2 3 4 5; do key 19 1; done; done
+# ajustes (engrenagem) e busca
+key 22 1; key 22 1; key 23 5; shot 08_ajustes
 adb logcat -d -t 400 *:E > shots/logcat_erros.txt || true
