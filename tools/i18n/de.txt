@@ -728,3 +728,5 @@
 727	Erlaube "Unbekannte Apps installieren" für diese App, gehe zurück und drücke erneut OK auf Aktualisieren.
 728	Liste {0} hat nicht geantwortet ({1}); ich habe die vorherige Version behalten.
 729	Liste {0} hat nicht geantwortet ({1}); es werden nur die anderen angezeigt.
+730	kam leer zurück
+731	Liste {0} hat nicht geantwortet ({1}); ich habe die zuletzt gespeicherte Kopie verwendet.

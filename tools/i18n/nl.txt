@@ -728,3 +728,5 @@
 727	Sta "onbekende apps installeren" toe voor deze app, ga terug en druk opnieuw op OK bij Bijwerken.
 728	Lijst {0} reageerde niet ({1}); ik heb de vorige versie behouden.
 729	Lijst {0} reageerde niet ({1}); alleen de andere worden getoond.
+730	kwam leeg terug
+731	Lijst {0} reageerde niet ({1}); ik heb de laatst opgeslagen kopie gebruikt.

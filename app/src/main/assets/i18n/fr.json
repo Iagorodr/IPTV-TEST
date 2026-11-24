@@ -728,5 +728,7 @@
 "{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar": "{0} matchs · en direct d'abord, puis les plus populaires · ★ = match d'une de vos équipes · appuyez sur OK pour voir les chaînes et programmer un rappel",
 "Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Autorisez « installer des applis inconnues » pour cette appli, revenez et appuyez de nouveau sur OK sur Mettre à jour.",
 "A lista {0} não respondeu ({1}); mantive a versão anterior.": "La liste {0} n’a pas répondu ({1}) ; j’ai gardé la version précédente.",
-"A lista {0} não respondeu ({1}); mostrando só as outras.": "La liste {0} n’a pas répondu ({1}) ; affichage des autres uniquement."
+"A lista {0} não respondeu ({1}); mostrando só as outras.": "La liste {0} n’a pas répondu ({1}) ; affichage des autres uniquement.",
+"veio vazia": "elle est revenue vide",
+"A lista {0} não respondeu ({1}); usei a última cópia dela.": "La liste {0} n’a pas répondu ({1}) ; j’ai utilisé sa dernière copie enregistrée."
 }

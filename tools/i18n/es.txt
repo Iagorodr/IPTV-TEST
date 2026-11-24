@@ -728,3 +728,5 @@
 727	Permite "instalar apps desconocidas" para esta app, vuelve y pulsa OK en Actualizar de nuevo.
 728	La lista {0} no respondió ({1}); mantuve la versión anterior.
 729	La lista {0} no respondió ({1}); mostrando solo las otras.
+730	vino vacía
+731	La lista {0} no respondió ({1}); usé su última copia guardada.

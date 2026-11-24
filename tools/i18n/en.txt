@@ -728,3 +728,5 @@
 727	Allow "install unknown apps" for this app, go back and press OK on Update again.
 728	List {0} did not respond ({1}); I kept the previous version.
 729	List {0} did not respond ({1}); showing only the others.
+730	it came back empty
+731	List {0} did not respond ({1}); I used its last saved copy.

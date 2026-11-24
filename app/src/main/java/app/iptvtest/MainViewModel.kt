@@ -509,7 +509,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun buildApi(accs: List<Account>): ListApi {
         val apis = accs.map { if (it.m3u.isNotEmpty()) M3uApi(appCtx, it.m3u) else XtreamApi(it) }
-        return if (apis.size == 1) apis[0] else MergedApi(apis)
+        return if (apis.size == 1) apis[0] else MergedApi(apis, accs.map { CatalogCache.accKey(it) }, appCtx.filesDir)
     }
 
     private fun finishLogin(acc: Account, ready: ListApi, info: String) {
@@ -605,6 +605,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun logout() {
         store.clear()
         CatalogCache.clear(appCtx)
+        appCtx.filesDir.listFiles()?.forEach { if (it.name.startsWith("rawlist_")) it.delete() }
         lists = emptyList()
         activeList = 0
         mergeLists = false
@@ -684,6 +685,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     incomplete = merged?.partial == true
                 }
                 val prev = catalog
+                val usedCopy = merged?.stale?.entries?.minByOrNull { it.key }
                 if (incomplete || looksBroken(fresh, prev)) {
                     if (prev != null) {
                         // não troca uma lista boa por uma incompleta (e não grava no cache)
@@ -711,11 +713,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     }
                 }
                 // incompleta e sem versão anterior: mostra, mas não guarda, para a próxima abertura tentar de novo
-                if (!incomplete) withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
+                // lista completada com a cópia antiga: mostra tudo, avisa e não guarda (a próxima abertura tenta de novo)
+                if (usedCopy != null) {
+                    listNotice = tr("A lista {0} não respondeu ({1}); usei a última cópia dela.", usedCopy.key + 1, usedCopy.value)
+                    launch {
+                        delay(12_000L)
+                        listNotice = null
+                    }
+                }
+                if (!incomplete && usedCopy == null) withContext(Dispatchers.IO) { CatalogCache.save(appCtx, key, fresh) }
                 if (catalog == null) loadMsg = tr("Montando as telas")
                 val wasShowing = catalog != null
                 applyCatalog(fresh)
-                if (wasShowing) {
+                if (wasShowing && usedCopy == null) {
                     listNotice = tr("Lista atualizada: ") + fresh.movies.size + tr(" filmes · ") + fresh.series.size + tr(" séries · ") + fresh.channels.size + tr(" canais")
                     launch {
                         delay(9_000L)

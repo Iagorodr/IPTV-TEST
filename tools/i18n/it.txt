@@ -728,3 +728,5 @@
 727	Consenti "installa app sconosciute" per questa app, torna indietro e premi di nuovo OK su Aggiorna.
 728	La lista {0} non ha risposto ({1}); ho mantenuto la versione precedente.
 729	La lista {0} non ha risposto ({1}); mostro solo le altre.
+730	è arrivata vuota
+731	La lista {0} non ha risposto ({1}); ho usato la sua ultima copia salvata.

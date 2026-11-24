@@ -1,5 +1,12 @@
 package app.iptvtest
 
+import android.util.JsonReader
+import android.util.JsonToken
+import android.util.JsonWriter
+import java.io.File
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
+
 /**
  * O que o app precisa de uma lista, seja ela Xtream (servidor, usuário e senha) ou um link M3U.
  * O resto do app só fala com esta interface.
@@ -36,7 +43,16 @@ interface ListApi {
  * quebra); os das outras ganham o prefixo "~n~". Como tudo vira uma lista só de itens, o organizador já junta
  * os mesmos filmes/séries (dublado, legendado...) e os mesmos canais (fontes diferentes) num cartão único.
  */
-class MergedApi(private val apis: List<ListApi>) : ListApi {
+class MergedApi(
+    private val apis: List<ListApi>,
+    /** Uma chave estável por lista e a pasta onde guardar a última cópia boa de cada uma (opcional). */
+    private val keys: List<String> = emptyList(),
+    private val dir: File? = null,
+) : ListApi {
+
+    /** Listas (posição → motivo) cujo download falhou ou veio vazio e que foram completadas com a última cópia boa dela. */
+    val stale = java.util.concurrent.ConcurrentHashMap<Int, String>()
+
 
     private fun tag(i: Int, id: String): String = if (i == 0) id else "~$i~$id"
 
@@ -52,6 +68,7 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
 
     override suspend fun prepare() {
         failures.clear()
+        stale.clear()
         for (a in apis) {
             try {
                 a.prepare()
@@ -102,12 +119,20 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
         val out = ArrayList<Category>()
         for ((i, a) in apis.withIndex()) {
             try {
-                for (c in a.categories(kind)) out.add(Category(tag(i, c.id), c.name))
+                val cs = a.categories(kind)
+                if (cs.isNotEmpty()) saveCopy(i, "cat_" + kind.name.lowercase(), cs.map { RawItem(it.id, it.name, null, "", 0f, 0L, "", emptyList(), "", "") })
+                for (c in cs) out.add(Category(tag(i, c.id), c.name))
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
                 if (apis.size == 1) throw e
-                failures[i] = e
+                val saved = loadSaved(i, "cat_" + kind.name.lowercase())
+                if (saved.isNotEmpty()) {
+                    stale[i] = e.message ?: e.javaClass.simpleName
+                    for (c in saved) out.add(Category(tag(i, c.id), c.name))
+                } else {
+                    failures[i] = e
+                }
             }
         }
         return out
@@ -124,30 +149,177 @@ class MergedApi(private val apis: List<ListApi>) : ListApi {
         var ok = 0
         var last: Exception? = null
         for ((i, a) in apis.withIndex()) {
+            var l: List<RawItem>? = null
+            var err: Exception? = null
             try {
-                val l = a.fetchItems(kind)
-                ok++
-                if (i == 0) {
-                    out.addAll(l)
-                } else {
-                    for (r in l) {
-                        out.add(
-                            RawItem(
-                                id = tag(i, r.id), name = r.name, image = r.image, year = r.year, rating = r.rating,
-                                added = r.added, ext = r.ext, cats = r.cats.map { tag(i, it) }, plot = r.plot, genre = r.genre, arch = r.arch, tmdb = r.tmdb,
-                            ),
-                        )
-                    }
-                }
+                l = a.fetchItems(kind)
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                last = e
-                failures[i] = e
+                err = e
+            }
+            val before = lastCount(i, kind.name.lowercase())
+            // vazio ou muito menor que da última vez (o provedor às vezes responde "[]" quando está sobrecarregado)
+            val suspicious = err == null && l != null && (l.isEmpty() && before > 0 || before >= 20 && l.size * 2 < before)
+            if (err != null || suspicious) {
+                val saved = loadSaved(i, kind.name.lowercase())
+                if (saved.isNotEmpty()) {
+                    stale[i] = err?.let { it.message ?: it.javaClass.simpleName } ?: tr("veio vazia")
+                    l = saved
+                    err = null
+                }
+            } else if (l != null && l.isNotEmpty()) {
+                saveCopy(i, kind.name.lowercase(), l)
+            }
+            if (err != null || l == null) {
+                last = err
+                failures[i] = err ?: java.io.IOException(tr("veio vazia"))
+                continue
+            }
+            ok++
+            if (i == 0) {
+                out.addAll(l)
+            } else {
+                for (r in l) {
+                    out.add(
+                        RawItem(
+                            id = tag(i, r.id), name = r.name, image = r.image, year = r.year, rating = r.rating,
+                            added = r.added, ext = r.ext, cats = r.cats.map { tag(i, it) }, plot = r.plot, genre = r.genre, arch = r.arch, tmdb = r.tmdb,
+                        ),
+                    )
+                }
             }
         }
         if (ok == 0 && last != null) throw last
         return out
+    }
+
+    // ---- última cópia boa de cada lista (para o provedor falhar sem sumirem os canais) ----
+
+    private fun copyFile(i: Int, kind: String): File? {
+        val d = dir ?: return null
+        val k = keys.getOrNull(i) ?: return null
+        return File(d, "rawlist_${k}_$kind.gz")
+    }
+
+    private fun lastCount(i: Int, kind: String): Int {
+        val f = copyFile(i, kind) ?: return 0
+        if (!f.exists()) return 0
+        return try {
+            JsonReader(java.io.InputStreamReader(GZIPInputStream(f.inputStream().buffered()), Charsets.UTF_8)).use { r ->
+                var n = 0
+                r.beginObject()
+                while (r.hasNext()) {
+                    if (r.nextName() == "n") n = r.nextInt() else r.skipValue()
+                    if (n > 0) break
+                }
+                n
+            }
+        } catch (e: Exception) {
+            0
+        }
+    }
+
+    private suspend fun saveCopy(i: Int, kind: String, l: List<RawItem>) {
+        val f = copyFile(i, kind) ?: return
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                val tmp = File(f.parentFile, f.name + ".tmp")
+                JsonWriter(java.io.OutputStreamWriter(GZIPOutputStream(tmp.outputStream().buffered(64 * 1024)), Charsets.UTF_8)).use { w ->
+                    w.beginObject()
+                    w.name("n").value(l.size.toLong())
+                    w.name("a").beginArray()
+                    for (r in l) {
+                        w.beginObject()
+                        w.name("i").value(r.id)
+                        w.name("m").value(r.name)
+                        if (r.image != null) w.name("g").value(r.image)
+                        w.name("y").value(r.year)
+                        w.name("r").value(r.rating.toDouble())
+                        w.name("d").value(r.added)
+                        w.name("e").value(r.ext)
+                        w.name("c").beginArray()
+                        for (c in r.cats) w.value(c)
+                        w.endArray()
+                        w.name("p").value(r.plot)
+                        w.name("n").value(r.genre)
+                        w.name("h").value(r.arch.toLong())
+                        w.name("t").value(r.tmdb)
+                        w.endObject()
+                    }
+                    w.endArray()
+                    w.endObject()
+                }
+                if (!tmp.renameTo(f)) {
+                    f.delete()
+                    tmp.renameTo(f)
+                }
+            } catch (e: Exception) {
+                // sem cópia: só perde a rede de segurança
+            }
+        }
+    }
+
+    private suspend fun loadSaved(i: Int, kind: String): List<RawItem> {
+        val f = copyFile(i, kind) ?: return emptyList()
+        if (!f.exists()) return emptyList()
+        return kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                JsonReader(java.io.InputStreamReader(GZIPInputStream(f.inputStream().buffered(64 * 1024)), Charsets.UTF_8)).use { r ->
+                    val out = ArrayList<RawItem>()
+                    r.beginObject()
+                    while (r.hasNext()) {
+                        if (r.nextName() != "a") {
+                            r.skipValue()
+                            continue
+                        }
+                        r.beginArray()
+                        while (r.hasNext()) {
+                            var id = ""
+                            var name = ""
+                            var img: String? = null
+                            var year = ""
+                            var rating = 0f
+                            var added = 0L
+                            var ext = ""
+                            val cats = ArrayList<String>()
+                            var plot = ""
+                            var genre = ""
+                            var arch = 0
+                            var tmdb = ""
+                            r.beginObject()
+                            while (r.hasNext()) {
+                                when (r.nextName()) {
+                                    "i" -> id = r.nextString()
+                                    "m" -> name = r.nextString()
+                                    "g" -> img = r.nextString()
+                                    "y" -> year = r.nextString()
+                                    "r" -> rating = r.nextDouble().toFloat()
+                                    "d" -> added = r.nextLong()
+                                    "e" -> ext = r.nextString()
+                                    "c" -> {
+                                        r.beginArray()
+                                        while (r.hasNext()) cats.add(r.nextString())
+                                        r.endArray()
+                                    }
+                                    "p" -> plot = r.nextString()
+                                    "n" -> genre = r.nextString()
+                                    "h" -> arch = r.nextInt()
+                                    "t" -> tmdb = r.nextString()
+                                    else -> r.skipValue()
+                                }
+                            }
+                            r.endObject()
+                            out.add(RawItem(id, name, img, year, rating, added, ext, cats, plot, genre, arch, tmdb))
+                        }
+                        r.endArray()
+                    }
+                    out
+                }
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
     }
 
     override fun streamUrl(kind: Kind, id: String, ext: String): String {

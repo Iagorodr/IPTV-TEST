@@ -728,5 +728,7 @@
 "{0} jogos · ao vivo primeiro, depois os mais populares · ★ = jogo de um time seu · aperte OK para ver canais e lembrar": "{0} partite · prima quelle in diretta, poi le più popolari · ★ = partita di una tua squadra · premi OK per vedere i canali e impostare un promemoria",
 "Permita \"instalar apps desconhecidos\" para este app, volte e aperte OK em Atualizar de novo.": "Consenti \"installa app sconosciute\" per questa app, torna indietro e premi di nuovo OK su Aggiorna.",
 "A lista {0} não respondeu ({1}); mantive a versão anterior.": "La lista {0} non ha risposto ({1}); ho mantenuto la versione precedente.",
-"A lista {0} não respondeu ({1}); mostrando só as outras.": "La lista {0} non ha risposto ({1}); mostro solo le altre."
+"A lista {0} não respondeu ({1}); mostrando só as outras.": "La lista {0} non ha risposto ({1}); mostro solo le altre.",
+"veio vazia": "è arrivata vuota",
+"A lista {0} não respondeu ({1}); usei a última cópia dela.": "La lista {0} non ha risposto ({1}); ho usato la sua ultima copia salvata."
 }
