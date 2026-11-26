@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-26",
   "country": "PT",
   "tz": "Europe/Lisbon",
   "note": "Onde costuma passar em Portugal. Pesquisado em agendas públicas e pode estar desatualizado; jogos 'prováveis' vêm de uma agenda de TV agregadora.",
@@ -10,7 +10,7 @@
         "DAZN",
         "Sport TV"
       ],
-      "note": "DAZN passa a maioria dos jogos; Sport TV 5 os de Sporting e Porto (confirmado em abola.pt para 5.ª a 8.ª jornadas)."
+      "note": "DAZN passa a maioria dos jogos (um por jornada partilhado com a LiveModeTV); Sporting e FC Porto na Sport TV 5 na 6.ª jornada (8 e 9/12)."
     },
     "uefa.europa": {
       "label": "Europa League",
@@ -18,7 +18,7 @@
         "DAZN",
         "Sport TV"
       ],
-      "note": "Jogos do Benfica na Sport TV 5; Torreense e a maioria dos restantes na DAZN."
+      "note": "Sport TV tem a primeira escolha por jornada (Benfica na Sport TV 5 em 26/11 e 10/12); Torreense e a maioria dos restantes na DAZN."
     },
     "uefa.europa.conf": {
       "label": "Conference League",
@@ -26,68 +26,67 @@
         "DAZN",
         "Sport TV"
       ],
-      "note": "Jogos do Braga na DAZN. Nem todo jogo tem canal confirmado."
+      "note": "DAZN passa a maioria (jogos do Braga incluídos); Sport TV tem a primeira escolha por jornada."
     },
     "por.1": {
       "label": "Liga Portugal",
       "options": [
         "Sport TV",
         "Benfica TV",
-        "Sporting TV",
-        "FC Porto Canal"
+        "TVI"
       ],
-      "note": "Sport TV tem quase todos os jogos (ex.: Sporting x Moreirense na Sport TV 1); jogos do Benfica na Luz vão também na BTV. Pausa de seleções: sem jogos até 26/11; 12.ª jornada começa em 27/11 (FC Porto x Sporting em 29/11)."
+      "note": "Sport TV tem 272 dos 306 jogos; jogos em casa do Benfica na BTV e em casa do Moreirense na TVI/V+ (até 2027/28)."
     },
     "por.taca": {
       "label": "Taça de Portugal",
       "options": [
+        "Sport TV",
         "Canal 11",
-        "Sport TV"
+        "RTP1"
       ],
-      "note": ""
+      "note": "Varia por jogo. Oitavos (16/12 a 3/1): Sport TV e Canal 11; Sporting x Atlético e Benfica x Tondela na RTP e Sport TV."
     },
     "por.taca_liga": {
       "label": "Taça da Liga",
       "options": [
         "Sport TV"
       ],
-      "note": "Allianz Cup. Braga x Famalicão (29/10) ainda sem canal anunciado."
+      "note": "Allianz Cup, exclusivo Sport TV. Final four: meias-finais Benfica x FC Porto (5/1) e Sporting x Famalicão (6/1); final em 9/1."
     },
     "eng.1": {
       "label": "Premier League",
       "options": [
-        "DAZN",
-        "Sport TV"
+        "DAZN"
       ],
-      "note": "DAZN passa a maioria dos jogos."
+      "note": "DAZN tem a liga em exclusivo; a LiveModeTV transmite um jogo por jornada."
     },
     "esp.1": {
       "label": "LaLiga",
       "options": [
         "DAZN"
       ],
-      "note": ""
+      "note": "DAZN tem os direitos."
     },
     "ita.1": {
       "label": "Serie A",
       "options": [
         "Sport TV"
       ],
-      "note": ""
+      "note": "Sport TV tem os direitos."
     },
     "ger.1": {
       "label": "Bundesliga",
       "options": [
         "DAZN"
       ],
-      "note": ""
+      "note": "DAZN tem os direitos."
     },
     "fra.1": {
       "label": "Ligue 1",
       "options": [
         "Sport TV"
       ],
-      "note": ""
+      "note": "Sport TV tem os direitos; agendas mostram também a Fanatiz em streaming."
     },
     "f1": {
       "label": "Fórmula 1",
@@ -102,14 +101,14 @@
         "Sport TV",
         "Fanatiz"
       ],
-      "note": "Semifinais na Sport TV (1 e 2); Fanatiz aparece como streaming."
+      "note": "Sport TV (final de 28/11 na Sport TV 3); Fanatiz aparece como streaming."
     },
     "bra.1": {
       "label": "Brasileirão Série A",
       "options": [
         "Canal 11"
       ],
-      "note": "Canal 11 passa jogos escolhidos (ex.: Cruzeiro x Remo, Palmeiras x Bragantino)."
+      "note": "Canal 11 passa jogos escolhidos (ex.: Fluminense x Cruzeiro, Coritiba x Flamengo)."
     },
     "fifa.friendly": {
       "label": "Amistosos de seleções",
@@ -173,117 +172,23 @@
         "DAZN"
       ],
       "note": "Seleção portuguesa: RTP1 e Sport TV (conforme o jogo). Outras seleções: Sport TV/DAZN, pode variar."
+    },
+    "ufc": {
+      "label": "UFC",
+      "options": [
+        "Sport TV"
+      ],
+      "note": "Segundo o mapa de direitos 2026/27 (ECO), o UFC é da Sport TV."
+    },
+    "tennis": {
+      "label": "Ténis",
+      "options": [
+        "Sport TV"
+      ],
+      "note": "Taça Davis (Final 8) na Sport TV 2 em 26/11; outros torneios podem passar noutros canais."
     }
   },
   "games": [
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Bodø/Glimt",
-      "a": "LASK",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "17:45",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Galatasaray",
-      "a": "Aston Villa",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "17:45",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Arsenal",
-      "a": "Borussia Dortmund",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "20:00",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Como",
-      "a": "AEK Atenas",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "20:00",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Manchester City",
-      "a": "Nápoles",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "20:00",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "RB Leipzig",
-      "a": "Lens",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "20:00",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Real Madrid",
-      "a": "PSV",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "20:00",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Slovan Bratislava",
-      "a": "Bétis",
-      "tv": [
-        "DAZN"
-      ],
-      "ok": 1,
-      "obs": "20:00",
-      "src": "abola.pt"
-    },
-    {
-      "d": "2026-11-24",
-      "comp": "uefa.champions",
-      "h": "Feyenoord",
-      "a": "FC Porto",
-      "tv": [
-        "Sport TV"
-      ],
-      "ok": 1,
-      "obs": "20:00; Sport TV 5",
-      "src": "abola.pt"
-    },
     {
       "d": "2026-11-25",
       "comp": "uefa.champions",
@@ -394,6 +299,42 @@
     },
     {
       "d": "2026-11-26",
+      "comp": "tennis",
+      "h": "Grã-Bretanha",
+      "a": "Alemanha",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Taça Davis, Final 8; desde as 09:00; Sport TV 2",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Kairat Almaty",
+      "a": "Mjällby",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:30; DAZN 1",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "tennis",
+      "h": "Áustria",
+      "a": "Espanha",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Taça Davis, Final 8; desde as 16:00; Sport TV 2",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
       "comp": "uefa.europa",
       "h": "Viktoria Plzeň",
       "a": "Benfica",
@@ -407,8 +348,1724 @@
     {
       "d": "2026-11-26",
       "comp": "uefa.europa",
+      "h": "Olympiacos",
+      "a": "Milan",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45; DAZN 2",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Celta de Vigo",
+      "a": "Bournemouth",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45; DAZN 3",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hearts",
+      "a": "Mónaco",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45; DAZN 4",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Marselha",
+      "a": "Levski Sofia",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Union Saint-Gilloise",
+      "a": "Lech Poznań",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Dínamo Zagreb",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Salzburgo",
+      "a": "Ararat-Armenia",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Besiktas",
+      "a": "Hapoel Beer Sheva",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
       "h": "Torreense",
       "a": "Celtic",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 1 (uma agenda indica 18:30)",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "SC Braga",
+      "a": "KuPS",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 2",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Juventus",
+      "a": "Omonia",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 3",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Real Sociedad",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 4",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Lillestrøm",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Ferencváros",
+      "a": "Celje",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sparta Praga",
+      "a": "AZ Alkmaar",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sunderland",
+      "a": "Jagiellonia",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Hoffenheim",
+      "a": "Sturm Graz",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "NEC",
+      "a": "Rennes",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "OFI Creta",
+      "a": "Anderlecht",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ger.1",
+      "h": "Werder Bremen",
+      "a": "Borussia Mönchengladbach",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:30; DAZN 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "fra.1",
+      "h": "Brest",
+      "a": "Paris FC",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ita.1",
+      "h": "Veneza",
+      "a": "Bolonha",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "esp.1",
+      "h": "Levante",
+      "a": "Racing Santander",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Chelsea",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 1; agenda indica também LiveModeTV",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "por.1",
+      "h": "Marítimo",
+      "a": "Nacional",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:15; Sport TV 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "bra.1",
+      "h": "Fluminense",
+      "a": "Cruzeiro",
+      "tv": [
+        "Canal 11"
+      ],
+      "ok": 1,
+      "obs": "23:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Betis",
+      "a": "Rayo Vallecano",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "13:00; DAZN 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Frosinone",
+      "a": "Parma",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "14:00; Sport TV 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Hamburgo",
+      "a": "Bayern Munique",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:30; DAZN 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Brentford",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:00; DAZN 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Leeds United",
+      "a": "Coventry City",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:00; DAZN 4",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Málaga",
+      "a": "Athletic Bilbao",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:15; DAZN 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "por.1",
+      "h": "Moreirense",
+      "a": "Santa Clara",
+      "tv": [
+        "TVI"
+      ],
+      "ok": 0,
+      "obs": "15:30; jogos em casa do Moreirense são da TVI/V+; canal deste jogo por confirmar",
+      "src": "eco.sapo.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "por.1",
+      "h": "Arouca",
+      "a": "Rio Ave",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "15:30; Sport TV 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Angers",
+      "a": "Lens",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "16:15; Sport TV 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Torino",
+      "a": "Lazio",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "17:00; Sport TV 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Ipswich Town",
+      "a": "Aston Villa",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:30; DAZN 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Elche",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:30; DAZN 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Estugarda",
+      "a": "Eintracht Frankfurt",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:30; DAZN 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "f1",
+      "h": "GP do Qatar",
+      "a": "Classificação",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18:00; DAZN 5 (uma agenda antiga indica 19:00)",
+      "src": "f1pt.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "por.1",
+      "h": "Académico de Viseu",
+      "a": "Alverca",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "18:00; Sport TV 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "PSG",
+      "a": "Lorient",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 4",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Le Havre",
+      "a": "Estrasburgo",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 5",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Inter",
+      "a": "Génova",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 7",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Madrid",
+      "a": "Alavés",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "conmebol.libertadores",
+      "h": "Palmeiras",
+      "a": "Estudiantes",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "Final, 20:00; Sport TV 3 (e Sport TV+)",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "por.1",
+      "h": "Vitória SC",
+      "a": "Estrela da Amadora",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:30; Sport TV 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Udinese",
+      "a": "Fiorentina",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "11:30; Sport TV 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Liverpool",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "12:00; DAZN 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Valência",
+      "a": "Osasuna",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "13:00; DAZN 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Sassuolo",
+      "a": "Nápoles",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "14:00; Sport TV 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Auxerre",
+      "a": "Marselha",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "14:00; Sport TV 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Sunderland",
+      "a": "Tottenham",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:05; DAZN 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Brighton",
+      "a": "Newcastle United",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:05; DAZN 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Fulham",
+      "a": "Bournemouth",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:05",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Crystal Palace",
+      "a": "Hull City",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:05",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Deportivo La Coruña",
+      "a": "Barcelona",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:15; DAZN 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "f1",
+      "h": "GP do Qatar",
+      "a": "Corrida",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "16:00; DAZN 5 (há agendas com 17:00 ou 18:00)",
+      "src": "f1pt.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Arsenal",
+      "a": "Manchester City",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "16:30; DAZN 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Hoffenheim",
+      "a": "Augsburgo",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "16:30; DAZN 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Roma",
+      "a": "Monza",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "17:00; Sport TV 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Celta de Vigo",
+      "a": "Villarreal",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:30; DAZN 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "por.1",
+      "h": "Gil Vicente",
+      "a": "Estoril Praia",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "18:00; Sport TV 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Borussia Dortmund",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18:30; DAZN 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Coritiba",
+      "a": "Flamengo",
+      "tv": [
+        "Canal 11"
+      ],
+      "ok": 1,
+      "obs": "19:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Como",
+      "a": "Juventus",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 3",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Lyon",
+      "a": "Mónaco",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 4",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Sevilha",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "por.1",
+      "h": "FC Porto",
+      "a": "Sporting",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:30; Sport TV 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bra.1",
+      "h": "Atlético Mineiro",
+      "a": "Vasco da Gama",
+      "tv": [
+        "Canal 11"
+      ],
+      "ok": 1,
+      "obs": "22:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Lecce",
+      "a": "Atalanta",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "17:30; Sport TV 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Cagliari",
+      "a": "Milan",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sport TV 2",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "esp.1",
+      "h": "Espanyol",
+      "a": "Getafe",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00; DAZN 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "por.1",
+      "h": "Benfica",
+      "a": "Famalicão",
+      "tv": [
+        "Benfica TV"
+      ],
+      "ok": 1,
+      "obs": "20:15; jogo em casa do Benfica, na BTV",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "por.1",
+      "h": "Casa Pia",
+      "a": "SC Braga",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:15; Sport TV 1",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-01",
+      "comp": "eng.1",
+      "h": "Coventry City",
+      "a": "Ipswich Town",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "cerca das 20:00; DAZN 2",
+      "src": "ondedabola.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Manchester City",
+      "a": "Leeds United",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Liverpool",
+      "a": "Sunderland",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Crystal Palace",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Hull City",
+      "a": "Nottingham Forest",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Newcastle United",
+      "a": "Manchester United",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:15",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Aston Villa",
+      "a": "Everton",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:15",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Arsenal",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:15",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Bournemouth",
+      "a": "Brighton",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:15",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-03",
+      "comp": "eng.1",
+      "h": "Tottenham",
+      "a": "Fulham",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "por.1",
+      "h": "Sporting",
+      "a": "Marítimo",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:15; Sport TV 1",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Liverpool",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "12:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Classificação",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:00 (hora indicada em GMT; há tabela com 15:00)",
+      "src": "racingnews365.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Coventry City",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Aston Villa",
+      "a": "Crystal Palace",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Leeds United",
+      "a": "Ipswich Town",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Bournemouth",
+      "a": "Hull City",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "por.1",
+      "h": "Nacional",
+      "a": "Benfica",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "15:30; canal Sport TV por indicar",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Brighton",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ufc",
+      "h": "UFC Fight Night: Adesanya x Magomedov",
+      "a": "Card principal",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 0,
+      "obs": "Riade; preliminares 15:00, card principal 18:00; Sport TV tem o UFC, evento sem canal confirmado",
+      "src": "eco.sapo.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "por.1",
+      "h": "Santa Clara",
+      "a": "FC Porto",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "18:00; canal Sport TV por indicar",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Manchester City",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "por.1",
+      "h": "SC Braga",
+      "a": "Arouca",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:30",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Corrida",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "13:00 (há agendas com 14:00)",
+      "src": "dazn.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Fulham",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Newcastle United",
+      "a": "Sunderland",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:00",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "por.1",
+      "h": "Rio Ave",
+      "a": "Casa Pia",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "15:30",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "por.1",
+      "h": "Estrela da Amadora",
+      "a": "Gil Vicente",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "15:30",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Tottenham",
+      "a": "Arsenal",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "16:30",
+      "src": "futebolnatv.pt"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "por.1",
+      "h": "Estoril Praia",
+      "a": "Vitória SC",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "18:00",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "por.1",
+      "h": "Famalicão",
+      "a": "Académico de Viseu",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:30",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "por.1",
+      "h": "Alverca",
+      "a": "Moreirense",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:15",
+      "src": "bolanarede.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Viking",
+      "a": "Feyenoord",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Villarreal",
+      "a": "Sabah",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Roma",
+      "a": "Sporting",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sport TV 5",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Barcelona",
+      "a": "Manchester City",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Aston Villa",
+      "a": "PSG",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Manchester United",
+      "a": "RB Leipzig",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Bayern Munique",
+      "a": "Slavia de Praga",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Nápoles",
+      "a": "Club Brugge",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "AEK Atenas",
+      "a": "Galatasaray",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Bétis",
+      "a": "Como",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Slovan Bratislava",
+      "a": "Shakhtar Donetsk",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Liverpool",
+      "a": "FC Porto",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sport TV 5",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Arsenal",
+      "a": "Real Madrid",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Borussia Dortmund",
+      "a": "Inter",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "PSV",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "LASK",
+      "a": "Fenerbahçe",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Lens",
+      "a": "Bodø/Glimt",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Estugarda",
+      "a": "Lille",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Brann",
+      "a": "SC Braga",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "ondebola.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "AZ Alkmaar",
+      "a": "Sturm Graz",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Marselha",
+      "a": "Celta de Vigo",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Rennes",
+      "a": "Dínamo Zagreb",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Anderlecht",
+      "a": "Hoffenheim",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Jagiellonia",
+      "a": "Crystal Palace",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Omonia",
+      "a": "Celtic",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Hapoel Beer Sheva",
+      "a": "Juventus",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Ararat-Armenia",
+      "a": "NEC",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:45",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Benfica",
+      "a": "OFI Creta",
+      "tv": [
+        "Sport TV"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sport TV 5",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Real Sociedad",
+      "a": "Torreense",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Milan",
+      "a": "Sunderland",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Bayer Leverkusen",
+      "a": "Besiktas",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Union Saint-Gilloise",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Salzburgo",
+      "a": "Sparta Praga",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Lech Poznań",
+      "a": "Ferencváros",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Bournemouth",
+      "a": "Viktoria Plzeň",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Celje",
+      "a": "Olympiacos",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20:00",
+      "src": "abola.pt"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Levski Sofia",
+      "a": "Lillestrøm",
       "tv": [
         "DAZN"
       ],

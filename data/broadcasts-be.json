@@ -1,8 +1,8 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-26",
   "country": "BE",
   "tz": "Europe/Brussels",
-  "note": "Jupiler Pro League: DAZN tem os direitos de todos os jogos, vendida também por Proximus (Pickx Sports), Telenet e Orange. Demais direitos a confirmar.",
+  "note": "Verificado em 26/11/2026. Jupiler Pro League: DAZN (também via Telenet e Pickx). Copas europeias 2026/27: Pickx e Telenet, com alguns jogos de clubes belgas em canais abertos.",
   "comps": {
     "bel.1": {
       "label": "Jupiler Pro League",
@@ -11,16 +11,15 @@
         "Pickx",
         "Telenet"
       ],
-      "note": "DAZN tem os direitos de todos os jogos (confirmado na Sporza, jul/2026); acesso também pelo Pickx Sports (Proximus), Telenet (DAZN Total) e Orange. Speeldag 14 em 11-13/12."
+      "note": "DAZN transmite todos os jogos; acesso também pelo Pickx Sports e Telenet (DAZN Total), além da Orange. Rodada 13 em 27-29/11 conferida no calendário da Telenet; rodada 14 prevista para 11-13/12."
     },
     "bel.cup": {
       "label": "Croky Cup",
       "options": [
         "Telenet",
-        "DAZN",
-        "Pickx"
+        "RTBF"
       ],
-      "note": "Play Sports (Telenet) tem a Croky Cup; em Flandres, jogos a partir das oitavas de 32 são exclusivos; a final também passa em TV aberta (Sporza, jul/2026)."
+      "note": "Play Sports (Telenet) tem direitos exclusivos por 4 temporadas (Sporza, jul/2026), por isso DAZN e Pickx saíram. Em francês, RTBF transmite parte dos jogos. A final passa no canal aberto Play. Oitavas em 4-6/12."
     },
     "uefa.champions": {
       "label": "Champions League",
@@ -28,7 +27,7 @@
         "Pickx",
         "Telenet"
       ],
-      "note": "Pickx+ Sports passa todos os jogos da rodada (confirmado em sports.pickx.be). Telenet não verificado."
+      "note": "Verificado: Pickx tem todos os jogos (Proximus); Telenet/Play Sports também exibe. Jogos do Club Brugge passam em aberto na VTM 2 (holandês) e RTL (francês); VTM 2 também mostra um jogo principal por rodada."
     },
     "uefa.europa": {
       "label": "Europa League",
@@ -36,7 +35,7 @@
         "Telenet",
         "Pickx"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Telenet confirmada no calendário Play Sports; Pickx segundo guia callmepower.be. Jogos de clubes belgas podem passar em aberto na VRT (Canvas) e RTBF."
     },
     "uefa.europa.conf": {
       "label": "Conference League",
@@ -44,7 +43,7 @@
         "Telenet",
         "Pickx"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Telenet confirmada (Play Sports, jogos de Gent e STVV em 26/11). Pickx apenas segundo guia callmepower.be; o anúncio da Proximus de jun/2026 cita só a Champions."
     },
     "eng.1": {
       "label": "Premier League",
@@ -52,23 +51,25 @@
         "Telenet",
         "Orange Sports"
       ],
-      "note": "Premier League só em Telenet Play Sports e Orange Sports; Proximus/Pickx não tem."
+      "note": "Play Sports (Telenet) confirmado; Proximus informou (jun/2026) que Pickx não tem mais Premier League. Orange Sports mantido; um guia cita Play Sports também via Proximus, em conflito com a Proximus."
     },
     "esp.1": {
       "label": "LaLiga",
       "options": [
         "DAZN",
-        "Pickx"
+        "Pickx",
+        "Telenet"
       ],
-      "note": "LaLiga, Serie A e Ligue 1 no DAZN Total."
+      "note": "LaLiga no DAZN; Pickx Sports tem uma seleção de jogos nos canais DAZN e a Telenet vende via DAZN Total (Proximus e Telenet, 2026)."
     },
     "ita.1": {
       "label": "Serie A",
       "options": [
         "DAZN",
-        "Pickx"
+        "Pickx",
+        "Telenet"
       ],
-      "note": "Jogos da Serie A aparecem nos canais DAZN no Pickx."
+      "note": "Serie A no DAZN; Pickx Sports tem uma seleção de jogos nos canais DAZN e a Telenet vende via DAZN Total (Proximus e Telenet, 2026)."
     },
     "ger.1": {
       "label": "Bundesliga",
@@ -76,23 +77,25 @@
         "Telenet",
         "Orange Sports"
       ],
-      "note": "Bundesliga só em Telenet Play Sports e Orange Sports; Proximus/Pickx não tem."
+      "note": "Play Sports (Telenet) confirmado; Pickx deixou de ter a Bundesliga (Proximus, jun/2026). Orange Sports mantido."
     },
     "fra.1": {
       "label": "Ligue 1",
       "options": [
         "DAZN",
-        "Pickx"
+        "Pickx",
+        "Telenet"
       ],
-      "note": "Jogos da Ligue 1 aparecem nos canais DAZN no Pickx."
+      "note": "Ligue 1 no DAZN; Pickx Sports tem uma seleção de jogos nos canais DAZN e a Telenet vende via DAZN Total (Proximus e Telenet, 2026)."
     },
     "f1": {
       "label": "Fórmula 1",
       "options": [
         "Telenet",
+        "RTBF",
         "Pickx"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Em holandês: Play Sports (Telenet). Em francês: RTBF (Tipik/Auvio), gratuito. Pickx mantido apenas por distribuir a Tipik; Play Sports não está confirmado nele."
     },
     "tennis": {
       "label": "Tênis",
@@ -100,7 +103,7 @@
         "Eurosport",
         "Telenet"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Grand Slams no Eurosport (callmepower.be); ATP e WTA no Play Sports (Telenet), line-up 2026/27 (decodetv, ago/2026). Pickx anuncia uma seleção de tênis, sem detalhar torneios."
     },
     "fifa.friendly": {
       "label": "Amistosos de seleções",
@@ -166,5 +169,693 @@
       "note": "Diables Rouges/Rode Duivels: VRT e RTBF (e Pickx+). Outras seleções: varia por jogo."
     }
   },
-  "games": []
+  "games": [
+    {
+      "d": "2026-11-25",
+      "comp": "uefa.champions",
+      "h": "Club Brugge",
+      "a": "Liverpool",
+      "tv": [
+        "VTM 2",
+        "RTL",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "21h; em aberto na VTM 2 e RTL; Pickx+ Sports 2 pago.",
+      "src": "voetbalprimeur.be"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Union Saint-Gilloise",
+      "a": "Lech Poznań",
+      "tv": [
+        "VRT",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "18h45; VRT Canvas e Ketnet; em francês no RTBF Auvio.",
+      "src": "voetbalprimeur.be"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "OFI",
+      "a": "Anderlecht",
+      "tv": [
+        "VRT",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "21h; VRT Canvas; RTBF Tipik e Auvio.",
+      "src": "voetbalprimeur.be"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Gent",
+      "a": "Crvena Zvezda",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "21h; Play Sports 4.",
+      "src": "voetbalprimeur.be"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hajduk Split",
+      "a": "Sint-Truiden",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "21h; Play Sports 5.",
+      "src": "voetbalprimeur.be"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Celta de Vigo",
+      "a": "Bournemouth",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "18h45; Play Sports 5.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Olympiacos",
+      "a": "Milan",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "18h45; Play Sports 4.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Real Sociedad",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "21h; Play Sports 6.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "bel.1",
+      "h": "OH Leuven",
+      "a": "Kortrijk",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "20h45; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Chelsea",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 1.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "bel.1",
+      "h": "Westerlo",
+      "a": "La Louvière",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "16h; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "bel.1",
+      "h": "Cercle Brugge",
+      "a": "Mechelen",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "18h15; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "bel.1",
+      "h": "Charleroi",
+      "a": "Beveren",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "20h45; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "bel.1",
+      "h": "Lommel",
+      "a": "Zulte Waregem",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "20h45; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Leeds United",
+      "a": "Coventry City",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 3.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Brentford",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 1.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Ipswich Town",
+      "a": "Aston Villa",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 1.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Hamburger SV",
+      "a": "Bayern de Munique",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 2.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Stuttgart",
+      "a": "Eintracht Frankfurt",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 2.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Elche",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Madrid",
+      "a": "Alavés",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "PSG",
+      "a": "Lorient",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "f1",
+      "h": "GP do Catar",
+      "a": "Classificação",
+      "tv": [
+        "Telenet",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 3; em francês no RTBF Auvio.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bel.1",
+      "h": "Sint-Truiden",
+      "a": "Genk",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "13h30; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bel.1",
+      "h": "Antwerp",
+      "a": "Anderlecht",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "16h; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bel.1",
+      "h": "Standard de Liège",
+      "a": "Club Brugge",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "18h30; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "bel.1",
+      "h": "Union Saint-Gilloise",
+      "a": "Gent",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "19h15; canal DAZN Pro League (Telenet/Pickx distribuem).",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Liverpool",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 1.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Brighton",
+      "a": "Newcastle United",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 2.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Sunderland",
+      "a": "Tottenham",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 1.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Arsenal",
+      "a": "Manchester City",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 1.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Borussia Dortmund",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 2.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Deportivo La Coruña",
+      "a": "Barcelona",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Roma",
+      "a": "Monza",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Como",
+      "a": "Juventus",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Auxerre",
+      "a": "Marseille",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Lyon",
+      "a": "Monaco",
+      "tv": [
+        "DAZN",
+        "Telenet",
+        "Pickx"
+      ],
+      "ok": 1,
+      "obs": "No DAZN, segundo o calendário Play Sports da Telenet.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "f1",
+      "h": "GP do Catar",
+      "a": "Corrida",
+      "tv": [
+        "Telenet",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "Play Sports 3; em francês no RTBF Auvio.",
+      "src": "telenet.be"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "bel.cup",
+      "h": "Club Brugge",
+      "a": "Beveren",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "20h30; Play Sports.",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "bel.cup",
+      "h": "Union Saint-Gilloise",
+      "a": "Westerlo",
+      "tv": [
+        "Telenet",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "21h; Play Sports; também na RTBF (canal não informado).",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Classificação",
+      "tv": [
+        "RTBF",
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "RTBF Auvio confirmado; Play Sports pelos direitos da temporada.",
+      "src": "auvio.rtbf.be"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "bel.cup",
+      "h": "Charleroi",
+      "a": "Sint-Truiden",
+      "tv": [
+        "Telenet",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "17h30; Play Sports; também na RTBF (canal não informado).",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "bel.cup",
+      "h": "Zulte Waregem",
+      "a": "Cercle Brugge",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "17h30; Play Sports.",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "bel.cup",
+      "h": "La Louvière",
+      "a": "Standard de Liège",
+      "tv": [
+        "Telenet",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "20h45; Play Sports; também na RTBF (canal não informado).",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "bel.cup",
+      "h": "Beerschot",
+      "a": "Genk",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "20h45; Play Sports.",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Corrida",
+      "tv": [
+        "RTBF",
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "RTBF Auvio confirmado; Play Sports pelos direitos da temporada.",
+      "src": "auvio.rtbf.be"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "bel.cup",
+      "h": "Union Rochefortoise",
+      "a": "Mechelen",
+      "tv": [
+        "Telenet",
+        "RTBF"
+      ],
+      "ok": 1,
+      "obs": "13h30; Play Sports; também na RTBF (canal não informado).",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "bel.cup",
+      "h": "Antwerp",
+      "a": "OH Leuven",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "18h30; Play Sports.",
+      "src": "voetbalfocus.be"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Napoli",
+      "a": "Club Brugge",
+      "tv": [
+        "VTM 2",
+        "RTL",
+        "Pickx",
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "21h; VTM 2 confirmada; RTL provável (cobre jogos do Brugge em francês); pagos com todos os jogos.",
+      "src": "callmepower.be"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Anderlecht",
+      "a": "Hoffenheim",
+      "tv": [
+        "RTBF",
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "18h45; programado no RTBF Auvio; VRT ainda não anunciada.",
+      "src": "auvio.rtbf.be"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Union Saint-Gilloise",
+      "tv": [
+        "RTBF",
+        "Telenet"
+      ],
+      "ok": 1,
+      "obs": "21h; programado no RTBF Auvio; VRT ainda não anunciada.",
+      "src": "auvio.rtbf.be"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Gent",
+      "a": "Thun",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 0,
+      "obs": "21h; provável Play Sports pelos direitos; grade do jogo ainda não publicada.",
+      "src": "callmepower.be"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Sint-Truiden",
+      "a": "Ajax",
+      "tv": [
+        "Telenet"
+      ],
+      "ok": 0,
+      "obs": "21h; provável Play Sports pelos direitos; grade do jogo ainda não publicada.",
+      "src": "callmepower.be"
+    }
+  ]
 }

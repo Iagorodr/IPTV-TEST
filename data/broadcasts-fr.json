@@ -1,101 +1,99 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-26",
   "country": "FR",
   "tz": "Europe/Paris",
-  "note": "Ligue 1: Ligue 1+ (e beIN Sports/Canal+ em parte). Itens 'não verificado' vêm de conhecimento geral.",
+  "note": "Verificado em 26/11/2026. Ligue 1 na Ligue 1+; copas europeias e Premier League na Canal+; LaLiga na DAZN e Disney+; Serie A na DAZN; Bundesliga, Ligue 2 e Coupe de France (pago) na beIN Sports.",
   "comps": {
     "fra.1": {
       "label": "Ligue 1",
       "options": [
         "Ligue 1+",
-        "beIN Sports",
-        "Canal+"
+        "DAZN"
       ],
-      "note": "Ligue 1+ lista todos os jogos das jornadas 11 a 18 (ligue1.com); beIN Sports e Canal+ aparecem só como parceiros de distribuição. Jornada 12 em 27-29/11."
+      "note": "ligue1.com: J12 (27-29/11), J13 (4-6/12) e J14 (11-13/12) todas na Ligue 1+, também vendida via DAZN. beIN Sports e Canal+ saíram: não exibem Ligue 1 em 2026/27 (ariase, ago/2026)."
     },
     "fra.2": {
       "label": "Ligue 2",
       "options": [
         "beIN Sports"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: beIN Sports (LFP; selectra: contrato até 2029). J14 no fim de semana de 4-7/12."
     },
     "fra.coupe_de_france": {
       "label": "Coupe de France",
       "options": [
-        "France TV",
-        "beIN Sports"
+        "beIN Sports",
+        "France TV"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: beIN Sports tem todos os jogos a partir dos 32 avos (19-20/12), até 2030. TV aberta ainda sem acordo (footeo, 24/11): France TV não confirmada. 8ª fase (27-29/11) sem TV, só streams."
     },
     "uefa.champions": {
       "label": "Champions League",
       "options": [
-        "Canal+",
-        "Prime Video",
-        "beIN Sports"
+        "Canal+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: Canal+ (selectra, até 2030/31; grades de 8-9/12). Prime Video e beIN Sports removidos. Final em aberto: fontes divergem entre TF1 (footao) e M6 (lephoceen)."
     },
     "uefa.europa": {
       "label": "Europa League",
       "options": [
-        "Canal+",
-        "beIN Sports"
+        "Canal+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: Canal+ (grades de 26/11 e 10/12; selectra, até 2030/31). beIN Sports removida."
     },
     "uefa.europa.conf": {
       "label": "Conference League",
       "options": [
-        "Canal+",
-        "beIN Sports"
+        "Canal+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: Canal+ (grade de 26/11 e 10/12; selectra, até 2030/31). beIN Sports removida."
     },
     "eng.1": {
       "label": "Premier League",
       "options": [
         "Canal+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: Canal+ com exclusividade até o fim de 2027/28 (selectra)."
     },
     "esp.1": {
       "label": "LaLiga",
       "options": [
-        "beIN Sports"
+        "DAZN",
+        "Disney+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: DAZN e Disney+ desde 15/08/2026, até 2028/29 (selectra e grades). beIN Sports removida (guia anterior ao acordo ainda a citava)."
     },
     "ita.1": {
       "label": "Serie A",
       "options": [
         "DAZN"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: DAZN até 2028/29 (selectra e grades de 27/11 a 7/12)."
     },
     "ger.1": {
       "label": "Bundesliga",
       "options": [
         "beIN Sports"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: beIN Sports até 2028/29 (selectra e grades de 27/11 a 6/12)."
     },
     "f1": {
       "label": "Fórmula 1",
       "options": [
         "Canal+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Verificado: Canal+ (formula1.com); sem TV aberta no GP do Catar."
     },
     "tennis": {
       "label": "Tênis",
       "options": [
+        "Eurosport",
+        "beIN Sports",
+        "France TV",
         "Prime Video",
-        "Canal+",
-        "beIN Sports"
+        "Canal+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "echosdunet (12/11/2026): Eurosport com ATP, Australian Open e US Open; beIN com WTA, Wimbledon e fase final da Copa Davis; Roland-Garros na France TV e Prime Video. Canal+ mantida só como distribuidora do Eurosport."
     },
     "fifa.friendly": {
       "label": "Amistosos de seleções",
@@ -163,112 +161,2293 @@
   },
   "games": [
     {
-      "d": "2026-11-20",
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Union Saint-Gilloise",
+      "a": "Lech Poznań",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Marseille",
+      "a": "Levski Sofia",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Beşiktaş",
+      "a": "Hapoel Beer Sheva",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Viktoria Plzeň",
+      "a": "Benfica",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Salzburg",
+      "a": "Ararat-Armenia",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Olympiacos",
+      "a": "Milan",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Celta de Vigo",
+      "a": "Bournemouth",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Dinamo Zagreb",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Lillestrøm",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "NEC Nijmegen",
+      "a": "Rennes",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sunderland",
+      "a": "Jagiellonia Białystok",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Juventus",
+      "a": "Omonia Nicosia",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Hoffenheim",
+      "a": "Sturm Graz",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "OFI",
+      "a": "Anderlecht",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Torreense",
+      "a": "Celtic",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Real Sociedad",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sparta Praga",
+      "a": "AZ Alkmaar",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Ferencváros",
+      "a": "Celje",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hearts",
+      "a": "Monaco",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Sport.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Ajax",
+      "a": "Thun",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Brighton",
+      "a": "Universitatea Craiova",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Iberia 1999",
+      "a": "Getafe",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Brann",
+      "a": "AGF Aarhus",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Jablonec",
+      "a": "Lugano",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Kauno Žalgiris",
+      "a": "Riga FC",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Egnatia",
+      "a": "Lincoln Red Imps",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Pafos",
+      "a": "Midtjylland",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Kairat",
+      "a": "Mjällby",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "16h30.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Borac Banja Luka",
+      "a": "Atalanta",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Braga",
+      "a": "KuPS",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "CSKA Sofia",
+      "a": "Trabzonspor",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Freiburg",
+      "a": "Twente",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Nordsjælland",
+      "a": "Panathinaikos",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hajduk Split",
+      "a": "Sint-Truiden",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Inter Club d'Escaldes",
+      "a": "Copenhagen",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Gent",
+      "a": "Crvena Zvezda",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-27",
       "comp": "fra.1",
-      "h": "Troyes",
-      "a": "Le Havre",
+      "h": "Brest",
+      "a": "Paris FC",
       "tv": [
         "Ligue 1+"
       ],
       "ok": 1,
-      "obs": "20h45; 11ª rodada",
+      "obs": "20h45; 12ª rodada.",
       "src": "ligue1.com"
     },
     {
-      "d": "2026-11-21",
+      "d": "2026-11-27",
+      "comp": "fra.coupe_de_france",
+      "h": "Cannes",
+      "a": "Le Puy",
+      "tv": [
+        "FFF TV"
+      ],
+      "ok": 1,
+      "obs": "19h; 8ª fase, stream grátis.",
+      "src": "footeo.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Chelsea",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Foot.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "esp.1",
+      "h": "Levante",
+      "a": "Racing Santander",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ita.1",
+      "h": "Venezia",
+      "a": "Bologna",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ger.1",
+      "h": "Werder Bremen",
+      "a": "Borussia Mönchengladbach",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "20h30; beIN Sports Max 9.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Angers",
+      "a": "Lens",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "17h15; 12ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "PSG",
+      "a": "Lorient",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 12ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Le Mans",
+      "a": "Lille",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 12ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Le Havre",
+      "a": "Strasbourg",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 12ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-28",
       "comp": "fra.1",
       "h": "Nice",
-      "a": "PSG",
+      "a": "Troyes",
       "tv": [
         "Ligue 1+"
       ],
       "ok": 1,
-      "obs": "17h15; 11ª rodada",
+      "obs": "20h45; 12ª rodada.",
       "src": "ligue1.com"
     },
     {
-      "d": "2026-11-21",
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Brentford",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "16h; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Leeds United",
+      "a": "Coventry City",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "16h; Canal+ Live 2.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Ipswich Town",
+      "a": "Aston Villa",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h30; Canal+ Foot.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Betis",
+      "a": "Rayo Vallecano",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "14h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Málaga",
+      "a": "Athletic Bilbao",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "16h15.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Elche",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "18h30.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Madrid",
+      "a": "Alavés",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Frosinone",
+      "a": "Parma",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Torino",
+      "a": "Lazio",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Inter de Milão",
+      "a": "Genoa",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Hamburger SV",
+      "a": "Bayern de Munique",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "15h30; beIN Sports Max 4.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Mainz",
+      "a": "Union Berlin",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "15h30; beIN Sports 7.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Stuttgart",
+      "a": "Eintracht Frankfurt",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "18h30; beIN Sports Max 4.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Colônia",
+      "a": "Elversberg",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "15h30; beIN Sports 5.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "f1",
+      "h": "GP do Catar",
+      "a": "Classificação",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "19h; Canal+ Sport.",
+      "src": "streamfix.io"
+    },
+    {
+      "d": "2026-11-29",
       "comp": "fra.1",
-      "h": "Lille",
-      "a": "Lyon",
+      "h": "Auxerre",
+      "a": "Marseille",
       "tv": [
         "Ligue 1+"
       ],
       "ok": 1,
-      "obs": "20h45; 11ª rodada",
+      "obs": "15h; 12ª rodada.",
       "src": "ligue1.com"
     },
     {
-      "d": "2026-11-21",
+      "d": "2026-11-29",
       "comp": "fra.1",
-      "h": "Lens",
-      "a": "Toulouse",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 1,
-      "obs": "20h45; 11ª rodada",
-      "src": "ligue1.com"
-    },
-    {
-      "d": "2026-11-21",
-      "comp": "fra.1",
-      "h": "Monaco",
-      "a": "Auxerre",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 1,
-      "obs": "20h45; 11ª rodada",
-      "src": "ligue1.com"
-    },
-    {
-      "d": "2026-11-21",
-      "comp": "fra.1",
-      "h": "Strasbourg",
-      "a": "Brest",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 1,
-      "obs": "20h45; 11ª rodada",
-      "src": "ligue1.com"
-    },
-    {
-      "d": "2026-11-22",
-      "comp": "fra.1",
-      "h": "Paris FC",
-      "a": "Angers",
-      "tv": [
-        "Ligue 1+"
-      ],
-      "ok": 1,
-      "obs": "15h; 11ª rodada",
-      "src": "ligue1.com"
-    },
-    {
-      "d": "2026-11-22",
-      "comp": "fra.1",
-      "h": "Lorient",
+      "h": "Toulouse",
       "a": "Rennes",
       "tv": [
         "Ligue 1+"
       ],
       "ok": 1,
-      "obs": "17h15; 11ª rodada",
+      "obs": "17h15; 12ª rodada.",
       "src": "ligue1.com"
     },
     {
-      "d": "2026-11-22",
+      "d": "2026-11-29",
       "comp": "fra.1",
-      "h": "Marseille",
+      "h": "Lyon",
+      "a": "Monaco",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 12ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.coupe_de_france",
+      "h": "Nantes",
+      "a": "Nueillaubiers",
+      "tv": [
+        "FFF TV"
+      ],
+      "ok": 1,
+      "obs": "16h; 8ª fase, stream grátis.",
+      "src": "footeo.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Liverpool",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "13h; Canal+ Foot.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Brighton",
+      "a": "Newcastle United",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "15h05; Canal+ Live 1.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Crystal Palace",
+      "a": "Hull City",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "15h05; Canal+ Live 2.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Fulham",
+      "a": "Bournemouth",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "15h05; Canal+ Live 3.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Sunderland",
+      "a": "Tottenham",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "15h05; Canal+ Live 4.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Arsenal",
+      "a": "Manchester City",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "17h30; Canal+.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Valencia",
+      "a": "Osasuna",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "14h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Deportivo La Coruña",
+      "a": "Barcelona",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "16h15.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Celta de Vigo",
+      "a": "Villarreal",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "18h30.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Sevilla",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Udinese",
+      "a": "Fiorentina",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "12h30.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Sassuolo",
+      "a": "Napoli",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Roma",
+      "a": "Monza",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Como",
+      "a": "Juventus",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Freiburg",
+      "a": "RB Leipzig",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "15h30; beIN Sports Max 4.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Hoffenheim",
+      "a": "Augsburg",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "17h30; beIN Sports Max 4.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Borussia Dortmund",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "19h30; beIN Sports Max 4.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "f1",
+      "h": "GP do Catar",
+      "a": "Corrida",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "17h; Canal+.",
+      "src": "streamfix.io"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "esp.1",
+      "h": "Espanyol",
+      "a": "Getafe",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "21h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Lecce",
+      "a": "Atalanta",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "18h30; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Cagliari",
+      "a": "Milan",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 0,
+      "obs": "20h45; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-01",
+      "comp": "eng.1",
+      "h": "Coventry City",
+      "a": "Ipswich Town",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "21h; Canal+ Foot; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Crystal Palace",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "20h30; Canal+ Live 3; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Aston Villa",
+      "a": "Everton",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "21h15; Canal+ Live 6; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Real Madrid",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "19h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "esp.1",
+      "h": "Barcelona",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "21h30; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-03",
+      "comp": "eng.1",
+      "h": "Tottenham",
+      "a": "Fulham",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "21h; Canal+ Foot; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "fra.1",
+      "h": "Toulouse",
+      "a": "PSG",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "esp.1",
+      "h": "Alavés",
+      "a": "Espanyol",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "21h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "ita.1",
+      "h": "Bologna",
+      "a": "Roma",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "ger.1",
+      "h": "Bayern de Munique",
+      "a": "Paderborn",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "20h30; beIN Sports 2; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Lille",
+      "a": "Auxerre",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "17h15; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Lens",
+      "a": "Le Havre",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Monaco",
+      "a": "Angers",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Strasbourg",
+      "a": "Lorient",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Paris FC",
       "a": "Le Mans",
       "tv": [
         "Ligue 1+"
       ],
       "ok": 1,
-      "obs": "20h45; 11ª rodada",
+      "obs": "20h45; 13ª rodada.",
       "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.2",
+      "h": "Montpellier",
+      "a": "Nantes",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "14h; beIN Sports 1; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.2",
+      "h": "Saint-Étienne",
+      "a": "Nancy",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "20h45; beIN Sports 1; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Liverpool",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "13h30; Canal+; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Brighton",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "18h30; Canal+ Foot; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Manchester City",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "21h; Canal+ Foot; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Racing Santander",
+      "a": "Deportivo La Coruña",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "14h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Rayo Vallecano",
+      "a": "Levante",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "16h15; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Villarreal",
+      "a": "Real Sociedad",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "18h30; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Barcelona",
+      "a": "Celta de Vigo",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "21h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Monza",
+      "a": "Como",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Frosinone",
+      "a": "Inter de Milão",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Napoli",
+      "a": "Lecce",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "Eintracht Frankfurt",
+      "a": "Werder Bremen",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "18h30; beIN Sports 2; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Classificação",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "Provável pelos direitos da Canal+; grade da sessão não conferida.",
+      "src": "formula1.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Troyes",
+      "a": "Lyon",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "15h; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Rennes",
+      "a": "Brest",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "17h15; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Marseille",
+      "a": "Nice",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "20h45; 13ª rodada.",
+      "src": "ligue1.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Fulham",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "15h; Canal+ Live 2; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Tottenham",
+      "a": "Arsenal",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "17h30; Canal+; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Osasuna",
+      "a": "Elche",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "14h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Athletic Bilbao",
+      "a": "Real Madrid",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "16h15; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Genoa",
+      "a": "Torino",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "12h30.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Lazio",
+      "a": "Atalanta",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "15h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Juventus",
+      "a": "Udinese",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Milan",
+      "a": "Parma",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ger.1",
+      "h": "Schalke 04",
+      "a": "Borussia Dortmund",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "15h30; beIN Sports 1; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ger.1",
+      "h": "Elversberg",
+      "a": "Stuttgart",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "17h30; beIN Sports Max 6; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Corrida",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 0,
+      "obs": "Provável pelos direitos da Canal+; grade da sessão não conferida.",
+      "src": "formula1.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "fra.2",
+      "h": "Rodez",
+      "a": "Reims",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "20h45; beIN Sports 1; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "esp.1",
+      "h": "Sevilla",
+      "a": "Málaga",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "21h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "ita.1",
+      "h": "Venezia",
+      "a": "Sassuolo",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "18h30.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "ita.1",
+      "h": "Fiorentina",
+      "a": "Cagliari",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "20h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Villarreal",
+      "a": "Sabah",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Viking",
+      "a": "Feyenoord",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Sport.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Aston Villa",
+      "a": "PSG",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Barcelona",
+      "a": "Manchester City",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Sport.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Manchester United",
+      "a": "RB Leipzig",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 4.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Roma",
+      "a": "Sporting",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 5.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Bayern de Munique",
+      "a": "Slavia Praga",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 3.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "AEK Atenas",
+      "a": "Galatasaray",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 7.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Napoli",
+      "a": "Club Brugge",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 6.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Real Betis",
+      "a": "Como",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Slovan Bratislava",
+      "a": "Shakhtar Donetsk",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Sport.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Lens",
+      "a": "Bodø/Glimt",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Stuttgart",
+      "a": "Lille",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Arsenal",
+      "a": "Real Madrid",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Sport.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Borussia Dortmund",
+      "a": "Inter de Milão",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 4.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Liverpool",
+      "a": "Porto",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 5.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "PSV",
+      "a": "Atlético de Madrid",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 6.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "LASK",
+      "a": "Fenerbahçe",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Live 7.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "esp.1",
+      "h": "Rayo Vallecano",
+      "a": "Athletic Bilbao",
+      "tv": [
+        "DAZN",
+        "Disney+"
+      ],
+      "ok": 0,
+      "obs": "20h; agenda possivelmente desatualizada, conferir perto da data",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Marseille",
+      "a": "Celta de Vigo",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Foot.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Rennes",
+      "a": "Dinamo Zagreb",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45; Canal+ Sport.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "AZ Alkmaar",
+      "a": "Sturm Graz",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Omonia Nicosia",
+      "a": "Celtic",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Hapoel Beer Sheva",
+      "a": "Juventus",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Jagiellonia Białystok",
+      "a": "Crystal Palace",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Anderlecht",
+      "a": "Hoffenheim",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Ararat-Armenia",
+      "a": "NEC Nijmegen",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Celje",
+      "a": "Olympiacos",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "Horário diverge entre fontes (18h45 ou 21h); Canal+.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Union Saint-Gilloise",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Milan",
+      "a": "Sunderland",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Sport.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Lech Poznań",
+      "a": "Ferencváros",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Salzburg",
+      "a": "Sparta Praga",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Real Sociedad",
+      "a": "Torreense",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Benfica",
+      "a": "OFI",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Bournemouth",
+      "a": "Viktoria Plzeň",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Levski Sofia",
+      "a": "Lillestrøm",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Bayer Leverkusen",
+      "a": "Beşiktaş",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footmercato.net"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Kairat",
+      "a": "Universitatea Craiova",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "16h30; Canal+ Foot.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "RFS",
+      "a": "Atalanta",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Trabzonspor",
+      "a": "Jablonec",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Brann",
+      "a": "Braga",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Copenhagen",
+      "a": "Lugano",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Freiburg",
+      "a": "Panathinaikos",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Getafe",
+      "a": "Inter Club d'Escaldes",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Iberia 1999",
+      "a": "Crvena Zvezda",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "KuPS",
+      "a": "CSKA Sofia",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Lincoln Red Imps",
+      "a": "Midtjylland",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "18h45.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Brighton",
+      "a": "Monaco",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h; Canal+ Foot.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Sint-Truiden",
+      "a": "Ajax",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Gent",
+      "a": "Thun",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "AGF Aarhus",
+      "a": "Twente",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Egnatia",
+      "a": "Kauno Žalgiris",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Hajduk Split",
+      "a": "Nordsjælland",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Hearts",
+      "a": "Borac Banja Luka",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Mjällby",
+      "a": "Pafos",
+      "tv": [
+        "Canal+"
+      ],
+      "ok": 1,
+      "obs": "21h.",
+      "src": "footao.tv"
     }
   ]
 }

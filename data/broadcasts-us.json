@@ -1,25 +1,27 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-26",
   "country": "US",
   "tz": "America/New_York",
-  "note": "MLS na Apple TV; Premier League na NBC/Peacock (e USA Network); Europa na CBS/Paramount+. Itens 'não verificado' vêm de conhecimento geral. 'USA Network' é nome fora da lista padrão.",
+  "note": "MLS na Apple TV; Premier League na NBC/Peacock/USA Network; torneios da UEFA na CBS/Paramount+. Há nomes fora da lista padrão (ex.: USA Network, TUDN, Fandango, beIN Sports). Comps de seleções não foram revisadas nesta semana.",
   "comps": {
     "usa.1": {
       "label": "MLS",
       "options": [
         "Apple TV",
+        "FS1",
         "Fox"
       ],
-      "note": "Apple TV passa todos os jogos dos playoffs: Wild Card 19/11, 1ª fase 20/11 a 2/12 (melhor de 3), semifinais 5-6/12, finais de conferência 11-12/12; jogos selecionados também na FS1/Fox Deportes. Final em 18/12 na Fox."
+      "note": "Apple TV passa todos os jogos dos playoffs; alguns também na FS1/Fox Deportes. 1ª fase (melhor de 3) até 2/12, semifinais de conferência 5-6/12, finais de conferência 11-12/12; MLS Cup em 18/12 na Fox e Apple TV."
     },
     "usa.nwsl": {
       "label": "NWSL",
       "options": [
         "ESPN",
         "CBS",
-        "Prime Video"
+        "Prime Video",
+        "Paramount+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Temporada 2026 encerrada (final em 21/11 na CBS). Pacote 2026: CBS/Paramount+, ESPN/ABC, Prime Video; ION e Victory+ também citados."
     },
     "usa.open": {
       "label": "US Open Cup",
@@ -27,25 +29,27 @@
         "Paramount+",
         "CBS"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Acordo com a CBS Sports anunciado até a temporada 2026; direitos de 2027 não verificados."
     },
     "uefa.champions": {
       "label": "Champions League",
       "options": [
         "Paramount+",
         "CBS",
-        "Univision"
+        "Univision",
+        "TUDN"
       ],
-      "note": "CBS/Paramount+ em inglês; TUDN/Univision em espanhol."
+      "note": "2026/27: CBS Sports/Paramount+ em inglês (alguns jogos na CBS/CBS Sports Network); TUDN/Univision/UniMás e ViX em espanhol."
     },
     "uefa.europa": {
       "label": "Europa League",
       "options": [
         "Paramount+",
         "CBS",
-        "Univision"
+        "Univision",
+        "TUDN"
       ],
-      "note": "CBS Sports tem os direitos em inglês até 2029/30, Paramount+ passa todos os jogos; Univision/TUDN em espanhol."
+      "note": "CBS Sports tem os direitos em inglês até 2029/30 e a Paramount+ passa todos os jogos; TUDN/UniMás/ViX em espanhol até 2026/27."
     },
     "uefa.europa.conf": {
       "label": "Conference League",
@@ -53,62 +57,73 @@
         "Paramount+",
         "CBS"
       ],
-      "note": "Mesmo pacote da UEFA na CBS/Paramount+."
+      "note": "Jogos na Paramount+; ViX em espanhol."
     },
     "eng.1": {
       "label": "Premier League",
       "options": [
         "Peacock",
+        "USA Network",
         "NBC",
-        "USA Network"
+        "NBCSN"
       ],
-      "note": "Peacock/NBC e USA Network; Telemundo/Universo em espanhol."
+      "note": "2026/27: NBC, USA Network, Peacock e NBCSN; Telemundo/Universo/Peacock em espanhol."
     },
     "esp.1": {
       "label": "LaLiga",
       "options": [
         "ESPN+",
-        "ESPN"
+        "ESPN",
+        "ESPN2"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "ESPN tem os direitos nos EUA até 2028/29; ESPN+ passa os jogos, alguns também na ESPN2; ESPN Deportes em espanhol."
     },
     "ita.1": {
       "label": "Serie A",
       "options": [
         "Paramount+",
-        "CBS"
+        "CBS Sports Network",
+        "CBS",
+        "Peacock",
+        "Telemundo"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Paramount+ em inglês, alguns jogos na CBS Sports Network. Em espanhol, Telemundo/Universo/Peacock de 2026/27 a 2028/29."
     },
     "ger.1": {
       "label": "Bundesliga",
       "options": [
-        "ESPN+",
-        "ESPN"
+        "Fandango",
+        "USA Network",
+        "Peacock",
+        "Telemundo"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Desde 2026/27 fora da ESPN+: em inglês USA Network (pelo menos 30 jogos) e Fandango (demais, grátis); em espanhol Telemundo/Universo/Peacock."
     },
     "fra.1": {
       "label": "Ligue 1",
       "options": [
-        "beIN Sports"
+        "beIN Sports",
+        "FOX One"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "2026/27: beIN Sports e beIN Sports en Español (também Fubo e Fanatiz). FOX One aparece em um guia para alguns jogos."
     },
     "mex.1": {
       "label": "Liga MX",
       "options": [
-        "Fox",
-        "Univision"
+        "TUDN",
+        "Univision",
+        "Telemundo",
+        "Peacock",
+        "Fox"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Varia pelo mandante: TUDN/Univision/UniMás/ViX para a maioria; Chivas, Tigres e Juárez na Telemundo/Universo/Peacock; Necaxa na Fox Deportes. Liguilla: quartas 25-29/11; semifinais sem confrontos na pesquisa."
     },
     "f1": {
       "label": "Fórmula 1",
       "options": [
         "Apple TV"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Apple TV tem os direitos exclusivos nos EUA. Fim da temporada: Catar (29/11) e Abu Dhabi (6/12)."
     },
     "ufc": {
       "label": "UFC",
@@ -116,15 +131,16 @@
         "Paramount+",
         "CBS"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Eventos na Paramount+; alguns numerados podem ter simultâneo na CBS. Próximos: 5/12 (Riad) e UFC 335 em 12/12."
     },
     "tennis": {
       "label": "Tênis",
       "options": [
         "ESPN",
+        "Tennis Channel",
         "Prime Video"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Copa Davis Final 8 (até 29/11) na Tennis Channel. Direitos de outros torneios não verificados nesta semana."
     },
     "fifa.friendly": {
       "label": "Amistosos de seleções",
@@ -199,31 +215,1238 @@
   },
   "games": [
     {
-      "d": "2026-11-19",
+      "d": "2026-11-26",
+      "comp": "mex.1",
+      "h": "Pachuca",
+      "a": "Guadalajara",
+      "tv": [
+        "TUDN"
+      ],
+      "ok": 1,
+      "obs": "Quartas, ida, 20h ET; um guia também cita Telemundo",
+      "src": "corporate.televisaunivision.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "mex.1",
+      "h": "León",
+      "a": "Cruz Azul",
+      "tv": [
+        "TUDN",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Quartas, ida, 22h10 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Celta Vigo",
+      "a": "AFC Bournemouth",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Viktoria Plzeň",
+      "a": "Benfica",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Dinamo Zagreb",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Union Saint-Gilloise",
+      "a": "Lech Poznań",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Marseille",
+      "a": "Levski Sofia",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Olympiacos",
+      "a": "AC Milan",
+      "tv": [
+        "Paramount+",
+        "TUDN",
+        "UniMás"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "RB Salzburg",
+      "a": "Ararat-Armenia",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Beşiktaş",
+      "a": "Hapoel Be'er Sheva",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "TSG Hoffenheim",
+      "a": "Sturm Graz",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Lillestrøm",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Ferencváros",
+      "a": "Celje",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Juventus",
+      "a": "Omonia Nicosia",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "OFI Crete",
+      "a": "Anderlecht",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sparta Prague",
+      "a": "AZ Alkmaar",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Torreense",
+      "a": "Celtic",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sunderland",
+      "a": "Jagiellonia Białystok",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "NEC Nijmegen",
+      "a": "Rennes",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Real Sociedad",
+      "tv": [
+        "Paramount+",
+        "TUDN",
+        "UniMás"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Ajax",
+      "a": "Thun",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Brann",
+      "a": "AGF Aarhus",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Brighton & Hove Albion",
+      "a": "Universitatea Craiova",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hearts",
+      "a": "AS Monaco",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Iberia 1999",
+      "a": "Getafe",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Pafos",
+      "a": "FC Midtjylland",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "CSKA Sofia",
+      "a": "Trabzonspor",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "FC Nordsjælland",
+      "a": "Panathinaikos",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Braga",
+      "a": "KuPS",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Borac Banja Luka",
+      "a": "Atalanta",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hajduk Split",
+      "a": "Sint-Truiden",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Gent",
+      "a": "Red Star Belgrade",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "SC Freiburg",
+      "a": "FC Twente",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "tennis",
+      "h": "Great Britain",
+      "a": "Germany",
+      "tv": [
+        "Tennis Channel"
+      ],
+      "ok": 0,
+      "obs": "Copa Davis, quartas, 6h ET; a fonte lista o duelo em duas datas",
+      "src": "sports.yahoo.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "tennis",
+      "h": "Austria",
+      "a": "Spain",
+      "tv": [
+        "Tennis Channel"
+      ],
+      "ok": 1,
+      "obs": "Copa Davis, quartas, 11h ET",
+      "src": "sports.yahoo.com"
+    },
+    {
+      "d": "2026-11-27",
       "comp": "usa.1",
-      "h": "Orlando City",
-      "a": "FC Cincinnati",
+      "h": "Columbus Crew",
+      "a": "Inter Miami",
+      "tv": [
+        "Apple TV",
+        "FS1",
+        "Fox Deportes"
+      ],
+      "ok": 1,
+      "obs": "1ª fase jogo 2, 20h ET",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "usa.1",
+      "h": "Real Salt Lake",
+      "a": "Vancouver Whitecaps",
+      "tv": [
+        "Apple TV",
+        "FS1",
+        "Fox Deportes"
+      ],
+      "ok": 1,
+      "obs": "1ª fase jogo 2, 22h ET",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Chelsea",
+      "tv": [
+        "USA Network",
+        "Universo"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "esp.1",
+      "h": "Levante",
+      "a": "Racing de Santander",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ita.1",
+      "h": "Venezia",
+      "a": "Bologna",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ger.1",
+      "h": "Werder Bremen",
+      "a": "Borussia Mönchengladbach",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "fra.1",
+      "h": "Brest",
+      "a": "Paris FC",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "usa.1",
+      "h": "Charlotte FC",
+      "a": "Chicago Fire",
       "tv": [
         "Apple TV"
       ],
       "ok": 1,
-      "obs": "Wild Card, 19h30 ET",
-      "src": "cabletv.com"
+      "obs": "1ª fase jogo 2, 12h30 ET",
+      "src": "mlssoccer.com"
     },
     {
-      "d": "2026-11-19",
+      "d": "2026-11-28",
       "comp": "usa.1",
-      "h": "Seattle Sounders",
-      "a": "Real Salt Lake",
+      "h": "Houston Dynamo",
+      "a": "San Jose Earthquakes",
       "tv": [
         "Apple TV"
       ],
       "ok": 1,
-      "obs": "Wild Card, 22h ET",
-      "src": "cabletv.com"
+      "obs": "1ª fase jogo 2, 14h30 ET",
+      "src": "mlssoccer.com"
     },
     {
-      "d": "2026-11-21",
+      "d": "2026-11-28",
+      "comp": "usa.1",
+      "h": "Philadelphia Union",
+      "a": "New England Revolution",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "1ª fase jogo 2, 16h30 ET",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "usa.1",
+      "h": "FC Cincinnati",
+      "a": "Nashville SC",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "1ª fase jogo 2, 18h30 ET",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "usa.1",
+      "h": "Los Angeles FC",
+      "a": "St. Louis City",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "1ª fase jogo 2, 20h30 ET",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "usa.1",
+      "h": "Portland Timbers",
+      "a": "FC Dallas",
+      "tv": [
+        "Apple TV",
+        "FS1",
+        "Fox Deportes"
+      ],
+      "ok": 1,
+      "obs": "1ª fase jogo 2, 22h30 ET",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "mex.1",
+      "h": "Atlas",
+      "a": "Toluca",
+      "tv": [
+        "Univision",
+        "TUDN",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Quartas, volta, noite (19h30-20h ET)",
+      "src": "corporate.televisaunivision.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "mex.1",
+      "h": "América",
+      "a": "Monterrey",
+      "tv": [
+        "Univision",
+        "TUDN",
+        "ViX"
+      ],
+      "ok": 1,
+      "obs": "Quartas, volta, noite (22h-22h10 ET)",
+      "src": "corporate.televisaunivision.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Leeds United",
+      "a": "Coventry City",
+      "tv": [
+        "USA Network",
+        "Universo"
+      ],
+      "ok": 1,
+      "obs": "10h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Brentford",
+      "tv": [
+        "Peacock",
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "10h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.1",
+      "h": "Ipswich Town",
+      "a": "Aston Villa",
+      "tv": [
+        "USA Network",
+        "Telemundo"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Betis",
+      "a": "Rayo Vallecano",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "8h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Málaga",
+      "a": "Athletic Club",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "10h15 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Elche",
+      "a": "Atlético Madrid",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Madrid",
+      "a": "Alavés",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Frosinone",
+      "a": "Parma",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Torino",
+      "a": "Lazio",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "12h ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Inter Milan",
+      "a": "Genoa",
+      "tv": [
+        "Paramount+",
+        "Telemundo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "FC Köln",
+      "a": "SV Elversberg",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Hamburger SV",
+      "a": "Bayern Munich",
+      "tv": [
+        "Fandango",
+        "Telemundo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Mainz 05",
+      "a": "Union Berlin",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "SC Paderborn",
+      "a": "Schalke 04",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "VfB Stuttgart",
+      "a": "Eintracht Frankfurt",
+      "tv": [
+        "Fandango",
+        "Universo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Angers",
+      "a": "Lens",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "11h15 ET",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Le Havre",
+      "a": "Strasbourg",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; só no streaming beIN Sports Connect",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Le Mans",
+      "a": "Lille",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; beIN Sports Connect/XTRA",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Nice",
+      "a": "Troyes",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; beIN Sports Connect/XTRA",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Paris Saint-Germain",
+      "a": "Lorient",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; beIN em espanhol e Connect",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "f1",
+      "h": "Qatar Grand Prix",
+      "a": "Classificação",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "13h ET",
+      "src": "sports.yahoo.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "mex.1",
+      "h": "Guadalajara",
+      "a": "Pachuca",
+      "tv": [
+        "Telemundo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "Quartas, volta, 20h07 ET, em espanhol",
+      "src": "telemundopr.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "mex.1",
+      "h": "Cruz Azul",
+      "a": "León",
+      "tv": [
+        "TUDN"
+      ],
+      "ok": 1,
+      "obs": "Quartas, volta, 22h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Liverpool",
+      "tv": [
+        "USA Network",
+        "Universo"
+      ],
+      "ok": 1,
+      "obs": "7h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Brighton & Hove Albion",
+      "a": "Newcastle United",
+      "tv": [
+        "USA Network",
+        "Universo"
+      ],
+      "ok": 1,
+      "obs": "9h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Crystal Palace",
+      "a": "Hull City",
+      "tv": [
+        "Peacock",
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "9h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Fulham",
+      "a": "AFC Bournemouth",
+      "tv": [
+        "Peacock",
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "9h ET (a tabela da NBC traz 21h por erro; o texto diz 9h)",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Sunderland",
+      "a": "Tottenham Hotspur",
+      "tv": [
+        "Peacock",
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "9h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Arsenal",
+      "a": "Manchester City",
+      "tv": [
+        "USA Network",
+        "Telemundo"
+      ],
+      "ok": 1,
+      "obs": "11h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Valencia",
+      "a": "Osasuna",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "8h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Deportivo La Coruña",
+      "a": "Barcelona",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "10h15 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Celta Vigo",
+      "a": "Villarreal",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Sevilla",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Udinese",
+      "a": "Fiorentina",
+      "tv": [
+        "Paramount+",
+        "CBS Sports Network",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "6h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Sassuolo",
+      "a": "Napoli",
+      "tv": [
+        "Paramount+",
+        "CBS Sports Network",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "AS Roma",
+      "a": "Monza",
+      "tv": [
+        "Paramount+",
+        "Universo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "12h ET; Peacock em espanhol",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Como",
+      "a": "Juventus",
+      "tv": [
+        "Paramount+",
+        "Telemundo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "SC Freiburg",
+      "a": "RB Leipzig",
+      "tv": [
+        "Fandango",
+        "Telemundo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "TSG Hoffenheim",
+      "a": "FC Augsburg",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "11h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Borussia Dortmund",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "13h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Auxerre",
+      "a": "Marseille",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "9h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Toulouse",
+      "a": "Rennes",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "11h15 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Lyon",
+      "a": "AS Monaco",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "f1",
+      "h": "Qatar Grand Prix",
+      "a": "Corrida",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "11h ET",
+      "src": "sports.yahoo.com"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "esp.1",
+      "h": "Espanyol",
+      "a": "Getafe",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Lecce",
+      "a": "Atalanta",
+      "tv": [
+        "Paramount+",
+        "Universo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET; Peacock em espanhol",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Cagliari",
+      "a": "AC Milan",
+      "tv": [
+        "Paramount+",
+        "Universo",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol",
+      "src": "sportsmediawatch.com"
+    },
+    {
+      "d": "2026-12-01",
+      "comp": "eng.1",
+      "h": "Coventry City",
+      "a": "Ipswich Town",
+      "tv": [
+        "USA Network"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
       "comp": "usa.1",
       "h": "New England Revolution",
       "a": "Philadelphia Union",
@@ -231,23 +1454,11 @@
         "Apple TV"
       ],
       "ok": 1,
-      "obs": "Rodada 1 jogo 1, 14h ET",
-      "src": "cabletv.com"
+      "obs": "Jogo 3 só se necessário; 19h ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
     },
     {
-      "d": "2026-11-21",
-      "comp": "usa.1",
-      "h": "FC Dallas",
-      "a": "Portland Timbers",
-      "tv": [
-        "Apple TV"
-      ],
-      "ok": 1,
-      "obs": "Rodada 1 jogo 1, 16h ET",
-      "src": "cabletv.com"
-    },
-    {
-      "d": "2026-11-21",
+      "d": "2026-12-02",
       "comp": "usa.1",
       "h": "Inter Miami",
       "a": "Columbus Crew",
@@ -255,47 +1466,1305 @@
         "Apple TV"
       ],
       "ok": 1,
-      "obs": "Rodada 1 jogo 1, 18h ET",
-      "src": "cabletv.com"
+      "obs": "Jogo 3 só se necessário; 19h30 ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
     },
     {
-      "d": "2026-11-22",
+      "d": "2026-12-02",
+      "comp": "usa.1",
+      "h": "Nashville SC",
+      "a": "FC Cincinnati",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "Jogo 3 só se necessário; 20h ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-12-02",
       "comp": "usa.1",
       "h": "Chicago Fire",
       "a": "Charlotte FC",
       "tv": [
-        "Apple TV",
-        "Fox"
+        "Apple TV"
       ],
       "ok": 1,
-      "obs": "Rodada 1 jogo 1, 18h30 ET; também FS1 e Fox Deportes",
-      "src": "cabletv.com"
+      "obs": "Jogo 3 só se necessário; 20h ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
     },
     {
-      "d": "2026-11-23",
+      "d": "2026-12-02",
+      "comp": "usa.1",
+      "h": "FC Dallas",
+      "a": "Portland Timbers",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "Jogo 3 só se necessário; 20h ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-12-02",
       "comp": "usa.1",
       "h": "St. Louis City",
       "a": "Los Angeles FC",
       "tv": [
-        "Apple TV",
-        "Fox"
+        "Apple TV"
       ],
       "ok": 1,
-      "obs": "Rodada 1 jogo 1, 20h ET; também FS1 e Fox Deportes",
-      "src": "cabletv.com"
+      "obs": "Jogo 3 só se necessário; 20h ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
     },
     {
-      "d": "2026-11-24",
+      "d": "2026-12-02",
+      "comp": "usa.1",
+      "h": "Vancouver Whitecaps",
+      "a": "Real Salt Lake",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "Jogo 3 só se necessário; 21h ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-12-02",
       "comp": "usa.1",
       "h": "San Jose Earthquakes",
       "a": "Houston Dynamo",
       "tv": [
-        "Apple TV",
-        "Fox"
+        "Apple TV"
       ],
       "ok": 1,
-      "obs": "Rodada 1 jogo 1, 22h ET; também FS1 e Fox Deportes",
+      "obs": "Jogo 3 só se necessário; 22h ET no anúncio oficial, sujeito a mudança",
+      "src": "mlssoccer.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Crystal Palace",
+      "tv": [
+        "NBCSN",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Hull City",
+      "a": "Nottingham Forest",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Liverpool",
+      "a": "Sunderland",
+      "tv": [
+        "USA Network"
+      ],
+      "ok": 1,
+      "obs": "14h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Manchester City",
+      "a": "Leeds United",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "AFC Bournemouth",
+      "a": "Brighton & Hove Albion",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "15h15 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Aston Villa",
+      "a": "Everton",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "15h15 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Arsenal",
+      "tv": [
+        "NBCSN",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "15h15 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Newcastle United",
+      "a": "Manchester United",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "15h15 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Real Madrid",
+      "tv": [
+        "ESPN2",
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "13h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "esp.1",
+      "h": "Barcelona",
+      "a": "Atlético Madrid",
+      "tv": [
+        "ESPN2",
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h30 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-03",
+      "comp": "eng.1",
+      "h": "Tottenham Hotspur",
+      "a": "Fulham",
+      "tv": [
+        "USA Network"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "esp.1",
+      "h": "Alavés",
+      "a": "Espanyol",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "ita.1",
+      "h": "Bologna",
+      "a": "AS Roma",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "ger.1",
+      "h": "Bayern Munich",
+      "a": "SC Paderborn",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 0,
+      "obs": "14h30 ET; na grade do Fandango, mas escolhas da USA Network não confirmadas",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "fra.1",
+      "h": "Toulouse",
+      "a": "Paris Saint-Germain",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "14h45 ET; horário na fonte, canal inferido pelos direitos da beIN",
+      "src": "psg.fr"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Liverpool",
+      "tv": [
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "7h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Aston Villa",
+      "a": "Crystal Palace",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "10h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "AFC Bournemouth",
+      "a": "Hull City",
+      "tv": [
+        "USA Network"
+      ],
+      "ok": 1,
+      "obs": "10h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Leeds United",
+      "a": "Ipswich Town",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "10h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Manchester United",
+      "a": "Coventry City",
+      "tv": [
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "10h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Brighton & Hove Albion",
+      "tv": [
+        "NBC"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Manchester City",
+      "tv": [
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Racing de Santander",
+      "a": "Deportivo La Coruña",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "8h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Rayo Vallecano",
+      "a": "Levante",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "10h15 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Villarreal",
+      "a": "Real Sociedad",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Barcelona",
+      "a": "Celta Vigo",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Monza",
+      "a": "Como",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Frosinone",
+      "a": "Inter Milan",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "12h ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Napoli",
+      "a": "Lecce",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "FC Augsburg",
+      "a": "FC Köln",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 0,
+      "obs": "9h30 ET; na grade do Fandango, mas escolhas da USA Network não confirmadas",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "Bayer Leverkusen",
+      "a": "Borussia Mönchengladbach",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 0,
+      "obs": "9h30 ET; na grade do Fandango, mas escolhas da USA Network não confirmadas",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "SC Freiburg",
+      "a": "TSG Hoffenheim",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 0,
+      "obs": "9h30 ET; na grade do Fandango, mas escolhas da USA Network não confirmadas",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "RB Leipzig",
+      "a": "Mainz 05",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 0,
+      "obs": "9h30 ET; na grade do Fandango, mas escolhas da USA Network não confirmadas",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "Union Berlin",
+      "a": "Hamburger SV",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 0,
+      "obs": "9h30 ET; na grade do Fandango, mas escolhas da USA Network não confirmadas",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "Eintracht Frankfurt",
+      "a": "Werder Bremen",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 0,
+      "obs": "12h30 ET; na grade do Fandango, mas escolhas da USA Network não confirmadas",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Lille",
+      "a": "Auxerre",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "11h15 ET; horário na fonte, canal inferido pelos direitos da beIN",
+      "src": "football-ecology.org"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Lens",
+      "a": "Le Havre",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "14h45 ET; horário na fonte, canal inferido pelos direitos da beIN",
+      "src": "football-ecology.org"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "f1",
+      "h": "Abu Dhabi Grand Prix",
+      "a": "Classificação",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 0,
+      "obs": "9h ET; canal pelos direitos exclusivos da Apple",
+      "src": "f1timezone.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ufc",
+      "h": "Israel Adesanya",
+      "a": "Shara Magomedov",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "Preliminares 10h, card principal 13h ET",
+      "src": "ufc.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Fulham",
+      "tv": [
+        "NBCSN"
+      ],
+      "ok": 1,
+      "obs": "9h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Newcastle United",
+      "a": "Sunderland",
+      "tv": [
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Tottenham Hotspur",
+      "a": "Arsenal",
+      "tv": [
+        "USA Network"
+      ],
+      "ok": 1,
+      "obs": "11h30 ET",
+      "src": "nbcsports.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Osasuna",
+      "a": "Elche",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "8h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Athletic Club",
+      "a": "Real Madrid",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "10h15 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Getafe",
+      "a": "Valencia",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Atlético Madrid",
+      "a": "Real Betis",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Genoa",
+      "a": "Torino",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "6h30 ET; Peacock em espanhol; outro guia ainda cita DAZN e sem horário",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Lazio",
+      "a": "Atalanta",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h ET; Peacock em espanhol; outro guia ainda cita DAZN e sem horário",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Juventus",
+      "a": "Udinese",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "12h ET; Peacock em espanhol; outro guia ainda cita DAZN e sem horário",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "AC Milan",
+      "a": "Parma",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol; outro guia ainda cita DAZN e sem horário",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ger.1",
+      "h": "Schalke 04",
+      "a": "Borussia Dortmund",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "9h30 ET; Peacock em espanhol",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ger.1",
+      "h": "SV Elversberg",
+      "a": "VfB Stuttgart",
+      "tv": [
+        "Fandango",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "11h30 ET; Peacock em espanhol",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Troyes",
+      "a": "Lyon",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "9h ET",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Rennes",
+      "a": "Brest",
+      "tv": [
+        "FOX One",
+        "beIN Sports"
+      ],
+      "ok": 0,
+      "obs": "11h15 ET; guia cita só FOX One, beIN pelos direitos",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Marseille",
+      "a": "Nice",
+      "tv": [
+        "beIN Sports"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET",
+      "src": "livesoccertv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "f1",
+      "h": "Abu Dhabi Grand Prix",
+      "a": "Corrida",
+      "tv": [
+        "Apple TV"
+      ],
+      "ok": 1,
+      "obs": "8h ET (cobertura a partir de 7h55)",
       "src": "cabletv.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "esp.1",
+      "h": "Sevilla",
+      "a": "Málaga",
+      "tv": [
+        "ESPN+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "ita.1",
+      "h": "Venezia",
+      "a": "Sassuolo",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "12h30 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "ita.1",
+      "h": "Fiorentina",
+      "a": "Cagliari",
+      "tv": [
+        "Paramount+",
+        "Peacock"
+      ],
+      "ok": 1,
+      "obs": "14h45 ET; Peacock em espanhol",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Villarreal",
+      "a": "Sabah",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Viking",
+      "a": "Feyenoord",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "AS Roma",
+      "a": "Sporting CP",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Aston Villa",
+      "a": "Paris Saint-Germain",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Barcelona",
+      "a": "Manchester City",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Bayern Munich",
+      "a": "Slavia Prague",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Manchester United",
+      "a": "RB Leipzig",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Napoli",
+      "a": "Club Brugge",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "AEK Athens",
+      "a": "Galatasaray",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Slovan Bratislava",
+      "a": "Shakhtar Donetsk",
+      "tv": [
+        "Paramount+",
+        "Prime Video"
+      ],
+      "ok": 0,
+      "obs": "12h45 ET; guias divergem entre Paramount+ e Prime Video",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Real Betis",
+      "a": "Como",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "LASK",
+      "a": "Fenerbahçe",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Arsenal",
+      "a": "Real Madrid",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Lens",
+      "a": "Bodø/Glimt",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "PSV Eindhoven",
+      "a": "Atlético Madrid",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "VfB Stuttgart",
+      "a": "Lille",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Liverpool",
+      "a": "Porto",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Borussia Dortmund",
+      "a": "Inter Milan",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET; canais de TV em espanhol ainda não definidos",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Celje",
+      "a": "Olympiacos",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Anderlecht",
+      "a": "TSG Hoffenheim",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Ararat-Armenia",
+      "a": "NEC Nijmegen",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "AZ Alkmaar",
+      "a": "Sturm Graz",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Hapoel Be'er Sheva",
+      "a": "Juventus",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Jagiellonia Białystok",
+      "a": "Crystal Palace",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Marseille",
+      "a": "Celta Vigo",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Omonia Nicosia",
+      "a": "Celtic",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Rennes",
+      "a": "Dinamo Zagreb",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 0,
+      "obs": "12h45 ET; confronto pela UEFA (guia dos EUA erra o rival); canal pelos direitos",
+      "src": "uefa.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Lech Poznań",
+      "a": "Ferencváros",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Levski Sofia",
+      "a": "Lillestrøm",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Union Saint-Gilloise",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "RB Salzburg",
+      "a": "Sparta Prague",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Benfica",
+      "a": "OFI Crete",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Bayer Leverkusen",
+      "a": "Beşiktaş",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "AC Milan",
+      "a": "Sunderland",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Real Sociedad",
+      "a": "Torreense",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "AFC Bournemouth",
+      "a": "Viktoria Plzeň",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Riga FC",
+      "a": "Atalanta",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "SC Freiburg",
+      "a": "Panathinaikos",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Getafe",
+      "a": "Inter Club d'Escaldes",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "12h45 ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Brighton & Hove Albion",
+      "a": "AS Monaco",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Sint-Truiden",
+      "a": "Ajax",
+      "tv": [
+        "Paramount+"
+      ],
+      "ok": 1,
+      "obs": "15h ET",
+      "src": "worldsoccertalk.com"
     }
   ]
 }

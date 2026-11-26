@@ -1,8 +1,8 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-26",
   "country": "UK",
   "tz": "Europe/London",
-  "note": "Premier League: Sky Sports e TNT Sports. Champions: TNT Sports (um jogo na Prime). Itens marcados 'não verificado' vêm de conhecimento geral.",
+  "note": "Agenda de 26/11 a 10/12 (horário do Reino Unido). Sábado às 15h há blackout. Europa/Conference de 10/12: só jogos com canal definido.",
   "comps": {
     "eng.1": {
       "label": "Premier League",
@@ -11,100 +11,112 @@
         "TNT Sports UK",
         "Amazon Prime"
       ],
-      "note": "Sky Sports passa a maioria; TNT Sports o sábado 12h30 de algumas rodadas."
+      "note": "Sky Sports passa a maioria, incluindo a rodada de 2/12; TNT Sports em alguns horários de almoço e outros. Sábado 15h sem TV (blackout)."
     },
     "eng.2": {
       "label": "Championship",
       "options": [
         "Sky Sports"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Sky Sports (muitos jogos no Sky Sports+). Sábado 15h sem TV."
     },
     "eng.fa": {
       "label": "FA Cup",
       "options": [
-        "BBC",
-        "TNT Sports UK"
+        "TNT Sports UK",
+        "BBC"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "2ª fase (4-7/12): TNT Sports; dois jogos também na BBC Two."
     },
     "eng.league_cup": {
       "label": "EFL Cup",
       "options": [
-        "Sky Sports"
+        "Sky Sports",
+        "ITV"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Quartas (15-17/12): Sky Sports; Liverpool x Bournemouth também na ITV1/STV."
     },
     "sco.1": {
       "label": "Scottish Premiership",
       "options": [
-        "Sky Sports"
+        "Sky Sports",
+        "Premier Sports"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Dividida entre Sky Sports e Premier Sports."
     },
     "uefa.champions": {
       "label": "Champions League",
       "options": [
         "TNT Sports UK",
-        "Amazon Prime"
+        "Amazon Prime",
+        "HBO Max"
       ],
-      "note": "TNT Sports passa quase todos os jogos; Prime Video 1 jogo de terça (ex.: Man United x Roma, 3/11)."
+      "note": "TNT Sports/HBO Max; um jogo de terça na Prime Video (8/12: Barcelona x Man City)."
     },
     "uefa.europa": {
       "label": "Europa League",
       "options": [
-        "TNT Sports UK"
+        "TNT Sports UK",
+        "HBO Max"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "TNT Sports e HBO Max; vários jogos aparecem só no HBO Max."
     },
     "uefa.europa.conf": {
       "label": "Conference League",
       "options": [
-        "TNT Sports UK"
+        "TNT Sports UK",
+        "HBO Max"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "TNT Sports e HBO Max; vários jogos aparecem só no HBO Max."
     },
     "esp.1": {
       "label": "LaLiga",
       "options": [
-        "Premier Sports"
+        "Premier Sports",
+        "LALIGA TV",
+        "Disney+"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Maioria na Premier Sports; alguns no LALIGATV ou no Disney+."
     },
     "ita.1": {
       "label": "Serie A",
       "options": [
-        "TNT Sports UK"
+        "DAZN",
+        "TNT Sports UK",
+        "BBC"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "DAZN tem todos os listados; alguns também na TNT Sports ou BBC Alba."
     },
     "ger.1": {
       "label": "Bundesliga",
       "options": [
-        "Sky Sports"
+        "Sky Sports",
+        "BBC",
+        "Amazon Prime"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Sexta na BBC (iPlayer) e YouTube; sábado 17h30 na Sky; domingo em PPV no Prime Video."
     },
     "fra.1": {
       "label": "Ligue 1",
       "options": [
-        "Premier Sports"
+        "Ligue 1+",
+        "Amazon Prime"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Ligue 1+; alguns jogos também em PPV no Prime Video."
     },
     "f1": {
       "label": "Fórmula 1",
       "options": [
         "Sky Sports"
       ],
-      "note": ""
+      "note": "Não reverificado nesta semana."
     },
     "ufc": {
       "label": "UFC",
       "options": [
         "TNT Sports UK"
       ],
-      "note": "Não verificado nesta semana."
+      "note": "Não verificado nesta semana; confirmar o detentor atual."
     },
     "tennis": {
       "label": "Tênis",
@@ -179,63 +191,435 @@
   },
   "games": [
     {
-      "d": "2026-11-21",
-      "comp": "eng.1",
-      "h": "Manchester City",
-      "a": "Fulham",
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Celta Vigo",
+      "a": "Bournemouth",
       "tv": [
         "TNT Sports UK"
       ],
       "ok": 1,
-      "obs": "12:30; TNT Sports 1",
+      "obs": "17:45; TNT Sports 1",
       "src": "live-footballontv.com"
     },
     {
-      "d": "2026-11-21",
-      "comp": "eng.1",
-      "h": "Newcastle United",
-      "a": "Arsenal",
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Dinamo Zagreb",
+      "a": "Bayer Leverkusen",
       "tv": [
-        "Sky Sports"
+        "TNT Sports UK"
       ],
       "ok": 1,
-      "obs": "17:30; Sky Sports Main Event",
+      "obs": "17:45; TNT Sports 6",
       "src": "live-footballontv.com"
     },
     {
-      "d": "2026-11-22",
-      "comp": "eng.1",
-      "h": "Hull City",
-      "a": "Brighton & Hove Albion",
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Marseille",
+      "a": "Levski Sofia",
       "tv": [
-        "Sky Sports"
+        "TNT Sports UK"
       ],
       "ok": 1,
-      "obs": "14:00; Sky Sports Main Event",
+      "obs": "17:45; TNT Sports 7",
       "src": "live-footballontv.com"
     },
     {
-      "d": "2026-11-22",
-      "comp": "eng.1",
-      "h": "Liverpool",
-      "a": "Manchester United",
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Olympiacos",
+      "a": "AC Milan",
       "tv": [
-        "Sky Sports"
+        "TNT Sports UK"
       ],
       "ok": 1,
-      "obs": "16:30; Sky Sports Main Event",
+      "obs": "17:45; TNT Sports 4",
       "src": "live-footballontv.com"
     },
     {
-      "d": "2026-11-23",
-      "comp": "eng.1",
-      "h": "Brentford",
-      "a": "Everton",
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Viktoria Plzen",
+      "a": "Benfica",
       "tv": [
-        "Sky Sports"
+        "TNT Sports UK"
       ],
       "ok": 1,
-      "obs": "20:00; Sky Sports Main Event",
+      "obs": "17:45; TNT Sports 8",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Besiktas",
+      "a": "Hapoel Beer Sheva",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "RB Salzburg",
+      "a": "Ararat-Armenia",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Union Saint-Gilloise",
+      "a": "Lech Poznan",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Crystal Palace",
+      "a": "Real Sociedad",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Hoffenheim",
+      "a": "Sturm Graz",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 7",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Juventus",
+      "a": "Omonia Nicosia",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 4",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Lyon",
+      "a": "Lillestrøm",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 6",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sunderland",
+      "a": "Jagiellonia Bialystok",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 2",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Torreense",
+      "a": "Celtic",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 3",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Ferencvaros",
+      "a": "Celje",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "NEC Nijmegen",
+      "a": "Rennes",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "OFI Crete",
+      "a": "Anderlecht",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa",
+      "h": "Sparta Prague",
+      "a": "AZ Alkmaar",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Kairat Almaty",
+      "a": "Mjällby",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "15:30; TNT Sports 5",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Ajax",
+      "a": "Thun",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "17:45; TNT Sports 9",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Brighton & Hove Albion",
+      "a": "Universitatea Craiova",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "17:45; TNT Sports 2",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hearts",
+      "a": "Monaco",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "17:45; TNT Sports 3",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Borac Banja Luka",
+      "a": "Atalanta",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 8",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Freiburg",
+      "a": "Twente",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 9",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Egnatia",
+      "a": "Lincoln Red Imps",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Iberia 1999",
+      "a": "Getafe",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Jablonec",
+      "a": "Lugano",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Zalgiris Kaunas",
+      "a": "Riga FC",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Pafos",
+      "a": "Midtjylland",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Brann",
+      "a": "AGF Aarhus",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "17:45; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "CSKA Sofia",
+      "a": "Trabzonspor",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Nordsjaelland",
+      "a": "Panathinaikos",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Gent",
+      "a": "Crvena Zvezda",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Hajduk Split",
+      "a": "Sint-Truiden",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Inter Club d'Escaldes",
+      "a": "Copenhagen",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-26",
+      "comp": "uefa.europa.conf",
+      "h": "Braga",
+      "a": "KuPS",
+      "tv": [
+        "HBO Max"
+      ],
+      "ok": 1,
+      "obs": "20:00; só HBO Max na agenda, sem canal TNT",
       "src": "live-footballontv.com"
     },
     {
@@ -247,8 +631,68 @@
         "Sky Sports"
       ],
       "ok": 1,
-      "obs": "20h00",
-      "src": "soccergraph.com"
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "eng.2",
+      "h": "Southampton",
+      "a": "Middlesbrough",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "esp.1",
+      "h": "Levante",
+      "a": "Racing Santander",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ita.1",
+      "h": "Venezia",
+      "a": "Bologna",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "ger.1",
+      "h": "Werder Bremen",
+      "a": "Borussia Mönchengladbach",
+      "tv": [
+        "BBC"
+      ],
+      "ok": 1,
+      "obs": "19:30; BBC iPlayer/site e YouTube da Bundesliga",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-27",
+      "comp": "fra.1",
+      "h": "Brest",
+      "a": "Paris FC",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
     },
     {
       "d": "2026-11-28",
@@ -259,20 +703,201 @@
         "Sky Sports"
       ],
       "ok": 1,
-      "obs": "17h30",
-      "src": "soccergraph.com"
+      "obs": "17:30; Sky Sports",
+      "src": "live-footballontv.com"
     },
     {
-      "d": "2026-11-29",
-      "comp": "eng.1",
-      "h": "Everton",
-      "a": "Liverpool",
+      "d": "2026-11-28",
+      "comp": "eng.2",
+      "h": "Blackburn Rovers",
+      "a": "Charlton Athletic",
       "tv": [
-        "TNT Sports UK"
+        "Sky Sports"
       ],
       "ok": 1,
-      "obs": "12h00",
-      "src": "soccergraph.com"
+      "obs": "12:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.2",
+      "h": "Lincoln City",
+      "a": "Wolverhampton Wanderers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "12:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "eng.2",
+      "h": "Preston North End",
+      "a": "Norwich City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "12:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "sco.1",
+      "h": "Motherwell",
+      "a": "Hibernian",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "17:45; Premier Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Betis",
+      "a": "Rayo Vallecano",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "13:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Elche",
+      "a": "Atlético Madrid",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Málaga",
+      "a": "Athletic Club",
+      "tv": [
+        "LALIGA TV"
+      ],
+      "ok": 1,
+      "obs": "15:15; canal LALIGATV",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "esp.1",
+      "h": "Real Madrid",
+      "a": "Alavés",
+      "tv": [
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "20:00; Disney+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Torino",
+      "a": "Lazio",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:00; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ita.1",
+      "h": "Inter Milan",
+      "a": "Genoa",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "ger.1",
+      "h": "Stuttgart",
+      "a": "Eintracht Frankfurt",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Sky Sports Football",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Le Havre",
+      "a": "Strasbourg",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Le Mans",
+      "a": "Lille",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Nice",
+      "a": "Troyes",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "fra.1",
+      "h": "Paris Saint-Germain",
+      "a": "Lorient",
+      "tv": [
+        "Ligue 1+",
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+; também PPV no Prime Video",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-28",
+      "comp": "f1",
+      "h": "GP do Catar",
+      "a": "Classificação",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 0,
+      "obs": "18:00; Sky detém a F1, grade não verificada",
+      "src": "dazn.com"
     },
     {
       "d": "2026-11-29",
@@ -283,8 +908,8 @@
         "Sky Sports"
       ],
       "ok": 1,
-      "obs": "14h05 (horário alterado)",
-      "src": "soccergraph.com"
+      "obs": "14:05; Sky Sports",
+      "src": "live-footballontv.com"
     },
     {
       "d": "2026-11-29",
@@ -295,8 +920,8 @@
         "Sky Sports"
       ],
       "ok": 1,
-      "obs": "14h05 (horário alterado)",
-      "src": "soccergraph.com"
+      "obs": "14:05; Sky Sports",
+      "src": "live-footballontv.com"
     },
     {
       "d": "2026-11-29",
@@ -307,8 +932,8 @@
         "Sky Sports"
       ],
       "ok": 1,
-      "obs": "14h05",
-      "src": "soccergraph.com"
+      "obs": "14:05; Sky Sports",
+      "src": "live-footballontv.com"
     },
     {
       "d": "2026-11-29",
@@ -319,8 +944,8 @@
         "Sky Sports"
       ],
       "ok": 1,
-      "obs": "14h05 (horário alterado)",
-      "src": "soccergraph.com"
+      "obs": "14:05; Sky Sports",
+      "src": "live-footballontv.com"
     },
     {
       "d": "2026-11-29",
@@ -331,8 +956,1534 @@
         "Sky Sports"
       ],
       "ok": 1,
-      "obs": "16h30",
-      "src": "soccergraph.com"
+      "obs": "16:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Liverpool",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "12:00; TNT Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "eng.2",
+      "h": "Swansea City",
+      "a": "Cardiff City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "12:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "sco.1",
+      "h": "Hearts",
+      "a": "Celtic",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "15:00; Sky Sports Football",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Valencia",
+      "a": "Osasuna",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "13:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Deportivo La Coruña",
+      "a": "Barcelona",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "15:15; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Celta Vigo",
+      "a": "Villarreal",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Sevilla",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Udinese",
+      "a": "Fiorentina",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "11:30; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Roma",
+      "a": "Monza",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:00; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Sassuolo",
+      "a": "Napoli",
+      "tv": [
+        "DAZN",
+        "BBC"
+      ],
+      "ok": 1,
+      "obs": "14:00; DAZN e BBC Alba",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ita.1",
+      "h": "Como",
+      "a": "Juventus",
+      "tv": [
+        "TNT Sports UK",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; TNT Sports e DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Freiburg",
+      "a": "RB Leipzig",
+      "tv": [
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "14:30; Prime Video pago por jogo (PPV)",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Hoffenheim",
+      "a": "Augsburg",
+      "tv": [
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "16:30; Prime Video pago por jogo (PPV)",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "ger.1",
+      "h": "Borussia Dortmund",
+      "a": "Bayer Leverkusen",
+      "tv": [
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "18:30; Prime Video pago por jogo (PPV)",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Toulouse",
+      "a": "Rennes",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "16:15; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Auxerre",
+      "a": "Marseille",
+      "tv": [
+        "Ligue 1+",
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "14:00; Ligue 1+; também PPV no Prime Video",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "fra.1",
+      "h": "Lyon",
+      "a": "Monaco",
+      "tv": [
+        "Ligue 1+",
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+; também PPV no Prime Video",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-29",
+      "comp": "f1",
+      "h": "GP do Catar",
+      "a": "Corrida",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 0,
+      "obs": "16:00; Sky detém a F1, grade não verificada",
+      "src": "dazn.com"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "esp.1",
+      "h": "Espanyol",
+      "a": "Getafe",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Lecce",
+      "a": "Atalanta",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:30; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-11-30",
+      "comp": "ita.1",
+      "h": "Cagliari",
+      "a": "AC Milan",
+      "tv": [
+        "TNT Sports UK",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; TNT Sports e DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-01",
+      "comp": "eng.1",
+      "h": "Coventry City",
+      "a": "Ipswich Town",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Crystal Palace",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Hull City",
+      "a": "Nottingham Forest",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Liverpool",
+      "a": "Sunderland",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Manchester City",
+      "a": "Leeds United",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Bournemouth",
+      "a": "Brighton & Hove Albion",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:15; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Aston Villa",
+      "a": "Everton",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:15; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Arsenal",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:15; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "eng.1",
+      "h": "Newcastle United",
+      "a": "Manchester United",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:15; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "sco.1",
+      "h": "Dundee",
+      "a": "Celtic",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Premier Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "esp.1",
+      "h": "Real Sociedad",
+      "a": "Real Madrid",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "18:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-02",
+      "comp": "esp.1",
+      "h": "Barcelona",
+      "a": "Atlético Madrid",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "20:30; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-03",
+      "comp": "eng.1",
+      "h": "Tottenham Hotspur",
+      "a": "Fulham",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "eng.2",
+      "h": "Sheffield United",
+      "a": "West Ham United",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "eng.fa",
+      "h": "Wimborne Town",
+      "a": "Bradford City",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "19:30; 2ª fase; TNT Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "esp.1",
+      "h": "Alavés",
+      "a": "Espanyol",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Premier Sports, canal a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "ita.1",
+      "h": "Bologna",
+      "a": "Roma",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "ger.1",
+      "h": "Bayern Munich",
+      "a": "Paderborn",
+      "tv": [
+        "BBC"
+      ],
+      "ok": 1,
+      "obs": "19:30; BBC iPlayer/site e YouTube da Bundesliga",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-04",
+      "comp": "fra.1",
+      "h": "Toulouse",
+      "a": "Paris Saint-Germain",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Nottingham Forest",
+      "a": "Brighton & Hove Albion",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Brentford",
+      "a": "Manchester City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.1",
+      "h": "Chelsea",
+      "a": "Liverpool",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "12:30; TNT Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.2",
+      "h": "Bolton Wanderers",
+      "a": "Blackburn Rovers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "12:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.2",
+      "h": "Middlesbrough",
+      "a": "Derby County",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "12:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.2",
+      "h": "Watford",
+      "a": "Millwall",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "12:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.fa",
+      "h": "Barrow",
+      "a": "Kidderminster Harriers",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; 2ª fase; TNT Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "eng.fa",
+      "h": "Dover Athletic",
+      "a": "Leicester City",
+      "tv": [
+        "BBC",
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "17:15; BBC Two e TNT Sports 2",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "sco.1",
+      "h": "St Mirren",
+      "a": "Hearts",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Premier Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Racing Santander",
+      "a": "Deportivo La Coruña",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "13:00; Premier Sports, canal a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Villarreal",
+      "a": "Real Sociedad",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Premier Sports, canal a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Rayo Vallecano",
+      "a": "Levante",
+      "tv": [
+        "LALIGA TV"
+      ],
+      "ok": 1,
+      "obs": "15:15; canal LALIGATV",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "esp.1",
+      "h": "Barcelona",
+      "a": "Celta Vigo",
+      "tv": [
+        "Disney+"
+      ],
+      "ok": 1,
+      "obs": "20:00; Disney+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Frosinone",
+      "a": "Inter Milan",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:00; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ita.1",
+      "h": "Napoli",
+      "a": "Lecce",
+      "tv": [
+        "TNT Sports UK",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; TNT Sports e DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "ger.1",
+      "h": "Eintracht Frankfurt",
+      "a": "Werder Bremen",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Sky Sports Football",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Monaco",
+      "a": "Angers",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Paris FC",
+      "a": "Le Mans",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Lens",
+      "a": "Le Havre",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "fra.1",
+      "h": "Strasbourg",
+      "a": "Lorient",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-05",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Classificação",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 0,
+      "obs": "14:00; Sky detém a F1, grade não verificada",
+      "src": "dazn.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Tottenham Hotspur",
+      "a": "Arsenal",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "16:30; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Everton",
+      "a": "Fulham",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "14:00; Sky Sports, canal a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.1",
+      "h": "Newcastle United",
+      "a": "Sunderland",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "14:00; Sky Sports, canal a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.2",
+      "h": "Burnley",
+      "a": "Preston North End",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "12:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.fa",
+      "h": "AFC Fylde",
+      "a": "Luton Town",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "14:30; 2ª fase; TNT Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.fa",
+      "h": "Crewe Alexandra",
+      "a": "Plymouth Argyle",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "15:15; 2ª fase; TNT Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.fa",
+      "h": "Plymouth Parkway",
+      "a": "Barnet",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "17:30; 2ª fase; TNT Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "eng.fa",
+      "h": "Salisbury",
+      "a": "Blackpool",
+      "tv": [
+        "BBC",
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "12:15; BBC Two e TNT Sports 2",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Osasuna",
+      "a": "Elche",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "13:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Athletic Club",
+      "a": "Real Madrid",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "15:15; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Getafe",
+      "a": "Valencia",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "17:30; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "esp.1",
+      "h": "Atlético Madrid",
+      "a": "Real Betis",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Genoa",
+      "a": "Torino",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "11:30; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Lazio",
+      "a": "Atalanta",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "14:00; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "Juventus",
+      "a": "Udinese",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:00; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ita.1",
+      "h": "AC Milan",
+      "a": "Parma",
+      "tv": [
+        "TNT Sports UK",
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; TNT Sports e DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ger.1",
+      "h": "Schalke 04",
+      "a": "Borussia Dortmund",
+      "tv": [
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "14:30; Prime Video pago por jogo (PPV)",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "ger.1",
+      "h": "Elversberg",
+      "a": "Stuttgart",
+      "tv": [
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "16:30; Prime Video pago por jogo (PPV)",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Troyes",
+      "a": "Lyon",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "14:00; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Rennes",
+      "a": "Brest",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "16:15; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "fra.1",
+      "h": "Marseille",
+      "a": "Nice",
+      "tv": [
+        "Ligue 1+"
+      ],
+      "ok": 1,
+      "obs": "19:45; Ligue 1+",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-06",
+      "comp": "f1",
+      "h": "GP de Abu Dhabi",
+      "a": "Corrida",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 0,
+      "obs": "13:00; Sky detém a F1, grade não verificada",
+      "src": "dazn.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "eng.fa",
+      "h": "Guiseley",
+      "a": "Notts County",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "19:30; 2ª fase; TNT Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "sco.1",
+      "h": "Hibernian",
+      "a": "Rangers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports Football",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "esp.1",
+      "h": "Sevilla",
+      "a": "Málaga",
+      "tv": [
+        "Premier Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Premier Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "ita.1",
+      "h": "Venezia",
+      "a": "Sassuolo",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "17:30; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-07",
+      "comp": "ita.1",
+      "h": "Fiorentina",
+      "a": "Cagliari",
+      "tv": [
+        "DAZN"
+      ],
+      "ok": 1,
+      "obs": "19:45; DAZN",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "Blackburn Rovers",
+      "a": "Norwich City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "Millwall",
+      "a": "Sheffield United",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "Queens Park Rangers",
+      "a": "Wolverhampton Wanderers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "Swansea City",
+      "a": "Bolton Wanderers",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "West Bromwich Albion",
+      "a": "Cardiff City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "Wrexham",
+      "a": "Charlton Athletic",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "Birmingham City",
+      "a": "Watford",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "eng.2",
+      "h": "West Ham United",
+      "a": "Middlesbrough",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Barcelona",
+      "a": "Manchester City",
+      "tv": [
+        "Amazon Prime"
+      ],
+      "ok": 1,
+      "obs": "20:00; exclusivo Prime Video",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Viking",
+      "a": "Feyenoord",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "17:45; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Villarreal",
+      "a": "Sabah",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "17:45; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "AEK Athens",
+      "a": "Galatasaray",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Aston Villa",
+      "a": "Paris Saint-Germain",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Bayern Munich",
+      "a": "Slavia Prague",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Manchester United",
+      "a": "RB Leipzig",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Napoli",
+      "a": "Club Brugge",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-08",
+      "comp": "uefa.champions",
+      "h": "Roma",
+      "a": "Sporting CP",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "eng.2",
+      "h": "Derby County",
+      "a": "Bristol City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "eng.2",
+      "h": "Lincoln City",
+      "a": "Stoke City",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "eng.2",
+      "h": "Preston North End",
+      "a": "Portsmouth",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "19:45; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "eng.2",
+      "h": "Southampton",
+      "a": "Burnley",
+      "tv": [
+        "Sky Sports"
+      ],
+      "ok": 1,
+      "obs": "20:00; Sky Sports",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Real Betis",
+      "a": "Como",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "17:45; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Slovan Bratislava",
+      "a": "Shakhtar Donetsk",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "17:45; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Arsenal",
+      "a": "Real Madrid",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Borussia Dortmund",
+      "a": "Inter Milan",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "LASK",
+      "a": "Fenerbahce",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Liverpool",
+      "a": "Porto",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "PSV Eindhoven",
+      "a": "Atlético Madrid",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Lens",
+      "a": "Bodø/Glimt",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-09",
+      "comp": "uefa.champions",
+      "h": "Stuttgart",
+      "a": "Lille",
+      "tv": [
+        "TNT Sports UK",
+        "HBO Max"
+      ],
+      "ok": 0,
+      "obs": "20:00; HBO Max/TNT, canal TNT a definir",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Jagiellonia Bialystok",
+      "a": "Crystal Palace",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "17:45; TNT Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Omonia Nicosia",
+      "a": "Celtic",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "17:45; TNT Sports 3",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "AC Milan",
+      "a": "Sunderland",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 1",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa",
+      "h": "Bournemouth",
+      "a": "Viktoria Plzen",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 4",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Kairat Almaty",
+      "a": "Universitatea Craiova",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "15:30; TNT Sports 2",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Brighton & Hove Albion",
+      "a": "Monaco",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 2",
+      "src": "live-footballontv.com"
+    },
+    {
+      "d": "2026-12-10",
+      "comp": "uefa.europa.conf",
+      "h": "Hearts",
+      "a": "Borac Banja Luka",
+      "tv": [
+        "TNT Sports UK"
+      ],
+      "ok": 1,
+      "obs": "20:00; TNT Sports 3",
+      "src": "live-footballontv.com"
     }
   ]
 }
